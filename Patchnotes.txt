@@ -1,6 +1,35 @@
 LOGGER — Patch Notes
 Personal Media Diary by Aditya
 ————————————————————————————————————————
+2.1.0
+15 August 2026
+
+  - Cloudflare Worker API proxy added — all TMDB and game media
+    requests now routed through dedicated proxy
+  - Hardcoded TMDB and RAWG API keys removed from frontend
+  - ISP DNS blocking bypassed for TMDB, images, and game queries
+
+  - Migrated game provider from RAWG to IGDB v4
+  - Game search and details now powered by Twitch/IGDB API
+  - Full backward compatibility with existing Firestore diary entries
+    and previously saved game IDs with zero data migration needed
+
+  - Added partial and fuzzy game search with automatic wildcard fallback
+  - Added smart acronym expansion for common titles:
+    gta, gta 5, rdr2, botw, totk, gow, cod
+  - Typing partial queries like phasmo, incept, or witch immediately
+    returns top relevant results
+
+  - Smart game relevance ranking implemented
+  - Main playable games prioritized at the top of search results
+  - DLCs, addons, skin packs, Shark Cards, bundles, and mods
+    automatically filtered out
+  - Collector's and Special Editions demoted below standard releases
+
+  - Safer upstream error handling — timeouts or upstream API hiccups
+    gracefully return safe fallback responses without crashing the UI
+  - Movie, series, details, and poster requests routed through Worker
+
 2.0.1
 25 March 2026
 
