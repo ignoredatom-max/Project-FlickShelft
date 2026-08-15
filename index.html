@@ -1198,29 +1198,60 @@ body.readonly .row{cursor:default}
   border-radius:24px 24px 0 0;
   border-top:1px solid var(--border2);
   box-shadow:0 -20px 60px rgba(0,0,0,0.65);
-  overflow-y:auto;scrollbar-width:none;
-  -webkit-overflow-scrolling:touch;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
   animation:slideUp 0.3s cubic-bezier(.32,1,.23,1);
   position:relative;
   box-sizing:border-box;
 }
-.info-sheet::-webkit-scrollbar{display:none}
 .info-sheet.movie{border-top:2px solid rgba(255,69,58,0.55);box-shadow:0 -12px 32px rgba(255,69,58,0.1), 0 -20px 60px rgba(0,0,0,0.7);}
 .info-sheet.series{border-top:2px solid rgba(0,180,216,0.55);box-shadow:0 -12px 32px rgba(0,180,216,0.1), 0 -20px 60px rgba(0,0,0,0.7);}
 .info-sheet.game{border-top:2px solid rgba(0,197,102,0.55);box-shadow:0 -12px 32px rgba(0,197,102,0.1), 0 -20px 60px rgba(0,0,0,0.7);}
 
-.info-close{
-  position:absolute;top:14px;right:14px;
-  background:rgba(255,255,255,0.08);border:1px solid var(--border);
-  color:var(--text2);width:32px;height:32px;border-radius:50%;
-  font-size:14px;cursor:pointer;display:flex;align-items:center;
-  justify-content:center;z-index:10;transition:all 0.15s;
+/* Fixed Modal Top Bar */
+.info-top-bar{
+  flex-shrink:0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:10px 16px 6px;
+  background:var(--bg2);
+  position:relative;
+  z-index:20;
 }
-.info-close:active{background:var(--bg4);color:#fff;transform:scale(0.95);}
+.info-drag-handle{
+  width:36px;
+  height:4px;
+  border-radius:2px;
+  background:rgba(255,255,255,0.22);
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  top:10px;
+}
+.info-close{
+  background:rgba(255,255,255,0.08);border:1px solid var(--border);
+  color:var(--text2);width:30px;height:30px;border-radius:50%;
+  font-size:13px;cursor:pointer;display:flex;align-items:center;
+  justify-content:center;transition:all 0.15s;
+  margin-left:auto;
+}
+.info-close:active{background:var(--bg4);color:#fff;transform:scale(0.94);}
+
+/* Scrollable Content Area */
+.info-scroll-body{
+  flex:1;
+  min-height:0;
+  overflow-y:auto;
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+}
+.info-scroll-body::-webkit-scrollbar{display:none}
 
 .info-header-row{
   display:flex;gap:14px;align-items:flex-start;
-  padding:20px 18px 16px;
+  padding:6px 18px 16px;
   border-bottom:1px solid var(--border);
   position:relative;
 }
@@ -1234,7 +1265,7 @@ body.readonly .row{cursor:default}
   width:100%;height:100%;display:flex;align-items:center;
   justify-content:center;font-size:34px;background:var(--bg3);
 }
-.info-header-text{flex:1;min-width:0;padding-right:24px;}
+.info-header-text{flex:1;min-width:0;}
 .info-meta-row{
   display:flex;align-items:center;gap:6px;
   margin-bottom:6px;flex-wrap:wrap;
@@ -1319,6 +1350,7 @@ body.readonly .row{cursor:default}
 .info-review-box{
   background:var(--bg3);border:1px solid var(--border);
   border-radius:14px;padding:12px 14px;
+  transition:all 0.15s ease;
 }
 .info-review-lbl{
   font-size:10px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;
@@ -1326,9 +1358,24 @@ body.readonly .row{cursor:default}
 }
 .info-review-content{
   font-size:13px;line-height:1.6;color:var(--text);white-space:pre-wrap;word-break:break-word;
+  padding:0;margin:0;
 }
-.info-review-content.empty{
-  color:var(--text3);font-style:italic;font-size:12px;
+
+/* Compact Empty State for Review Box */
+.info-review-box.is-empty{
+  padding:8px 12px;
+  background:rgba(255,255,255,0.02);
+  border:1px dashed var(--border);
+}
+.info-review-box.is-empty .info-review-lbl{
+  margin-bottom:2px;
+}
+.info-review-box.is-empty .info-review-content{
+  color:var(--text3);
+  font-style:italic;
+  font-size:11px;
+  line-height:1.4;
+  padding:0;
 }
 
 /* Actions in unified card */
@@ -2427,63 +2474,71 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
 <!-- UNIFIED ENTRY INFO CARD -->
 <div class="info-overlay" id="infoOverlay">
   <div class="info-sheet" id="infoSheet">
-    <div class="info-header-row">
-      <div class="info-poster-wrap">
-        <img class="info-poster" id="infoPoster" src="" alt="">
-        <div class="info-poster-ph" id="infoPosterPh" style="display:none"></div>
-      </div>
-      <div class="info-header-text">
-        <div class="info-meta-row" id="infoMetaRow">
-          <span class="info-type-pill" id="infoTypePill"></span>
-          <span class="info-fav-tag" id="infoFavTag" style="display:none">❤️ Favourite</span>
-          <span class="info-rewatch-tag" id="infoRewatchTag" style="display:none">🔁 Rewatched</span>
-          <span class="info-year" id="infoYear"></span>
-          <span class="info-score" id="infoScore" style="display:none"></span>
-        </div>
-        <div class="info-title" id="infoTitle"></div>
-        <div class="info-genre" id="infoGenre"></div>
-      </div>
-      <button class="info-close" id="infoClose">✕</button>
+    <!-- Fixed Top Bar with Drag Handle & Close Button -->
+    <div class="info-top-bar">
+      <div class="info-drag-handle"></div>
+      <button class="info-close" id="infoClose" aria-label="Close">✕</button>
     </div>
-    <div class="info-body">
-      <div class="info-overview" id="infoOverview" style="display:none"></div>
-      <div class="info-details" id="infoDetails"></div>
-      
-      <!-- MY DIARY ENTRY (shown for logged items) -->
-      <div class="info-diary-section" id="infoDiarySection" style="display:none">
-        <div class="info-section-hdr">📖 My Diary Entry</div>
-        <div class="info-diary-grid">
-          <div class="info-diary-card">
-            <div class="info-diary-lbl">Rating</div>
-            <div id="infoDiaryRating"></div>
-          </div>
-          <div class="info-diary-card">
-            <div class="info-diary-lbl">Status</div>
-            <div class="info-diary-val" id="infoDiaryStatus"></div>
-          </div>
-          <div class="info-diary-card" style="grid-column: span 2">
-            <div class="info-diary-lbl">Logged Date</div>
-            <div class="info-diary-val" id="infoDiaryDate"></div>
-          </div>
+
+    <!-- Scrollable Content Area -->
+    <div class="info-scroll-body" id="infoScrollBody">
+      <div class="info-header-row">
+        <div class="info-poster-wrap">
+          <img class="info-poster" id="infoPoster" src="" alt="">
+          <div class="info-poster-ph" id="infoPosterPh" style="display:none"></div>
         </div>
-        <div class="info-review-box">
-          <div class="info-review-lbl">My Review</div>
-          <div class="info-review-content" id="infoDiaryNotes"></div>
+        <div class="info-header-text">
+          <div class="info-meta-row" id="infoMetaRow">
+            <span class="info-type-pill" id="infoTypePill"></span>
+            <span class="info-fav-tag" id="infoFavTag" style="display:none">❤️ Favourite</span>
+            <span class="info-rewatch-tag" id="infoRewatchTag" style="display:none">🔁 Rewatched</span>
+            <span class="info-year" id="infoYear"></span>
+            <span class="info-score" id="infoScore" style="display:none"></span>
+          </div>
+          <div class="info-title" id="infoTitle"></div>
+          <div class="info-genre" id="infoGenre"></div>
         </div>
       </div>
-
-      <!-- JOURNEY / TIMELINE -->
-      <div class="info-journey-section" id="infoJourneySection" style="display:none">
-        <div class="info-section-hdr" id="infoJourneyHdr">🎮 Game Journey</div>
-        <div class="info-timeline" id="infoTimeline"></div>
-        <div class="timeline-duration-card" id="tlDurationCard" style="display:none">
-          <div class="timeline-duration-lbl" id="tlDurationLbl">Finished in</div>
-          <div class="timeline-duration-val" id="tlDurationVal"></div>
+      <div class="info-body">
+        <div class="info-overview" id="infoOverview" style="display:none"></div>
+        <div class="info-details" id="infoDetails"></div>
+        
+        <!-- MY DIARY ENTRY (shown for logged items) -->
+        <div class="info-diary-section" id="infoDiarySection" style="display:none">
+          <div class="info-section-hdr">📖 My Diary Entry</div>
+          <div class="info-diary-grid">
+            <div class="info-diary-card">
+              <div class="info-diary-lbl">Rating</div>
+              <div id="infoDiaryRating"></div>
+            </div>
+            <div class="info-diary-card">
+              <div class="info-diary-lbl">Status</div>
+              <div class="info-diary-val" id="infoDiaryStatus"></div>
+            </div>
+            <div class="info-diary-card" style="grid-column: span 2">
+              <div class="info-diary-lbl">Logged Date</div>
+              <div class="info-diary-val" id="infoDiaryDate"></div>
+            </div>
+          </div>
+          <div class="info-review-box" id="infoDiaryReviewBox">
+            <div class="info-review-lbl">My Review</div>
+            <div class="info-review-content" id="infoDiaryNotes"></div>
+          </div>
         </div>
-      </div>
 
-      <!-- Action Buttons -->
-      <div class="info-actions" id="infoActions"></div>
+        <!-- JOURNEY / TIMELINE -->
+        <div class="info-journey-section" id="infoJourneySection" style="display:none">
+          <div class="info-section-hdr" id="infoJourneyHdr">🎮 Game Journey</div>
+          <div class="info-timeline" id="infoTimeline"></div>
+          <div class="timeline-duration-card" id="tlDurationCard" style="display:none">
+            <div class="timeline-duration-lbl" id="tlDurationLbl">Finished in</div>
+            <div class="timeline-duration-val" id="tlDurationVal"></div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="info-actions" id="infoActions"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -4923,7 +4978,8 @@ let _infoEntry = null;
 
 async function openInfo(id, context, ev){
   if(ev && typeof ev.stopPropagation === 'function') ev.stopPropagation();
-  const entry = (typeof id === 'object' && id !== null) ? id : (DATA.find(x=>String(x.id)===String(id)) || getPicks().find(x=>String(x.id)===String(id)));
+  const list = (typeof DATA !== 'undefined' && DATA.length) ? DATA : (window.DATA || []);
+  const entry = (typeof id === 'object' && id !== null) ? id : (list.find(x=>String(x.id)===String(id)) || getPicks().find(x=>String(x.id)===String(id)));
   if(!entry) return;
   _infoEntry = entry;
   showInfoCard(entry, context);
@@ -4944,6 +5000,10 @@ async function openInfoFromWL(idx, ev){
 function showInfoCard(entry, context){
   const sheet = document.getElementById('infoSheet');
   const overlay = document.getElementById('infoOverlay');
+
+  // Reset scroll
+  const scrollBody = document.getElementById('infoScrollBody') || sheet;
+  if(scrollBody) scrollBody.scrollTop = 0;
 
   // Type class for theme glow
   sheet.className = `info-sheet ${entry.type||'movie'}`;
@@ -5000,13 +5060,18 @@ function showInfoCard(entry, context){
       document.getElementById('infoDiaryDate').textContent = formatLogDate(entry.id);
 
       // Review notes
+      const reviewBox = document.getElementById('infoDiaryReviewBox');
       const notesEl = document.getElementById('infoDiaryNotes');
-      if(entry.notes && entry.notes.trim()){
-        notesEl.textContent = entry.notes.trim();
-        notesEl.classList.remove('empty');
-      } else {
-        notesEl.textContent = 'No review added';
-        notesEl.classList.add('empty');
+      if(notesEl){
+        if(entry.notes && entry.notes.trim()){
+          notesEl.textContent = entry.notes.trim();
+          notesEl.classList.remove('review-empty');
+          if(reviewBox) reviewBox.classList.remove('is-empty');
+        } else {
+          notesEl.textContent = 'No review added yet';
+          notesEl.classList.add('review-empty');
+          if(reviewBox) reviewBox.classList.add('is-empty');
+        }
       }
     } else {
       diarySec.style.display = 'none';
