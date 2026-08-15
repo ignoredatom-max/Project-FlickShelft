@@ -13,15 +13,16 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
-  --bg:#0f0f0f;
-  --bg2:#161616;
-  --bg3:#1e1e1e;
-  --bg4:#272727;
+  --bg:#0d0d0f;
+  --bg2:#151518;
+  --bg3:#1e1e23;
+  --bg4:#282830;
   --border:rgba(255,255,255,0.07);
   --border2:rgba(255,255,255,0.12);
-  --text:#f0f0f0;
-  --text2:#a0a0a0;
-  --text3:#606060;
+  --text:#f5f5f7;
+  --text2:#a1a1aa;
+  --text3:#71717a;
+  --text4:#52525b;
   --green:#00c566;
   --teal:#00b4d8;
   --orange:#ff9f0a;
@@ -33,6 +34,12 @@
   --mint:#00c7be;
   --glow-green:rgba(0,197,102,0.15);
   --glow-blue:rgba(45,127,249,0.2);
+  --glow-red:rgba(255,69,58,0.15);
+  --glow-teal:rgba(0,180,216,0.15);
+  --radius-sm:12px;
+  --radius-md:16px;
+  --radius-lg:22px;
+  --radius-pill:999px;
 }
 html{background:var(--bg)}
 body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
@@ -42,7 +49,7 @@ body::before{
   content:'';
   position:fixed;top:0;left:0;right:0;height:1px;
   background:linear-gradient(90deg, var(--red) 0%, var(--teal) 50%, var(--green) 100%);
-  opacity:0.5;
+  opacity:0.4;
   z-index:200;
   pointer-events:none;
 }
@@ -50,17 +57,21 @@ body::before{
 /* ── NAV ─────────────────────────────────────── */
 .nav{
   position:fixed;
-  left:12px;right:12px;
+  left:14px;right:14px;
   bottom:calc(10px + env(safe-area-inset-bottom, 0px));
   z-index:100;
-  background:rgba(28,28,30,0.82);
-  border:1px solid rgba(255,255,255,0.1);
-  border-radius:22px;
+  max-width:480px;
+  margin:0 auto;
+  background:rgba(24,24,27,0.85);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:24px;
   display:flex;
-  padding:2px 0 calc(2px + env(safe-area-inset-bottom, 0px));
-  backdrop-filter:blur(30px) saturate(180%) brightness(0.9);
-  -webkit-backdrop-filter:blur(30px) saturate(180%) brightness(0.9);
-  box-shadow:0 4px 24px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.05) inset;
+  align-items:center;
+  justify-content:space-between;
+  padding:3px 6px calc(3px + env(safe-area-inset-bottom, 0px));
+  backdrop-filter:blur(30px) saturate(180%) brightness(0.95);
+  -webkit-backdrop-filter:blur(30px) saturate(180%) brightness(0.95);
+  box-shadow:0 8px 32px rgba(0,0,0,0.55), 0 1px 0 rgba(255,255,255,0.06) inset;
   transition:transform 0.3s cubic-bezier(0.4,0,0.2,1), opacity 0.3s ease;
 }
 .nav.hidden{
@@ -69,44 +80,90 @@ body::before{
   pointer-events:none;
 }
 .nav-btn{
-  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:10px 0 8px;gap:3px;border:none;background:transparent;
-  color:var(--text3);cursor:pointer;font-family:'Inter',sans-serif;
-  font-size:10px;font-weight:500;
-  transition:color 0.2s;position:relative;border-radius:18px;
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:7px 0 5px;
+  gap:3px;
+  border:none;
+  background:transparent;
+  color:var(--text3);
+  cursor:pointer;
+  font-family:'Inter',sans-serif;
+  font-size:10.5px;
+  font-weight:500;
+  letter-spacing:0.2px;
+  transition:color 0.18s ease;
+  position:relative;
+  border-radius:16px;
+  min-width:0;
 }
 .nav-ico-wrap{
-  display:flex;align-items:center;justify-content:center;
-  height:26px;
-  transition:transform 0.2s cubic-bezier(.32,1,.23,1);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:24px;
+  height:24px;
+  transition:transform 0.18s cubic-bezier(.32,1,.23,1);
 }
-.nav-btn .nav-ico{font-size:20px;line-height:1;}
-.nav-btn .nav-lbl{font-size:10px;font-weight:500;transition:color 0.15s,font-weight 0.15s;}
-.nav-btn.on .nav-ico-wrap{transform:translateY(-1px);}
-.nav-btn.on .nav-lbl{color:var(--blue);font-weight:700;}
-.nav-btn.on::before{display:none;}
-.nav-btn:active .nav-ico-wrap{transform:scale(0.88);}
-.nav-btn.on::after{display:none;}
+.nav-svg{
+  width:20px;
+  height:20px;
+  stroke:currentColor;
+  stroke-width:1.85;
+  transition:stroke 0.18s ease, filter 0.18s ease;
+  display:block;
+}
+.nav-btn .nav-lbl{
+  font-size:10.5px;
+  font-weight:500;
+  color:var(--text3);
+  transition:color 0.18s ease, font-weight 0.18s ease;
+  white-space:nowrap;
+  line-height:1;
+}
+
+/* Active State: Apple-style restrained elegance */
+.nav-btn.on{
+  color:var(--blue);
+}
+.nav-btn.on .nav-svg{
+  stroke:var(--blue);
+  filter:drop-shadow(0 0 5px rgba(45,127,249,0.35));
+}
+.nav-btn.on .nav-lbl{
+  color:var(--blue);
+  font-weight:600;
+}
+.nav-btn:active .nav-ico-wrap{
+  transform:scale(0.90);
+}
+
+/* Center Hero Add Button */
 .nav-add-btn{
-  width:42px;height:42px;
-  border-radius:14px;
+  width:44px;
+  height:44px;
+  border-radius:15px;
   background:var(--blue);
   color:#ffffff;
   border:none;
-  display:flex;align-items:center;justify-content:center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   cursor:pointer;
-  box-shadow:0 4px 14px rgba(45,127,249,0.45), 0 1px 0 rgba(255,255,255,0.2) inset;
+  box-shadow:0 4px 18px rgba(45,127,249,0.5), 0 1px 0 rgba(255,255,255,0.3) inset;
   transition:transform 0.15s cubic-bezier(.32,1,.23,1), box-shadow 0.15s ease;
-  margin:2px 3px;
+  margin:0 6px;
   flex-shrink:0;
-  align-self:center;
 }
 .nav-add-btn:active{
-  transform:scale(0.90);
-  box-shadow:0 2px 6px rgba(45,127,249,0.3);
+  transform:scale(0.92);
+  box-shadow:0 2px 8px rgba(45,127,249,0.35);
 }
 .nav-add-ico{
-  font-size:22px;
+  font-size:24px;
   font-weight:700;
   line-height:1;
   margin-top:-1px;
@@ -618,10 +675,18 @@ body::before{
 .list-footer{padding:48px 20px 100px;text-align:center;font-size:12px;color:var(--text3);letter-spacing:0.3px;opacity:0.6}
 
 /* ── EMPTY ───────────────────────────────────── */
-.empty{padding:70px 20px;text-align:center}
-.empty-ico{font-size:48px;opacity:0.15;margin-bottom:16px;display:block}
-.empty-title{font-size:18px;font-weight:700;color:var(--text2);margin-bottom:6px}
-.empty-sub{font-size:13px;color:var(--text3)}
+.empty{padding:60px 20px;text-align:center}
+.empty-ico{font-size:44px;opacity:0.25;margin-bottom:14px;display:block}
+.empty-ico-svg{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--text3);
+  opacity:0.35;
+  margin:0 auto 12px;
+}
+.empty-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px;letter-spacing:-0.2px}
+.empty-sub{font-size:12.5px;color:var(--text3);line-height:1.4}
 
 /* ── TOAST ───────────────────────────────────── */
 .toast{
@@ -1209,17 +1274,7 @@ body.readonly .row{cursor:default}
 .info-sheet.series{border-top:2px solid rgba(0,180,216,0.55);box-shadow:0 -12px 32px rgba(0,180,216,0.1), 0 -20px 60px rgba(0,0,0,0.7);}
 .info-sheet.game{border-top:2px solid rgba(0,197,102,0.55);box-shadow:0 -12px 32px rgba(0,197,102,0.1), 0 -20px 60px rgba(0,0,0,0.7);}
 
-/* Fixed Modal Top Bar */
-.info-top-bar{
-  flex-shrink:0;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:10px 16px 6px;
-  background:var(--bg2);
-  position:relative;
-  z-index:20;
-}
+/* Drag Handle pinned at top center */
 .info-drag-handle{
   width:36px;
   height:4px;
@@ -1228,14 +1283,32 @@ body.readonly .row{cursor:default}
   position:absolute;
   left:50%;
   transform:translateX(-50%);
-  top:10px;
+  top:8px;
+  z-index:25;
+  pointer-events:none;
 }
+
+/* Close Button pinned at top-right corner */
 .info-close{
-  background:rgba(255,255,255,0.08);border:1px solid var(--border);
-  color:var(--text2);width:30px;height:30px;border-radius:50%;
-  font-size:13px;cursor:pointer;display:flex;align-items:center;
-  justify-content:center;transition:all 0.15s;
-  margin-left:auto;
+  position:absolute;
+  top:12px;
+  right:14px;
+  z-index:30;
+  background:rgba(20,20,20,0.75);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,0.15);
+  color:var(--text2);
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  font-size:13px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:all 0.15s;
+  box-shadow:0 2px 8px rgba(0,0,0,0.4);
 }
 .info-close:active{background:var(--bg4);color:#fff;transform:scale(0.94);}
 
@@ -1251,7 +1324,7 @@ body.readonly .row{cursor:default}
 
 .info-header-row{
   display:flex;gap:14px;align-items:flex-start;
-  padding:6px 18px 16px;
+  padding:18px 18px 16px;
   border-bottom:1px solid var(--border);
   position:relative;
 }
@@ -1265,7 +1338,7 @@ body.readonly .row{cursor:default}
   width:100%;height:100%;display:flex;align-items:center;
   justify-content:center;font-size:34px;background:var(--bg3);
 }
-.info-header-text{flex:1;min-width:0;}
+.info-header-text{flex:1;min-width:0;padding-right:32px;}
 .info-meta-row{
   display:flex;align-items:center;gap:6px;
   margin-bottom:6px;flex-wrap:wrap;
@@ -2279,7 +2352,12 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
           <div class="count-item s"><div class="count-num" id="cs">0</div><div class="count-label">Series</div></div>
           <div class="count-item g"><div class="count-num" id="cg">0</div><div class="count-label">Games</div></div>
         </div>
-        <button class="settings-btn" id="settingsBtn">⚙︎</button>
+        <button class="settings-btn" id="settingsBtn" aria-label="Settings" title="Settings">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </button>
       </div>
     </div>
     <div class="toolbar" style="position:relative;border-bottom:1px solid var(--border)">
@@ -2418,14 +2496,23 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
     <div class="profile-pfp-wrap">
       <img class="profile-pfp" id="profilePfp" src="" alt="" style="display:none">
       <div class="profile-pfp-ph" id="profilePfpPh">A</div>
-      <label class="profile-pfp-edit" id="profilePfpEdit" title="Change photo">✏️
+      <label class="profile-pfp-edit" id="profilePfpEdit" title="Change photo">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+          <circle cx="12" cy="13" r="4"></circle>
+        </svg>
         <input type="file" id="pfpInput" accept="image/*" style="display:none">
       </label>
     </div>
     <div class="profile-info">
       <div class="profile-name" id="profileName" onclick="editProfileName()">Aditya</div>
       <div class="profile-sub" id="profileSub">—</div>
-      <button class="profile-share-btn" id="profileShareBtn" style="display:none">🔗 Copy my link</button>
+      <button class="profile-share-btn" id="profileShareBtn" style="display:none">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:-1px">
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+        </svg>Copy my link
+      </button>
     </div>
   </div>
 
@@ -2433,7 +2520,11 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   <div class="profile-section" style="padding-top:4px;padding-bottom:6px">
     <div class="profile-favs-card" id="profileFavsShortcut" onclick="openFavsFromProfile()">
       <div style="display:flex;align-items:center;gap:12px">
-        <div class="profile-favs-icon-box">❤️</div>
+        <div class="profile-favs-icon-box">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="var(--pink)" stroke="var(--pink)" stroke-width="1.5">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+          </svg>
+        </div>
         <div>
           <div class="profile-favs-title">Favourites</div>
           <div class="profile-favs-subtitle" id="profileFavsCount">View your saved favourites</div>
@@ -2474,11 +2565,9 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
 <!-- UNIFIED ENTRY INFO CARD -->
 <div class="info-overlay" id="infoOverlay">
   <div class="info-sheet" id="infoSheet">
-    <!-- Fixed Top Bar with Drag Handle & Close Button -->
-    <div class="info-top-bar">
-      <div class="info-drag-handle"></div>
-      <button class="info-close" id="infoClose" aria-label="Close">✕</button>
-    </div>
+    <!-- Pinned Drag Handle & Close Button -->
+    <div class="info-drag-handle"></div>
+    <button class="info-close" id="infoClose" aria-label="Close">✕</button>
 
     <!-- Scrollable Content Area -->
     <div class="info-scroll-body" id="infoScrollBody">
@@ -2622,26 +2711,45 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
 <!-- BOTTOM NAV -->
 <nav class="nav">
   <button class="nav-btn on" data-page="log">
-    <div class="nav-ico-wrap"><span class="nav-ico">📋</span></div>
+    <div class="nav-ico-wrap">
+      <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+        <line x1="9" y1="13" x2="15" y2="13"></line>
+        <line x1="9" y1="17" x2="13" y2="17"></line>
+      </svg>
+    </div>
     <span class="nav-lbl">Log</span>
   </button>
   <button class="nav-btn" data-page="calendar">
-    <div class="nav-ico-wrap"><span class="nav-ico">📅</span></div>
+    <div class="nav-ico-wrap">
+      <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="4" width="18" height="18" rx="3" ry="3"></rect>
+        <line x1="16" y1="2" x2="16" y2="6"></line>
+        <line x1="8" y1="2" x2="8" y2="6"></line>
+        <line x1="3" y1="10" x2="21" y2="10"></line>
+      </svg>
+    </div>
     <span class="nav-lbl">Calendar</span>
   </button>
   <button class="nav-add-btn" id="navAddBtn" type="button" aria-label="Add entry" title="Add entry">
     <span class="nav-add-ico">＋</span>
   </button>
   <button class="nav-btn" data-page="watchlist">
-    <div class="nav-ico-wrap"><span class="nav-ico">🔖</span></div>
+    <div class="nav-ico-wrap">
+      <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+      </svg>
+    </div>
     <span class="nav-lbl">Watchlist</span>
   </button>
   <button class="nav-btn" data-page="profile" id="profileNavBtn">
     <div class="nav-ico-wrap">
-      <span class="nav-ico nav-avatar-wrap">
-        <img class="nav-avatar-img" id="navAvatarImg" src="" alt="" style="display:none">
-        <span class="nav-avatar-ph" id="navAvatarPh">👤</span>
-      </span>
+      <img class="nav-avatar-img" id="navAvatarImg" src="" alt="" style="display:none">
+      <svg class="nav-svg" id="navAvatarPh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+      </svg>
     </div>
     <span class="nav-lbl">Profile</span>
   </button>
@@ -2788,7 +2896,14 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
 <!-- CONFIRM DELETE DIALOG -->
 <div class="confirm-overlay" id="confirmOverlay" style="display:none">
   <div class="confirm-dialog">
-    <div class="confirm-icon">🗑️</div>
+    <div class="confirm-icon">
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="var(--red)" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="3 6 5 6 21 6"></polyline>
+        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+        <line x1="10" y1="11" x2="10" y2="17"></line>
+        <line x1="14" y1="11" x2="14" y2="17"></line>
+      </svg>
+    </div>
     <div class="confirm-title">Remove from List?</div>
     <div class="confirm-msg">This will remove this entry from your diary.</div>
     <div class="confirm-actions">
@@ -3245,7 +3360,7 @@ function renderLog(){
   if(sortBy==='rate') list.sort((a,b)=>RATINGS.indexOf(b.rating)-RATINGS.indexOf(a.rating));
   if(sortBy==='az')   list.sort((a,b)=>a.title.localeCompare(b.title));
   if(!list.length){
-    container.innerHTML='<div class="empty"><span class="empty-ico">📭</span><div class="empty-title">Nothing logged yet</div><div class="empty-sub">Tap ＋ in the bottom nav to start tracking</div></div>'+FOOTER;
+    container.innerHTML='<div class="empty"><div class="empty-ico-svg"><svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="9" y1="13" x2="15" y2="13"></line><line x1="9" y1="17" x2="13" y2="17"></line></svg></div><div class="empty-title">Nothing in your diary yet</div><div class="empty-sub">Tap ＋ in the bottom nav to start tracking</div></div>'+FOOTER;
     refreshStats();return;
   }
   const byDate=sortBy==='new'||sortBy==='old';
@@ -3326,10 +3441,10 @@ function renderFavs(){
   const favs=DATA.filter(x=>x.fav&&(favFilter==='all'||x.type===favFilter));
   const el=document.getElementById('fav-list');
   if(!DATA.filter(x=>x.fav).length){
-    el.innerHTML='<div class="empty"><span class="empty-ico">🤍</span><div class="empty-title">No favourites yet</div><div class="empty-sub">Tap ❤️ on any entry to add it here</div></div>'+FOOTER;return;
+    el.innerHTML='<div class="empty"><div class="empty-ico-svg"><svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></div><div class="empty-title">Nothing favourite yet</div><div class="empty-sub">Tap ❤️ on any entry to add it here</div></div>'+FOOTER;return;
   }
   if(!favs.length){
-    el.innerHTML='<div class="empty"><span class="empty-ico">🔍</span><div class="empty-title">None in this category</div><div class="empty-sub">Try a different filter</div></div>'+FOOTER;return;
+    el.innerHTML='<div class="empty"><div class="empty-ico-svg"><svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div><div class="empty-title">None in this category</div><div class="empty-sub">Try a different filter</div></div>'+FOOTER;return;
   }
   favs.sort((a,b)=>b.id-a.id);
   el.innerHTML=favs.map((e,i)=>{
@@ -3369,7 +3484,7 @@ function renderWL(){
     return rel<=today;
   });
   if(!released.length){
-    el.innerHTML='<div class="empty"><span class="empty-ico">🔖</span><div class="empty-title">Watchlist is empty</div><div class="empty-sub">Search above and add something</div></div>';return;
+    el.innerHTML='<div class="empty"><div class="empty-ico-svg"><svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></div><div class="empty-title">Your watchlist is empty</div><div class="empty-sub">Search above and add something</div></div>';return;
   }
   el.innerHTML=released.map((item)=>{
     const i=wl.findIndex(x=>x.title===item.title && x.type===item.type);
@@ -3515,7 +3630,14 @@ function renderCalendarSelectedEntries(dateMap){
     if(!monthEntries.length){
       dayEntries.innerHTML = `
         <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:22px;text-align:center;color:var(--text3)">
-          <div style="font-size:22px;margin-bottom:6px">📅</div>
+          <div class="empty-ico-svg" style="margin-bottom:8px">
+            <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="3" ry="3"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+          </div>
           <div style="font-size:13px;font-weight:600;color:var(--text2)">No entries logged in ${monthNames[calMonth]} ${calYear}</div>
           <div style="font-size:11px;margin-top:2px">Tap ＋ in the bottom nav to log an entry</div>
         </div>
@@ -3544,7 +3666,14 @@ function renderCalendarSelectedEntries(dateMap){
   if(!entries.length){
     dayEntries.innerHTML = `
       <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:22px;text-align:center;color:var(--text3)">
-        <div style="font-size:22px;margin-bottom:6px">📅</div>
+        <div class="empty-ico-svg" style="margin-bottom:8px">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="3" ry="3"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+        </div>
         <div style="font-size:13px;font-weight:600;color:var(--text2)">No entries logged on this date</div>
         <div style="font-size:11px;margin-top:2px">Tap ＋ in the bottom nav to log an entry</div>
       </div>
@@ -4503,7 +4632,7 @@ function updateHeaderAvatar(pfp, name){
     if(navPh) navPh.style.display='none';
   } else {
     if(navImg) navImg.style.display='none';
-    if(navPh){ navPh.style.display=''; navPh.textContent='👤'; }
+    if(navPh) navPh.style.display='block';
   }
 }
 
@@ -5092,13 +5221,13 @@ function showInfoCard(entry, context){
 
     const logBtn = document.createElement('button');
     logBtn.className = 'info-btn-edit';
-    logBtn.textContent = '＋ Log to Diary';
+    logBtn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:-2px"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>Log to Diary';
     logBtn.onclick = () => { closeInfoCard(); setTimeout(() => wlLog(wlIdx), 120); };
     primaryRow.appendChild(logBtn);
 
     const removeBtn = document.createElement('button');
     removeBtn.className = 'info-btn-share';
-    removeBtn.textContent = '🗑️ Remove';
+    removeBtn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:-2px"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>Remove';
     removeBtn.onclick = () => { closeInfoCard(); wlDel(wlIdx); };
     primaryRow.appendChild(removeBtn);
 
@@ -5110,13 +5239,13 @@ function showInfoCard(entry, context){
 
     const editBtn = document.createElement('button');
     editBtn.className = 'info-btn-edit';
-    editBtn.textContent = '✏️ Edit Review';
+    editBtn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:-2px"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>Edit Review';
     editBtn.onclick = () => { closeInfoCard(); setTimeout(() => openModal(entry), 120); };
     primaryRow.appendChild(editBtn);
 
     const shareBtn = document.createElement('button');
     shareBtn.className = 'info-btn-share';
-    shareBtn.textContent = '🔗 Share Card';
+    shareBtn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:-2px"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>Share Card';
     shareBtn.onclick = () => { closeInfoCard(); editId = entry.id; setTimeout(() => openShareCard(), 120); };
     primaryRow.appendChild(shareBtn);
 
@@ -5127,7 +5256,7 @@ function showInfoCard(entry, context){
       const delBtn = document.createElement('button');
       delBtn.className = 'info-btn-danger';
       delBtn.type = 'button';
-      delBtn.innerHTML = '🗑️ Remove from List';
+      delBtn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:-2px"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>Remove from List';
       delBtn.onclick = () => {
         const conf = document.getElementById('confirmOverlay');
         if(conf) conf.style.display = 'flex';
