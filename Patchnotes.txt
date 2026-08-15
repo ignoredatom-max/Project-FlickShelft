@@ -1,6 +1,37 @@
 LOGGER — Patch Notes
 Personal Media Diary by Aditya
 ————————————————————————————————————————
+2.1.1
+15 August 2026
+
+  - Redesigned bottom navigation for easier everyday use
+  - Added dedicated Calendar navigation
+  - Moved the Add action to the center of the bottom navigation
+  - Watchlist remains directly accessible from the main navigation
+  - Favourites remain accessible through the Profile section
+
+  - Calendar received a visual and layout overhaul
+  - Logged entries now appear as poster thumbnails directly on calendar dates
+  - Added support for multiple entries and +N overflow indicators
+  - Improved selected-date highlighting and month navigation
+  - Fixed calendar spacing and layout issues across different month lengths
+  - Calendar now adapts correctly to mobile screen sizes
+
+  - Rating selector redesigned with a thicker track, improved thumb,
+    rating-colored progress and better touch interaction
+  - Improved rating control visibility and usability on mobile
+
+  - Profile Activity graph upgraded with selectable time ranges
+  - Added Last 6 Months, Last 12 Months and All Time views
+  - All Time activity now spans the complete diary history
+  - Added monthly activity breakdown for films, series and games
+  - Improved activity graph usability on mobile with horizontal scrolling
+
+  - Improved New Entry modal behavior when the Android keyboard is open
+  - Form content now remains accessible while typing
+  - Fixed Rating, Notes and action controls being hidden behind the keyboard
+  - Improved mobile viewport and keyboard handling without affecting desktop layout
+
 2.1.0
 15 August 2026
 
