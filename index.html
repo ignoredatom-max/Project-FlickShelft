@@ -1765,9 +1765,8 @@ async function fsLoadPublic(uid){
 }
 
 // ── CONSTANTS ────────────────────────────────────────────
-const RAWG='3bd7e4646af94b799692b80a858ce3e8';
-const TMDB='f387c81953ce058f114109b8c1a7fee5';
-const TMDB_IMG='https://image.tmdb.org/t/p/w200';
+const API_BASE='https://logger-proxy.ignoredatom.workers.dev';
+const TMDB_IMG=`${API_BASE}/api/image?path=`;
 const TMDB_GENRES={28:'Action',12:'Adventure',16:'Animation',35:'Comedy',80:'Crime',99:'Documentary',18:'Drama',10751:'Family',14:'Fantasy',36:'History',27:'Horror',10402:'Music',9648:'Mystery',10749:'Romance',878:'Sci-Fi',53:'Thriller',10752:'War',37:'Western',10759:'Action & Adventure',10762:'Kids',10765:'Sci-Fi & Fantasy',10768:'War & Politics'};
 const RATINGS=['skip','mediocre','decent','excellent','peak'];
 const RATING_LABELS={skip:'Skip',mediocre:'Mediocre',decent:'Decent',excellent:'Excellent',peak:'Peak'};
@@ -2159,12 +2158,12 @@ document.getElementById('fileInput').addEventListener('change',async e=>{
 // ── API ─────────────────────────────────────────────────
 async function apiSearch(q){
   if(mType==='game'){
-    const r=await fetch(`https://api.rawg.io/api/games?search=${encodeURIComponent(q)}&key=${RAWG}&page_size=8`);
+    const r=await fetch(`${API_BASE}/api/search/game?query=${encodeURIComponent(q)}&page_size=8`);
     const d=await r.json();
     return (d.results||[]).map(x=>({title:x.name,year:x.released?x.released.slice(0,4):'',poster:x.background_image||'',genre:(x.genres||[]).slice(0,2).map(g=>g.name).join(', '),releaseDate:x.released||''}));
   }
   const type=mType==='movie'?'movie':'tv';
-  const r=await fetch(`https://api.themoviedb.org/3/search/${type}?query=${encodeURIComponent(q)}&api_key=${TMDB}`);
+  const r=await fetch(`${API_BASE}/api/search/${type}?query=${encodeURIComponent(q)}`);
   const d=await r.json();
   return (d.results||[]).slice(0,8).map(x=>({
     title:x.title||x.name||'',year:(x.release_date||x.first_air_date||'').slice(0,4),
@@ -2265,11 +2264,11 @@ function updateSeasonField(){
 async function fetchAndRenderSeasons(title, existingLastSeason){
   if(mType!=='series'||!title) return;
   try{
-    const r = await fetch(`https://api.themoviedb.org/3/search/tv?query=${encodeURIComponent(title)}&api_key=${TMDB}`);
+    const r = await fetch(`${API_BASE}/api/search/tv?query=${encodeURIComponent(title)}`);
     const d = await r.json();
     const first = d.results?.[0];
     if(!first) return;
-    const detail = await fetch(`https://api.themoviedb.org/3/tv/${first.id}?api_key=${TMDB}`);
+    const detail = await fetch(`${API_BASE}/api/tv/${first.id}`);
     const tv = await detail.json();
     // Filter out specials (season 0)
     mSeasons = (tv.seasons||[]).filter(s=>s.season_number>0).length;
@@ -3355,11 +3354,11 @@ async function fetchExtraInfo(entry){
     let data = null;
     if(entry.type==='movie'){
       // Search to get id then fetch details
-      const search = await fetch(`https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(entry.title)}&api_key=${TMDB}`);
+      const search = await fetch(`${API_BASE}/api/search/movie?query=${encodeURIComponent(entry.title)}`);
       const sd = await search.json();
       const first = sd.results?.[0];
       if(first){
-        const detail = await fetch(`https://api.themoviedb.org/3/movie/${first.id}?api_key=${TMDB}&append_to_response=credits`);
+        const detail = await fetch(`${API_BASE}/api/movie/${first.id}`);
         data = await detail.json();
         updateInfoCard({
           overview: data.overview,
@@ -3375,11 +3374,11 @@ async function fetchExtraInfo(entry){
         });
       }
     } else if(entry.type==='series'){
-      const search = await fetch(`https://api.themoviedb.org/3/search/tv?query=${encodeURIComponent(entry.title)}&api_key=${TMDB}`);
+      const search = await fetch(`${API_BASE}/api/search/tv?query=${encodeURIComponent(entry.title)}`);
       const sd = await search.json();
       const first = sd.results?.[0];
       if(first){
-        const detail = await fetch(`https://api.themoviedb.org/3/tv/${first.id}?api_key=${TMDB}&append_to_response=credits`);
+        const detail = await fetch(`${API_BASE}/api/tv/${first.id}`);
         data = await detail.json();
         updateInfoCard({
           overview: data.overview,
@@ -3395,11 +3394,11 @@ async function fetchExtraInfo(entry){
         });
       }
     } else if(entry.type==='game'){
-      const search = await fetch(`https://api.rawg.io/api/games?search=${encodeURIComponent(entry.title)}&key=${RAWG}&page_size=1`);
+      const search = await fetch(`${API_BASE}/api/search/game?query=${encodeURIComponent(entry.title)}&page_size=1`);
       const sd = await search.json();
       const first = sd.results?.[0];
       if(first){
-        const detail = await fetch(`https://api.rawg.io/api/games/${first.id}?key=${RAWG}`);
+        const detail = await fetch(`${API_BASE}/api/game/${first.id}`);
         data = await detail.json();
         updateInfoCard({
           overview: data.description_raw?.slice(0,300)+(data.description_raw?.length>300?'…':''),

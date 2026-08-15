@@ -39,6 +39,37 @@ function Get-TwitchToken {
   return $global:twitchToken
 }
 
+$global:COMMON_ALIASES = @{
+  'gta' = 'Grand Theft Auto'
+  'gta 5' = 'Grand Theft Auto V'
+  'gta v' = 'Grand Theft Auto V'
+  'gta 4' = 'Grand Theft Auto IV'
+  'gta iv' = 'Grand Theft Auto IV'
+  'gta 6' = 'Grand Theft Auto VI'
+  'gta vi' = 'Grand Theft Auto VI'
+  'rdr' = 'Red Dead Redemption'
+  'rdr 2' = 'Red Dead Redemption 2'
+  'rdr2' = 'Red Dead Redemption 2'
+  'botw' = 'The Legend of Zelda: Breath of the Wild'
+  'totk' = 'The Legend of Zelda: Tears of the Kingdom'
+  'gow' = 'God of War'
+  'cod' = 'Call of Duty'
+}
+
+function Normalize-SearchQuery($raw, $useAliases = $true) {
+  if (-not $raw) { return "" }
+  $q = ($raw.Trim() -replace '["''`]', '') -replace '\s+', ' '
+  if ($useAliases) {
+    $lower = $q.ToLower()
+    if ($global:COMMON_ALIASES.ContainsKey($lower)) {
+      $q = $global:COMMON_ALIASES[$lower]
+    }
+  }
+  return $q
+}
+
+
+
 Write-Host "==========================================" -ForegroundColor Cyan
 Write-Host " Logger Proxy Local Test Server           " -ForegroundColor Cyan
 Write-Host " Running on: http://localhost:$port/     " -ForegroundColor Green
@@ -78,7 +109,7 @@ try {
         $jsonContent = '{"status":"ok","service":"Logger API Proxy (Local Test)","version":"1.0.0"}'
       }
       elseif ($path -eq "/api/search/movie") {
-        $q = $query["query"]
+        $q = Normalize-SearchQuery $query["query"] $false
         if (-not $q) { $statusCode = 400; $jsonContent = '{"error":"Missing query parameter"}' }
         else {
           $url = "https://api.themoviedb.org/3/search/movie?query=$([System.Uri]::EscapeDataString($q))&api_key=$($TMDB_API_KEY)"
@@ -87,7 +118,7 @@ try {
         }
       }
       elseif ($path -eq "/api/search/tv") {
-        $q = $query["query"]
+        $q = Normalize-SearchQuery $query["query"] $false
         if (-not $q) { $statusCode = 400; $jsonContent = '{"error":"Missing query parameter"}' }
         else {
           $url = "https://api.themoviedb.org/3/search/tv?query=$([System.Uri]::EscapeDataString($q))&api_key=$($TMDB_API_KEY)"
@@ -96,13 +127,46 @@ try {
         }
       }
       elseif ($path -eq "/api/search/game") {
-        $q = $query["query"]
-        $ps = if ($query["page_size"]) { $query["page_size"] } else { "8" }
+        $q = Normalize-SearchQuery $query["query"] $true
+        $ps = if ($query["page_size"]) { [Math]::Min([int]$query["page_size"], 20) } else { 8 }
         if (-not $q) { $statusCode = 400; $jsonContent = '{"error":"Missing query parameter"}' }
         else {
-          $url = "https://api.rawg.io/api/games?search=$([System.Uri]::EscapeDataString($q))&key=$($RAWG_API_KEY)&page_size=$($ps)"
-          $res = Invoke-WebRequest -Uri $url -Headers @{ "Accept"="application/json"; "User-Agent"="Logger-Proxy/1.0" } -UseBasicParsing
-          $jsonContent = $res.Content
+          $token = Get-TwitchToken
+          $apicalypse = "search `"$q`"; fields id, name, first_release_date, cover.image_id, genres.name, rating, total_rating; limit $ps;"
+          $headers = @{
+            "Client-ID" = $TWITCH_CLIENT_ID
+            "Authorization" = "Bearer $token"
+            "Accept" = "application/json"
+            "User-Agent" = "Logger-Proxy/1.0"
+          }
+          $igdbRes = Invoke-RestMethod -Uri "https://api.igdb.com/v4/games" -Method Post -Body $apicalypse -Headers $headers
+          if ((-not $igdbRes -or $igdbRes.Count -eq 0) -and $q.Length -ge 3) {
+            $fallbackApicalypse = "where name ~ *`"$q`"* & cover != null; fields id, name, first_release_date, cover.image_id, genres.name, rating, total_rating; sort total_rating_count desc; limit $ps;"
+            try {
+              $fallbackRes = Invoke-RestMethod -Uri "https://api.igdb.com/v4/games" -Method Post -Body $fallbackApicalypse -Headers $headers
+              if ($fallbackRes -and $fallbackRes.Count -gt 0) {
+                $igdbRes = $fallbackRes
+              }
+            } catch {}
+          }
+
+          $translated = @($igdbRes | ForEach-Object {
+            $rel = if ($_.first_release_date) { [DateTimeOffset]::FromUnixTimeSeconds($_.first_release_date).UtcDateTime.ToString("yyyy-MM-dd") } else { "" }
+            $bg = if ($_.cover -and $_.cover.image_id) { "https://images.igdb.com/igdb/image/upload/t_cover_big/$($_.cover.image_id).jpg" } else { "" }
+            $gList = @($_.genres | ForEach-Object { @{ name = $_.name } })
+            $r = if ($_.total_rating) { [Math]::Round($_.total_rating / 20, 1) } elseif ($_.rating) { [Math]::Round($_.rating / 20, 1) } else { $null }
+            [ordered]@{
+              id = $_.id
+              name = $_.name
+              released = $rel
+              background_image = $bg
+              genres = $gList
+              rating = $r
+            }
+          })
+          $jsonContent = [ordered]@{
+            results = $translated
+          } | ConvertTo-Json -Depth 5
         }
       }
       elseif ($path -match '^/api/movie/(\d+)$') {
@@ -119,9 +183,48 @@ try {
       }
       elseif ($path -match '^/api/game/([a-zA-Z0-9_-]+)$') {
         $id = $path.Substring("/api/game/".Length)
-        $url = "https://api.rawg.io/api/games/$($id)?key=$($RAWG_API_KEY)"
-        $res = Invoke-WebRequest -Uri $url -Headers @{ "Accept"="application/json"; "User-Agent"="Logger-Proxy/1.0" } -UseBasicParsing
-        $jsonContent = $res.Content
+        $token = Get-TwitchToken
+        $apicalypse = ""
+        if ($id -match '^\d+$') {
+          $apicalypse = "fields id, name, first_release_date, summary, storyline, total_rating, rating, cover.image_id, genres.name, platforms.name, involved_companies.company.name, involved_companies.developer, involved_companies.publisher, age_ratings.category, age_ratings.rating; where id = $id;"
+        } else {
+          $cleanTitle = ($id -replace '-',' ') -replace '"',''
+          $apicalypse = "search `"$cleanTitle`"; fields id, name, first_release_date, summary, storyline, total_rating, rating, cover.image_id, genres.name, platforms.name, involved_companies.company.name, involved_companies.developer, involved_companies.publisher, age_ratings.category, age_ratings.rating; limit 1;"
+        }
+        $headers = @{
+          "Client-ID" = $TWITCH_CLIENT_ID
+          "Authorization" = "Bearer $token"
+          "Accept" = "application/json"
+          "User-Agent" = "Logger-Proxy/1.0"
+        }
+        $igdbRes = Invoke-RestMethod -Uri "https://api.igdb.com/v4/games" -Method Post -Body $apicalypse -Headers $headers
+        if (-not $igdbRes -or $igdbRes.Count -eq 0) {
+          $statusCode = 404
+          $jsonContent = '{"error":"Game not found"}'
+        } else {
+          $g = $igdbRes[0]
+          $rel = if ($g.first_release_date) { [DateTimeOffset]::FromUnixTimeSeconds($g.first_release_date).UtcDateTime.ToString("yyyy-MM-dd") } else { "" }
+          $r = if ($g.total_rating) { [Math]::Round($g.total_rating / 20, 1) } elseif ($g.rating) { [Math]::Round($g.rating / 20, 1) } else { 0 }
+          $platList = @($g.platforms | ForEach-Object { @{ platform = @{ name = $_.name } } })
+          $devList = @($g.involved_companies | Where-Object { $_.developer } | ForEach-Object { @{ name = $_.company.name } })
+          $pubList = @($g.involved_companies | Where-Object { $_.publisher } | ForEach-Object { @{ name = $_.company.name } })
+          $esrbMap = @{ 6='Rating Pending'; 7='Early Childhood'; 8='Everyone'; 9='Everyone 10+'; 10='Teen'; 11='Mature 17+'; 12='Adults Only 18+' }
+          $esrbObj = $g.age_ratings | Where-Object { $_.category -eq 1 } | Select-Object -First 1
+          $esrbName = if ($esrbObj -and $esrbMap.ContainsKey($esrbObj.rating)) { $esrbMap[$esrbObj.rating] } else { "-" }
+
+          $jsonContent = [ordered]@{
+            id = $g.id
+            name = $g.name
+            description_raw = if ($g.summary) { $g.summary } elseif ($g.storyline) { $g.storyline } else { "" }
+            rating = $r
+            released = $rel
+            playtime = $null
+            platforms = $platList
+            developers = $devList
+            publishers = $pubList
+            esrb_rating = @{ name = $esrbName }
+          } | ConvertTo-Json -Depth 5
+        }
       }
       elseif ($path -eq "/api/test/igdb" -or $path -eq "/api/test/igdb/search") {
         $q = $query["query"]

@@ -78,6 +78,36 @@ async function fetchJsonSafe(url, options, corsHeaders) {
   }
 }
 
+// ── SEARCH NORMALIZATION & ALIASES ───────────────────────
+const COMMON_ALIASES = {
+  'gta': 'Grand Theft Auto',
+  'gta 5': 'Grand Theft Auto V',
+  'gta v': 'Grand Theft Auto V',
+  'gta 4': 'Grand Theft Auto IV',
+  'gta iv': 'Grand Theft Auto IV',
+  'gta 6': 'Grand Theft Auto VI',
+  'gta vi': 'Grand Theft Auto VI',
+  'rdr': 'Red Dead Redemption',
+  'rdr 2': 'Red Dead Redemption 2',
+  'rdr2': 'Red Dead Redemption 2',
+  'botw': 'The Legend of Zelda: Breath of the Wild',
+  'totk': 'The Legend of Zelda: Tears of the Kingdom',
+  'gow': 'God of War',
+  'cod': 'Call of Duty',
+};
+
+function normalizeSearchQuery(raw, useAliases = true) {
+  if (!raw) return '';
+  let q = raw.trim().replace(/["'`]/g, '').replace(/\s+/g, ' ');
+  if (useAliases) {
+    const lower = q.toLowerCase();
+    if (COMMON_ALIASES[lower]) {
+      q = COMMON_ALIASES[lower];
+    }
+  }
+  return q;
+}
+
 // ── IGDB / TWITCH ADAPTER HELPERS ───────────────────────
 const ESRB_RATING_MAP = {
   6: 'Rating Pending',
@@ -323,7 +353,7 @@ export default {
 
       // 1. Search Movie (TMDB)
       if (pathname === '/api/search/movie') {
-        const query = searchParams.get('query')?.trim();
+        const query = normalizeSearchQuery(searchParams.get('query'), false);
         if (!query) return errorResponse('Missing "query" parameter', 400, corsHeaders);
 
         const tmdbKey = env.TMDB_API_KEY;
@@ -335,7 +365,7 @@ export default {
 
       // 2. Search TV Series (TMDB)
       if (pathname === '/api/search/tv') {
-        const query = searchParams.get('query')?.trim();
+        const query = normalizeSearchQuery(searchParams.get('query'), false);
         if (!query) return errorResponse('Missing "query" parameter', 400, corsHeaders);
 
         const tmdbKey = env.TMDB_API_KEY;
@@ -345,17 +375,61 @@ export default {
         return await fetchJsonSafe(tmdbUrl, fetchOpts, corsHeaders);
       }
 
-      // 3. Search Video Games (RAWG - Untouched)
+      // 3. Search Video Games (IGDB Adapter with Fuzzy/Substring Fallback)
       if (pathname === '/api/search/game') {
-        const query = searchParams.get('query')?.trim();
+        const query = normalizeSearchQuery(searchParams.get('query'), true);
         if (!query) return errorResponse('Missing "query" parameter', 400, corsHeaders);
 
-        const rawgKey = env.RAWG_API_KEY;
-        if (!rawgKey) return errorResponse('RAWG_API_KEY secret not configured', 500, corsHeaders);
+        const pageSize = Math.min(parseInt(searchParams.get('page_size') || '8', 10) || 8, 20);
 
-        const pageSize = searchParams.get('page_size') || '8';
-        const rawgUrl = `https://api.rawg.io/api/games?search=${encodeURIComponent(query)}&key=${rawgKey}&page_size=${encodeURIComponent(pageSize)}`;
-        return await fetchJsonSafe(rawgUrl, fetchOpts, corsHeaders);
+        try {
+          const token = await getTwitchToken(env);
+          const apicalypsePrimary = `search "${query}"; fields id, name, first_release_date, cover.image_id, genres.name, rating, total_rating; limit ${pageSize};`;
+
+          let igdbRes = await fetch('https://api.igdb.com/v4/games', {
+            method: 'POST',
+            headers: {
+              'Client-ID': env.TWITCH_CLIENT_ID,
+              'Authorization': `Bearer ${token}`,
+              'Accept': 'application/json',
+              'User-Agent': 'Logger-Proxy/1.0',
+            },
+            body: apicalypsePrimary,
+          });
+
+          if (!igdbRes.ok) {
+            const errText = await igdbRes.text();
+            return errorResponse(`IGDB API error (${igdbRes.status}): ${errText}`, igdbRes.status, corsHeaders);
+          }
+
+          let igdbList = await igdbRes.json();
+
+          // If primary search returns 0 results and query is at least 3 characters, try substring wildcard search
+          if ((!igdbList || igdbList.length === 0) && query.length >= 3) {
+            const fallbackQuery = `where name ~ *"${query}"* & cover != null; fields id, name, first_release_date, cover.image_id, genres.name, rating, total_rating; sort total_rating_count desc; limit ${pageSize};`;
+            const fallbackRes = await fetch('https://api.igdb.com/v4/games', {
+              method: 'POST',
+              headers: {
+                'Client-ID': env.TWITCH_CLIENT_ID,
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/json',
+                'User-Agent': 'Logger-Proxy/1.0',
+              },
+              body: fallbackQuery,
+            });
+            if (fallbackRes.ok) {
+              const fallbackList = await fallbackRes.json();
+              if (fallbackList && fallbackList.length > 0) {
+                igdbList = fallbackList;
+              }
+            }
+          }
+
+          const translatedResults = (igdbList || []).map(igdbToRawgSearchItem);
+          return jsonResponse({ results: translatedResults }, 200, corsHeaders);
+        } catch (e) {
+          return errorResponse(`Game search error: ${e.message}`, 500, corsHeaders);
+        }
       }
 
       // 4. Movie Details & Credits (TMDB)
@@ -380,15 +454,46 @@ export default {
         return await fetchJsonSafe(tmdbUrl, fetchOpts, corsHeaders);
       }
 
-      // 6. Game Details (RAWG - Untouched)
+      // 6. Game Details (IGDB Adapter - RAWG compatible format)
       const gameMatch = pathname.match(/^\/api\/game\/([a-zA-Z0-9_-]+)$/);
       if (gameMatch) {
         const id = gameMatch[1];
-        const rawgKey = env.RAWG_API_KEY;
-        if (!rawgKey) return errorResponse('RAWG_API_KEY secret not configured', 500, corsHeaders);
 
-        const rawgUrl = `https://api.rawg.io/api/games/${encodeURIComponent(id)}?key=${rawgKey}`;
-        return await fetchJsonSafe(rawgUrl, fetchOpts, corsHeaders);
+        try {
+          const token = await getTwitchToken(env);
+          let apicalypseQuery = '';
+          if (/^\d+$/.test(id)) {
+            apicalypseQuery = `fields id, name, first_release_date, summary, storyline, total_rating, rating, cover.image_id, genres.name, platforms.name, involved_companies.company.name, involved_companies.developer, involved_companies.publisher, age_ratings.category, age_ratings.rating; where id = ${id};`;
+          } else {
+            const cleanTitle = id.replace(/-/g, ' ').replace(/"/g, '');
+            apicalypseQuery = `search "${cleanTitle}"; fields id, name, first_release_date, summary, storyline, total_rating, rating, cover.image_id, genres.name, platforms.name, involved_companies.company.name, involved_companies.developer, involved_companies.publisher, age_ratings.category, age_ratings.rating; limit 1;`;
+          }
+
+          const igdbRes = await fetch('https://api.igdb.com/v4/games', {
+            method: 'POST',
+            headers: {
+              'Client-ID': env.TWITCH_CLIENT_ID,
+              'Authorization': `Bearer ${token}`,
+              'Accept': 'application/json',
+              'User-Agent': 'Logger-Proxy/1.0',
+            },
+            body: apicalypseQuery,
+          });
+
+          if (!igdbRes.ok) {
+            const errText = await igdbRes.text();
+            return errorResponse(`IGDB API error (${igdbRes.status}): ${errText}`, igdbRes.status, corsHeaders);
+          }
+
+          const igdbList = await igdbRes.json();
+          const first = igdbList?.[0];
+          if (!first) return errorResponse('Game not found', 404, corsHeaders);
+
+          const translatedDetail = igdbToRawgDetail(first);
+          return jsonResponse(translatedDetail, 200, corsHeaders);
+        } catch (e) {
+          return errorResponse(`Game details error: ${e.message}`, 500, corsHeaders);
+        }
       }
 
       // 7. Optional TMDB Image Proxy
