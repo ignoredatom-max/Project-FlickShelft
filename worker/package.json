@@ -1,0 +1,15 @@
+{
+  "name": "logger-proxy",
+  "version": "1.0.0",
+  "description": "Secure API proxy for Logger (TMDB and RAWG)",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "start": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^3.114.0"
+  }
+}

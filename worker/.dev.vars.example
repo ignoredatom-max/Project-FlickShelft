@@ -1,0 +1,8 @@
+# Local Cloudflare Worker secrets (used by `wrangler dev`)
+# Replace with your actual API keys
+TMDB_API_KEY=f387c81953ce058f114109b8c1a7fee5
+RAWG_API_KEY=3bd7e4646af94b799692b80a858ce3e8
+
+# Twitch / IGDB API credentials (for IGDB adapter)
+TWITCH_CLIENT_ID=your_twitch_client_id_here
+TWITCH_CLIENT_SECRET=your_twitch_client_secret_here
