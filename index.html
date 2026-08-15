@@ -87,6 +87,202 @@ body::before{
 .nav-btn.on::before{display:none;}
 .nav-btn:active .nav-ico-wrap{transform:scale(0.88);}
 .nav-btn.on::after{display:none;}
+.nav-add-btn{
+  width:42px;height:42px;
+  border-radius:14px;
+  background:var(--blue);
+  color:#ffffff;
+  border:none;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  box-shadow:0 4px 14px rgba(45,127,249,0.45), 0 1px 0 rgba(255,255,255,0.2) inset;
+  transition:transform 0.15s cubic-bezier(.32,1,.23,1), box-shadow 0.15s ease;
+  margin:2px 3px;
+  flex-shrink:0;
+  align-self:center;
+}
+.nav-add-btn:active{
+  transform:scale(0.90);
+  box-shadow:0 2px 6px rgba(45,127,249,0.3);
+}
+.nav-add-ico{
+  font-size:22px;
+  font-weight:700;
+  line-height:1;
+  margin-top:-1px;
+}
+
+/* ── CALENDAR ────────────────────────────────── */
+.cal-toolbar{
+  padding:6px 14px 8px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid var(--border);
+  gap:10px;
+}
+.cal-nav-btn{
+  background:var(--bg2);border:1px solid var(--border);
+  color:var(--text);border-radius:10px;
+  width:30px;height:30px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:15px;font-weight:700;cursor:pointer;
+  transition:background 0.15s;
+}
+.cal-nav-btn:active{background:var(--bg3);}
+.cal-month-wrap{
+  display:flex;align-items:center;gap:8px;
+}
+.cal-month-label{
+  font-size:13px;font-weight:700;color:var(--text);letter-spacing:-0.2px;
+}
+.cal-today-pill{
+  background:rgba(45,127,249,0.12);
+  border:1px solid rgba(45,127,249,0.25);
+  color:var(--blue);
+  border-radius:10px;
+  padding:2px 8px;
+  font-size:10px;font-weight:700;
+  cursor:pointer;
+  transition:all 0.15s;
+}
+.cal-today-pill:active{transform:scale(0.95);background:rgba(45,127,249,0.2);}
+.cal-card{
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:10px 8px 10px;
+  box-sizing:border-box;
+}
+.cal-weekdays{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:4px;
+  margin-bottom:6px;
+}
+.cal-weekday{
+  text-align:center;
+  font-size:10px;
+  font-weight:700;
+  color:var(--text3);
+  text-transform:uppercase;
+  letter-spacing:0.8px;
+  line-height:1;
+  padding:2px 0;
+}
+.cal-days-grid{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:4px;
+}
+.cal-day{
+  height:56px;
+  box-sizing:border-box;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  border-radius:10px;
+  border:1px solid transparent;
+  background:transparent;
+  color:var(--text);
+  cursor:pointer;
+  position:relative;
+  padding:4px 1px 2px;
+  transition:background 0.15s ease, border-color 0.15s ease;
+}
+.cal-day:hover{background:var(--bg3);}
+.cal-day.cal-empty{pointer-events:none;opacity:0;height:56px;}
+.cal-day.today{border-color:rgba(45,127,249,0.5);}
+.cal-day.today .cal-day-num{color:var(--blue);font-weight:700;}
+.cal-day.selected{
+  background:rgba(45,127,249,0.15);
+  border-color:var(--blue);
+  box-shadow:0 0 0 1px var(--blue);
+}
+.cal-day.selected .cal-day-num{color:var(--blue);font-weight:700;}
+.cal-day-num{
+  font-size:11px;
+  font-weight:600;
+  color:var(--text2);
+  line-height:1;
+  flex-shrink:0;
+  margin-bottom:3px;
+}
+.cal-media-wrap{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:2px;
+  height:28px;
+  width:100%;
+}
+.cal-poster-thumb{
+  width:18px;
+  height:26px;
+  border-radius:3px;
+  object-fit:cover;
+  background:var(--bg4);
+  border:0.5px solid rgba(255,255,255,0.15);
+  box-shadow:0 1px 3px rgba(0,0,0,0.35);
+  flex-shrink:0;
+  display:block;
+}
+.cal-poster-ph{
+  width:18px;
+  height:26px;
+  border-radius:3px;
+  background:var(--bg4);
+  border:0.5px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:9px;
+  flex-shrink:0;
+}
+.cal-more-badge{
+  font-size:8px;
+  font-weight:700;
+  color:var(--text);
+  background:var(--bg4);
+  border:0.5px solid var(--border2);
+  border-radius:3px;
+  padding:2px 3px;
+  line-height:1;
+  box-shadow:0 1px 3px rgba(0,0,0,0.3);
+  flex-shrink:0;
+  align-self:center;
+}
+.cal-day-header{
+  font-size:11px;font-weight:700;text-transform:uppercase;
+  letter-spacing:1px;color:var(--text3);
+  margin-bottom:10px;padding:0 2px;
+}
+
+/* ── PROFILE FAVOURITES SHORTCUT ──────────────── */
+.profile-favs-card{
+  display:flex;align-items:center;justify-content:space-between;
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:16px;padding:12px 16px;
+  cursor:pointer;
+  transition:background 0.18s,transform 0.15s,box-shadow 0.15s;
+}
+.profile-favs-card:hover{background:var(--bg3);}
+.profile-favs-card:active{transform:scale(0.98);}
+.profile-favs-icon-box{
+  width:36px;height:36px;border-radius:10px;
+  background:rgba(255,45,85,0.12);
+  border:1px solid rgba(255,45,85,0.25);
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;
+}
+.profile-favs-title{
+  font-size:14px;font-weight:700;color:var(--text);
+}
+.profile-favs-subtitle{
+  font-size:11px;color:var(--text3);margin-top:1px;
+}
+.profile-favs-arrow{
+  color:var(--text3);font-size:18px;line-height:1;font-weight:600;
+}
 
 /* ── PAGES ───────────────────────────────────── */
 .page{display:none;padding-bottom:110px;min-height:100vh}
@@ -434,38 +630,118 @@ body::before{
 textarea.inp{min-height:76px;resize:vertical;line-height:1.5}
 .inp option{background:var(--bg2)}
 
-/* Rating slider */
-.rating-slider-wrap{padding:4px 0 8px}
-/* Slider — thumb is 20px wide, so half=10px.
-   Labels and ticks must be padded by 10px each side to align centres */
-.rating-slider-wrap{padding:4px 0 8px}
-.rating-labels{display:flex;justify-content:space-between;margin-bottom:10px;padding:0 10px}
+/* ── RATING SLIDER — premium redesign ─────────── */
+.rating-slider-wrap{
+  padding:6px 0 4px;
+  user-select:none;
+  -webkit-user-select:none;
+}
+/* Labels row */
+.rating-labels{
+  display:flex;justify-content:space-between;
+  margin-bottom:12px;
+  padding:0 12px;
+}
 .r-label{
-  font-size:9px;font-weight:700;letter-spacing:0.3px;
+  font-size:9px;font-weight:800;letter-spacing:0.4px;
   text-align:center;flex:1;cursor:pointer;
-  padding:3px 0;border-radius:6px;transition:all 0.15s;white-space:nowrap;
+  padding:4px 2px 3px;border-radius:7px;
+  transition:opacity 0.2s ease, transform 0.2s ease, background 0.2s ease;
+  white-space:nowrap;
+  position:relative;
+}
+/* Colored dot below each label */
+.r-label::after{
+  content:'';
+  display:block;
+  width:4px;height:4px;
+  border-radius:50%;
+  margin:3px auto 0;
+  opacity:0.35;
+  transition:opacity 0.2s ease, transform 0.2s ease;
 }
 .r-label.skip     {color:var(--red)}
 .r-label.mediocre {color:var(--orange)}
 .r-label.decent   {color:var(--teal)}
 .r-label.excellent{color:var(--green)}
 .r-label.peak     {color:var(--purple)}
-.r-label.on{opacity:1;transform:scale(1.12)}
-.r-label:not(.on){opacity:0.28}
+.r-label.skip::after     {background:var(--red)}
+.r-label.mediocre::after {background:var(--orange)}
+.r-label.decent::after   {background:var(--teal)}
+.r-label.excellent::after{background:var(--green)}
+.r-label.peak::after     {background:var(--purple)}
+.r-label.on{
+  opacity:1;
+  transform:translateY(-1px) scale(1.1);
+}
+.r-label.on::after{
+  opacity:1;
+  transform:scale(1.5);
+}
+.r-label:not(.on){opacity:0.3;}
+/* Slider track container — tall tap target, thin visual track */
+.r-slider-track-wrap{
+  position:relative;
+  height:44px; /* large tap area */
+  display:flex;
+  align-items:center;
+  padding:0 12px;
+  margin:0 0 2px;
+}
+/* Visual track background */
+.r-track-bg{
+  position:absolute;
+  left:12px;right:12px;
+  height:7px;
+  background:var(--bg4);
+  border:1px solid var(--border2);
+  border-radius:999px;
+  box-shadow:inset 0 1px 3px rgba(0,0,0,0.4);
+  overflow:hidden;
+  pointer-events:none;
+}
+/* Colored fill portion */
+.r-track-fill{
+  height:100%;
+  border-radius:999px;
+  transition:width 0.18s cubic-bezier(.32,1,.23,1), background 0.18s ease;
+  pointer-events:none;
+}
+/* The actual range input — transparent, sits on top */
 input[type=range].r-slider{
-  width:100%;height:4px;-webkit-appearance:none;appearance:none;
-  border-radius:2px;outline:none;cursor:pointer;background:var(--bg4);display:block;
+  position:relative;
+  width:100%;
+  height:44px;
+  -webkit-appearance:none;appearance:none;
+  background:transparent;
+  outline:none;
+  cursor:pointer;
+  display:block;
   padding:0;margin:0;
+  z-index:2;
 }
 input[type=range].r-slider::-webkit-slider-thumb{
-  -webkit-appearance:none;width:20px;height:20px;
-  border-radius:50%;background:#fff;border:none;
-  box-shadow:0 2px 10px rgba(0,0,0,0.5);transition:transform 0.1s;
+  -webkit-appearance:none;
+  width:24px;height:24px;
+  border-radius:50%;
+  background:#ffffff;
+  border:none;
+  box-shadow:0 2px 8px rgba(0,0,0,0.45), 0 0 0 3px rgba(255,255,255,0.12);
+  transition:transform 0.15s cubic-bezier(.32,1,.23,1), box-shadow 0.15s ease;
 }
-input[type=range].r-slider:active::-webkit-slider-thumb{transform:scale(1.25)}
-/* Ticks match label centres — same 10px side padding */
-.r-ticks{display:flex;justify-content:space-between;padding:4px 10px 0}
-.r-tick{width:2px;height:5px;background:var(--border2);border-radius:1px}
+input[type=range].r-slider:active::-webkit-slider-thumb{
+  transform:scale(1.18);
+  box-shadow:0 4px 14px rgba(0,0,0,0.55), 0 0 0 5px rgba(255,255,255,0.1);
+}
+input[type=range].r-slider::-moz-range-thumb{
+  width:24px;height:24px;
+  border-radius:50%;
+  background:#ffffff;
+  border:none;
+  box-shadow:0 2px 8px rgba(0,0,0,0.45);
+}
+/* Hide ticks — now handled by label dots */
+.r-ticks{display:none;}
 
 .dup-banner{
   background:rgba(255,159,10,0.1);border:1px solid rgba(255,159,10,0.2);
@@ -726,6 +1002,7 @@ input[type=range].r-slider:active::-webkit-slider-thumb{transform:scale(1.25)}
 
 body.readonly .add-btn,
 body.readonly #openBtn,
+body.readonly #navAddBtn,
 body.readonly .row-del,
 body.readonly .row-fav-inline,
 body.readonly #page-watchlist,
@@ -1042,6 +1319,178 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
 .pstat-val{font-size:22px;font-weight:800;color:#ffffff;line-height:1;}
 .pstat-lbl{font-size:9px;color:var(--text2);margin-top:5px;text-transform:uppercase;letter-spacing:0.3px;}
 
+/* ── PROFILE ACTIVITY GRAPH ──────────────────── */
+.act-header-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  margin-bottom:10px;
+  flex-wrap:wrap;
+}
+.act-range-selector{
+  display:inline-flex;
+  background:var(--bg3);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:2px;
+  gap:2px;
+}
+.act-range-btn{
+  background:transparent;
+  border:none;
+  color:var(--text3);
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:0.4px;
+  padding:3px 8px;
+  border-radius:14px;
+  cursor:pointer;
+  transition:all 0.15s ease;
+  line-height:1.2;
+}
+.act-range-btn:hover{
+  color:var(--text);
+}
+.act-range-btn.on{
+  background:var(--blue);
+  color:#ffffff;
+  box-shadow:0 1px 4px rgba(45,127,249,0.3);
+}
+
+.act-breakdown-banner{
+  background:var(--bg3);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:7px 10px;
+  margin-bottom:12px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:6px;
+  min-height:30px;
+  transition:background 0.2s ease, border-color 0.2s ease;
+}
+.act-breakdown-title{
+  font-size:11px;
+  font-weight:700;
+  color:var(--text);
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.act-breakdown-count{
+  color:var(--blue);
+  font-weight:800;
+}
+.act-breakdown-tags{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  font-size:10px;
+  font-weight:600;
+}
+.act-tag{
+  padding:1px 6px;
+  border-radius:6px;
+  font-size:9px;
+  font-weight:700;
+  display:inline-flex;
+  align-items:center;
+  gap:3px;
+}
+.act-tag-film{ background:rgba(255,69,58,0.14); color:var(--red); border:0.5px solid rgba(255,69,58,0.25); }
+.act-tag-series{ background:rgba(0,180,216,0.14); color:var(--teal); border:0.5px solid rgba(0,180,216,0.25); }
+.act-tag-game{ background:rgba(0,197,102,0.14); color:var(--green); border:0.5px solid rgba(0,197,102,0.25); }
+
+.act-scroll-wrap{
+  width:100%;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+  padding-bottom:2px;
+  scrollbar-width:thin;
+  scrollbar-color:var(--border2) transparent;
+}
+.act-scroll-wrap::-webkit-scrollbar{
+  height:4px;
+}
+.act-scroll-wrap::-webkit-scrollbar-thumb{
+  background:var(--border2);
+  border-radius:4px;
+}
+.act-bars-container{
+  display:flex;
+  align-items:flex-end;
+  gap:5px;
+  height:68px;
+  padding-top:20px;
+  min-width:100%;
+  box-sizing:border-box;
+}
+.act-bar-col{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:4px;
+  height:100%;
+  cursor:pointer;
+  position:relative;
+  transition:transform 0.15s ease;
+}
+.act-bar-col:active{
+  transform:scale(0.96);
+}
+.act-bar-track{
+  flex:1;
+  width:100%;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+}
+.act-bar-fill{
+  width:100%;
+  max-width:28px;
+  border-radius:4px 4px 0 0;
+  background:var(--blue);
+  position:relative;
+  transition:all 0.2s cubic-bezier(.32,1,.23,1);
+}
+.act-bar-col:hover .act-bar-fill,
+.act-bar-col.selected .act-bar-fill{
+  background:#3b8aff;
+  box-shadow:0 0 10px rgba(45,127,249,0.5);
+  opacity:1 !important;
+}
+.act-bar-count-badge{
+  position:absolute;
+  top:-16px;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:9px;
+  color:#ffffff;
+  font-weight:700;
+  line-height:1;
+  pointer-events:none;
+  white-space:nowrap;
+}
+.act-bar-month-lbl{
+  font-size:9px;
+  color:var(--text2);
+  text-transform:uppercase;
+  letter-spacing:0.3px;
+  line-height:1;
+  text-align:center;
+  white-space:nowrap;
+  transition:color 0.15s;
+}
+.act-bar-col:hover .act-bar-month-lbl,
+.act-bar-col.selected .act-bar-month-lbl{
+  color:#ffffff;
+  font-weight:700;
+}
+
 /* ── UPCOMING GRID ───────────────────────────── */
 .upcoming-section{padding:0 0 4px;}
 .upcoming-hdr{
@@ -1143,7 +1592,6 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
         <option value="rate">Rating</option>
         <option value="az">A–Z</option>
       </select>
-      <button class="add-btn" id="openBtn">+ Add</button>
     </div>
   </div>
   <div class="list" id="list"></div>
@@ -1187,10 +1635,13 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
 <!-- FAVOURITES PAGE -->
 <div class="page" id="page-favs">
   <div style="position:sticky;top:0;z-index:91;background:rgba(15,15,15,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border2)">
-    <div class="header" style="padding-top:16px;padding-bottom:12px;position:relative">
-      <div>
-        <div class="logo-wrap"><span class="logo-l">F</span><span class="logo-ogger" style="letter-spacing:4px;font-size:14px">avourites</span><div class="logo-dot"></div></div>
-        <div class="header-sub" id="favsSub">Stuff you loved ❤️</div>
+    <div class="header" style="padding-top:14px;padding-bottom:10px;position:relative;display:flex;align-items:center;justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button onclick="document.getElementById('profileNavBtn').click()" style="background:var(--bg2);border:1px solid var(--border);color:var(--text2);border-radius:10px;padding:6px 10px;cursor:pointer;font-size:12px;font-weight:600">‹ Profile</button>
+        <div>
+          <div class="logo-wrap"><span class="logo-l">F</span><span class="logo-ogger" style="letter-spacing:4px;font-size:14px">avourites</span><div class="logo-dot"></div></div>
+          <div class="header-sub" id="favsSub">Stuff you loved ❤️</div>
+        </div>
       </div>
     </div>
     <div class="toolbar" style="padding-top:2px;position:relative">
@@ -1203,6 +1654,45 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
     </div>
   </div>
   <div class="fav-list-inner" id="fav-list"></div>
+</div>
+
+<!-- CALENDAR PAGE -->
+<div class="page" id="page-calendar">
+  <div style="position:sticky;top:0;z-index:91;background:rgba(15,15,15,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border2)">
+    <div class="header" style="padding-top:14px;padding-bottom:8px;position:relative">
+      <div>
+        <div class="logo-wrap"><span class="logo-l">C</span><span class="logo-ogger" style="letter-spacing:4px;font-size:14px">alendar</span><div class="logo-dot"></div></div>
+        <div class="header-sub">Your diary timeline by date</div>
+      </div>
+    </div>
+    <div class="cal-toolbar">
+      <button class="cal-nav-btn" id="calPrevMonth" title="Previous month">‹</button>
+      <div class="cal-month-wrap">
+        <span class="cal-month-label" id="calCurrentMonthLabel">August 2026</span>
+        <button class="cal-today-pill" id="calTodayBtn">Today</button>
+      </div>
+      <button class="cal-nav-btn" id="calNextMonth" title="Next month">›</button>
+    </div>
+  </div>
+  <div class="cal-body" style="padding:8px 14px 16px">
+    <div class="cal-card">
+      <div class="cal-weekdays">
+        <div class="cal-weekday">Sun</div>
+        <div class="cal-weekday">Mon</div>
+        <div class="cal-weekday">Tue</div>
+        <div class="cal-weekday">Wed</div>
+        <div class="cal-weekday">Thu</div>
+        <div class="cal-weekday">Fri</div>
+        <div class="cal-weekday">Sat</div>
+      </div>
+      <div class="cal-days-grid" id="calendarGrid"></div>
+    </div>
+    <div class="cal-entries-section" style="margin-top:14px">
+      <div class="cal-day-header" id="calendarDayHeader">Entries for today</div>
+      <div class="cal-day-entries" id="calendarDayEntries"></div>
+    </div>
+  </div>
+  <div class="list-footer">made with love by <span onclick="openAbout()" style="cursor:pointer;text-decoration:underline;text-underline-offset:2px;">Aditya</span> ♥️</div>
 </div>
 
 <!-- PROFILE PAGE -->
@@ -1225,6 +1715,20 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
       <div class="profile-name" id="profileName" onclick="editProfileName()">Aditya</div>
       <div class="profile-sub" id="profileSub">—</div>
       <button class="profile-share-btn" id="profileShareBtn" style="display:none">🔗 Copy my link</button>
+    </div>
+  </div>
+
+  <!-- FAVOURITES SHORTCUT IN PROFILE -->
+  <div class="profile-section" style="padding-top:4px;padding-bottom:6px">
+    <div class="profile-favs-card" id="profileFavsShortcut" onclick="openFavsFromProfile()">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="profile-favs-icon-box">❤️</div>
+        <div>
+          <div class="profile-favs-title">Favourites</div>
+          <div class="profile-favs-subtitle" id="profileFavsCount">View your saved favourites</div>
+        </div>
+      </div>
+      <div class="profile-favs-arrow">›</div>
     </div>
   </div>
 
@@ -1297,7 +1801,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
       </div>
       <div class="tutorial-step">
         <div class="tutorial-step-num">2</div>
-        <div class="tutorial-step-text">Tap <b>+ Add</b> in the Log tab to start logging</div>
+        <div class="tutorial-step-text">Tap <b>＋</b> in the bottom nav to start logging</div>
       </div>
       <div class="tutorial-step">
         <div class="tutorial-step-num">3</div>
@@ -1333,13 +1837,16 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
     <div class="nav-ico-wrap"><span class="nav-ico">📋</span></div>
     <span class="nav-lbl">Log</span>
   </button>
+  <button class="nav-btn" data-page="calendar">
+    <div class="nav-ico-wrap"><span class="nav-ico">📅</span></div>
+    <span class="nav-lbl">Calendar</span>
+  </button>
+  <button class="nav-add-btn" id="navAddBtn" type="button" aria-label="Add entry" title="Add entry">
+    <span class="nav-add-ico">＋</span>
+  </button>
   <button class="nav-btn" data-page="watchlist">
     <div class="nav-ico-wrap"><span class="nav-ico">🔖</span></div>
     <span class="nav-lbl">Watchlist</span>
-  </button>
-  <button class="nav-btn" data-page="favs">
-    <div class="nav-ico-wrap"><span class="nav-ico">❤️</span></div>
-    <span class="nav-lbl">Favourites</span>
   </button>
   <button class="nav-btn" data-page="profile" id="profileNavBtn">
     <div class="nav-ico-wrap">
@@ -1467,8 +1974,11 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
             <div class="r-label excellent" data-r="3">Excellent</div>
             <div class="r-label peak" data-r="4">Peak</div>
           </div>
-          <input type="range" class="r-slider" id="rSlider" min="0" max="4" value="2" step="1">
-          <div class="r-ticks"><div class="r-tick"></div><div class="r-tick"></div><div class="r-tick"></div><div class="r-tick"></div><div class="r-tick"></div></div>
+          <div class="r-slider-track-wrap">
+            <div class="r-track-bg"><div class="r-track-fill" id="rTrackFill"></div></div>
+            <input type="range" class="r-slider" id="rSlider" min="0" max="4" value="2" step="1">
+          </div>
+          <div class="r-ticks"></div>
         </div>
       </div>
       <div class="field">
@@ -1782,6 +2292,7 @@ function saveWL(a){
 function todayVal(){ return new Date().toISOString().slice(0,10); }
 
 let DATA=[],filter='all',sortBy='new';
+window.DATA = DATA;
 let _initialRenderDone = false;
 let editId=null,mType='movie',mRating=2,mPoster='',mTitle='',mFav=false,mGenre='',mYear='';
 let mDateOverride=''; // yyyy-mm-dd
@@ -1845,7 +2356,7 @@ function renderLog(){
   if(sortBy==='rate') list.sort((a,b)=>RATINGS.indexOf(b.rating)-RATINGS.indexOf(a.rating));
   if(sortBy==='az')   list.sort((a,b)=>a.title.localeCompare(b.title));
   if(!list.length){
-    container.innerHTML='<div class="empty"><span class="empty-ico">📭</span><div class="empty-title">Nothing logged yet</div><div class="empty-sub">Tap + Add to start tracking</div></div>'+FOOTER;
+    container.innerHTML='<div class="empty"><span class="empty-ico">📭</span><div class="empty-title">Nothing logged yet</div><div class="empty-sub">Tap ＋ in the bottom nav to start tracking</div></div>'+FOOTER;
     refreshStats();return;
   }
   const byDate=sortBy==='new'||sortBy==='old';
@@ -1900,6 +2411,8 @@ async function toggleFav(id,ev){
   e.fav=!e.fav;
   await fsSave(e);
   renderLog();renderFavs();
+  if(document.getElementById('page-profile')?.classList.contains('on')) renderProfile();
+  if(document.getElementById('page-calendar')?.classList.contains('on')) renderCalendar();
   toast(e.fav?'❤️ Added to favourites':'Removed from favourites');
 }
 async function delEntry(id,ev){
@@ -1907,6 +2420,8 @@ async function delEntry(id,ev){
   if(!confirm('Delete this entry?'))return;
   await fsDelete(id);
   renderLog();renderFavs();
+  if(document.getElementById('page-profile')?.classList.contains('on')) renderProfile();
+  if(document.getElementById('page-calendar')?.classList.contains('on')) renderCalendar();
   toast('Deleted');
 }
 
@@ -1999,6 +2514,172 @@ function wlLog(i){
   openModal(null,item);
 }
 
+// ── CALENDAR LOGIC ──────────────────────────────────────
+let calYear = new Date().getFullYear();
+let calMonth = new Date().getMonth(); // 0-11
+let calSelectedDate = new Date().toISOString().slice(0, 10);
+
+function renderCalendar(){
+  const calGrid = document.getElementById('calendarGrid');
+  const monthLabel = document.getElementById('calCurrentMonthLabel');
+  if(!calGrid || !monthLabel) return;
+
+  const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  monthLabel.textContent = `${monthNames[calMonth]} ${calYear}`;
+
+  // Date lookup map: { 'YYYY-MM-DD': [entries] }
+  const dateMap = {};
+  DATA.forEach(entry => {
+    const d = new Date(entry.id);
+    if(isNaN(d.getTime())) return;
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    if(!dateMap[key]) dateMap[key] = [];
+    dateMap[key].push(entry);
+  });
+
+  const firstDayOfWeek = new Date(calYear, calMonth, 1).getDay(); // 0 = Sun
+  const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+  const todayStr = new Date().toISOString().slice(0, 10);
+
+  let gridHtml = '';
+
+  for(let i = 0; i < firstDayOfWeek; i++){
+    gridHtml += `<div class="cal-day cal-empty"></div>`;
+  }
+
+  for(let d = 1; d <= daysInMonth; d++){
+    const dateStr = `${calYear}-${String(calMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+    const entries = dateMap[dateStr] || [];
+    const isToday = dateStr === todayStr;
+    const isSelected = dateStr === calSelectedDate;
+
+    let mediaHtml = '';
+    if(entries.length === 1){
+      const e = entries[0];
+      const icon = getTypeIcon(e.type);
+      const thumb = e.poster
+        ? `<img class="cal-poster-thumb" src="${e.poster}" loading="lazy" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="cal-poster-ph" style="display:none">${icon}</div>`
+        : `<div class="cal-poster-ph">${icon}</div>`;
+      mediaHtml = `<div class="cal-media-wrap">${thumb}</div>`;
+    } else if(entries.length === 2){
+      const t1 = entries[0].poster
+        ? `<img class="cal-poster-thumb" src="${entries[0].poster}" loading="lazy" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="cal-poster-ph" style="display:none">${getTypeIcon(entries[0].type)}</div>`
+        : `<div class="cal-poster-ph">${getTypeIcon(entries[0].type)}</div>`;
+      const t2 = entries[1].poster
+        ? `<img class="cal-poster-thumb" src="${entries[1].poster}" loading="lazy" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="cal-poster-ph" style="display:none">${getTypeIcon(entries[1].type)}</div>`
+        : `<div class="cal-poster-ph">${getTypeIcon(entries[1].type)}</div>`;
+      mediaHtml = `<div class="cal-media-wrap">${t1}${t2}</div>`;
+    } else if(entries.length > 2){
+      const t1 = entries[0].poster
+        ? `<img class="cal-poster-thumb" src="${entries[0].poster}" loading="lazy" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="cal-poster-ph" style="display:none">${getTypeIcon(entries[0].type)}</div>`
+        : `<div class="cal-poster-ph">${getTypeIcon(entries[0].type)}</div>`;
+      const extraCount = entries.length - 1;
+      mediaHtml = `<div class="cal-media-wrap">${t1}<span class="cal-more-badge">+${extraCount}</span></div>`;
+    }
+
+    gridHtml += `
+      <div class="cal-day ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''} ${entries.length > 0 ? 'has-media' : ''}" onclick="selectCalendarDate('${dateStr}')">
+        <span class="cal-day-num">${d}</span>
+        ${mediaHtml}
+      </div>
+    `;
+  }
+
+  calGrid.innerHTML = gridHtml;
+  renderCalendarSelectedEntries(dateMap);
+}
+
+function selectCalendarDate(dateStr){
+  if(calSelectedDate === dateStr){
+    calSelectedDate = null;
+  } else {
+    calSelectedDate = dateStr;
+  }
+  renderCalendar();
+}
+
+function renderCalendarSelectedEntries(dateMap){
+  const dayHeader = document.getElementById('calendarDayHeader');
+  const dayEntries = document.getElementById('calendarDayEntries');
+  if(!dayHeader || !dayEntries) return;
+
+  const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+  // Ensure activeSelectedDate belongs to the currently viewed year & month
+  let activeSelectedDate = calSelectedDate;
+  if(activeSelectedDate){
+    const [y, m] = activeSelectedDate.split('-').map(Number);
+    if(y !== calYear || (m - 1) !== calMonth){
+      activeSelectedDate = null;
+      calSelectedDate = null;
+    }
+  }
+
+  if(!activeSelectedDate){
+    // Show entire month overview when no specific date is selected
+    const monthEntries = DATA.filter(entry => {
+      const dt = new Date(entry.id);
+      return dt.getFullYear() === calYear && dt.getMonth() === calMonth;
+    }).sort((a,b) => b.id - a.id);
+
+    dayHeader.textContent = `${monthNames[calMonth]} ${calYear} (${monthEntries.length} ${monthEntries.length === 1 ? 'entry' : 'entries'})`;
+
+    if(!monthEntries.length){
+      dayEntries.innerHTML = `
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:22px;text-align:center;color:var(--text3)">
+          <div style="font-size:22px;margin-bottom:6px">📅</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text2)">No entries logged in ${monthNames[calMonth]} ${calYear}</div>
+          <div style="font-size:11px;margin-top:2px">Tap ＋ in the bottom nav to log an entry</div>
+        </div>
+      `;
+      return;
+    }
+
+    dayEntries.innerHTML = monthEntries.map((e, i) => renderRow(e, i)).join('');
+    return;
+  }
+
+  // Show specific selected day entries
+  const [y, m, d] = activeSelectedDate.split('-').map(Number);
+  const selectedDateObj = new Date(y, m - 1, d);
+  const formattedDate = selectedDateObj.toLocaleDateString('en-IN', {
+    weekday: 'short', day: 'numeric', month: 'short', year: 'numeric'
+  });
+
+  const entries = (dateMap && dateMap[activeSelectedDate]) || DATA.filter(entry => {
+    const dt = new Date(entry.id);
+    return `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}-${String(dt.getDate()).padStart(2, '0')}` === activeSelectedDate;
+  });
+
+  dayHeader.textContent = `${formattedDate} (${entries.length} ${entries.length === 1 ? 'entry' : 'entries'})`;
+
+  if(!entries.length){
+    dayEntries.innerHTML = `
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:22px;text-align:center;color:var(--text3)">
+        <div style="font-size:22px;margin-bottom:6px">📅</div>
+        <div style="font-size:13px;font-weight:600;color:var(--text2)">No entries logged on this date</div>
+        <div style="font-size:11px;margin-top:2px">Tap ＋ in the bottom nav to log an entry</div>
+      </div>
+    `;
+    return;
+  }
+
+  dayEntries.innerHTML = entries.map((e, i) => renderRow(e, i)).join('');
+}
+
+function openFavsFromProfile(){
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('on'));
+  document.querySelectorAll('.page').forEach(pg => pg.classList.remove('on'));
+  const page = document.getElementById('page-favs');
+  if(page){
+    page.classList.add('on');
+    document.querySelector('.nav')?.classList.remove('hidden');
+    window.scrollTo(0,0);
+    page.scrollTop = 0;
+    renderFavs();
+  }
+}
+
 // ── WATCHLIST SEARCH ────────────────────────────────────
 let wlType='movie',wlPending=null,wlSearchTmr=null;
 document.querySelectorAll('.wl-tsel').forEach(btn=>{
@@ -2085,10 +2766,12 @@ document.getElementById('sortSel').addEventListener('change',e=>{sortBy=e.target
 // ── NAV ─────────────────────────────────────────────────
 document.querySelectorAll('.nav-btn').forEach(btn=>{
   btn.addEventListener('click',()=>{
-    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
+    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('on'));
+    btn.classList.add('on');
     const p=btn.dataset.page;
     document.querySelectorAll('.page').forEach(pg=>pg.classList.remove('on'));
     const page = document.getElementById('page-'+p);
+    if(!page) return;
     page.classList.add('on');
     // Reset scroll to top when switching tabs (profile handles its own)
     document.querySelector('.nav').classList.remove('hidden');
@@ -2098,8 +2781,9 @@ document.querySelectorAll('.nav-btn').forEach(btn=>{
       document.querySelectorAll('[data-f]').forEach(b=>b.classList.toggle('on',b.dataset.f==='all'));
       renderLog();
     }
-    if(p==='favs')renderFavs();
     if(p==='watchlist'){renderWL();renderUpcoming();}
+    if(p==='calendar'){renderCalendar();}
+    if(p==='favs')renderFavs();
     if(p==='profile'){
       // Hide mini header and kill observer before scroll reset
       const mini = document.getElementById('profileMiniHeader');
@@ -2114,6 +2798,36 @@ document.querySelectorAll('.nav-btn').forEach(btn=>{
       }
     }
   });
+});
+
+// Center Prominent Add Button
+const navAddBtn = document.getElementById('navAddBtn');
+if(navAddBtn){
+  navAddBtn.addEventListener('click',()=>{
+    if(document.body.classList.contains('readonly')) return;
+    openModal(null);
+  });
+}
+
+// Calendar Month Controls
+document.getElementById('calPrevMonth')?.addEventListener('click', () => {
+  calMonth--;
+  if(calMonth < 0){ calMonth = 11; calYear--; }
+  calSelectedDate = null;
+  renderCalendar();
+});
+document.getElementById('calNextMonth')?.addEventListener('click', () => {
+  calMonth++;
+  if(calMonth > 11){ calMonth = 0; calYear++; }
+  calSelectedDate = null;
+  renderCalendar();
+});
+document.getElementById('calTodayBtn')?.addEventListener('click', () => {
+  const now = new Date();
+  calYear = now.getFullYear();
+  calMonth = now.getMonth();
+  calSelectedDate = now.toISOString().slice(0, 10);
+  renderCalendar();
 });
 
 // ── SETTINGS ────────────────────────────────────────────
@@ -2304,11 +3018,21 @@ function renderSeasonPicker(selectedUpTo){
 // Slider
 const rSlider=document.getElementById('rSlider');
 const rLabels=document.querySelectorAll('.r-label');
+const rTrackFill=document.getElementById('rTrackFill');
 const sliderColors=['var(--red)','var(--orange)','var(--teal)','var(--green)','var(--purple)'];
+const sliderColorValues=['rgba(255,69,58,0.9)','rgba(255,159,10,0.9)','rgba(0,180,216,0.9)','rgba(0,197,102,0.9)','rgba(191,90,242,0.9)'];
+const sliderGlowColors=['rgba(255,69,58,0.35)','rgba(255,159,10,0.35)','rgba(0,180,216,0.35)','rgba(0,197,102,0.35)','rgba(191,90,242,0.35)'];
 function updateSlider(val){
   mRating=val;rSlider.value=val;
   rLabels.forEach(l=>l.classList.toggle('on',+l.dataset.r===val));
-  rSlider.style.accentColor=sliderColors[val];
+  // Track fill: 0→0%, 4→100%
+  const pct=val/4*100;
+  rTrackFill.style.width=pct+'%';
+  rTrackFill.style.background=sliderColorValues[val];
+  // Thumb glow via accentColor + box-shadow on track fill
+  rSlider.style.setProperty('--thumb-glow', sliderGlowColors[val]);
+  // Style the thumb glow by updating a CSS custom property
+  rTrackFill.style.boxShadow='0 0 8px '+sliderGlowColors[val];
 }
 rSlider.addEventListener('input',()=>updateSlider(+rSlider.value));
 rLabels.forEach(l=>l.addEventListener('click',()=>updateSlider(+l.dataset.r)));
@@ -2398,7 +3122,7 @@ document.getElementById('dateBtn')?.addEventListener('click',()=>{
 document.getElementById('dateInp')?.addEventListener('input', (e)=>{
   mDateOverride = e.target.value || '';
 });
-document.getElementById('openBtn').addEventListener('click',()=>openModal(null));
+document.getElementById('openBtn')?.addEventListener('click',()=>openModal(null));
 document.getElementById('cancelBtn').addEventListener('click',()=>{wlLogIdx=-1;overlay.classList.remove('show');});
 overlay.addEventListener('click',e=>{if(e.target===overlay){wlLogIdx=-1;overlay.classList.remove('show');}});
 
@@ -2448,6 +3172,8 @@ document.getElementById('saveBtn').addEventListener('click',async()=>{
   wlLogIdx=-1;
   overlay.classList.remove('show');
   renderLog();renderFavs();renderWL();renderUpcoming();
+  if(document.getElementById('page-profile')?.classList.contains('on')) renderProfile();
+  if(document.getElementById('page-calendar')?.classList.contains('on')) renderCalendar();
   toast(isDup?'✅ Saved as Rewatched!':(editId?'✅ Updated!':'✅ Saved!'));
 });
 
@@ -2857,6 +3583,12 @@ function renderProfile(){
   document.getElementById('profileSub').textContent =
     totalEntries ? `${totalEntries} logged · ${peaks} peaks` : 'nothing logged yet';
 
+  const favCount = DATA.filter(x=>x.fav).length;
+  const favCountEl = document.getElementById('profileFavsCount');
+  if(favCountEl){
+    favCountEl.textContent = favCount === 1 ? '1 favourite saved' : (favCount > 0 ? `${favCount} favourites saved` : 'Tap ❤️ on any entry to add favourites');
+  }
+
   renderTopPicks();
 
   const recent = [...DATA].sort((a,b)=>b.id-a.id).slice(0,8);
@@ -2880,20 +3612,7 @@ function renderProfile(){
   DATA.forEach(e=>{ if(e.genre) e.genre.split(',').forEach(g=>{ const t=g.trim(); if(t) genres[t]=(genres[t]||0)+1; }); });
   const topGenres = Object.entries(genres).sort((a,b)=>b[1]-a[1]).slice(0,5);
 
-  // Monthly activity last 6 months
-  const now = new Date();
-  const monthCounts = [];
-  for(let i=5;i>=0;i--){
-    const d = new Date(now.getFullYear(), now.getMonth()-i, 1);
-    const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
-    const lbl = d.toLocaleString('default',{month:'short'});
-    const count = DATA.filter(e=>{
-      const ed = new Date(e.id);
-      return ed.getFullYear()===d.getFullYear() && ed.getMonth()===d.getMonth();
-    }).length;
-    monthCounts.push({lbl, count});
-  }
-  const maxMonth = Math.max(...monthCounts.map(m=>m.count), 1);
+
 
   // Donut chart SVG for type breakdown
   function donutSlice(cx,cy,r,innerR,startAngle,endAngle,color){
@@ -2961,20 +3680,8 @@ function renderProfile(){
     + '<div style="display:flex;flex-direction:column;gap:7px">'+ratingBars+'</div></div>'
     + '</div>';
 
-  // Row 3: activity bars — single muted colour
-  let actBars = '';
-  monthCounts.forEach(function(m){
-    const h = m.count > 0 ? Math.max(8, Math.round((m.count/maxMonth)*100)) : 4;
-    const lbl = m.count > 0 ? '<div style="position:absolute;top:-15px;left:50%;transform:translateX(-50%);font-size:9px;color:#fff;font-weight:700">'+m.count+'</div>' : '';
-    actBars += '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%">'
-      + '<div style="flex:1;width:100%;display:flex;align-items:flex-end">'
-      + '<div style="width:100%;border-radius:3px 3px 0 0;background:var(--blue);opacity:'+(m.count>0?0.5+0.5*(m.count/maxMonth):0.15)+';height:'+h+'%;position:relative">'+lbl+'</div>'
-      + '</div>'
-      + '<div style="font-size:9px;color:var(--text2);text-transform:uppercase;letter-spacing:0.3px">'+m.lbl+'</div>'
-      + '</div>';
-  });
-  html += '<div class="pstat-card" style="margin:0"><div class="pstat-card-title">Activity — last 6 months</div>'
-    + '<div style="display:flex;align-items:flex-end;gap:5px;height:60px;padding-top:20px">'+actBars+'</div></div>';
+  // Row 3: activity card with interactive range selector & breakdown
+  html += renderActivityGraphHtml(profileActivityRange);
 
   // Row 4: top genres — coloured bars
   const genreColours = ['var(--purple)','var(--blue)','var(--teal)','var(--green)','var(--orange)'];
@@ -3638,6 +4345,232 @@ window.addEventListener('scroll', ()=>{
   if(y < 60) _nav.classList.remove('hidden');
 }, {passive:true});
 
+// ── PROFILE ACTIVITY GRAPH LOGIC ────────────────────────
+let profileActivityRange = '6m'; // '6m' | '12m' | 'all'
+let profileSelectedMonthKey = null;
+
+function getActivityMonthData(rangeKey){
+  const now = new Date();
+  const monthList = [];
+
+  if(rangeKey === '6m'){
+    for(let i = 5; i >= 0; i--){
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      monthList.push(d);
+    }
+  } else if(rangeKey === '12m'){
+    for(let i = 11; i >= 0; i--){
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      monthList.push(d);
+    }
+  } else if(rangeKey === 'all'){
+    // Find earliest entry timestamp in DATA
+    let earliestTime = now.getTime();
+    DATA.forEach(e => {
+      const dt = new Date(e.id);
+      if(!isNaN(dt.getTime()) && dt.getTime() < earliestTime){
+        earliestTime = dt.getTime();
+      }
+    });
+    const earliestDate = new Date(earliestTime);
+    let cur = new Date(earliestDate.getFullYear(), earliestDate.getMonth(), 1);
+    const end = new Date(now.getFullYear(), now.getMonth(), 1);
+    
+    while(cur <= end){
+      monthList.push(new Date(cur));
+      cur.setMonth(cur.getMonth() + 1);
+    }
+    // Ensure at least 6 months if history is short
+    while(monthList.length < 6){
+      const first = monthList[0];
+      const prev = new Date(first.getFullYear(), first.getMonth() - 1, 1);
+      monthList.unshift(prev);
+    }
+  }
+
+  // Pre-calculate month statistics
+  return monthList.map(d => {
+    const y = d.getFullYear();
+    const m = d.getMonth();
+    const key = `${y}-${String(m + 1).padStart(2, '0')}`;
+    const shortLbl = d.toLocaleString('default', { month: 'short' });
+    const fullLbl = d.toLocaleString('default', { month: 'long', year: 'numeric' });
+    
+    const entries = DATA.filter(e => {
+      const ed = new Date(e.id);
+      return !isNaN(ed.getTime()) && ed.getFullYear() === y && ed.getMonth() === m;
+    });
+
+    const films = entries.filter(e => e.type === 'movie').length;
+    const series = entries.filter(e => e.type === 'series').length;
+    const games = entries.filter(e => e.type === 'game').length;
+    const count = entries.length;
+
+    return { y, m, key, shortLbl, fullLbl, count, films, series, games };
+  });
+}
+
+function renderActivityGraphHtml(rangeKey){
+  const months = getActivityMonthData(rangeKey);
+  const maxMonth = Math.max(...months.map(m => m.count), 1);
+  const isScrollable = rangeKey === 'all' && months.length > 12;
+
+  // Selected or default active month
+  let activeMonth = months.find(m => m.key === profileSelectedMonthKey);
+  if(!activeMonth){
+    // Default to the latest month with entries, or the current month
+    activeMonth = [...months].reverse().find(m => m.count > 0) || months[months.length - 1];
+  }
+
+  let breakdownHtml = '';
+  if(activeMonth){
+    if(activeMonth.count > 0){
+      breakdownHtml = `
+        <div class="act-breakdown-title">
+          <span>${activeMonth.fullLbl}</span>
+          <span class="act-breakdown-count">${activeMonth.count} ${activeMonth.count === 1 ? 'entry' : 'entries'}</span>
+        </div>
+        <div class="act-breakdown-tags">
+          ${activeMonth.films > 0 ? `<span class="act-tag act-tag-film">🎬 Films ${activeMonth.films}</span>` : ''}
+          ${activeMonth.series > 0 ? `<span class="act-tag act-tag-series">📺 Series ${activeMonth.series}</span>` : ''}
+          ${activeMonth.games > 0 ? `<span class="act-tag act-tag-game">🎮 Games ${activeMonth.games}</span>` : ''}
+        </div>
+      `;
+    } else {
+      breakdownHtml = `
+        <div class="act-breakdown-title">
+          <span>${activeMonth.fullLbl}</span>
+          <span style="color:var(--text3);font-weight:600">0 entries logged</span>
+        </div>
+        <div class="act-breakdown-tags">
+          <span style="font-size:9px;color:var(--text3)">Tap any bar for month details</span>
+        </div>
+      `;
+    }
+  }
+
+  let actBars = '';
+  months.forEach(function(m, idx){
+    const h = m.count > 0 ? Math.max(8, Math.round((m.count / maxMonth) * 100)) : 4;
+    const isSelected = activeMonth && m.key === activeMonth.key;
+    const lbl = m.count > 0 ? `<div class="act-bar-count-badge">${m.count}</div>` : '';
+    const opacity = m.count > 0 ? (0.45 + 0.55 * (m.count / maxMonth)) : 0.15;
+    const colStyle = isScrollable ? 'min-width:34px;flex:1 0 auto;' : 'flex:1;';
+    
+    // For All Time, display month label and small year if Jan or start of array
+    let displayLbl = m.shortLbl;
+    if(rangeKey === 'all' && (m.m === 0 || idx === 0)){
+      displayLbl = `${m.shortLbl} '${String(m.y).slice(2)}`;
+    }
+
+    actBars += `
+      <div class="act-bar-col ${isSelected ? 'selected' : ''}" style="${colStyle}" onclick="selectActivityMonth('${m.key}')" onmouseenter="hoverActivityMonth('${m.key}')" title="${m.fullLbl}: ${m.count} entries">
+        <div class="act-bar-track">
+          <div class="act-bar-fill" style="height:${h}%;opacity:${opacity};">
+            ${lbl}
+          </div>
+        </div>
+        <div class="act-bar-month-lbl">${displayLbl}</div>
+      </div>
+    `;
+  });
+
+  const rangeLabels = {
+    '6m': 'Last 6 Months',
+    '12m': 'Last 12 Months',
+    'all': 'All Time'
+  };
+
+  return `
+    <div class="pstat-card" style="margin:0" id="profileActivityCard">
+      <div class="act-header-row">
+        <div class="pstat-card-title" style="margin-bottom:0;cursor:pointer" onclick="toggleNextActivityRange()">Activity — ${rangeLabels[rangeKey]}</div>
+        <div class="act-range-selector">
+          <button class="act-range-btn ${rangeKey === '6m' ? 'on' : ''}" onclick="setActivityRange('6m', event)">6M</button>
+          <button class="act-range-btn ${rangeKey === '12m' ? 'on' : ''}" onclick="setActivityRange('12m', event)">12M</button>
+          <button class="act-range-btn ${rangeKey === 'all' ? 'on' : ''}" onclick="setActivityRange('all', event)">All Time</button>
+        </div>
+      </div>
+      <div class="act-breakdown-banner" id="actBreakdown">
+        ${breakdownHtml}
+      </div>
+      <div class="act-scroll-wrap" id="actScrollWrap">
+        <div class="act-bars-container">
+          ${actBars}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function setActivityRange(range, ev){
+  if(ev) ev.stopPropagation();
+  profileActivityRange = range;
+  profileSelectedMonthKey = null;
+  const card = document.getElementById('profileActivityCard');
+  if(card){
+    card.outerHTML = renderActivityGraphHtml(profileActivityRange);
+    if(range === 'all'){
+      // Scroll to the end (latest months) automatically
+      const wrap = document.getElementById('actScrollWrap');
+      if(wrap) wrap.scrollLeft = wrap.scrollWidth;
+    }
+  }
+}
+
+function toggleNextActivityRange(){
+  const ranges = ['6m', '12m', 'all'];
+  const nextIdx = (ranges.indexOf(profileActivityRange) + 1) % ranges.length;
+  setActivityRange(ranges[nextIdx]);
+}
+
+function selectActivityMonth(key){
+  profileSelectedMonthKey = key;
+  const card = document.getElementById('profileActivityCard');
+  if(card){
+    const wrap = document.getElementById('actScrollWrap');
+    const prevScroll = wrap ? wrap.scrollLeft : 0;
+    card.outerHTML = renderActivityGraphHtml(profileActivityRange);
+    const newWrap = document.getElementById('actScrollWrap');
+    if(newWrap) newWrap.scrollLeft = prevScroll;
+  }
+}
+
+function hoverActivityMonth(key){
+  profileSelectedMonthKey = key;
+  const months = getActivityMonthData(profileActivityRange);
+  const activeMonth = months.find(m => m.key === key);
+  const banner = document.getElementById('actBreakdown');
+  if(banner && activeMonth){
+    if(activeMonth.count > 0){
+      banner.innerHTML = `
+        <div class="act-breakdown-title">
+          <span>${activeMonth.fullLbl}</span>
+          <span class="act-breakdown-count">${activeMonth.count} ${activeMonth.count === 1 ? 'entry' : 'entries'}</span>
+        </div>
+        <div class="act-breakdown-tags">
+          ${activeMonth.films > 0 ? `<span class="act-tag act-tag-film">🎬 Films ${activeMonth.films}</span>` : ''}
+          ${activeMonth.series > 0 ? `<span class="act-tag act-tag-series">📺 Series ${activeMonth.series}</span>` : ''}
+          ${activeMonth.games > 0 ? `<span class="act-tag act-tag-game">🎮 Games ${activeMonth.games}</span>` : ''}
+        </div>
+      `;
+    } else {
+      banner.innerHTML = `
+        <div class="act-breakdown-title">
+          <span>${activeMonth.fullLbl}</span>
+          <span style="color:var(--text3);font-weight:600">0 entries logged</span>
+        </div>
+        <div class="act-breakdown-tags">
+          <span style="font-size:9px;color:var(--text3)">Tap any bar for month details</span>
+        </div>
+      `;
+    }
+  }
+  document.querySelectorAll('.act-bar-col').forEach(col => {
+    col.classList.toggle('selected', col.getAttribute('onclick')?.includes(key));
+  });
+}
+
 // ── EXPOSE TO WINDOW ──────────────────────────────────────
 window.toggleFav        = toggleFav;
 window.delEntry         = delEntry;
@@ -3651,6 +4584,14 @@ window.openInfo         = openInfo;
 window.openInfoFromWL   = openInfoFromWL;
 window.profileCardClick = profileCardClick;
 window.editProfileName  = editProfileName;
+window.openFavsFromProfile = openFavsFromProfile;
+window.selectCalendarDate  = selectCalendarDate;
+window.renderProfile    = renderProfile;
+window.renderStats      = renderStats;
+window.setActivityRange    = setActivityRange;
+window.toggleNextActivityRange = toggleNextActivityRange;
+window.selectActivityMonth = selectActivityMonth;
+window.hoverActivityMonth  = hoverActivityMonth;
 </script>
 </body>
 </html>
