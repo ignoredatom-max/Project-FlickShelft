@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, interactive-widget=resizes-content, viewport-fit=cover">
 <meta name="theme-color" content="#14141a">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -495,24 +495,34 @@ body::before{
 
 /* ── MODAL ───────────────────────────────────── */
 .overlay{
-  display:none;position:fixed;inset:0;
+  display:none;position:fixed;top:0;left:0;right:0;bottom:0;
+  width:100%;height:100%;height:100dvh;
   background:rgba(0,0,0,0);
   z-index:999;align-items:flex-end;justify-content:center;
-  transition:background 0.3s;
+  transition:background 0.3s ease;
+  overflow:hidden;
+  box-sizing:border-box;
+  padding-bottom:var(--keyboard-inset, 0px);
 }
-.overlay.show{display:flex;background:rgba(0,0,0,0.75);backdrop-filter:blur(12px)}
+.overlay.show{display:flex;background:rgba(0,0,0,0.75);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
 .modal{
   background:var(--bg2);
   border-radius:24px 24px 0 0;
-  padding:0 0 44px;
-  width:100%;max-width:540px;max-height:92vh;overflow-y:auto;
+  padding:0 0 calc(16px + env(safe-area-inset-bottom, 0px));
+  width:100%;max-width:540px;
+  max-height:calc(100% - 10px);
+  max-height:calc(var(--visual-vh, 100dvh) - 10px);
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
   animation:slideUp 0.32s cubic-bezier(.32,1,.23,1);
   border-top:1px solid var(--border2);
   box-shadow:0 -20px 60px rgba(0,0,0,0.5);
+  overscroll-behavior:contain;
+  box-sizing:border-box;
 }
 @keyframes slideUp{from{transform:translateY(100%);opacity:0.5}to{transform:none;opacity:1}}
-.modal-handle{width:36px;height:4px;background:var(--bg4);border-radius:2px;margin:14px auto 22px}
-.modal-inner{padding:0 20px}
+.modal-handle{width:36px;height:4px;background:var(--bg4);border-radius:2px;margin:14px auto 18px;flex-shrink:0;}
+.modal-inner{padding:0 20px 24px}
 .modal-title-row{display:flex;align-items:center;margin-bottom:22px}
 .modal-title{font-size:22px;font-weight:800;letter-spacing:-0.5px;flex:1}
 .modal-fav-btn{font-size:26px;background:none;border:none;cursor:pointer;padding:4px 6px;opacity:0.25;transition:all 0.15s}
@@ -3087,10 +3097,89 @@ function openModal(entry,prefill){
   if(mPoster||mTitle){showPreview(mPoster,mTitle,[mYear,mGenre].filter(Boolean).join(' · '));}
   else{hidePreview();if(mTitle&&mTitle.length>=2)runSearch(mTitle);}
   overlay.classList.add('show');
+  updateVisualViewport();
+  document.body.style.overflow = 'hidden';
+  const modalEl = overlay.querySelector('.modal');
+  if(modalEl) modalEl.scrollTop = 0;
   setTimeout(()=>searchInp.focus(),120);
   // Show share button only for existing logged entries
   document.getElementById('shareBtn').style.display = entry && !prefill ? 'block' : 'none';
 }
+
+function closeModal(){
+  wlLogIdx = -1;
+  overlay.classList.remove('show');
+  overlay.style.paddingBottom = '';
+  document.body.style.overflow = '';
+  closeDD();
+}
+
+function updateVisualViewport(){
+  let vh = window.innerHeight;
+  let kbInset = 0;
+  let vTop = 0;
+  
+  if(window.visualViewport){
+    const vv = window.visualViewport;
+    vh = Math.round(vv.height);
+    vTop = Math.round(vv.offsetTop);
+    const diff = window.innerHeight - vv.height;
+    if(diff > 80){
+      kbInset = Math.round(diff);
+    }
+  }
+  
+  document.documentElement.style.setProperty('--visual-vh', `${vh}px`);
+  document.documentElement.style.setProperty('--keyboard-inset', `${kbInset}px`);
+  
+  if(overlay && overlay.classList.contains('show')){
+    overlay.style.paddingBottom = `${kbInset}px`;
+    if(window.scrollY > 0 && vTop === 0){
+      window.scrollTo(0, 0);
+    }
+  }
+}
+
+if(window.visualViewport){
+  window.visualViewport.addEventListener('resize', updateVisualViewport);
+  window.visualViewport.addEventListener('scroll', updateVisualViewport);
+}
+window.addEventListener('resize', updateVisualViewport);
+window.addEventListener('orientationchange', updateVisualViewport);
+
+function scrollInputIntoModal(el){
+  const modalEl = overlay.querySelector('.modal');
+  if(!modalEl || !el) return;
+  [80, 200, 380, 500].forEach(delay => {
+    setTimeout(()=>{
+      if(overlay.classList.contains('show') && (document.activeElement === el || el.contains(document.activeElement))){
+        updateVisualViewport();
+        const elRect = el.getBoundingClientRect();
+        const modalRect = modalEl.getBoundingClientRect();
+        if(elRect.top < modalRect.top + 20 || elRect.bottom > modalRect.bottom - 20){
+          el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      }
+    }, delay);
+  });
+}
+
+['searchInp', 'fNotes', 'fStatus', 'dateInp'].forEach(id => {
+  const el = document.getElementById(id);
+  if(el){
+    el.addEventListener('focus', () => {
+      updateVisualViewport();
+      scrollInputIntoModal(el);
+    });
+    el.addEventListener('blur', () => {
+      setTimeout(updateVisualViewport, 150);
+      setTimeout(updateVisualViewport, 350);
+    });
+    el.addEventListener('input', () => {
+      updateVisualViewport();
+    });
+  }
+});
 
 function dateToMidnightTs(yyyyMmDd){
   // Always store as local midnight so month/day grouping matches user’s expectation.
@@ -3123,8 +3212,8 @@ document.getElementById('dateInp')?.addEventListener('input', (e)=>{
   mDateOverride = e.target.value || '';
 });
 document.getElementById('openBtn')?.addEventListener('click',()=>openModal(null));
-document.getElementById('cancelBtn').addEventListener('click',()=>{wlLogIdx=-1;overlay.classList.remove('show');});
-overlay.addEventListener('click',e=>{if(e.target===overlay){wlLogIdx=-1;overlay.classList.remove('show');}});
+document.getElementById('cancelBtn').addEventListener('click',closeModal);
+overlay.addEventListener('click',e=>{if(e.target===overlay){closeModal();}});
 
 // Save
 document.getElementById('saveBtn').addEventListener('click',async()=>{
@@ -3169,8 +3258,7 @@ document.getElementById('saveBtn').addEventListener('click',async()=>{
   const wl=getWL();
   const wi=wlLogIdx>=0?wlLogIdx:wl.findIndex(x=>x.title.toLowerCase()===title.toLowerCase());
   if(wi>=0){wl.splice(wi,1);saveWL(wl);}
-  wlLogIdx=-1;
-  overlay.classList.remove('show');
+  closeModal();
   renderLog();renderFavs();renderWL();renderUpcoming();
   if(document.getElementById('page-profile')?.classList.contains('on')) renderProfile();
   if(document.getElementById('page-calendar')?.classList.contains('on')) renderCalendar();
@@ -4592,6 +4680,8 @@ window.setActivityRange    = setActivityRange;
 window.toggleNextActivityRange = toggleNextActivityRange;
 window.selectActivityMonth = selectActivityMonth;
 window.hoverActivityMonth  = hoverActivityMonth;
+window.openModal        = openModal;
+window.closeModal       = closeModal;
 </script>
 </body>
 </html>
