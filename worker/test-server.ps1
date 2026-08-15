@@ -132,7 +132,7 @@ try {
         if (-not $q) { $statusCode = 400; $jsonContent = '{"error":"Missing query parameter"}' }
         else {
           $token = Get-TwitchToken
-          $apicalypse = "search `"$q`"; fields id, name, first_release_date, cover.image_id, genres.name, rating, total_rating; limit $ps;"
+          $apicalypse = "search `"$q`"; fields id, name, category, game_type, parent_game, first_release_date, cover.image_id, genres.name, rating, total_rating, total_rating_count; limit 40;"
           $headers = @{
             "Client-ID" = $TWITCH_CLIENT_ID
             "Authorization" = "Bearer $token"
@@ -140,17 +140,73 @@ try {
             "User-Agent" = "Logger-Proxy/1.0"
           }
           $igdbRes = Invoke-RestMethod -Uri "https://api.igdb.com/v4/games" -Method Post -Body $apicalypse -Headers $headers
-          if ((-not $igdbRes -or $igdbRes.Count -eq 0) -and $q.Length -ge 3) {
-            $fallbackApicalypse = "where name ~ *`"$q`"* & cover != null; fields id, name, first_release_date, cover.image_id, genres.name, rating, total_rating; sort total_rating_count desc; limit $ps;"
+
+          $isMainGame = {
+            param($x)
+            if ($x.parent_game) { return $false }
+            if ($x.game_type -and $x.game_type -in 1,2,3,5,6,7,11,12,13,14) { return $false }
+            if ($x.category -and $x.category -in 1,2,3,5,6,7,11,12,13,14) { return $false }
+            if ($x.name -match '(?i)\b(skins? pack|shark card|season pass|expansion pack|dlc pack|dlc|add-on)\b') { return $false }
+            return $true
+          }
+
+          $filtered = [System.Collections.Generic.List[PSObject]]::new()
+          $seen = [System.Collections.Generic.HashSet[int]]::new()
+
+          foreach ($item in $igdbRes) {
+            if (& $isMainGame $item) {
+              $filtered.Add($item)
+              [void]$seen.Add($item.id)
+            }
+          }
+
+          if ($filtered.Count -lt 4 -and $q.Length -ge 3) {
+            $fallbackApicalypse = "where name ~ *`"$q`"* & parent_game = null & cover != null; fields id, name, category, game_type, parent_game, first_release_date, cover.image_id, genres.name, rating, total_rating, total_rating_count; sort total_rating_count desc; limit 40;"
             try {
               $fallbackRes = Invoke-RestMethod -Uri "https://api.igdb.com/v4/games" -Method Post -Body $fallbackApicalypse -Headers $headers
-              if ($fallbackRes -and $fallbackRes.Count -gt 0) {
-                $igdbRes = $fallbackRes
+              foreach ($item in $fallbackRes) {
+                if ((& $isMainGame $item) -and (-not $seen.Contains($item.id))) {
+                  $filtered.Add($item)
+                  [void]$seen.Add($item.id)
+                }
               }
             } catch {}
           }
 
-          $translated = @($igdbRes | ForEach-Object {
+          $editionRegex = '(?i)\b(collector''?s|special|deluxe|game of the year|goty|limited|definitive|anniversary|complete|premium|gold|ultimate|digital)\s+edition\b'
+
+          $scored = @($filtered | ForEach-Object {
+            $g = $_
+            $score = 0.0
+            $nameLower = ($g.name + "").ToLower()
+            $qLower = $q.ToLower()
+            $count = if ($g.total_rating_count) { [double]$g.total_rating_count } else { 0.0 }
+
+            if ($nameLower -eq $qLower) {
+              $score += if ($count -ge 10) { 800 } else { 150 }
+            }
+            if ($nameLower.StartsWith($qLower)) { $score += 300 }
+            if ($nameLower.Contains($qLower)) { $score += 200 }
+
+            if ($nameLower -match "\b$([regex]::Escape($qLower))\b") { $score += 250 }
+
+            if ($count -gt 0) {
+              $score += [Math]::Min([Math]::Log10($count + 1) * 200, 800)
+            }
+
+            if ($g.cover -and $g.cover.image_id) { $score += 50 }
+            if ($nameLower -match $editionRegex) { $score -= 250 }
+            if ($g.game_type -eq 0 -or $g.category -eq 0) { $score += 100 }
+
+            [PSCustomObject]@{
+              Item = $g
+              Score = $score
+            }
+          })
+
+          $sorted = @($scored | Sort-Object Score -Descending | ForEach-Object { $_.Item })
+
+          $translated = @($sorted | Select-Object -First $ps | ForEach-Object {
             $rel = if ($_.first_release_date) { [DateTimeOffset]::FromUnixTimeSeconds($_.first_release_date).UtcDateTime.ToString("yyyy-MM-dd") } else { "" }
             $bg = if ($_.cover -and $_.cover.image_id) { "https://images.igdb.com/igdb/image/upload/t_cover_big/$($_.cover.image_id).jpg" } else { "" }
             $gList = @($_.genres | ForEach-Object { @{ name = $_.name } })

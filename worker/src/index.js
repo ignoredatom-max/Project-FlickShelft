@@ -108,6 +108,46 @@ function normalizeSearchQuery(raw, useAliases = true) {
   return q;
 }
 
+const NON_MAIN_GAME_TYPES = [1, 2, 3, 5, 6, 7, 11, 12, 13, 14];
+const DLC_NAME_REGEX = /\b(skins? pack|shark card|season pass|expansion pack|dlc pack|dlc|add-on)\b/i;
+const EDITION_REGEX = /\b(collector'?s|special|deluxe|game of the year|goty|limited|definitive|anniversary|complete|premium|gold|ultimate|digital)\s+edition\b/i;
+
+function isMainPlayableGame(game) {
+  if (game.parent_game) return false;
+  if (game.game_type && NON_MAIN_GAME_TYPES.includes(game.game_type)) return false;
+  if (game.category && NON_MAIN_GAME_TYPES.includes(game.category)) return false;
+  if (DLC_NAME_REGEX.test(game.name || '')) return false;
+  return true;
+}
+
+function calculateGameRelevance(game, query) {
+  let score = 0;
+  const nameLower = (game.name || '').toLowerCase();
+  const qLower = query.toLowerCase();
+  const count = game.total_rating_count || 0;
+
+  if (nameLower === qLower) {
+    score += (count >= 10 ? 800 : 150);
+  }
+  if (nameLower.startsWith(qLower)) score += 300;
+  if (nameLower.includes(qLower)) score += 200;
+
+  const escapedWord = qLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  if (new RegExp('\\b' + escapedWord + '\\b', 'i').test(nameLower)) {
+    score += 250;
+  }
+
+  if (count > 0) {
+    score += Math.min(Math.log10(count + 1) * 200, 800);
+  }
+
+  if (game.cover?.image_id) score += 50;
+  if (EDITION_REGEX.test(nameLower)) score -= 250;
+  if (game.game_type === 0 || game.category === 0) score += 100;
+
+  return score;
+}
+
 // ── IGDB / TWITCH ADAPTER HELPERS ───────────────────────
 const ESRB_RATING_MAP = {
   6: 'Rating Pending',
@@ -375,7 +415,7 @@ export default {
         return await fetchJsonSafe(tmdbUrl, fetchOpts, corsHeaders);
       }
 
-      // 3. Search Video Games (IGDB Adapter with Fuzzy/Substring Fallback)
+      // 3. Search Video Games (IGDB Adapter with Main Games Filter & Fuzzy Fallback)
       if (pathname === '/api/search/game') {
         const query = normalizeSearchQuery(searchParams.get('query'), true);
         if (!query) return errorResponse('Missing "query" parameter', 400, corsHeaders);
@@ -384,7 +424,8 @@ export default {
 
         try {
           const token = await getTwitchToken(env);
-          const apicalypsePrimary = `search "${query}"; fields id, name, first_release_date, cover.image_id, genres.name, rating, total_rating; limit ${pageSize};`;
+          // Request up to 40 candidate games to allow for filtering and popularity ranking
+          const apicalypsePrimary = `search "${query}"; fields id, name, category, game_type, parent_game, first_release_date, cover.image_id, genres.name, rating, total_rating, total_rating_count; limit 40;`;
 
           let igdbRes = await fetch('https://api.igdb.com/v4/games', {
             method: 'POST',
@@ -402,11 +443,12 @@ export default {
             return errorResponse(`IGDB API error (${igdbRes.status}): ${errText}`, igdbRes.status, corsHeaders);
           }
 
-          let igdbList = await igdbRes.json();
+          let rawList = await igdbRes.json();
+          let igdbList = (rawList || []).filter(isMainPlayableGame);
 
-          // If primary search returns 0 results and query is at least 3 characters, try substring wildcard search
-          if ((!igdbList || igdbList.length === 0) && query.length >= 3) {
-            const fallbackQuery = `where name ~ *"${query}"* & cover != null; fields id, name, first_release_date, cover.image_id, genres.name, rating, total_rating; sort total_rating_count desc; limit ${pageSize};`;
+          // If primary search returned few candidates and query is at least 3 characters, merge fallback wildcard results
+          if (igdbList.length < 4 && query.length >= 3) {
+            const fallbackQuery = `where name ~ *"${query}"* & parent_game = null & cover != null; fields id, name, category, game_type, parent_game, first_release_date, cover.image_id, genres.name, rating, total_rating, total_rating_count; sort total_rating_count desc; limit 40;`;
             const fallbackRes = await fetch('https://api.igdb.com/v4/games', {
               method: 'POST',
               headers: {
@@ -418,14 +460,22 @@ export default {
               body: fallbackQuery,
             });
             if (fallbackRes.ok) {
-              const fallbackList = await fallbackRes.json();
-              if (fallbackList && fallbackList.length > 0) {
-                igdbList = fallbackList;
+              const fallbackRaw = await fallbackRes.json();
+              const filteredFallback = (fallbackRaw || []).filter(isMainPlayableGame);
+              const seenIds = new Set(igdbList.map(g => g.id));
+              for (const g of filteredFallback) {
+                if (!seenIds.has(g.id)) {
+                  igdbList.push(g);
+                  seenIds.add(g.id);
+                }
               }
             }
           }
 
-          const translatedResults = (igdbList || []).map(igdbToRawgSearchItem);
+          // Smart sort: Main games first, high-profile blockbuster rating count boost, edition penalty
+          igdbList.sort((a, b) => calculateGameRelevance(b, query) - calculateGameRelevance(a, query));
+
+          const translatedResults = igdbList.slice(0, pageSize).map(igdbToRawgSearchItem);
           return jsonResponse({ results: translatedResults }, 200, corsHeaders);
         } catch (e) {
           return errorResponse(`Game search error: ${e.message}`, 500, corsHeaders);
