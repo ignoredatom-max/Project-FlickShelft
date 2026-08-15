@@ -62,13 +62,13 @@ body::before{
   z-index:100;
   max-width:480px;
   margin:0 auto;
-  background:rgba(24,24,27,0.85);
-  border:1px solid rgba(255,255,255,0.08);
+  background:rgba(24,24,27,0.88);
+  border:1px solid rgba(255,255,255,0.09);
   border-radius:24px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  padding:3px 6px calc(3px + env(safe-area-inset-bottom, 0px));
+  padding:4px 8px calc(4px + env(safe-area-inset-bottom, 0px));
   backdrop-filter:blur(30px) saturate(180%) brightness(0.95);
   -webkit-backdrop-filter:blur(30px) saturate(180%) brightness(0.95);
   box-shadow:0 8px 32px rgba(0,0,0,0.55), 0 1px 0 rgba(255,255,255,0.06) inset;
@@ -85,14 +85,14 @@ body::before{
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  padding:7px 0 5px;
+  padding:8px 0 6px;
   gap:3px;
   border:none;
   background:transparent;
   color:var(--text3);
   cursor:pointer;
   font-family:'Inter',sans-serif;
-  font-size:10.5px;
+  font-size:11px;
   font-weight:500;
   letter-spacing:0.2px;
   transition:color 0.18s ease;
@@ -104,20 +104,20 @@ body::before{
   display:flex;
   align-items:center;
   justify-content:center;
-  width:24px;
-  height:24px;
+  width:26px;
+  height:26px;
   transition:transform 0.18s cubic-bezier(.32,1,.23,1);
 }
 .nav-svg{
-  width:20px;
-  height:20px;
+  width:21px;
+  height:21px;
   stroke:currentColor;
-  stroke-width:1.85;
+  stroke-width:1.9;
   transition:stroke 0.18s ease, filter 0.18s ease;
   display:block;
 }
 .nav-btn .nav-lbl{
-  font-size:10.5px;
+  font-size:11px;
   font-weight:500;
   color:var(--text3);
   transition:color 0.18s ease, font-weight 0.18s ease;
@@ -125,27 +125,32 @@ body::before{
   line-height:1;
 }
 
-/* Active State: Apple-style restrained elegance */
-.nav-btn.on{
-  color:var(--blue);
-}
-.nav-btn.on .nav-svg{
-  stroke:var(--blue);
-  filter:drop-shadow(0 0 5px rgba(45,127,249,0.35));
-}
-.nav-btn.on .nav-lbl{
-  color:var(--blue);
-  font-weight:600;
-}
+/* Active Signature Colors & Glows */
+.nav-btn[data-page="log"].on{color:#ff9f0a;}
+.nav-btn[data-page="log"].on .nav-svg{stroke:#ff9f0a;filter:drop-shadow(0 0 4px rgba(255,159,10,0.5));}
+.nav-btn[data-page="log"].on .nav-lbl{color:#ff9f0a;font-weight:600;}
+
+.nav-btn[data-page="calendar"].on{color:#ffd60a;}
+.nav-btn[data-page="calendar"].on .nav-svg{stroke:#ffd60a;filter:drop-shadow(0 0 4px rgba(255,214,10,0.5));}
+.nav-btn[data-page="calendar"].on .nav-lbl{color:#ffd60a;font-weight:600;}
+
+.nav-btn[data-page="watchlist"].on{color:#ff375f;}
+.nav-btn[data-page="watchlist"].on .nav-svg{stroke:#ff375f;filter:drop-shadow(0 0 4px rgba(255,55,95,0.5));}
+.nav-btn[data-page="watchlist"].on .nav-lbl{color:#ff375f;font-weight:600;}
+
+.nav-btn[data-page="profile"].on{color:#bf5af2;}
+.nav-btn[data-page="profile"].on .nav-svg{stroke:#bf5af2;filter:drop-shadow(0 0 4px rgba(191,90,242,0.5));}
+.nav-btn[data-page="profile"].on .nav-lbl{color:#bf5af2;font-weight:600;}
+
 .nav-btn:active .nav-ico-wrap{
   transform:scale(0.90);
 }
 
 /* Center Hero Add Button */
 .nav-add-btn{
-  width:44px;
-  height:44px;
-  border-radius:15px;
+  width:46px;
+  height:46px;
+  border-radius:16px;
   background:var(--blue);
   color:#ffffff;
   border:none;
@@ -155,18 +160,18 @@ body::before{
   cursor:pointer;
   box-shadow:0 4px 18px rgba(45,127,249,0.5), 0 1px 0 rgba(255,255,255,0.3) inset;
   transition:transform 0.15s cubic-bezier(.32,1,.23,1), box-shadow 0.15s ease;
-  margin:0 6px;
+  margin:0 8px;
   flex-shrink:0;
+  padding:0;
 }
 .nav-add-btn:active{
   transform:scale(0.92);
   box-shadow:0 2px 8px rgba(45,127,249,0.35);
 }
-.nav-add-ico{
-  font-size:24px;
-  font-weight:700;
-  line-height:1;
-  margin-top:-1px;
+.nav-add-svg{
+  width:22px;
+  height:22px;
+  display:block;
 }
 
 /* ── CALENDAR ────────────────────────────────── */
@@ -177,14 +182,20 @@ body::before{
   gap:10px;
 }
 .cal-nav-btn{
-  background:var(--bg2);border:1px solid var(--border);
-  color:var(--text);border-radius:10px;
-  width:30px;height:30px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:15px;font-weight:700;cursor:pointer;
-  transition:background 0.15s;
+  background:var(--bg2);
+  border:1px solid var(--border);
+  color:var(--text);
+  border-radius:12px;
+  width:36px;
+  height:36px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition:background 0.15s, transform 0.15s;
+  padding:0;
 }
-.cal-nav-btn:active{background:var(--bg3);}
+.cal-nav-btn:active{background:var(--bg3); transform:scale(0.94);}
 .cal-month-wrap{
   display:flex;align-items:center;gap:8px;
 }
@@ -316,9 +327,10 @@ body::before{
 
 /* ── PROFILE FAVOURITES SHORTCUT ──────────────── */
 .profile-favs-card{
+  margin:0 14px;
   display:flex;align-items:center;justify-content:space-between;
   background:var(--bg2);border:1px solid var(--border);
-  border-radius:16px;padding:12px 16px;
+  border-radius:14px;padding:12px 14px;
   cursor:pointer;
   transition:background 0.18s,transform 0.15s,box-shadow 0.15s;
 }
@@ -384,18 +396,33 @@ body::before{
 
 /* ── TOOLBAR ─────────────────────────────────── */
 .toolbar{padding:4px 14px 6px;display:flex;gap:8px;align-items:center}
-.seg{display:flex;background:var(--bg2);border-radius:14px;padding:3px;flex:1;min-width:0;border:1px solid var(--border)}
-.seg-btn{flex:1;padding:6px 2px;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;border:none;background:transparent;color:var(--text3);cursor:pointer;border-radius:11px;transition:all 0.18s;letter-spacing:0.2px;white-space:nowrap;text-align:center}
+.seg{display:flex;background:var(--bg2);border-radius:12px;padding:3px;flex:1;min-width:0;border:1px solid var(--border);height:34px;align-items:center}
+.seg-btn{flex:1;height:28px;padding:0 2px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-size:11.5px;font-weight:600;border:none;background:transparent;color:var(--text3);cursor:pointer;border-radius:9px;transition:all 0.18s;letter-spacing:0.2px;white-space:nowrap}
 .seg-btn.on{background:var(--bg4);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,0.3)}
 .toolbar-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
-.sort-sel{background:var(--bg2);border:1px solid var(--border);color:var(--text2);padding:6px 9px;border-radius:14px;font-family:'Inter',sans-serif;font-size:11px;font-weight:500;outline:none;-webkit-appearance:none;cursor:pointer}
+.sort-sel{
+  height:34px;
+  background:var(--bg2);
+  border:1px solid var(--border);
+  color:var(--text2);
+  padding:0 10px;
+  border-radius:12px;
+  font-family:'Inter',sans-serif;
+  font-size:11.5px;
+  font-weight:500;
+  outline:none;
+  -webkit-appearance:none;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+}
 .toolbar-search-btn{
   background:var(--bg2);
   border:1px solid var(--border);
   color:var(--text2);
-  height:31px;
-  width:31px;
-  border-radius:14px;
+  height:34px;
+  width:34px;
+  border-radius:12px;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -409,6 +436,29 @@ body::before{
   color:var(--text);
   transform:scale(0.94);
   border-color:var(--border2);
+}
+
+/* Favourites Back Button */
+.favs-back-btn{
+  background:var(--bg2);
+  border:1px solid var(--border);
+  color:var(--text2);
+  border-radius:12px;
+  padding:6px 12px 6px 8px;
+  cursor:pointer;
+  font-family:'Inter',sans-serif;
+  font-size:11.5px;
+  font-weight:600;
+  display:flex;
+  align-items:center;
+  gap:4px;
+  transition:all 0.15s ease;
+  height:32px;
+}
+.favs-back-btn:active{
+  background:var(--bg3);
+  color:var(--text);
+  transform:scale(0.96);
 }
 .add-btn{
   background:var(--blue);color:#fff;border:none;padding:8px 18px;border-radius:14px;
@@ -2424,14 +2474,15 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
 <!-- FAVOURITES PAGE -->
 <div class="page" id="page-favs">
   <div style="position:sticky;top:0;z-index:91;background:rgba(15,15,15,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border2)">
-    <div class="header" style="padding-top:14px;padding-bottom:10px;position:relative;display:flex;align-items:center;justify-content:space-between">
-      <div style="display:flex;align-items:center;gap:12px">
-        <button onclick="document.getElementById('profileNavBtn').click()" style="background:var(--bg2);border:1px solid var(--border);color:var(--text2);border-radius:10px;padding:6px 10px;cursor:pointer;font-size:12px;font-weight:600">‹ Profile</button>
-        <div>
-          <div class="logo-wrap"><span class="logo-l">F</span><span class="logo-ogger" style="letter-spacing:4px;font-size:14px">avourites</span><div class="logo-dot"></div></div>
-          <div class="header-sub" id="favsSub">Stuff you loved ❤️</div>
-        </div>
+    <div class="header" style="position:relative;padding:16px 16px 8px;display:flex;align-items:flex-end;justify-content:space-between">
+      <div>
+        <div class="logo-wrap"><span class="logo-l">F</span><span class="logo-ogger" style="letter-spacing:4px;font-size:14px">avourites</span><div class="logo-dot" style="background:var(--pink);box-shadow:0 0 8px var(--pink)"></div></div>
+        <div class="header-sub" id="favsSub">Stuff you loved ❤️</div>
       </div>
+      <button class="favs-back-btn" onclick="document.getElementById('profileNavBtn').click()" aria-label="Back to Profile" title="Back to Profile">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        <span>Profile</span>
+      </button>
     </div>
     <div class="toolbar" style="padding-top:2px;position:relative">
       <div class="seg">
@@ -2455,12 +2506,16 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
       </div>
     </div>
     <div class="cal-toolbar">
-      <button class="cal-nav-btn" id="calPrevMonth" title="Previous month">‹</button>
+      <button class="cal-nav-btn" id="calPrevMonth" aria-label="Previous month" title="Previous month">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
       <div class="cal-month-wrap">
         <span class="cal-month-label" id="calCurrentMonthLabel">August 2026</span>
         <button class="cal-today-pill" id="calTodayBtn">Today</button>
       </div>
-      <button class="cal-nav-btn" id="calNextMonth" title="Next month">›</button>
+      <button class="cal-nav-btn" id="calNextMonth" aria-label="Next month" title="Next month">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
     </div>
   </div>
   <div class="cal-body" style="padding:8px 14px 16px">
@@ -2733,7 +2788,10 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
     <span class="nav-lbl">Calendar</span>
   </button>
   <button class="nav-add-btn" id="navAddBtn" type="button" aria-label="Add entry" title="Add entry">
-    <span class="nav-add-ico">＋</span>
+    <svg class="nav-add-svg" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="12" y1="5" x2="12" y2="19"></line>
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+    </svg>
   </button>
   <button class="nav-btn" data-page="watchlist">
     <div class="nav-ico-wrap">
@@ -2788,17 +2846,17 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
     <div class="sheet-item">
       <div class="sheet-ico">🎬</div>
       <div class="sheet-info">
-        <div class="sheet-label">Movie & Series data by TMDB</div>
+        <div class="sheet-label">Movie &amp; Series data by TMDB</div>
         <div class="sheet-sub">themoviedb.org — tap to visit</div>
       </div>
     </div>
   </a>
-  <a href="https://rawg.io" target="_blank" style="text-decoration:none">
+  <a href="https://www.igdb.com" target="_blank" style="text-decoration:none">
     <div class="sheet-item">
       <div class="sheet-ico">🎮</div>
       <div class="sheet-info">
-        <div class="sheet-label">Game data by RAWG</div>
-        <div class="sheet-sub">rawg.io — tap to visit</div>
+        <div class="sheet-label">Game data by IGDB</div>
+        <div class="sheet-sub">igdb.com — tap to visit</div>
       </div>
     </div>
   </a>
@@ -2927,6 +2985,13 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
         <span style="font-size:18px">📧</span>
         <span style="font-size:13px;color:var(--text2)" id="supportEmailText">adityakachare @ outlook.in</span>
       </a>
+    </div>
+    <div style="background:var(--bg3);border-radius:14px;padding:14px 16px;margin-bottom:12px;border:1px solid var(--border)">
+      <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px">Data Providers</div>
+      <div style="font-size:12.5px;color:var(--text2);line-height:1.6">
+        <div>🎬 Movies &amp; Series: <span style="color:var(--text);font-weight:600">TMDB</span></div>
+        <div>🎮 Games: <span style="color:var(--text);font-weight:600">IGDB</span></div>
+      </div>
     </div>
     <div style="background:var(--bg3);border-radius:14px;padding:14px 16px;margin-bottom:20px;border:1px solid var(--border)">
       <div style="font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:12px">Socials</div>
