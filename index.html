@@ -326,11 +326,33 @@ body::before{
 .nav-avatar-ph{font-size:18px;line-height:1;}
 
 /* ── TOOLBAR ─────────────────────────────────── */
-.toolbar{padding:4px 16px 6px;display:flex;gap:8px;align-items:center}
-.seg{display:flex;background:var(--bg2);border-radius:14px;padding:3px;flex:1;border:1px solid var(--border)}
-.seg-btn{flex:1;padding:6px 4px;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;border:none;background:transparent;color:var(--text3);cursor:pointer;border-radius:11px;transition:all 0.18s;letter-spacing:0.2px}
+.toolbar{padding:4px 14px 6px;display:flex;gap:8px;align-items:center}
+.seg{display:flex;background:var(--bg2);border-radius:14px;padding:3px;flex:1;min-width:0;border:1px solid var(--border)}
+.seg-btn{flex:1;padding:6px 2px;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;border:none;background:transparent;color:var(--text3);cursor:pointer;border-radius:11px;transition:all 0.18s;letter-spacing:0.2px;white-space:nowrap;text-align:center}
 .seg-btn.on{background:var(--bg4);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,0.3)}
-.sort-sel{background:var(--bg2);border:1px solid var(--border);color:var(--text2);padding:7px 10px;border-radius:14px;font-family:'Inter',sans-serif;font-size:11px;font-weight:500;outline:none;-webkit-appearance:none}
+.toolbar-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.sort-sel{background:var(--bg2);border:1px solid var(--border);color:var(--text2);padding:6px 9px;border-radius:14px;font-family:'Inter',sans-serif;font-size:11px;font-weight:500;outline:none;-webkit-appearance:none;cursor:pointer}
+.toolbar-search-btn{
+  background:var(--bg2);
+  border:1px solid var(--border);
+  color:var(--text2);
+  height:31px;
+  width:31px;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  padding:0;
+  transition:all 0.15s ease;
+  flex-shrink:0;
+}
+.toolbar-search-btn:active{
+  background:var(--bg3);
+  color:var(--text);
+  transform:scale(0.94);
+  border-color:var(--border2);
+}
 .add-btn{
   background:var(--blue);color:#fff;border:none;padding:8px 18px;border-radius:14px;
   font-family:'Inter',sans-serif;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;
@@ -449,10 +471,12 @@ body::before{
 /* Status pills */
 .pill{font-size:9px;font-weight:700;padding:2px 6px;border-radius:20px;letter-spacing:0.2px}
 .pill-done    {background:rgba(255,255,255,0.06);color:var(--text3)}
-.pill-playing {background:rgba(0,197,102,0.12); color:var(--green)}
-.pill-watching{background:rgba(0,199,190,0.14); color:var(--mint)}
-.pill-want    {background:rgba(255,214,10,0.12); color:var(--yellow)}
-.pill-dropped {background:rgba(255,55,95,0.14);  color:var(--pink)}
+.pill-started {background:rgba(0,180,216,0.14);color:var(--teal)}
+.pill-playing {background:rgba(0,180,216,0.14);color:var(--teal)}
+.pill-ongoing {background:rgba(0,197,102,0.14);color:var(--green)}
+.pill-watching{background:rgba(0,199,190,0.14);color:var(--mint)}
+.pill-want    {background:rgba(255,214,10,0.12);color:var(--yellow)}
+.pill-dropped {background:rgba(255,55,95,0.14);color:var(--pink)}
 .pill-rewatched{background:rgba(88,86,214,0.18);color:#7b79e8}
 
 .note-icon{font-size:11px;color:var(--text3);line-height:1}
@@ -1143,6 +1167,7 @@ body.readonly #navAddBtn,
 body.readonly .row-fav-inline,
 body.readonly #page-watchlist,
 body.readonly .nav-btn[data-page="watchlist"],
+body.readonly .rev-btn-edit,
 body.readonly #editPicksBtn{display:none!important}
 body.readonly .row{cursor:default}
 .readonly-banner{
@@ -1157,88 +1182,575 @@ body.readonly .row{cursor:default}
   white-space:nowrap;
 }
 
-/* ── INFO CARD OVERLAY ───────────────────────── */
+/* ── UNIFIED ENTRY INFO CARD OVERLAY ─────────── */
 .info-overlay{
-  position:fixed;inset:0;z-index:800;
-  background:rgba(0,0,0,0.75);
+  position:fixed;inset:0;z-index:900;
+  background:rgba(0,0,0,0.8);
   display:none;align-items:flex-end;
-  backdrop-filter:blur(4px);
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
 }
 .info-overlay.show{display:flex;}
 .info-sheet{
-  width:100%;max-height:90vh;
+  width:100%;max-width:540px;max-height:88vh;
+  margin:0 auto;
   background:var(--bg2);
-  border-radius:22px 22px 0 0;
+  border-radius:24px 24px 0 0;
+  border-top:1px solid var(--border2);
+  box-shadow:0 -20px 60px rgba(0,0,0,0.65);
   overflow-y:auto;scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
   animation:slideUp 0.3s cubic-bezier(.32,1,.23,1);
+  position:relative;
+  box-sizing:border-box;
 }
 .info-sheet::-webkit-scrollbar{display:none}
-.info-poster-wrap{
-  position:relative;width:90px;height:130px;overflow:hidden;
-  background:var(--bg3);border-radius:10px;flex-shrink:0;
-}
-.info-poster{width:100%;height:100%;object-fit:cover;display:block;}
-.info-poster-gradient{display:none;}
-.info-poster-ph{
-  width:100%;height:100%;display:flex;align-items:center;
-  justify-content:center;font-size:36px;
-}
+.info-sheet.movie{border-top:2px solid rgba(255,69,58,0.55);box-shadow:0 -12px 32px rgba(255,69,58,0.1), 0 -20px 60px rgba(0,0,0,0.7);}
+.info-sheet.series{border-top:2px solid rgba(0,180,216,0.55);box-shadow:0 -12px 32px rgba(0,180,216,0.1), 0 -20px 60px rgba(0,0,0,0.7);}
+.info-sheet.game{border-top:2px solid rgba(0,197,102,0.55);box-shadow:0 -12px 32px rgba(0,197,102,0.1), 0 -20px 60px rgba(0,0,0,0.7);}
+
 .info-close{
   position:absolute;top:14px;right:14px;
-  background:rgba(0,0,0,0.5);border:none;color:#fff;
-  width:32px;height:32px;border-radius:50%;font-size:16px;
-  cursor:pointer;display:flex;align-items:center;justify-content:center;
-  backdrop-filter:blur(8px);
+  background:rgba(255,255,255,0.08);border:1px solid var(--border);
+  color:var(--text2);width:32px;height:32px;border-radius:50%;
+  font-size:14px;cursor:pointer;display:flex;align-items:center;
+  justify-content:center;z-index:10;transition:all 0.15s;
 }
-.info-type-bar{display:none;}
+.info-close:active{background:var(--bg4);color:#fff;transform:scale(0.95);}
+
 .info-header-row{
   display:flex;gap:14px;align-items:flex-start;
-  padding:18px 18px 14px;
+  padding:20px 18px 16px;
   border-bottom:1px solid var(--border);
   position:relative;
 }
-.info-header-text{flex:1;min-width:0;}
-.info-body{padding:14px 18px 32px;}
+.info-poster-wrap{
+  position:relative;width:86px;height:126px;overflow:hidden;
+  background:var(--bg3);border-radius:10px;flex-shrink:0;
+  box-shadow:0 6px 20px rgba(0,0,0,0.5);border:1px solid var(--border);
+}
+.info-poster{width:100%;height:100%;object-fit:cover;display:block;}
+.info-poster-ph{
+  width:100%;height:100%;display:flex;align-items:center;
+  justify-content:center;font-size:34px;background:var(--bg3);
+}
+.info-header-text{flex:1;min-width:0;padding-right:24px;}
 .info-meta-row{
-  display:flex;align-items:center;gap:8px;
-  margin-bottom:8px;flex-wrap:wrap;
+  display:flex;align-items:center;gap:6px;
+  margin-bottom:6px;flex-wrap:wrap;
 }
 .info-type-pill{
-  font-size:10px;font-weight:700;padding:3px 8px;border-radius:20px;
+  font-size:10px;font-weight:800;padding:2px 8px;border-radius:20px;
   text-transform:uppercase;letter-spacing:0.5px;
 }
-.info-sheet.movie .info-type-pill{background:rgba(255,69,58,0.15);color:var(--red);}
-.info-sheet.series .info-type-pill{background:rgba(0,180,216,0.15);color:var(--teal);}
-.info-sheet.game .info-type-pill{background:rgba(0,197,102,0.15);color:var(--green);}
-.info-year{font-size:11px;color:var(--text3);}
-.info-title{font-size:17px;font-weight:800;color:var(--text);line-height:1.2;margin-bottom:5px;}
-.info-genre{font-size:11px;color:var(--text3);margin-bottom:0;}
-.info-rating-row{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
-.info-score{
-  font-size:13px;font-weight:700;padding:4px 10px;
-  border-radius:8px;background:var(--bg3);color:var(--text2);
+.info-sheet.movie .info-type-pill{background:rgba(255,69,58,0.15);color:var(--red);border:1px solid rgba(255,69,58,0.25);}
+.info-sheet.series .info-type-pill{background:rgba(0,180,216,0.15);color:var(--teal);border:1px solid rgba(0,180,216,0.25);}
+.info-sheet.game .info-type-pill{background:rgba(0,197,102,0.15);color:var(--green);border:1px solid rgba(0,197,102,0.25);}
+
+.info-fav-tag{
+  font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;
+  background:rgba(255,45,85,0.12);color:#ff2d55;border:1px solid rgba(255,45,85,0.25);
+  display:inline-flex;align-items:center;gap:3px;
 }
+.info-rewatch-tag{
+  font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;
+  background:rgba(88,86,214,0.15);color:#7b79e8;border:1px solid rgba(88,86,214,0.25);
+}
+.info-score{
+  font-size:10px;font-weight:700;padding:2px 7px;
+  border-radius:20px;background:var(--bg3);color:var(--text2);border:1px solid var(--border);
+}
+.info-year{font-size:11px;color:var(--text3);font-weight:500;}
+.info-title{font-size:18px;font-weight:800;color:var(--text);line-height:1.25;margin-bottom:4px;word-break:break-word;}
+.info-genre{font-size:12px;color:var(--text3);margin-bottom:0;font-weight:500;}
+
+.info-body{padding:16px 18px 30px;}
+
 .info-overview{
   font-size:13px;color:var(--text2);line-height:1.6;
-  margin-bottom:18px;
+  margin-bottom:14px;
 }
 .info-details{
   display:grid;grid-template-columns:1fr 1fr;gap:10px;
-  margin-bottom:20px;
+  margin-bottom:14px;
 }
-.info-detail-item{}
 .info-detail-lbl{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:2px;}
 .info-detail-val{font-size:12px;color:var(--text2);font-weight:600;}
-.info-actions{display:flex;gap:10px;flex-direction:row;}
-.info-edit-btn{
-  flex:1;padding:13px;background:var(--blue);color:#fff;
-  border:none;border-radius:14px;font-size:14px;font-weight:700;
-  cursor:pointer;font-family:Inter,sans-serif;
+
+/* ── MY DIARY ENTRY SECTION ── */
+.info-diary-section{
+  margin-top:14px;
+  padding-top:14px;
+  border-top:1px solid var(--border);
+  margin-bottom:16px;
 }
-.info-wl-btn{
-  flex:1;padding:13px;background:var(--bg3);color:var(--text2);
-  border:1px solid var(--border2);border-radius:14px;font-size:14px;font-weight:600;
-  cursor:pointer;font-family:Inter,sans-serif;
+.info-section-hdr{
+  font-size:11px;font-weight:800;color:var(--text3);
+  text-transform:uppercase;letter-spacing:1px;
+  margin-bottom:12px;display:flex;align-items:center;gap:6px;
+}
+.info-diary-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;
+  margin-bottom:12px;
+}
+.info-diary-card{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:14px;padding:10px 12px;
+}
+.info-diary-lbl{
+  font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;
+  letter-spacing:0.6px;margin-bottom:4px;
+}
+.info-diary-val{font-size:13px;font-weight:700;color:var(--text);}
+
+/* Prominent Rating Pill */
+.info-rating-pill{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:4px 10px;border-radius:10px;font-size:11px;font-weight:800;
+  letter-spacing:0.4px;text-transform:uppercase;
+}
+.info-rating-pill.r-peak{background:rgba(191,90,242,0.18);color:var(--purple);border:1px solid rgba(191,90,242,0.35);box-shadow:0 0 12px rgba(191,90,242,0.2);}
+.info-rating-pill.r-excellent{background:rgba(0,197,102,0.18);color:var(--green);border:1px solid rgba(0,197,102,0.35);box-shadow:0 0 12px rgba(0,197,102,0.2);}
+.info-rating-pill.r-decent{background:rgba(0,180,216,0.18);color:var(--teal);border:1px solid rgba(0,180,216,0.35);box-shadow:0 0 12px rgba(0,180,216,0.2);}
+.info-rating-pill.r-mediocre{background:rgba(255,159,10,0.18);color:var(--orange);border:1px solid rgba(255,159,10,0.35);box-shadow:0 0 12px rgba(255,159,10,0.2);}
+.info-rating-pill.r-skip{background:rgba(255,69,58,0.18);color:var(--red);border:1px solid rgba(255,69,58,0.35);box-shadow:0 0 12px rgba(255,69,58,0.2);}
+
+/* Review Box */
+.info-review-box{
+  background:var(--bg3);border:1px solid var(--border);
+  border-radius:14px;padding:12px 14px;
+}
+.info-review-lbl{
+  font-size:10px;font-weight:800;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;
+  margin-bottom:6px;
+}
+.info-review-content{
+  font-size:13px;line-height:1.6;color:var(--text);white-space:pre-wrap;word-break:break-word;
+}
+.info-review-content.empty{
+  color:var(--text3);font-style:italic;font-size:12px;
+}
+
+/* Actions in unified card */
+.info-actions{
+  display:flex;flex-direction:column;gap:10px;
+}
+.info-actions-primary{
+  display:flex;gap:10px;
+}
+.info-btn-edit{
+  flex:2;background:var(--blue);color:#fff;border:none;
+  padding:12px 16px;border-radius:14px;font-family:'Inter',sans-serif;
+  font-size:13px;font-weight:700;cursor:pointer;
+  box-shadow:0 4px 16px rgba(45,127,249,0.35);transition:all 0.15s;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.info-btn-edit:active{transform:scale(0.97);opacity:0.9;}
+.info-btn-share{
+  flex:1;background:var(--bg4);color:var(--text2);border:1px solid var(--border2);
+  padding:12px 14px;border-radius:14px;font-family:'Inter',sans-serif;
+  font-size:13px;font-weight:600;cursor:pointer;transition:all 0.15s;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.info-btn-share:active{background:var(--bg3);color:#fff;}
+
+.info-btn-danger{
+  width:100%;
+  background:rgba(255,69,58,0.08);
+  color:var(--red);
+  border:1px solid rgba(255,69,58,0.22);
+  padding:11px 16px;
+  border-radius:12px;
+  font-family:'Inter',sans-serif;
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  transition:background 0.18s, border-color 0.18s, transform 0.15s;
+}
+.info-btn-danger:hover{
+  background:rgba(255,69,58,0.14);
+  border-color:rgba(255,69,58,0.35);
+}
+.info-btn-danger:active{
+  background:rgba(255,69,58,0.22);
+  transform:scale(0.98);
+}
+
+/* ── TIMELINE / JOURNEY SECTION ── */
+.info-journey-section{
+  margin-top:14px;
+  padding-top:14px;
+  border-top:1px solid var(--border);
+  margin-bottom:16px;
+}
+.info-timeline{
+  display:flex;
+  flex-direction:column;
+  gap:0;
+  margin-bottom:12px;
+  padding-left:4px;
+}
+.timeline-step{
+  display:flex;
+  gap:12px;
+  position:relative;
+  min-height:46px;
+}
+.timeline-marker{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  width:20px;
+  flex-shrink:0;
+  position:relative;
+}
+.timeline-dot{
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  background:var(--teal);
+  border:2px solid var(--bg2);
+  box-shadow:0 0 8px rgba(0,180,216,0.5);
+  margin-top:3px;
+  z-index:2;
+  flex-shrink:0;
+}
+.timeline-marker.start .timeline-dot{
+  background:var(--teal);
+  box-shadow:0 0 10px rgba(0,180,216,0.6);
+}
+.timeline-marker.end .timeline-dot{
+  background:var(--purple);
+  box-shadow:0 0 10px rgba(191,90,242,0.6);
+}
+.timeline-marker.ongoing .timeline-dot{
+  background:var(--green);
+  box-shadow:0 0 10px rgba(0,197,102,0.6);
+}
+.timeline-line{
+  width:2px;
+  flex:1;
+  background:linear-gradient(to bottom, var(--teal), var(--purple));
+  margin:2px 0;
+  border-radius:2px;
+  opacity:0.6;
+}
+.timeline-step.ongoing-step .timeline-line{
+  background:linear-gradient(to bottom, var(--teal), var(--green));
+}
+.timeline-content{
+  padding-bottom:12px;
+  flex:1;
+}
+.timeline-badge{
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:0.4px;
+  text-transform:uppercase;
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  padding:2px 7px;
+  border-radius:8px;
+  margin-bottom:3px;
+}
+.timeline-badge.start{
+  background:rgba(0,180,216,0.15);
+  color:var(--teal);
+  border:1px solid rgba(0,180,216,0.3);
+}
+.timeline-badge.end{
+  background:rgba(191,90,242,0.15);
+  color:var(--purple);
+  border:1px solid rgba(191,90,242,0.3);
+}
+.timeline-badge.ongoing{
+  background:rgba(0,197,102,0.15);
+  color:var(--green);
+  border:1px solid rgba(0,197,102,0.3);
+}
+.timeline-meta{
+  font-size:12px;
+  color:var(--text);
+  font-weight:600;
+}
+.timeline-duration-card{
+  background:linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:10px 14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.timeline-duration-lbl{
+  font-size:10px;
+  font-weight:800;
+  color:var(--text3);
+  text-transform:uppercase;
+  letter-spacing:0.8px;
+}
+.timeline-duration-val{
+  font-size:13px;
+  font-weight:800;
+  color:var(--text);
+}
+
+/* ── UNIVERSAL DIARY SEARCH ──────────────────── */
+.diary-search-overlay{
+  position:fixed;
+  inset:0;
+  z-index:850;
+  background:rgba(0,0,0,0.85);
+  display:none;
+  align-items:flex-start;
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  padding:0;
+}
+.diary-search-overlay.show{
+  display:flex;
+}
+.diary-search-sheet{
+  width:100%;
+  max-width:540px;
+  height:100%;
+  max-height:100vh;
+  margin:0 auto;
+  background:var(--bg);
+  display:flex;
+  flex-direction:column;
+  animation:fadeUp 0.22s cubic-bezier(.32,1,.23,1);
+  box-sizing:border-box;
+}
+@media (min-width: 560px){
+  .diary-search-sheet{
+    max-height:85vh;
+    margin-top:36px;
+    border-radius:24px;
+    border:1px solid var(--border2);
+    box-shadow:0 24px 70px rgba(0,0,0,0.85);
+  }
+}
+.diary-search-header{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:14px 16px 12px;
+  border-bottom:1px solid var(--border);
+  background:rgba(15,15,15,0.95);
+}
+.diary-search-input-wrap{
+  flex:1;
+  position:relative;
+  display:flex;
+  align-items:center;
+}
+.diary-search-icon{
+  position:absolute;
+  left:14px;
+  color:var(--text3);
+  pointer-events:none;
+}
+.diary-search-input{
+  width:100%;
+  background:var(--bg2);
+  border:1px solid var(--border2);
+  border-radius:14px;
+  padding:11px 36px 11px 38px;
+  font-family:'Inter',sans-serif;
+  font-size:14px;
+  font-weight:500;
+  color:var(--text);
+  outline:none;
+  transition:border-color 0.2s, box-shadow 0.2s;
+  box-sizing:border-box;
+}
+.diary-search-input:focus{
+  border-color:var(--blue);
+  box-shadow:0 0 0 3px rgba(45,127,249,0.2);
+}
+.diary-search-clear{
+  position:absolute;
+  right:10px;
+  background:rgba(255,255,255,0.08);
+  border:none;
+  color:var(--text2);
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  font-size:11px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.diary-search-cancel{
+  background:none;
+  border:none;
+  color:var(--blue);
+  font-family:'Inter',sans-serif;
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
+  padding:6px 4px;
+  white-space:nowrap;
+}
+.diary-search-cancel:active{
+  opacity:0.7;
+}
+
+.diary-search-filter-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:10px 16px;
+  border-bottom:1px solid var(--border);
+  background:rgba(20,20,20,0.6);
+}
+.diary-search-count{
+  font-size:11px;
+  color:var(--text3);
+  font-weight:600;
+}
+.diary-search-results{
+  flex:1;
+  overflow-y:auto;
+  scrollbar-width:none;
+  padding:10px 14px 40px;
+}
+.diary-search-results::-webkit-scrollbar{
+  display:none;
+}
+
+/* Compact Result Card */
+.diary-search-card{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:10px 12px;
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:14px;
+  margin-bottom:8px;
+  cursor:pointer;
+  position:relative;
+  transition:background 0.15s, transform 0.15s, border-color 0.15s;
+  overflow:hidden;
+}
+.diary-search-card:active{
+  background:var(--bg3);
+  transform:scale(0.98);
+}
+.diary-search-thumb-wrap{
+  width:40px;
+  height:58px;
+  border-radius:6px;
+  overflow:hidden;
+  background:var(--bg3);
+  flex-shrink:0;
+  box-shadow:0 2px 8px rgba(0,0,0,0.4);
+}
+.diary-search-thumb{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.diary-search-thumb-ph{
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:20px;
+  background:var(--bg3);
+}
+.diary-search-info{
+  flex:1;
+  min-width:0;
+}
+.diary-search-title-row{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  margin-bottom:3px;
+}
+.diary-search-title{
+  font-size:14px;
+  font-weight:700;
+  color:var(--text);
+  line-height:1.2;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.diary-search-meta{
+  font-size:11px;
+  color:var(--text3);
+  font-weight:500;
+  margin-bottom:4px;
+}
+.diary-search-badges{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  flex-wrap:wrap;
+}
+.diary-search-notes-preview{
+  font-size:11px;
+  color:var(--text2);
+  font-style:italic;
+  margin-top:4px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  line-height:1.3;
+}
+.diary-search-notes-preview mark{
+  background:rgba(45,127,249,0.3);
+  color:#fff;
+  border-radius:2px;
+  padding:0 2px;
+}
+
+/* Right-side glowing neon indicator matching Logger cards */
+.diary-search-card::after{
+  content:'';
+  position:absolute;
+  top:0;
+  right:0;
+  bottom:0;
+  width:3px;
+}
+.diary-search-card.movie::after{background:var(--red);box-shadow:0 0 8px rgba(255,69,58,0.5);}
+.diary-search-card.series::after{background:var(--teal);box-shadow:0 0 8px rgba(0,180,216,0.5);}
+.diary-search-card.game::after{background:var(--green);box-shadow:0 0 8px rgba(0,197,102,0.5);}
+
+/* Empty State */
+.diary-search-empty{
+  text-align:center;
+  padding:48px 20px;
+  color:var(--text3);
+}
+.diary-search-empty-icon{
+  font-size:36px;
+  margin-bottom:12px;
+  opacity:0.6;
+}
+.diary-search-empty-title{
+  font-size:15px;
+  font-weight:700;
+  color:var(--text2);
+  margin-bottom:4px;
+}
+.diary-search-empty-sub{
+  font-size:12px;
+  color:var(--text3);
 }
 
 /* ── TUTORIAL OVERLAY ────────────────────────── */
@@ -1730,12 +2242,20 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
         <button class="seg-btn" data-f="series">📺</button>
         <button class="seg-btn" data-f="game">🎮</button>
       </div>
-      <select class="sort-sel" id="sortSel">
-        <option value="new">Newest</option>
-        <option value="old">Oldest</option>
-        <option value="rate">Rating</option>
-        <option value="az">A–Z</option>
-      </select>
+      <div class="toolbar-right">
+        <select class="sort-sel" id="sortSel">
+          <option value="new">Newest</option>
+          <option value="old">Oldest</option>
+          <option value="rate">Rating</option>
+          <option value="az">A–Z</option>
+        </select>
+        <button class="toolbar-search-btn" id="toolbarSearchBtn" title="Search diary" aria-label="Search diary">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+      </div>
     </div>
   </div>
   <div class="list" id="list"></div>
@@ -1904,7 +2424,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   <div class="list-footer">made with love by <span onclick="openAbout()" style="cursor:pointer;text-decoration:underline;text-underline-offset:2px;">Aditya</span> ♥️</div>
 </div>
 
-<!-- INFO CARD -->
+<!-- UNIFIED ENTRY INFO CARD -->
 <div class="info-overlay" id="infoOverlay">
   <div class="info-sheet" id="infoSheet">
     <div class="info-header-row">
@@ -1913,8 +2433,10 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
         <div class="info-poster-ph" id="infoPosterPh" style="display:none"></div>
       </div>
       <div class="info-header-text">
-        <div class="info-meta-row">
+        <div class="info-meta-row" id="infoMetaRow">
           <span class="info-type-pill" id="infoTypePill"></span>
+          <span class="info-fav-tag" id="infoFavTag" style="display:none">❤️ Favourite</span>
+          <span class="info-rewatch-tag" id="infoRewatchTag" style="display:none">🔁 Rewatched</span>
           <span class="info-year" id="infoYear"></span>
           <span class="info-score" id="infoScore" style="display:none"></span>
         </div>
@@ -1926,8 +2448,75 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
     <div class="info-body">
       <div class="info-overview" id="infoOverview" style="display:none"></div>
       <div class="info-details" id="infoDetails"></div>
+      
+      <!-- MY DIARY ENTRY (shown for logged items) -->
+      <div class="info-diary-section" id="infoDiarySection" style="display:none">
+        <div class="info-section-hdr">📖 My Diary Entry</div>
+        <div class="info-diary-grid">
+          <div class="info-diary-card">
+            <div class="info-diary-lbl">Rating</div>
+            <div id="infoDiaryRating"></div>
+          </div>
+          <div class="info-diary-card">
+            <div class="info-diary-lbl">Status</div>
+            <div class="info-diary-val" id="infoDiaryStatus"></div>
+          </div>
+          <div class="info-diary-card" style="grid-column: span 2">
+            <div class="info-diary-lbl">Logged Date</div>
+            <div class="info-diary-val" id="infoDiaryDate"></div>
+          </div>
+        </div>
+        <div class="info-review-box">
+          <div class="info-review-lbl">My Review</div>
+          <div class="info-review-content" id="infoDiaryNotes"></div>
+        </div>
+      </div>
+
+      <!-- JOURNEY / TIMELINE -->
+      <div class="info-journey-section" id="infoJourneySection" style="display:none">
+        <div class="info-section-hdr" id="infoJourneyHdr">🎮 Game Journey</div>
+        <div class="info-timeline" id="infoTimeline"></div>
+        <div class="timeline-duration-card" id="tlDurationCard" style="display:none">
+          <div class="timeline-duration-lbl" id="tlDurationLbl">Finished in</div>
+          <div class="timeline-duration-val" id="tlDurationVal"></div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
       <div class="info-actions" id="infoActions"></div>
     </div>
+  </div>
+</div>
+
+<!-- UNIVERSAL DIARY SEARCH OVERLAY -->
+<div class="diary-search-overlay" id="diarySearchOverlay" style="display:none">
+  <div class="diary-search-sheet" id="diarySearchSheet">
+    <!-- Header with Search Input -->
+    <div class="diary-search-header">
+      <div class="diary-search-input-wrap">
+        <svg class="diary-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input class="diary-search-input" id="diarySearchInput" type="text" placeholder="Search my diary..." autocomplete="off" spellcheck="false">
+        <button class="diary-search-clear" id="diarySearchClearBtn" style="display:none">✕</button>
+      </div>
+      <button class="diary-search-cancel" id="diarySearchCancelBtn">Cancel</button>
+    </div>
+
+    <!-- Filter Segment Bar -->
+    <div class="diary-search-filter-row">
+      <div class="seg diary-search-seg">
+        <button class="seg-btn on" data-sf="all">All</button>
+        <button class="seg-btn" data-sf="movie">🎬</button>
+        <button class="seg-btn" data-sf="series">📺</button>
+        <button class="seg-btn" data-sf="game">🎮</button>
+      </div>
+      <div class="diary-search-count" id="diarySearchCount">0 results</div>
+    </div>
+
+    <!-- Results List -->
+    <div class="diary-search-results" id="diarySearchResults"></div>
   </div>
 </div>
 
@@ -2458,14 +3047,44 @@ let editId=null,mType='movie',mRating=2,mPoster='',mTitle='',mFav=false,mGenre='
 let mDateOverride=''; // yyyy-mm-dd
 let searchTmr=null,dropData=[];
 let mSeasons=0, mLastSeason=0; // series season state
+let _reviewEntry = null;
 
 function statusOpts(t){
-  if(t==='game') return [{v:'done',l:'🎮 Completed'},{v:'playing',l:'⚡ Playing'},{v:'want',l:'🔖 Want to'},{v:'dropped',l:'❌ Dropped'}];
-  if(t==='movie') return [{v:'done',l:'🎬 Watched'},{v:'want',l:'🔖 Want to'},{v:'dropped',l:'❌ Dropped'}];
-  return [{v:'done',l:'📺 Finished'},{v:'watching',l:'⚡ Watching'},{v:'want',l:'🔖 Want to'},{v:'dropped',l:'❌ Dropped'}];
+  if(t==='game') return [
+    {v:'started',l:'⚡ Started'},
+    {v:'ongoing',l:'♾️ Ongoing'},
+    {v:'done',l:'🏆 Completed'},
+    {v:'dropped',l:'❌ Dropped'}
+  ];
+  if(t==='movie') return [
+    {v:'done',l:'🎬 Watched'},
+    {v:'dropped',l:'❌ Dropped'}
+  ];
+  return [
+    {v:'watching',l:'⚡ Watching'},
+    {v:'done',l:'📺 Finished'},
+    {v:'dropped',l:'❌ Dropped'}
+  ];
 }
-const pillCls={done:'pill-done',playing:'pill-playing',watching:'pill-watching',want:'pill-want',dropped:'pill-dropped',rewatched:'pill-rewatched'};
-const pillLbl={playing:'Playing',watching:'Watching',want:'Want to',dropped:'Dropped',rewatched:'Rewatched'};
+const pillCls={
+  done:'pill-done',
+  started:'pill-started',
+  playing:'pill-started',
+  ongoing:'pill-ongoing',
+  watching:'pill-watching',
+  want:'pill-want',
+  dropped:'pill-dropped',
+  rewatched:'pill-rewatched'
+};
+const pillLbl={
+  started:'Started',
+  playing:'Started',
+  ongoing:'Ongoing',
+  watching:'Watching',
+  want:'Want to',
+  dropped:'Dropped',
+  rewatched:'Rewatched'
+};
 function getDoneLabel(type){ 
   if(type==='game') return 'Completed';
   if(type==='series') return 'Finished';
@@ -2476,7 +3095,62 @@ function getPillLabel(sKey, type, entry){
     if(type==='series' && entry?.lastSeason>0) return `Completed S${entry.lastSeason}`;
     return getDoneLabel(type);
   }
+  if(type==='game' && (sKey==='playing' || sKey==='started')) return 'Started';
   return pillLbl[sKey]||'Done';
+}
+
+function formatDateDiff(d1, d2){
+  const start = new Date(d1);
+  const end = new Date(d2);
+  start.setHours(0,0,0,0);
+  end.setHours(0,0,0,0);
+  
+  let diffDays = Math.round(Math.abs(end - start) / (1000 * 60 * 60 * 24));
+  if(diffDays === 0) return 'Same day';
+  if(diffDays === 1) return '1 day';
+  if(diffDays < 7) return `${diffDays} days`;
+  
+  const years = Math.floor(diffDays / 365.25);
+  const remainingDaysAfterYears = Math.round(diffDays - (years * 365.25));
+  const monthsAfterYears = Math.floor(remainingDaysAfterYears / 30.4375);
+  
+  if (years >= 1) {
+    if (monthsAfterYears > 0) {
+      return `${years} ${years === 1 ? 'year' : 'years'}, ${monthsAfterYears} ${monthsAfterYears === 1 ? 'month' : 'months'}`;
+    }
+    return `${years} ${years === 1 ? 'year' : 'years'}`;
+  }
+  
+  const months = Math.floor(diffDays / 30.4375);
+  const remainingDaysAfterMonths = Math.round(diffDays - (months * 30.4375));
+  const weeksAfterMonths = Math.floor(remainingDaysAfterMonths / 7);
+  
+  if (months >= 1) {
+    if (weeksAfterMonths >= 1) {
+      return `${months} ${months === 1 ? 'month' : 'months'}, ${weeksAfterMonths} ${weeksAfterMonths === 1 ? 'week' : 'weeks'}`;
+    }
+    if (remainingDaysAfterMonths >= 1) {
+      return `${months} ${months === 1 ? 'month' : 'months'}, ${remainingDaysAfterMonths} ${remainingDaysAfterMonths === 1 ? 'day' : 'days'}`;
+    }
+    return `${months} ${months === 1 ? 'month' : 'months'}`;
+  }
+  
+  const weeks = Math.floor(diffDays / 7);
+  const days = diffDays % 7;
+  if (weeks >= 1) {
+    if (days > 0) {
+      return `${weeks} ${weeks === 1 ? 'week' : 'weeks'}, ${days} ${days === 1 ? 'day' : 'days'}`;
+    }
+    return `${weeks} ${weeks === 1 ? 'week' : 'weeks'}`;
+  }
+  
+  return `${diffDays} days`;
+}
+
+function formatLogDate(ts){
+  const d = new Date(ts);
+  if(isNaN(d.getTime())) return '—';
+  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 }
 function getTypeIcon(type){
   return type==='game'?'🎮':type==='movie'?'🎬':'📺';
@@ -2552,11 +3226,11 @@ function renderRow(e,i){
   const typeIco=`<span class="row-type-ico">${icon}</span>`;
   const noteIco=e.notes?`<span class="note-icon">ᯓ</span>`:'';
   const fav=`<button class="row-fav-inline ${e.fav?'on':''}" onclick="toggleFav(${e.id},event)">${e.fav?'❤️':'🤍'}</button>`;
-  return `<div class="row ${e.type}" style="animation-delay:${Math.min(i*0.03,0.4)}s" onclick="openEdit(${e.id})">
+  return `<div class="row ${e.type}" style="animation-delay:${Math.min(i*0.03,0.4)}s" onclick="openInfo(${e.id},'logged',event)">
     <div class="row-day">${day}</div>
     ${thumb}
     <div class="row-info">
-      <div class="row-title-wrap"><span class="row-title" onclick="openInfo(${e.id},'logged',event)">${e.title}</span><span class="row-year">${e.year||''}</span></div>
+      <div class="row-title-wrap"><span class="row-title">${e.title}</span><span class="row-year">${e.year||''}</span></div>
       <div class="row-meta">${typeIco}${rBadge}${sPill}${fav}${noteIco}</div>
     </div>
   </div>`;
@@ -2609,7 +3283,7 @@ function renderFavs(){
     const thumb=e.poster
       ?`<img class="fav-thumb" src="${e.poster}" loading="lazy" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="fav-ph" style="display:none">${icon}</div>`
       :`<div class="fav-ph">${icon}</div>`;
-    return `<div class="fav-card ${e.type}" style="animation-delay:${i*0.04}s" onclick="openInfo(${e.id},'favs',event)">
+    return `<div class="fav-card ${e.type}" style="animation-delay:${i*0.04}s" onclick="openInfo(${e.id},'logged',event)">
       ${thumb}
       <div class="fav-info">
         <div class="fav-title">${e.title}</div>
@@ -4248,8 +4922,8 @@ function renderUpcoming(){
 let _infoEntry = null;
 
 async function openInfo(id, context, ev){
-  if(ev) ev.stopPropagation();
-  const entry = DATA.find(x=>x.id===id) || getPicks().find(x=>x.id===id);
+  if(ev && typeof ev.stopPropagation === 'function') ev.stopPropagation();
+  const entry = (typeof id === 'object' && id !== null) ? id : (DATA.find(x=>String(x.id)===String(id)) || getPicks().find(x=>String(x.id)===String(id)));
   if(!entry) return;
   _infoEntry = entry;
   showInfoCard(entry, context);
@@ -4257,7 +4931,7 @@ async function openInfo(id, context, ev){
 }
 
 async function openInfoFromWL(idx, ev){
-  if(ev) ev.stopPropagation();
+  if(ev && typeof ev.stopPropagation === 'function') ev.stopPropagation();
   const wl = getWL();
   const item = wl[idx];
   if(!item) return;
@@ -4271,58 +4945,314 @@ function showInfoCard(entry, context){
   const sheet = document.getElementById('infoSheet');
   const overlay = document.getElementById('infoOverlay');
 
-  // Type class
+  // Type class for theme glow
   sheet.className = `info-sheet ${entry.type||'movie'}`;
 
   // Poster
   const poster = document.getElementById('infoPoster');
   const posterPh = document.getElementById('infoPosterPh');
-  if(entry.poster){ poster.src=entry.poster; poster.style.display='block'; posterPh.style.display='none'; }
-  else{ poster.style.display='none'; posterPh.style.display='flex'; posterPh.textContent=entry.type==='game'?'🎮':entry.type==='movie'?'🎬':'📺'; }
+  const typeIcons = {movie:'🎬',series:'📺',game:'🎮'};
+  const icon = typeIcons[entry.type]||'🎬';
+  if(entry.poster){
+    poster.src = entry.poster;
+    poster.style.display = 'block';
+    posterPh.style.display = 'none';
+  } else {
+    poster.style.display = 'none';
+    posterPh.style.display = 'flex';
+    posterPh.textContent = icon;
+  }
 
   // Meta
   const typeLabels = {movie:'Film',series:'Series',game:'Game'};
-  document.getElementById('infoTypePill').textContent = typeLabels[entry.type]||'Film';
+  document.getElementById('infoTypePill').textContent = `${icon} ${typeLabels[entry.type]||'Film'}`;
   document.getElementById('infoYear').textContent = entry.year||'';
-  document.getElementById('infoScore').style.display='none';
+  document.getElementById('infoScore').style.display = 'none';
   document.getElementById('infoTitle').textContent = entry.title;
   document.getElementById('infoGenre').textContent = entry.genre||'';
-  document.getElementById('infoOverview').style.display='none';
-  document.getElementById('infoDetails').innerHTML='';
+  document.getElementById('infoOverview').style.display = 'none';
+  document.getElementById('infoDetails').innerHTML = '';
+
+  // Fav & Rewatch badges in header
+  const favTag = document.getElementById('infoFavTag');
+  if(favTag) favTag.style.display = entry.fav ? 'inline-flex' : 'none';
+  const rewatchTag = document.getElementById('infoRewatchTag');
+  if(rewatchTag) rewatchTag.style.display = entry.rewatched ? 'inline-flex' : 'none';
+
+  // Personal Diary Section (shown for logged entries)
+  const isLogged = context !== 'watchlist';
+  const diarySec = document.getElementById('infoDiarySection');
+  if(diarySec){
+    if(isLogged){
+      diarySec.style.display = 'block';
+
+      // Rating Pill
+      const rKey = RATINGS.includes(entry.rating) ? entry.rating : 'decent';
+      const rClass = RATING_CLASS[rKey] || 'r-decent';
+      const rLabel = RATING_LABELS[rKey] || 'Decent';
+      document.getElementById('infoDiaryRating').innerHTML = `<div class="info-rating-pill ${rClass}">★ ${rLabel}</div>`;
+
+      // Status
+      const sKey = entry.rewatched ? 'rewatched' : (entry.status || 'done');
+      document.getElementById('infoDiaryStatus').textContent = getPillLabel(sKey, entry.type, entry);
+
+      // Logged date
+      document.getElementById('infoDiaryDate').textContent = formatLogDate(entry.id);
+
+      // Review notes
+      const notesEl = document.getElementById('infoDiaryNotes');
+      if(entry.notes && entry.notes.trim()){
+        notesEl.textContent = entry.notes.trim();
+        notesEl.classList.remove('empty');
+      } else {
+        notesEl.textContent = 'No review added';
+        notesEl.classList.add('empty');
+      }
+    } else {
+      diarySec.style.display = 'none';
+    }
+  }
+
+  // Render Journey Section for Games / Series
+  renderJourneySection(entry, context);
 
   // Actions
   const actions = document.getElementById('infoActions');
-  const isLogged = DATA.find(x=>x.id===entry.id);
   actions.innerHTML = '';
-  if(context==='logged' && isLogged){
-    const editBtn = document.createElement('button');
-    editBtn.className='info-wl-btn';
-    editBtn.textContent='✏️ Edit';
-    editBtn.onclick=()=>{ closeInfoCard(); setTimeout(()=>openEdit(entry.id),150); };
-    actions.appendChild(editBtn);
-    const shareBtn = document.createElement('button');
-    shareBtn.className='info-edit-btn';
-    shareBtn.style.flex='2';
-    shareBtn.textContent='🔗 Share Review';
-    shareBtn.onclick=()=>{ closeInfoCard(); editId=entry.id; setTimeout(()=>openShareCard(),150); };
-    actions.appendChild(shareBtn);
-  }
-  if(context==='watchlist'){
+
+  if(context === 'watchlist'){
     const wlIdx = _infoEntry._wlIdx;
-    const removeBtn = document.createElement('button');
-    removeBtn.className='info-wl-btn';
-    removeBtn.textContent='Remove';
-    removeBtn.onclick=()=>{ closeInfoCard(); wlDel(wlIdx); };
-    actions.appendChild(removeBtn);
+    const primaryRow = document.createElement('div');
+    primaryRow.className = 'info-actions-primary';
+
     const logBtn = document.createElement('button');
-    logBtn.className='info-edit-btn';
-    logBtn.textContent='Log it ✓';
-    logBtn.style.flex='2';
-    logBtn.onclick=()=>{ closeInfoCard(); setTimeout(()=>wlLog(wlIdx),150); };
-    actions.appendChild(logBtn);
+    logBtn.className = 'info-btn-edit';
+    logBtn.textContent = '＋ Log to Diary';
+    logBtn.onclick = () => { closeInfoCard(); setTimeout(() => wlLog(wlIdx), 120); };
+    primaryRow.appendChild(logBtn);
+
+    const removeBtn = document.createElement('button');
+    removeBtn.className = 'info-btn-share';
+    removeBtn.textContent = '🗑️ Remove';
+    removeBtn.onclick = () => { closeInfoCard(); wlDel(wlIdx); };
+    primaryRow.appendChild(removeBtn);
+
+    actions.appendChild(primaryRow);
+  } else {
+    // Logged entry actions
+    const primaryRow = document.createElement('div');
+    primaryRow.className = 'info-actions-primary';
+
+    const editBtn = document.createElement('button');
+    editBtn.className = 'info-btn-edit';
+    editBtn.textContent = '✏️ Edit Review';
+    editBtn.onclick = () => { closeInfoCard(); setTimeout(() => openModal(entry), 120); };
+    primaryRow.appendChild(editBtn);
+
+    const shareBtn = document.createElement('button');
+    shareBtn.className = 'info-btn-share';
+    shareBtn.textContent = '🔗 Share Card';
+    shareBtn.onclick = () => { closeInfoCard(); editId = entry.id; setTimeout(() => openShareCard(), 120); };
+    primaryRow.appendChild(shareBtn);
+
+    actions.appendChild(primaryRow);
+
+    // Destructive Delete Button
+    if(!document.body.classList.contains('readonly')){
+      const delBtn = document.createElement('button');
+      delBtn.className = 'info-btn-danger';
+      delBtn.type = 'button';
+      delBtn.innerHTML = '🗑️ Remove from List';
+      delBtn.onclick = () => {
+        const conf = document.getElementById('confirmOverlay');
+        if(conf) conf.style.display = 'flex';
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+        confirmDeleteBtn.onclick = async () => {
+          conf.style.display = 'none';
+          closeInfoCard();
+          await fsDelete(entry.id);
+          DATA = DATA.filter(x => x.id !== entry.id);
+          renderLog();
+          renderFavs();
+          if(document.getElementById('page-profile')?.classList.contains('on')) renderProfile();
+          if(document.getElementById('page-calendar')?.classList.contains('on')) renderCalendar();
+          toast('Removed from diary');
+        };
+      };
+      actions.appendChild(delBtn);
+    }
   }
 
   overlay.classList.add('show');
+}
+
+function renderJourneySection(entry, context){
+  const jSec = document.getElementById('infoJourneySection');
+  if(!jSec) return;
+  if(context === 'watchlist' || entry.type === 'movie'){
+    jSec.style.display = 'none';
+    return;
+  }
+
+  const hdr = document.getElementById('infoJourneyHdr');
+  const tl = document.getElementById('infoTimeline');
+  const durCard = document.getElementById('tlDurationCard');
+  const durLbl = document.getElementById('tlDurationLbl');
+  const durVal = document.getElementById('tlDurationVal');
+
+  const allData = (typeof DATA !== 'undefined' && DATA.length) ? DATA : (window.DATA || []);
+
+  if(entry.type === 'game'){
+    hdr.innerHTML = '🎮 Game Journey';
+    
+    // Find all entries in dataset for this game
+    const gameEntries = allData.filter(x => x.type === 'game' && x.title.toLowerCase() === entry.title.toLowerCase())
+      .sort((a,b) => a.id - b.id);
+    
+    const startEntry = gameEntries.find(x => x.status === 'started' || x.status === 'playing' || x.status === 'ongoing') || gameEntries[0];
+    const doneEntry = [...gameEntries].reverse().find(x => x.status === 'done');
+    
+    const explicitStart = entry.startedDate || entry.startDate;
+    const startDate = explicitStart ? (typeof explicitStart === 'number' ? explicitStart : dateToMidnightTs(explicitStart)) : ((startEntry && startEntry.id) ? startEntry.id : entry.id);
+    const doneDate = (doneEntry && doneEntry.id) ? doneEntry.id : entry.id;
+    
+    const isCompleted = entry.status === 'done' || (doneEntry && doneEntry.id >= startDate);
+    const isOngoing = entry.status === 'ongoing' || (!isCompleted && (entry.status === 'started' || entry.status === 'playing'));
+    
+    if(isCompleted && doneDate > startDate){
+      // Completed game with separate started date
+      tl.innerHTML = `
+        <div class="timeline-step">
+          <div class="timeline-marker start">
+            <span class="timeline-dot"></span>
+            <span class="timeline-line"></span>
+          </div>
+          <div class="timeline-content">
+            <div class="timeline-badge start">⚡ Started</div>
+            <div class="timeline-meta">${formatLogDate(startDate)}</div>
+          </div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-marker end">
+            <span class="timeline-dot"></span>
+          </div>
+          <div class="timeline-content">
+            <div class="timeline-badge end">🏆 Completed</div>
+            <div class="timeline-meta">${formatLogDate(doneDate)}</div>
+          </div>
+        </div>
+      `;
+      durLbl.textContent = 'Finished in';
+      durVal.textContent = formatDateDiff(startDate, doneDate);
+      durCard.style.display = 'flex';
+      jSec.style.display = 'block';
+    } else if(isCompleted && entry.status === 'done'){
+      // Single completed entry logged on one date
+      tl.innerHTML = `
+        <div class="timeline-step">
+          <div class="timeline-marker end">
+            <span class="timeline-dot"></span>
+          </div>
+          <div class="timeline-content">
+            <div class="timeline-badge end">🏆 Completed</div>
+            <div class="timeline-meta">${formatLogDate(entry.id)}</div>
+          </div>
+        </div>
+      `;
+      durCard.style.display = 'none';
+      jSec.style.display = 'block';
+    } else if(entry.status === 'ongoing' || isOngoing){
+      // Ongoing or Started game
+      const badgeText = entry.status === 'ongoing' ? '♾️ Ongoing' : '⚡ Started';
+      const badgeClass = entry.status === 'ongoing' ? 'ongoing' : 'start';
+      tl.innerHTML = `
+        <div class="timeline-step ongoing-step">
+          <div class="timeline-marker ${badgeClass}">
+            <span class="timeline-dot"></span>
+            <span class="timeline-line"></span>
+          </div>
+          <div class="timeline-content">
+            <div class="timeline-badge ${badgeClass}">${badgeText}</div>
+            <div class="timeline-meta">${formatLogDate(startDate)}</div>
+          </div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-marker ongoing">
+            <span class="timeline-dot" style="background:var(--green);box-shadow:0 0 10px rgba(0,197,102,0.6);"></span>
+          </div>
+          <div class="timeline-content">
+            <div class="timeline-badge ongoing">⏳ Ongoing</div>
+            <div class="timeline-meta" style="color:var(--text3);font-size:11px;">Active playthrough</div>
+          </div>
+        </div>
+      `;
+      durCard.style.display = 'none';
+      jSec.style.display = 'block';
+    } else {
+      jSec.style.display = 'none';
+    }
+  } else if(entry.type === 'series'){
+    hdr.innerHTML = '📺 Series Journey';
+    
+    // Find all entries in dataset for this series
+    const seriesEntries = allData.filter(x => x.type === 'series' && x.title.toLowerCase() === entry.title.toLowerCase())
+      .sort((a,b) => a.id - b.id);
+    
+    const seasonEntries = seriesEntries.filter(x => (x.lastSeason && x.lastSeason > 0) || x.status === 'done' || x.status === 'watching');
+    
+    if(seasonEntries.length > 1 || (seriesEntries.length > 1 && seriesEntries[0].id !== seriesEntries[seriesEntries.length-1].id)){
+      const first = seasonEntries[0] || seriesEntries[0];
+      const last = seasonEntries[seasonEntries.length - 1] || seriesEntries[seriesEntries.length - 1];
+      
+      const firstSeasonLbl = first.lastSeason > 0 ? `Season ${first.lastSeason}` : 'Started watching';
+      const lastSeasonLbl = last.lastSeason > 0 ? `Season ${last.lastSeason}` : (last.status === 'done' ? 'Finished' : 'Latest episode');
+      
+      tl.innerHTML = `
+        <div class="timeline-step">
+          <div class="timeline-marker start">
+            <span class="timeline-dot"></span>
+            <span class="timeline-line"></span>
+          </div>
+          <div class="timeline-content">
+            <div class="timeline-badge start">📺 Started</div>
+            <div class="timeline-meta">${firstSeasonLbl} · ${formatLogDate(first.id)}</div>
+          </div>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-marker end">
+            <span class="timeline-dot"></span>
+          </div>
+          <div class="timeline-content">
+            <div class="timeline-badge end">📺 Latest</div>
+            <div class="timeline-meta">${lastSeasonLbl} · ${formatLogDate(last.id)}</div>
+          </div>
+        </div>
+      `;
+      durLbl.textContent = 'Journey';
+      durVal.textContent = formatDateDiff(first.id, last.id);
+      durCard.style.display = 'flex';
+      jSec.style.display = 'block';
+    } else if(entry.lastSeason > 0){
+      // Single season entry logged
+      tl.innerHTML = `
+        <div class="timeline-step">
+          <div class="timeline-marker start">
+            <span class="timeline-dot"></span>
+          </div>
+          <div class="timeline-content">
+            <div class="timeline-badge start">📺 Season ${entry.lastSeason}</div>
+            <div class="timeline-meta">${formatLogDate(entry.id)}</div>
+          </div>
+        </div>
+      `;
+      durCard.style.display = 'none';
+      jSec.style.display = 'block';
+    } else {
+      jSec.style.display = 'none';
+    }
+  } else {
+    jSec.style.display = 'none';
+  }
 }
 
 async function fetchExtraInfo(entry){
@@ -4840,10 +5770,205 @@ function hoverActivityMonth(key){
   });
 }
 
+// ── UNIVERSAL DIARY SEARCH LOGIC ────────────────────────
+let _diarySearchFilter = 'all';
+
+function openDiarySearch(){
+  const overlay = document.getElementById('diarySearchOverlay');
+  const input = document.getElementById('diarySearchInput');
+  if(!overlay || !input) return;
+  overlay.style.display = 'flex';
+  overlay.classList.add('show');
+  input.value = '';
+  document.getElementById('diarySearchClearBtn').style.display = 'none';
+  renderDiarySearchResults('');
+  setTimeout(() => input.focus(), 80);
+}
+
+function closeDiarySearch(){
+  const overlay = document.getElementById('diarySearchOverlay');
+  if(overlay){
+    overlay.classList.remove('show');
+    overlay.style.display = 'none';
+  }
+}
+
+function renderDiarySearchResults(query){
+  const resultsContainer = document.getElementById('diarySearchResults');
+  const countEl = document.getElementById('diarySearchCount');
+  const clearBtn = document.getElementById('diarySearchClearBtn');
+  if(!resultsContainer) return;
+
+  const rawQ = (query || '').trim();
+  const q = rawQ.toLowerCase();
+  clearBtn.style.display = rawQ.length > 0 ? 'flex' : 'none';
+
+  let list = (typeof DATA !== 'undefined' && DATA.length) ? [...DATA] : (window.DATA ? [...window.DATA] : []);
+  if(_diarySearchFilter !== 'all'){
+    list = list.filter(x => x.type === _diarySearchFilter);
+  }
+
+  if(!q){
+    countEl.textContent = `${list.length} logged`;
+    if(!list.length){
+      resultsContainer.innerHTML = `
+        <div class="diary-search-empty">
+          <div class="diary-search-empty-icon">📖</div>
+          <div class="diary-search-empty-title">Nothing in your diary yet</div>
+          <div class="diary-search-empty-sub">Start logging movies, series, and games to search them here.</div>
+        </div>
+      `;
+      return;
+    }
+    // Show recent entries when search is blank
+    resultsContainer.innerHTML = list.slice(0, 40).map(e => renderDiarySearchCard(e, '', '')).join('');
+    return;
+  }
+
+  // Filter & Score matches
+  const scored = [];
+  for(const item of list){
+    const title = (item.title || '').toLowerCase();
+    const notes = (item.notes || '').toLowerCase();
+    const genre = (item.genre || '').toLowerCase();
+    const year = String(item.year || '');
+
+    let score = 0;
+    let matchType = '';
+
+    if(title === q){
+      score = 100; matchType = 'title';
+    } else if(title.startsWith(q)){
+      score = 80; matchType = 'title';
+    } else if(title.includes(q)){
+      score = 60; matchType = 'title';
+    } else if(notes.includes(q)){
+      score = 40; matchType = 'notes';
+    } else if(genre.includes(q) || year.includes(q)){
+      score = 20; matchType = 'meta';
+    }
+
+    if(score > 0){
+      scored.push({ item, score, matchType });
+    }
+  }
+
+  // Sort by score desc, then by date desc
+  scored.sort((a,b) => b.score - a.score || b.item.id - a.item.id);
+
+  countEl.textContent = `${scored.length} ${scored.length === 1 ? 'match' : 'matches'}`;
+
+  if(!scored.length){
+    const safeQ = rawQ.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    resultsContainer.innerHTML = `
+      <div class="diary-search-empty">
+        <div class="diary-search-empty-icon">🔍</div>
+        <div class="diary-search-empty-title">Nothing in your diary yet</div>
+        <div class="diary-search-empty-sub">No logged entries matched "${safeQ}"</div>
+      </div>
+    `;
+    return;
+  }
+
+  resultsContainer.innerHTML = scored.map(s => renderDiarySearchCard(s.item, q, s.matchType)).join('');
+}
+
+function renderDiarySearchCard(e, q, matchType){
+  const typeIcons = { movie: '🎬', series: '📺', game: '🎮' };
+  const typeNames = { movie: 'Film', series: 'Series', game: 'Game' };
+  const icon = typeIcons[e.type] || '🎬';
+  const typeName = typeNames[e.type] || 'Film';
+
+  const thumb = e.poster
+    ? `<img class="diary-search-thumb" src="${e.poster}" loading="lazy" alt="">`
+    : `<div class="diary-search-thumb-ph">${icon}</div>`;
+
+  const rKey = RATINGS.includes(e.rating) ? e.rating : 'decent';
+  const rBadge = `<span class="rating-badge ${RATING_CLASS[rKey]}">★ ${RATING_LABELS[rKey]}</span>`;
+  const sKey = e.rewatched ? 'rewatched' : (e.status || 'done');
+  const sPill = `<span class="pill ${pillCls[sKey] || 'pill-done'}">${getPillLabel(sKey, e.type, e)}</span>`;
+  const favTag = e.fav ? `<span style="font-size:11px">❤️</span>` : '';
+
+  let notesSnippet = '';
+  if(e.notes && (matchType === 'notes' || (q && e.notes.toLowerCase().includes(q)))){
+    const idx = e.notes.toLowerCase().indexOf(q);
+    const start = Math.max(0, idx - 15);
+    const end = Math.min(e.notes.length, idx + (q ? q.length : 0) + 35);
+    let snippet = (start > 0 ? '…' : '') + e.notes.substring(start, end) + (end < e.notes.length ? '…' : '');
+    // Escape HTML first
+    snippet = snippet.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    // Highlight matched term
+    if(q){
+      const regex = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+      snippet = snippet.replace(regex, '<mark>$1</mark>');
+    }
+    notesSnippet = `<div class="diary-search-notes-preview">"${snippet}"</div>`;
+  } else if(e.notes && e.notes.trim()){
+    let snippet = e.notes.trim().substring(0, 50) + (e.notes.trim().length > 50 ? '…' : '');
+    snippet = snippet.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    notesSnippet = `<div class="diary-search-notes-preview" style="color:var(--text3)">"${snippet}"</div>`;
+  }
+
+  const metaText = [e.year, typeName, e.genre ? e.genre.split(',')[0] : ''].filter(Boolean).join(' · ');
+
+  return `
+    <div class="diary-search-card ${e.type}" onclick="selectDiarySearchResult(${e.id})">
+      <div class="diary-search-thumb-wrap">${thumb}</div>
+      <div class="diary-search-info">
+        <div class="diary-search-title-row">
+          <span class="diary-search-title">${e.title}</span>
+          ${favTag}
+        </div>
+        <div class="diary-search-meta">${metaText}</div>
+        <div class="diary-search-badges">
+          ${rBadge}
+          ${sPill}
+        </div>
+        ${notesSnippet}
+      </div>
+    </div>
+  `;
+}
+
+function selectDiarySearchResult(id){
+  closeDiarySearch();
+  const list = (typeof DATA !== 'undefined' && DATA.length) ? DATA : (window.DATA || []);
+  const entry = list.find(x => String(x.id) === String(id));
+  setTimeout(() => {
+    if(entry) openInfo(entry, 'logged');
+    else openInfo(id, 'logged');
+  }, 100);
+}
+
+// Wire Search Event Listeners
+document.getElementById('toolbarSearchBtn')?.addEventListener('click', openDiarySearch);
+document.getElementById('diarySearchCancelBtn')?.addEventListener('click', closeDiarySearch);
+document.getElementById('diarySearchClearBtn')?.addEventListener('click', () => {
+  const inp = document.getElementById('diarySearchInput');
+  if(inp){ inp.value = ''; inp.focus(); renderDiarySearchResults(''); }
+});
+document.getElementById('diarySearchInput')?.addEventListener('input', (e) => {
+  renderDiarySearchResults(e.target.value);
+});
+document.getElementById('diarySearchOverlay')?.addEventListener('click', (e) => {
+  if(e.target === document.getElementById('diarySearchOverlay')){
+    closeDiarySearch();
+  }
+});
+document.querySelectorAll('.diary-search-seg .seg-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.diary-search-seg .seg-btn').forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+    _diarySearchFilter = btn.dataset.sf || 'all';
+    renderDiarySearchResults(document.getElementById('diarySearchInput')?.value || '');
+  });
+});
+
 // ── EXPOSE TO WINDOW ──────────────────────────────────────
 window.toggleFav        = toggleFav;
 window.delEntry         = delEntry;
 window.openEdit         = openEdit;
+window.closeInfoCard    = closeInfoCard;
 window.wlLog            = wlLog;
 window.wlDel            = wlDel;
 window.removePick       = removePick;
@@ -4851,6 +5976,8 @@ window.addPickFromSearch= addPickFromSearch;
 window.openPickSelector = openPickSelector;
 window.openInfo         = openInfo;
 window.openInfoFromWL   = openInfoFromWL;
+window.showInfoCard     = showInfoCard;
+window.updateInfoCard   = updateInfoCard;
 window.profileCardClick = profileCardClick;
 window.editProfileName  = editProfileName;
 window.openFavsFromProfile = openFavsFromProfile;
@@ -4863,6 +5990,12 @@ window.selectActivityMonth = selectActivityMonth;
 window.hoverActivityMonth  = hoverActivityMonth;
 window.openModal        = openModal;
 window.closeModal       = closeModal;
+window.renderLog        = renderLog;
+window.renderFavs       = renderFavs;
+window.openDiarySearch  = openDiarySearch;
+window.closeDiarySearch = closeDiarySearch;
+window.renderDiarySearchResults = renderDiarySearchResults;
+window.selectDiarySearchResult = selectDiarySearchResult;
 </script>
 </body>
 </html>
