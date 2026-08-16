@@ -150,13 +150,47 @@ function calculateGameRelevance(game, query) {
 
 // ── IGDB / TWITCH ADAPTER HELPERS ───────────────────────
 const ESRB_RATING_MAP = {
-  6: 'Rating Pending',
-  7: 'Early Childhood',
-  8: 'Everyone',
-  9: 'Everyone 10+',
-  10: 'Teen',
-  11: 'Mature 17+',
-  12: 'Adults Only 18+',
+  6: 'Rating Pending (RP)',
+  7: 'Early Childhood (EC)',
+  8: 'Everyone (E)',
+  9: 'Everyone 10+ (E10+)',
+  10: 'Teen (T)',
+  11: 'Mature 17+ (M)',
+  12: 'Adults Only 18+ (AO)',
+};
+
+const PEGI_RATING_MAP = {
+  1: 'PEGI 3',
+  2: 'PEGI 7',
+  3: 'PEGI 12',
+  4: 'PEGI 16',
+  5: 'PEGI 18',
+};
+
+const CERO_RATING_MAP = {
+  13: 'CERO A (All Ages)',
+  14: 'CERO B (12+)',
+  15: 'CERO C (15+)',
+  16: 'CERO D (17+)',
+  17: 'CERO Z (18+)',
+};
+
+const USK_RATING_MAP = {
+  18: 'USK 0',
+  19: 'USK 6',
+  20: 'USK 12',
+  21: 'USK 16',
+  22: 'USK 18',
+};
+
+const AGE_RATING_ORG_MAP = {
+  1: 'ESRB',
+  2: 'PEGI',
+  3: 'CERO',
+  4: 'USK',
+  5: 'GRAC',
+  6: 'CLASS_IND',
+  7: 'ACB',
 };
 
 let cachedTwitchToken = null;
@@ -206,6 +240,23 @@ function igdbToRawgDetail(x) {
   const esrbObj = (x.age_ratings || []).find(r => r.category === 1 && r.rating);
   const esrbName = esrbObj ? ESRB_RATING_MAP[esrbObj.rating] || '—' : '—';
 
+  const pegiObj = (x.age_ratings || []).find(r => r.category === 2 && r.rating);
+  const pegiName = pegiObj ? PEGI_RATING_MAP[pegiObj.rating] || '—' : '—';
+
+  const primaryAgeRating = (x.age_ratings || []).map(ar => {
+    let label = '—';
+    if (ar.category === 1) label = ESRB_RATING_MAP[ar.rating] || 'ESRB';
+    else if (ar.category === 2) label = PEGI_RATING_MAP[ar.rating] || 'PEGI';
+    else if (ar.category === 3) label = CERO_RATING_MAP[ar.rating] || 'CERO';
+    else if (ar.category === 4) label = USK_RATING_MAP[ar.rating] || 'USK';
+    return {
+      organization: AGE_RATING_ORG_MAP[ar.category] || 'Other',
+      label: label,
+      synopsis: ar.synopsis || '',
+      descriptors: (ar.content_descriptions || []).map(d => d.description).filter(Boolean),
+    };
+  });
+
   const devs = (x.involved_companies || [])
     .filter(c => c.developer && c.company?.name)
     .map(c => ({ name: c.company.name }));
@@ -214,19 +265,47 @@ function igdbToRawgDetail(x) {
     .filter(c => c.publisher && c.company?.name)
     .map(c => ({ name: c.company.name }));
 
+  const screenshots = (x.screenshots || []).map(s => `https://images.igdb.com/igdb/image/upload/t_screenshot_big/${s.image_id}.jpg`);
+  const artworks = (x.artworks || []).map(a => `https://images.igdb.com/igdb/image/upload/t_1080p/${a.image_id}.jpg`);
+
   return {
     id: x.id,
     name: x.name || '',
     description_raw: x.summary || x.storyline || '',
+    summary: x.summary || '',
+    storyline: x.storyline || '',
     rating: x.total_rating
       ? parseFloat((x.total_rating / 20).toFixed(1))
       : (x.rating ? parseFloat((x.rating / 20).toFixed(1)) : 0),
+    total_rating: x.total_rating ? parseFloat(x.total_rating.toFixed(1)) : null,
+    total_rating_count: x.total_rating_count || x.rating_count || 0,
     released: x.first_release_date ? new Date(x.first_release_date * 1000).toISOString().slice(0, 10) : '',
+    background_image: x.cover?.image_id ? `https://images.igdb.com/igdb/image/upload/t_cover_big/${x.cover.image_id}.jpg` : '',
     playtime: x.time_to_beat?.normally ? Math.round(x.time_to_beat.normally / 3600) : null,
     platforms: (x.platforms || []).map(p => ({ platform: { name: p.name } })),
     developers: devs,
     publishers: pubs,
     esrb_rating: { name: esrbName },
+    pegi_rating: { name: pegiName },
+    age_ratings_detailed: primaryAgeRating,
+    genres: (x.genres || []).map(g => ({ name: g.name })),
+    themes: (x.themes || []).map(t => ({ name: t.name })),
+    game_modes: (x.game_modes || []).map(m => m.name),
+    player_perspectives: (x.player_perspectives || []).map(p => p.name),
+    screenshots: screenshots,
+    artworks: artworks,
+    videos: (x.videos || []).map(v => ({ id: v.video_id, name: v.name })),
+    websites: (x.websites || []).map(w => ({ category: w.category, url: w.url })),
+    collection: x.collection ? { name: x.collection.name, games: (x.collection.games || []).map(g => ({ name: g.name, year: g.first_release_date ? new Date(g.first_release_date * 1000).getFullYear() : '', cover: g.cover?.image_id ? `https://images.igdb.com/igdb/image/upload/t_cover_big/${g.cover.image_id}.jpg` : '' })) } : null,
+    franchises: (x.franchises || []).map(f => f.name),
+    expansions: (x.expansions || []).map(e => ({ name: e.name, cover: e.cover?.image_id ? `https://images.igdb.com/igdb/image/upload/t_cover_big/${e.cover.image_id}.jpg` : '' })),
+    dlcs: (x.dlcs || []).map(d => ({ name: d.name, cover: d.cover?.image_id ? `https://images.igdb.com/igdb/image/upload/t_cover_big/${d.cover.image_id}.jpg` : '' })),
+    similar_games: (x.similar_games || []).map(sg => ({
+      name: sg.name,
+      year: sg.first_release_date ? new Date(sg.first_release_date * 1000).getFullYear() : '',
+      cover: sg.cover?.image_id ? `https://images.igdb.com/igdb/image/upload/t_cover_big/${sg.cover.image_id}.jpg` : '',
+      rating: sg.total_rating ? parseFloat((sg.total_rating / 10).toFixed(1)) : null,
+    })),
   };
 }
 
@@ -489,8 +568,23 @@ export default {
         const tmdbKey = env.TMDB_API_KEY;
         if (!tmdbKey) return errorResponse('TMDB_API_KEY secret not configured', 500, corsHeaders);
 
-        const tmdbUrl = `https://api.themoviedb.org/3/movie/${id}?api_key=${tmdbKey}&append_to_response=credits`;
-        return await fetchJsonSafe(tmdbUrl, fetchOpts, corsHeaders);
+        const tmdbUrl = `https://api.themoviedb.org/3/movie/${id}?api_key=${tmdbKey}&append_to_response=credits,release_dates,videos,keywords,similar`;
+        const wpUrl = `https://api.themoviedb.org/3/movie/${id}/watch/providers?api_key=${tmdbKey}`;
+
+        try {
+          const [mainResp, wpResp] = await Promise.all([
+            fetch(tmdbUrl, fetchOpts).then(r => r.json()),
+            fetch(wpUrl, fetchOpts).then(r => r.json()).catch(() => ({}))
+          ]);
+
+          if (wpResp && wpResp.results) {
+            mainResp['watch/providers'] = wpResp;
+          }
+
+          return jsonResponse(mainResp, 200, corsHeaders);
+        } catch (e) {
+          return errorResponse(`Movie details error: ${e.message}`, 500, corsHeaders);
+        }
       }
 
       // 5. TV Series Details & Credits (TMDB)
@@ -500,23 +594,45 @@ export default {
         const tmdbKey = env.TMDB_API_KEY;
         if (!tmdbKey) return errorResponse('TMDB_API_KEY secret not configured', 500, corsHeaders);
 
-        const tmdbUrl = `https://api.themoviedb.org/3/tv/${id}?api_key=${tmdbKey}&append_to_response=credits`;
-        return await fetchJsonSafe(tmdbUrl, fetchOpts, corsHeaders);
+        const tmdbUrl = `https://api.themoviedb.org/3/tv/${id}?api_key=${tmdbKey}&append_to_response=credits,aggregate_credits,content_ratings,videos,keywords,similar,external_ids`;
+        const wpUrl = `https://api.themoviedb.org/3/tv/${id}/watch/providers?api_key=${tmdbKey}`;
+        const crUrl = `https://api.themoviedb.org/3/tv/${id}/content_ratings?api_key=${tmdbKey}`;
+
+        try {
+          const [mainResp, wpResp, crResp] = await Promise.all([
+            fetch(tmdbUrl, fetchOpts).then(r => r.json()),
+            fetch(wpUrl, fetchOpts).then(r => r.json()).catch(() => ({})),
+            fetch(crUrl, fetchOpts).then(r => r.json()).catch(() => ({}))
+          ]);
+
+          if (wpResp && wpResp.results) {
+            mainResp['watch/providers'] = wpResp;
+          }
+          if (crResp && crResp.results && (!mainResp.content_ratings || !mainResp.content_ratings.results)) {
+            mainResp.content_ratings = crResp;
+          }
+
+          return jsonResponse(mainResp, 200, corsHeaders);
+        } catch (e) {
+          return errorResponse(`TV details error: ${e.message}`, 500, corsHeaders);
+        }
       }
 
-      // 6. Game Details (IGDB Adapter - RAWG compatible format)
+      // 6. Game Details (IGDB Adapter - Complete structured details)
       const gameMatch = pathname.match(/^\/api\/game\/([a-zA-Z0-9_-]+)$/);
       if (gameMatch) {
         const id = gameMatch[1];
 
         try {
           const token = await getTwitchToken(env);
+          const fieldsQuery = `fields id, name, first_release_date, summary, storyline, total_rating, total_rating_count, rating, rating_count, aggregated_rating, category, status, cover.image_id, artworks.image_id, screenshots.image_id, videos.video_id, videos.name, genres.name, themes.name, game_modes.name, player_perspectives.name, platforms.name, platforms.platform_logo.image_id, release_dates.human, release_dates.platform.name, release_dates.date, release_dates.region, involved_companies.company.name, involved_companies.developer, involved_companies.publisher, age_ratings.category, age_ratings.rating, age_ratings.rating_cover_url, age_ratings.synopsis, age_ratings.content_descriptions.description, franchises.name, collection.name, collection.games.name, collection.games.cover.image_id, collection.games.first_release_date, expansions.name, expansions.cover.image_id, dlcs.name, dlcs.cover.image_id, parent_game.name, websites.category, websites.url, similar_games.name, similar_games.cover.image_id, similar_games.first_release_date, similar_games.total_rating, game_engines.name, keywords.name;`;
+          
           let apicalypseQuery = '';
           if (/^\d+$/.test(id)) {
-            apicalypseQuery = `fields id, name, first_release_date, summary, storyline, total_rating, rating, cover.image_id, genres.name, platforms.name, involved_companies.company.name, involved_companies.developer, involved_companies.publisher, age_ratings.category, age_ratings.rating; where id = ${id};`;
+            apicalypseQuery = `${fieldsQuery} where id = ${id};`;
           } else {
             const cleanTitle = id.replace(/-/g, ' ').replace(/"/g, '');
-            apicalypseQuery = `search "${cleanTitle}"; fields id, name, first_release_date, summary, storyline, total_rating, rating, cover.image_id, genres.name, platforms.name, involved_companies.company.name, involved_companies.developer, involved_companies.publisher, age_ratings.category, age_ratings.rating; limit 1;`;
+            apicalypseQuery = `search "${cleanTitle}"; ${fieldsQuery} limit 1;`;
           }
 
           const igdbRes = await fetch('https://api.igdb.com/v4/games', {

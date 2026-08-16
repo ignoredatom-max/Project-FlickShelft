@@ -395,47 +395,115 @@ body::before{
 .nav-avatar-ph{font-size:18px;line-height:1;}
 
 /* ── TOOLBAR ─────────────────────────────────── */
-.toolbar{padding:4px 14px 6px;display:flex;gap:8px;align-items:center}
-.seg{display:flex;background:var(--bg2);border-radius:12px;padding:3px;flex:1;min-width:0;border:1px solid var(--border);height:34px;align-items:center}
-.seg-btn{flex:1;height:28px;padding:0 2px;display:flex;align-items:center;justify-content:center;font-family:'Inter',sans-serif;font-size:11.5px;font-weight:600;border:none;background:transparent;color:var(--text3);cursor:pointer;border-radius:9px;transition:all 0.18s;letter-spacing:0.2px;white-space:nowrap}
-.seg-btn.on{background:var(--bg4);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,0.3)}
-.toolbar-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
-.sort-sel{
-  height:34px;
+.toolbar{
+  padding:4px 16px 8px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  max-width:100%;
+}
+.seg{
+  display:inline-flex;
   background:var(--bg2);
+  border-radius:12px;
+  padding:3px;
   border:1px solid var(--border);
+  height:36px;
+  align-items:center;
+  flex:0 0 auto;
+}
+.seg-btn{
+  height:30px;
+  padding:0 12px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Inter',sans-serif;
+  font-size:11.5px;
+  font-weight:600;
+  border:none;
+  background:transparent;
+  color:var(--text3);
+  cursor:pointer;
+  border-radius:9px;
+  transition:all 0.18s;
+  letter-spacing:0.1px;
+  white-space:nowrap;
+}
+.seg-btn.on{
+  background:var(--bg4);
+  color:var(--text);
+  box-shadow:0 1px 4px rgba(0,0,0,0.3);
+}
+.toolbar-right{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  flex-shrink:0;
+}
+.sort-sel{
+  height:36px;
+  background:var(--bg2);
+  border:1px solid var(--border2);
   color:var(--text2);
   padding:0 10px;
   border-radius:12px;
   font-family:'Inter',sans-serif;
   font-size:11.5px;
-  font-weight:500;
-  outline:none;
-  -webkit-appearance:none;
+  font-weight:600;
   cursor:pointer;
-  display:flex;
-  align-items:center;
+  outline:none;
+  transition:all 0.15s ease;
+  min-width:82px;
+}
+.sort-sel:hover{
+  border-color:var(--border3);
+  color:var(--text);
 }
 .toolbar-search-btn{
-  background:var(--bg2);
-  border:1px solid var(--border);
-  color:var(--text2);
-  height:34px;
-  width:34px;
+  height:36px;
+  background:rgba(45, 127, 249, 0.12);
+  border:1px solid rgba(45, 127, 249, 0.35);
+  color:var(--blue);
+  padding:0 14px 0 11px;
   border-radius:12px;
-  display:flex;
+  display:inline-flex;
   align-items:center;
   justify-content:center;
+  gap:6px;
   cursor:pointer;
-  padding:0;
-  transition:all 0.15s ease;
+  font-family:'Inter',sans-serif;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:-0.1px;
+  box-shadow:0 0 14px rgba(45, 127, 249, 0.16);
+  transition:all 0.18s ease;
+  white-space:nowrap;
   flex-shrink:0;
+  min-width:86px;
+}
+.toolbar-search-btn:hover{
+  background:rgba(45, 127, 249, 0.22);
+  border-color:rgba(45, 127, 249, 0.55);
+  box-shadow:0 0 20px rgba(45, 127, 249, 0.3);
+  color:#fff;
 }
 .toolbar-search-btn:active{
-  background:var(--bg3);
-  color:var(--text);
-  transform:scale(0.94);
-  border-color:var(--border2);
+  transform:scale(0.96);
+  background:rgba(45, 127, 249, 0.28);
+}
+@media(max-width: 480px){
+  .toolbar{
+    padding:4px 12px 6px;
+    gap:6px;
+    overflow-x:auto;
+    scrollbar-width:none;
+  }
+  .toolbar::-webkit-scrollbar{ display:none; }
+  .seg-btn{ padding:0 8px; font-size:11px; }
+  .sort-sel{ min-width:74px; padding:0 6px; }
+  .toolbar-search-btn{ min-width:80px; padding:0 10px 0 8px; font-size:11.5px; }
 }
 
 /* Favourites Back Button */
@@ -2382,6 +2450,664 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
 .upcoming-card.game .upcoming-countdown-lbl{color:var(--green);}
 .upcoming-genre{font-size:9px;color:var(--text3);margin-top:4px;}
 
+/* ── UNIVERSAL SEARCH STATUS PILLS ────────────── */
+.search-status-pill{
+  font-size:10px;
+  font-weight:700;
+  padding:2px 7px;
+  border-radius:6px;
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  letter-spacing:0.2px;
+}
+.search-status-pill.logged{
+  background:rgba(0,197,102,0.14);
+  color:var(--green);
+  border:1px solid rgba(0,197,102,0.3);
+}
+.search-status-pill.wl{
+  background:rgba(255,55,95,0.14);
+  color:var(--pink);
+  border:1px solid rgba(255,55,95,0.3);
+}
+.search-status-pill.fav{
+  background:rgba(255,69,58,0.14);
+  color:var(--red);
+  border:1px solid rgba(255,69,58,0.3);
+}
+.search-status-pill.unlogged{
+  background:rgba(255,255,255,0.06);
+  color:var(--text3);
+  border:1px solid var(--border);
+}
+
+/* ── VIEW FULL DETAILS BUTTON (QUICK INFO CARD) ── */
+.btn-more-details{
+  width:100%;
+  background:rgba(45,127,249,0.12);
+  color:var(--blue);
+  border:1px solid rgba(45,127,249,0.32);
+  padding:12px 16px;
+  border-radius:14px;
+  font-family:'Inter',sans-serif;
+  font-size:13px;
+  font-weight:700;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  box-shadow:0 0 14px rgba(45,127,249,0.14);
+  transition:all 0.18s ease;
+  margin-top:2px;
+}
+.btn-more-details:hover{
+  background:rgba(45,127,249,0.2);
+  border-color:rgba(45,127,249,0.5);
+  box-shadow:0 0 20px rgba(45,127,249,0.28);
+}
+.btn-more-details:active{
+  transform:scale(0.98);
+}
+
+/* ── COMPLETE DEEP MEDIA INFO CARD (ENCYCLOPEDIA MODE) ── */
+.deep-overlay{
+  position:fixed;
+  inset:0;
+  z-index:950;
+  background:rgba(0,0,0,0.85);
+  display:none;
+  align-items:flex-end;
+  justify-content:center;
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  opacity:0;
+  transition:opacity 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+.deep-overlay.show{
+  display:flex;
+  opacity:1;
+}
+.deep-sheet{
+  width:100%;
+  max-width:680px;
+  max-height:92vh;
+  background:var(--bg);
+  border-radius:24px 24px 0 0;
+  border:1px solid var(--border2);
+  border-bottom:none;
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  box-shadow:0 -16px 50px rgba(0,0,0,0.85);
+  transform:translateY(100%);
+  transition:transform 0.3s cubic-bezier(0.32,1,0.23,1);
+  overflow:hidden;
+}
+.deep-overlay.show .deep-sheet{
+  transform:translateY(0);
+}
+@media (min-width: 680px) {
+  .deep-overlay{
+    align-items:center;
+    padding:24px;
+  }
+  .deep-sheet{
+    max-width:820px;
+    max-height:88vh;
+    border-radius:24px;
+    border-bottom:1px solid var(--border2);
+    transform:translateY(24px) scale(0.98);
+  }
+  .deep-overlay.show .deep-sheet{
+    transform:translateY(0) scale(1);
+  }
+}
+
+/* Pinned Close Button (Fixed Top-Right) */
+.deep-close{
+  position:absolute;
+  top:14px;
+  right:14px;
+  z-index:60;
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  background:rgba(18,18,22,0.82);
+  border:1px solid rgba(255,255,255,0.18);
+  color:var(--text);
+  font-size:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  box-shadow:0 4px 16px rgba(0,0,0,0.6);
+  transition:all 0.18s;
+  padding:0;
+  line-height:1;
+}
+.deep-close:hover{
+  background:rgba(255,255,255,0.18);
+  transform:scale(1.05);
+}
+.deep-close:active{
+  transform:scale(0.92);
+}
+
+.deep-scroll-body{
+  flex:1;
+  overflow-y:auto;
+  overflow-x:hidden;
+  scrollbar-width:none;
+  position:relative;
+}
+.deep-scroll-body::-webkit-scrollbar{display:none}
+
+/* Hero & Backdrop */
+.deep-hero-wrap{
+  position:relative;
+  width:100%;
+  height:240px;
+  background:var(--bg2);
+  overflow:hidden;
+}
+.deep-backdrop{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  filter:brightness(0.6);
+  mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%);
+  -webkit-mask-image:linear-gradient(to bottom, rgba(0,0,0,1) 40%, rgba(0,0,0,0) 100%);
+}
+.deep-backdrop-ph{
+  width:100%;
+  height:100%;
+  background:linear-gradient(180deg, var(--bg3) 0%, var(--bg) 100%);
+}
+
+.deep-hero-content{
+  position:relative;
+  margin-top:-90px;
+  padding:0 18px 16px;
+  display:flex;
+  gap:16px;
+  align-items:flex-end;
+  z-index:2;
+}
+.deep-poster-wrap{
+  width:105px;
+  height:158px;
+  border-radius:14px;
+  overflow:hidden;
+  flex-shrink:0;
+  background:var(--bg3);
+  border:1px solid var(--border2);
+  box-shadow:0 12px 30px rgba(0,0,0,0.7);
+  position:relative;
+}
+.deep-poster{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.deep-poster-ph{
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:36px;
+  background:var(--bg3);
+}
+
+.deep-hero-meta{
+  flex:1;
+  min-width:0;
+  padding-bottom:2px;
+}
+.deep-title{
+  font-size:22px;
+  font-weight:800;
+  color:var(--text);
+  line-height:1.2;
+  margin-bottom:4px;
+  letter-spacing:-0.4px;
+  word-break:break-word;
+}
+.deep-original-title{
+  font-size:12px;
+  color:var(--text3);
+  font-style:italic;
+  margin-bottom:4px;
+}
+.deep-tagline{
+  font-size:12px;
+  color:var(--text2);
+  font-style:italic;
+  margin-bottom:8px;
+  line-height:1.4;
+}
+
+.deep-chips-row{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  align-items:center;
+  margin-top:6px;
+}
+.deep-chip{
+  font-size:10.5px;
+  font-weight:700;
+  padding:3px 9px;
+  border-radius:8px;
+  background:var(--bg3);
+  border:1px solid var(--border2);
+  color:var(--text2);
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  white-space:nowrap;
+  line-height:1.3;
+}
+.deep-chip.chip-score{
+  background:rgba(255,214,10,0.12);
+  color:var(--yellow);
+  border-color:rgba(255,214,10,0.3);
+}
+.deep-chip.chip-age{
+  background:rgba(255,69,58,0.12);
+  color:var(--red);
+  border-color:rgba(255,69,58,0.3);
+  font-weight:800;
+}
+.deep-chip.chip-type-movie{background:rgba(255,69,58,0.14);color:var(--red);border-color:rgba(255,69,58,0.35);}
+.deep-chip.chip-type-series{background:rgba(0,180,216,0.14);color:var(--teal);border-color:rgba(0,180,216,0.35);}
+.deep-chip.chip-type-game{background:rgba(0,197,102,0.14);color:var(--green);border-color:rgba(0,197,102,0.35);}
+
+/* Main Body & Section Containers */
+.deep-body{
+  padding:16px 16px 48px;
+  display:flex;
+  flex-direction:column;
+  gap:24px;
+}
+@media (min-width: 680px){
+  .deep-body{
+    padding:20px 24px 56px;
+    gap:28px;
+  }
+}
+.deep-content-container{
+  display:flex;
+  flex-direction:column;
+  gap:0;
+}
+.deep-sec{
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:16px 18px;
+  position:relative;
+  overflow:hidden;
+  margin-bottom:20px;
+}
+.deep-sec:last-child{
+  margin-bottom:0;
+}
+@media (min-width: 680px){
+  .deep-sec{
+    padding:20px 24px;
+    margin-bottom:24px;
+  }
+}
+.deep-sec-hdr{
+  font-size:11px;
+  font-weight:800;
+  color:var(--text3);
+  text-transform:uppercase;
+  letter-spacing:1px;
+  margin-bottom:12px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.deep-sec-hdr svg{
+  color:var(--blue);
+  width:15px;
+  height:15px;
+  flex-shrink:0;
+}
+.deep-overview-text{
+  font-size:13.5px;
+  line-height:1.7;
+  color:var(--text);
+  word-break:break-word;
+}
+
+/* Age / Content Rating Badges Grid */
+.deep-age-badges-grid{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:6px;
+}
+.deep-age-item{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  background:var(--bg3);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:12px;
+  padding:8px 14px;
+  min-width:76px;
+}
+.deep-age-val{
+  font-size:15px;
+  font-weight:800;
+  color:var(--yellow);
+  line-height:1.2;
+  letter-spacing:0.4px;
+}
+.deep-age-country{
+  font-size:10.5px;
+  font-weight:600;
+  color:var(--text3);
+  margin-top:3px;
+  display:flex;
+  align-items:center;
+  gap:4px;
+}
+.deep-age-desc{
+  font-size:12px;
+  color:var(--text2);
+  line-height:1.4;
+  margin-top:6px;
+}
+
+/* Details Grid */
+.deep-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(130px, 1fr));
+  gap:10px;
+}
+.deep-kv-item{
+  background:var(--bg3);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:10px 12px;
+}
+.deep-kv-lbl{
+  font-size:10px;
+  font-weight:700;
+  color:var(--text3);
+  text-transform:uppercase;
+  letter-spacing:0.6px;
+  margin-bottom:3px;
+}
+.deep-kv-val{
+  font-size:12.5px;
+  font-weight:600;
+  color:var(--text);
+  line-height:1.3;
+  word-break:break-word;
+}
+
+/* Horizontal Cast Carousel */
+.deep-cast-row{
+  display:flex;
+  gap:14px;
+  overflow-x:auto;
+  scrollbar-width:none;
+  padding-bottom:6px;
+  margin:0 -4px;
+}
+.deep-cast-row::-webkit-scrollbar{display:none}
+.deep-cast-card{
+  flex:0 0 88px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+}
+.deep-cast-photo-wrap{
+  width:62px;
+  height:62px;
+  border-radius:50%;
+  overflow:hidden;
+  background:var(--bg3);
+  border:1px solid var(--border2);
+  margin-bottom:7px;
+  flex-shrink:0;
+}
+.deep-cast-photo{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.deep-cast-photo-ph{
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:22px;
+  color:var(--text3);
+}
+.deep-cast-name{
+  font-size:11px;
+  font-weight:700;
+  color:var(--text);
+  line-height:1.2;
+  width:100%;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.deep-cast-char{
+  font-size:9.5px;
+  color:var(--text3);
+  line-height:1.2;
+  margin-top:2px;
+  width:100%;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+/* Season Cards (For Series) */
+.deep-seasons-grid{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.deep-season-card{
+  display:flex;
+  gap:14px;
+  background:var(--bg3);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:12px 14px;
+  align-items:center;
+}
+.deep-season-poster{
+  width:48px;
+  height:68px;
+  border-radius:8px;
+  object-fit:cover;
+  background:var(--bg4);
+  flex-shrink:0;
+}
+.deep-season-info{
+  flex:1;
+  min-width:0;
+}
+.deep-season-title{
+  font-size:13px;
+  font-weight:700;
+  color:var(--text);
+  margin-bottom:2px;
+}
+.deep-season-meta{
+  font-size:11px;
+  color:var(--text3);
+  margin-bottom:4px;
+}
+.deep-season-overview{
+  font-size:11.5px;
+  color:var(--text2);
+  line-height:1.4;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+
+/* Watch Providers Section */
+.deep-providers-wrap{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.deep-provider-group{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.deep-provider-group-title{
+  font-size:10px;
+  font-weight:800;
+  color:var(--text3);
+  text-transform:uppercase;
+  letter-spacing:0.8px;
+}
+.deep-provider-logos{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.deep-provider-logo{
+  width:38px;
+  height:38px;
+  border-radius:10px;
+  border:1px solid var(--border2);
+  object-fit:cover;
+}
+.deep-justwatch-attr{
+  font-size:10px;
+  color:var(--text3);
+  margin-top:8px;
+  text-align:right;
+}
+.deep-justwatch-attr a{
+  color:var(--text2);
+  text-decoration:none;
+}
+
+/* Media Gallery */
+.deep-media-gallery{
+  display:flex;
+  gap:10px;
+  overflow-x:auto;
+  scrollbar-width:none;
+  padding-bottom:4px;
+}
+.deep-media-gallery::-webkit-scrollbar{display:none}
+.deep-media-item{
+  flex:0 0 200px;
+  height:120px;
+  border-radius:12px;
+  overflow:hidden;
+  background:var(--bg3);
+  border:1px solid var(--border2);
+  position:relative;
+  cursor:pointer;
+}
+.deep-media-thumb{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.deep-media-play{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,0.45);
+  color:#fff;
+  font-size:26px;
+  transition:background 0.15s;
+}
+.deep-media-item:hover .deep-media-play{
+  background:rgba(0,0,0,0.65);
+}
+
+/* Personal Logger Box inside Deep Card */
+.deep-personal-sec{
+  background:linear-gradient(135deg, rgba(45,127,249,0.08) 0%, rgba(24,24,28,0.7) 100%);
+  border:1px solid rgba(45,127,249,0.25);
+  box-shadow:0 0 20px rgba(45,127,249,0.08);
+}
+.deep-personal-actions{
+  display:flex;
+  gap:8px;
+  margin-top:12px;
+  flex-wrap:wrap;
+}
+.deep-action-btn{
+  flex:1;
+  padding:11px 14px;
+  border-radius:12px;
+  border:none;
+  cursor:pointer;
+  font-family:'Inter',sans-serif;
+  font-size:12.5px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  transition:all 0.15s;
+  white-space:nowrap;
+}
+.deep-action-btn.btn-log{
+  background:var(--blue);
+  color:#fff;
+  box-shadow:0 4px 12px rgba(45,127,249,0.35);
+}
+.deep-action-btn.btn-wl{
+  background:var(--bg3);
+  color:var(--text);
+  border:1px solid var(--border2);
+}
+.deep-action-btn.btn-fav{
+  background:rgba(255,55,95,0.12);
+  color:var(--pink);
+  border:1px solid rgba(255,55,95,0.3);
+}
+.deep-action-btn:active{
+  transform:scale(0.97);
+}
+
+/* Skeletons */
+.deep-skeleton{
+  background:linear-gradient(90deg, var(--bg3) 25%, var(--bg4) 50%, var(--bg3) 75%);
+  background-size:200% 100%;
+  animation:skeleton-shimmer 1.5s infinite;
+  border-radius:8px;
+}
+@keyframes skeleton-shimmer{
+  0%{background-position:200% 0}
+  100%{background-position:-200% 0}
+}
 </style>
 </head>
 <body>
@@ -2411,24 +3137,25 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
       </div>
     </div>
     <div class="toolbar" style="position:relative;border-bottom:1px solid var(--border)">
-      <div class="seg">
+      <div class="seg" role="group" aria-label="Filter media type">
         <button class="seg-btn on" data-f="all">All</button>
-        <button class="seg-btn" data-f="movie">🎬</button>
-        <button class="seg-btn" data-f="series">📺</button>
-        <button class="seg-btn" data-f="game">🎮</button>
+        <button class="seg-btn" data-f="movie">Film</button>
+        <button class="seg-btn" data-f="series">Series</button>
+        <button class="seg-btn" data-f="game">Game</button>
       </div>
       <div class="toolbar-right">
-        <select class="sort-sel" id="sortSel">
-          <option value="new">Newest</option>
-          <option value="old">Oldest</option>
-          <option value="rate">Rating</option>
-          <option value="az">A–Z</option>
+        <select class="sort-sel" id="sortSel" aria-label="Sort entries">
+          <option value="new">Newest ▾</option>
+          <option value="old">Oldest ▾</option>
+          <option value="rate">Rating ▾</option>
+          <option value="az">A–Z ▾</option>
         </select>
-        <button class="toolbar-search-btn" id="toolbarSearchBtn" title="Search diary" aria-label="Search diary">
+        <button class="toolbar-search-btn" id="toolbarSearchBtn" type="button" title="Universal Search" aria-label="Universal Search">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
+          <span>Search</span>
         </button>
       </div>
     </div>
@@ -2697,7 +3424,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
-        <input class="diary-search-input" id="diarySearchInput" type="text" placeholder="Search my diary..." autocomplete="off" spellcheck="false">
+        <input class="diary-search-input" id="diarySearchInput" type="text" placeholder="Search movies, series, games, or diary..." autocomplete="off" spellcheck="false">
         <button class="diary-search-clear" id="diarySearchClearBtn" style="display:none">✕</button>
       </div>
       <button class="diary-search-cancel" id="diarySearchCancelBtn">Cancel</button>
@@ -2716,6 +3443,171 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
 
     <!-- Results List -->
     <div class="diary-search-results" id="diarySearchResults"></div>
+  </div>
+</div>
+
+<!-- COMPLETE DEEP MEDIA INFO CARD (ENCYCLOPEDIA MODE) -->
+<div class="deep-overlay" id="deepOverlay" style="display:none">
+  <div class="deep-sheet" id="deepSheet">
+    <!-- Pinned Close Button (Fixed Top-Right) -->
+    <button class="deep-close" id="deepClose" aria-label="Close" title="Close">✕</button>
+
+    <!-- Scrollable Body -->
+    <div class="deep-scroll-body" id="deepScrollBody">
+      <!-- HERO & BACKDROP -->
+      <div class="deep-hero-wrap" id="deepHeroWrap">
+        <img class="deep-backdrop" id="deepBackdrop" src="" alt="" style="display:none">
+        <div class="deep-backdrop-ph" id="deepBackdropPh"></div>
+      </div>
+
+      <div class="deep-hero-content">
+        <div class="deep-poster-wrap">
+          <img class="deep-poster" id="deepPoster" src="" alt="" style="display:none">
+          <div class="deep-poster-ph" id="deepPosterPh">🎬</div>
+        </div>
+        <div class="deep-hero-meta">
+          <div class="deep-title" id="deepTitle">Loading…</div>
+          <div class="deep-original-title" id="deepOriginalTitle" style="display:none"></div>
+          <div class="deep-tagline" id="deepTagline" style="display:none"></div>
+          <div class="deep-chips-row" id="deepChipsRow">
+            <span class="deep-chip" id="deepTypeChip">Film</span>
+            <span class="deep-chip" id="deepYearChip">2024</span>
+            <span class="deep-chip chip-age" id="deepAgeChip" style="display:none">PG-13</span>
+            <span class="deep-chip" id="deepRuntimeChip" style="display:none">2h 49m</span>
+            <span class="deep-chip chip-score" id="deepScoreChip" style="display:none">★ 8.7</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- MAIN CONTENT BODY -->
+      <div class="deep-body" id="deepBody">
+        
+        <!-- SKELETON PLACEHOLDER WHILE LOADING -->
+        <div class="deep-skeleton-container" id="deepSkeletonContainer">
+          <div class="deep-skeleton" style="height:50px;margin-bottom:14px;border-radius:14px"></div>
+          <div class="deep-skeleton" style="height:90px;margin-bottom:14px;border-radius:14px"></div>
+          <div class="deep-skeleton" style="height:140px;margin-bottom:14px;border-radius:14px"></div>
+          <div class="deep-skeleton" style="height:120px;border-radius:14px"></div>
+        </div>
+
+        <!-- REAL DATA SECTIONS (shown when loaded) -->
+        <div class="deep-content-container" id="deepContentContainer" style="display:none">
+          
+          <!-- AGE & CONTENT RATING (REQUIRED) -->
+          <div class="deep-sec" id="deepAgeSec" style="display:none">
+            <div class="deep-sec-hdr">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg>
+              <span>Age &amp; Content Rating</span>
+            </div>
+            <div class="deep-age-badges-grid" id="deepAgeBadgesGrid"></div>
+            <div class="deep-age-desc" id="deepAgeDesc" style="display:none"></div>
+          </div>
+
+          <!-- OVERVIEW / ABOUT -->
+          <div class="deep-sec" id="deepOverviewSec" style="display:none">
+            <div class="deep-sec-hdr">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+              <span id="deepOverviewHdr">Overview</span>
+            </div>
+            <div class="deep-overview-text" id="deepOverviewText"></div>
+            <div class="deep-storyline-text" id="deepStorylineText" style="display:none;margin-top:10px;font-size:12.5px;color:var(--text2);line-height:1.6"></div>
+          </div>
+
+          <!-- DETAILS / METADATA GRID -->
+          <div class="deep-sec" id="deepDetailsSec" style="display:none">
+            <div class="deep-sec-hdr">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+              <span>Information</span>
+            </div>
+            <div class="deep-grid" id="deepDetailsGrid"></div>
+          </div>
+
+          <!-- PLATFORMS (FOR GAMES) -->
+          <div class="deep-sec" id="deepPlatformsSec" style="display:none">
+            <div class="deep-sec-hdr">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="6" width="20" height="12" rx="2"></rect><path d="M6 12h4M8 10v4M15 13h.01M18 11h.01"></path></svg>
+              <span>Available Platforms</span>
+            </div>
+            <div class="deep-chips-row" id="deepPlatformsList"></div>
+          </div>
+
+          <!-- CAST & CREW / CREATORS -->
+          <div class="deep-sec" id="deepCastSec" style="display:none">
+            <div class="deep-sec-hdr">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              <span id="deepCastHdr">Cast</span>
+            </div>
+            <div class="deep-cast-row" id="deepCastRow"></div>
+          </div>
+
+          <!-- SEASONS & EPISODES (FOR SERIES) -->
+          <div class="deep-sec" id="deepSeasonsSec" style="display:none">
+            <div class="deep-sec-hdr">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect><polyline points="17 2 12 7 7 2"></polyline></svg>
+              <span>Seasons</span>
+            </div>
+            <div class="deep-seasons-grid" id="deepSeasonsGrid"></div>
+          </div>
+
+          <!-- COLLECTION / FRANCHISE / EXPANSIONS -->
+          <div class="deep-sec" id="deepFranchiseSec" style="display:none">
+            <div class="deep-sec-hdr">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              <span id="deepFranchiseHdr">Franchise &amp; Related</span>
+            </div>
+            <div class="deep-cast-row" id="deepFranchiseRow"></div>
+          </div>
+
+          <!-- MEDIA GALLERY (VIDEOS & SCREENSHOTS) -->
+          <div class="deep-sec" id="deepMediaSec" style="display:none">
+            <div class="deep-sec-hdr">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg>
+              <span>Media &amp; Trailers</span>
+            </div>
+            <div class="deep-media-gallery" id="deepMediaGallery"></div>
+          </div>
+
+          <!-- WHERE TO WATCH (WATCH PROVIDERS) -->
+          <div class="deep-sec" id="deepProvidersSec" style="display:none">
+            <div class="deep-sec-hdr">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
+              <span>Where to Watch</span>
+            </div>
+            <div class="deep-providers-wrap" id="deepProvidersWrap"></div>
+            <div class="deep-justwatch-attr">Streaming data provided by <a href="https://www.justwatch.com" target="_blank">JustWatch</a> via TMDB</div>
+          </div>
+
+          <!-- WEBSITES & EXTERNAL LINKS -->
+          <div class="deep-sec" id="deepWebsitesSec" style="display:none">
+            <div class="deep-sec-hdr">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+              <span>External Links</span>
+            </div>
+            <div class="deep-chips-row" id="deepWebsitesList"></div>
+          </div>
+
+          <!-- SIMILAR / MORE LIKE THIS -->
+          <div class="deep-sec" id="deepSimilarSec" style="display:none">
+            <div class="deep-sec-hdr">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+              <span>More Like This</span>
+            </div>
+            <div class="deep-cast-row" id="deepSimilarRow"></div>
+          </div>
+
+          <!-- YOUR LOGGER ENTRY -->
+          <div class="deep-sec deep-personal-sec" id="deepPersonalSec">
+            <div class="deep-sec-hdr" style="color:var(--blue)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+              <span>Your Logger Entry</span>
+            </div>
+            <div id="deepPersonalContent"></div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
   </div>
 </div>
 
@@ -3259,7 +4151,7 @@ async function fsLoadPublic(uid){
 }
 
 // ── CONSTANTS ────────────────────────────────────────────
-const API_BASE='https://logger-proxy.ignoredatom.workers.dev';
+const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname.startsWith('192.168.') || window.location.hostname.startsWith('10.') || window.location.hostname.startsWith('172.')) ? '' : 'https://logger-proxy.ignoredatom.workers.dev';
 const TMDB_IMG=`${API_BASE}/api/image?path=`;
 const TMDB_GENRES={28:'Action',12:'Adventure',16:'Animation',35:'Comedy',80:'Crime',99:'Documentary',18:'Drama',10751:'Family',14:'Fantasy',36:'History',27:'Horror',10402:'Music',9648:'Mystery',10749:'Romance',878:'Sci-Fi',53:'Thriller',10752:'War',37:'Western',10759:'Action & Adventure',10762:'Kids',10765:'Sci-Fi & Fantasy',10768:'War & Politics'};
 const RATINGS=['skip','mediocre','decent','excellent','peak'];
@@ -5234,7 +6126,7 @@ function showInfoCard(entry, context){
   if(rewatchTag) rewatchTag.style.display = entry.rewatched ? 'inline-flex' : 'none';
 
   // Personal Diary Section (shown for logged entries)
-  const isLogged = context !== 'watchlist';
+  const isLogged = context !== 'watchlist' && context !== 'unlogged';
   const diarySec = document.getElementById('infoDiarySection');
   if(diarySec){
     if(isLogged){
@@ -5297,6 +6189,57 @@ function showInfoCard(entry, context){
     primaryRow.appendChild(removeBtn);
 
     actions.appendChild(primaryRow);
+  } else if(context === 'unlogged'){
+    // Quick actions for items not yet in user's diary or watchlist
+    const primaryRow = document.createElement('div');
+    primaryRow.className = 'info-actions-primary';
+
+    const logBtn = document.createElement('button');
+    logBtn.className = 'info-btn-edit';
+    logBtn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:-2px"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>Log to Diary';
+    logBtn.onclick = () => {
+      closeInfoCard();
+      setTimeout(() => {
+        openModal();
+        const mTitle = document.getElementById('mTitle');
+        const mYear = document.getElementById('mYear');
+        const mPoster = document.getElementById('mPoster');
+        const mGenre = document.getElementById('mGenre');
+        if(mTitle) mTitle.value = entry.title || '';
+        if(mYear) mYear.value = entry.year || '';
+        if(mPoster) mPoster.value = entry.poster || '';
+        if(mGenre) mGenre.value = entry.genre || '';
+        if(typeof setModalType === 'function') setModalType(entry.type || 'movie');
+        if(typeof validateForm === 'function') validateForm();
+      }, 120);
+    };
+    primaryRow.appendChild(logBtn);
+
+    const wlBtn = document.createElement('button');
+    wlBtn.className = 'info-btn-share';
+    wlBtn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:-2px"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>+ Watchlist';
+    wlBtn.onclick = async () => {
+      const wl = getWL();
+      if(!wl.some(x => x.title.toLowerCase() === entry.title.toLowerCase() && x.type === entry.type)){
+        wl.unshift({
+          title: entry.title,
+          type: entry.type || 'movie',
+          year: entry.year || '',
+          genre: entry.genre || '',
+          poster: entry.poster || '',
+          releaseDate: entry.releaseDate || ''
+        });
+        saveWL(wl);
+        if(currentUser) await fsSaveWL(wl);
+        renderWL();
+        toast('Added to watchlist');
+      } else {
+        toast('Already in watchlist');
+      }
+    };
+    primaryRow.appendChild(wlBtn);
+
+    actions.appendChild(primaryRow);
   } else {
     // Logged entry actions
     const primaryRow = document.createElement('div');
@@ -5342,13 +6285,25 @@ function showInfoCard(entry, context){
     }
   }
 
+  // View Full Details secondary button (always available)
+  const moreBtn = document.createElement('button');
+  moreBtn.className = 'btn-more-details';
+  moreBtn.id = 'infoBtnMoreDetails';
+  moreBtn.type = 'button';
+  moreBtn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>View Full Details';
+  moreBtn.onclick = () => {
+    closeInfoCard();
+    openDeepCard(_infoEntry || entry);
+  };
+  actions.appendChild(moreBtn);
+
   overlay.classList.add('show');
 }
 
 function renderJourneySection(entry, context){
   const jSec = document.getElementById('infoJourneySection');
   if(!jSec) return;
-  if(context === 'watchlist' || entry.type === 'movie'){
+  if(context === 'watchlist' || context === 'unlogged' || entry.type === 'movie'){
     jSec.style.display = 'none';
     return;
   }
@@ -5518,13 +6473,17 @@ async function fetchExtraInfo(entry){
   try{
     let data = null;
     if(entry.type==='movie'){
-      // Search to get id then fetch details
-      const search = await fetch(`${API_BASE}/api/search/movie?query=${encodeURIComponent(entry.title)}`);
-      const sd = await search.json();
-      const first = sd.results?.[0];
-      if(first){
-        const detail = await fetch(`${API_BASE}/api/movie/${first.id}`);
+      let id = entry.tmdbId;
+      if(!id){
+        const search = await fetch(`${API_BASE}/api/search/movie?query=${encodeURIComponent(entry.title)}`);
+        const sd = await search.json();
+        const first = sd.results?.[0];
+        if(first) id = first.id;
+      }
+      if(id){
+        const detail = await fetch(`${API_BASE}/api/movie/${id}`);
         data = await detail.json();
+        if(_infoEntry && _infoEntry.title === entry.title) _infoEntry.tmdbId = id;
         updateInfoCard({
           overview: data.overview,
           score: data.vote_average ? `⭐ ${data.vote_average.toFixed(1)}` : null,
@@ -5539,12 +6498,17 @@ async function fetchExtraInfo(entry){
         });
       }
     } else if(entry.type==='series'){
-      const search = await fetch(`${API_BASE}/api/search/tv?query=${encodeURIComponent(entry.title)}`);
-      const sd = await search.json();
-      const first = sd.results?.[0];
-      if(first){
-        const detail = await fetch(`${API_BASE}/api/tv/${first.id}`);
+      let id = entry.tmdbId;
+      if(!id){
+        const search = await fetch(`${API_BASE}/api/search/tv?query=${encodeURIComponent(entry.title)}`);
+        const sd = await search.json();
+        const first = sd.results?.[0];
+        if(first) id = first.id;
+      }
+      if(id){
+        const detail = await fetch(`${API_BASE}/api/tv/${id}`);
         data = await detail.json();
+        if(_infoEntry && _infoEntry.title === entry.title) _infoEntry.tmdbId = id;
         updateInfoCard({
           overview: data.overview,
           score: data.vote_average ? `⭐ ${data.vote_average.toFixed(1)}` : null,
@@ -5559,22 +6523,29 @@ async function fetchExtraInfo(entry){
         });
       }
     } else if(entry.type==='game'){
-      const search = await fetch(`${API_BASE}/api/search/game?query=${encodeURIComponent(entry.title)}&page_size=1`);
-      const sd = await search.json();
-      const first = sd.results?.[0];
-      if(first){
-        const detail = await fetch(`${API_BASE}/api/game/${first.id}`);
+      let id = entry.igdbId;
+      if(!id && isNaN(Number(entry.id))){
+        const search = await fetch(`${API_BASE}/api/search/game?query=${encodeURIComponent(entry.title)}&page_size=1`);
+        const sd = await search.json();
+        const first = sd.results?.[0];
+        if(first) id = first.id;
+      } else if(!id && !isNaN(Number(entry.id))){
+        id = entry.id;
+      }
+      if(id || entry.title){
+        const detail = await fetch(`${API_BASE}/api/game/${id || encodeURIComponent(entry.title)}`);
         data = await detail.json();
+        if(_infoEntry && _infoEntry.title === entry.title) _infoEntry.igdbId = data.id || id;
         updateInfoCard({
-          overview: data.description_raw?.slice(0,300)+(data.description_raw?.length>300?'…':''),
-          score: data.rating ? `⭐ ${data.rating.toFixed(1)}` : null,
+          overview: (data.summary || data.description_raw || '').slice(0,300)+((data.summary||data.description_raw||'').length>300?'…':''),
+          score: (data.total_rating || data.rating) ? `⭐ ${((data.total_rating||data.rating)>10 ? (data.total_rating||data.rating)/10 : (data.total_rating||data.rating)).toFixed(1)}` : null,
           details: [
-            {l:'Released',  v: data.released||'—'},
+            {l:'Released',  v: data.first_release_date||data.released||'—'},
             {l:'Playtime',  v: data.playtime?`~${data.playtime}h`:'—'},
-            {l:'Platforms', v: data.platforms?.slice(0,2).map(x=>x.platform.name).join(', ')||'—'},
+            {l:'Platforms', v: data.platforms?.slice(0,2).map(x=>x.name||x.platform?.name).join(', ')||'—'},
             {l:'Developer', v: data.developers?.[0]?.name||'—'},
             {l:'Publisher', v: data.publishers?.[0]?.name||'—'},
-            {l:'Rating',    v: data.esrb_rating?.name||'—'},
+            {l:'Rating',    v: data.age_ratings_detailed?.[0]?.rating_label||data.esrb_rating?.name||'—'},
           ]
         });
       }
@@ -6029,8 +7000,11 @@ function hoverActivityMonth(key){
   });
 }
 
-// ── UNIVERSAL DIARY SEARCH LOGIC ────────────────────────
+// ── UNIVERSAL GLOBAL SEARCH & DEEP MEDIA DETAILS ────────
 let _diarySearchFilter = 'all';
+let _searchDebounceTimer = null;
+let _searchSequenceId = 0;
+const DEEP_CACHE = new Map();
 
 function openDiarySearch(){
   const overlay = document.getElementById('diarySearchOverlay');
@@ -6040,7 +7014,7 @@ function openDiarySearch(){
   overlay.classList.add('show');
   input.value = '';
   document.getElementById('diarySearchClearBtn').style.display = 'none';
-  renderDiarySearchResults('');
+  renderUniversalSearchResults('');
   setTimeout(() => input.focus(), 80);
 }
 
@@ -6052,7 +7026,50 @@ function closeDiarySearch(){
   }
 }
 
-function renderDiarySearchResults(query){
+function normalizeToUnifiedModel(rawItem, source, localDiaryEntry, localWLEntry){
+  const mediaType = rawItem.type || rawItem.mediaType || 'movie';
+  const title = rawItem.title || rawItem.name || '';
+  const year = rawItem.year || (rawItem.release_date ? rawItem.release_date.slice(0,4) : (rawItem.first_air_date ? rawItem.first_air_date.slice(0,4) : (rawItem.released ? rawItem.released.slice(0,4) : '')));
+  const poster = rawItem.poster || rawItem.background_image || (rawItem.poster_path ? `https://image.tmdb.org/t/p/w200${rawItem.poster_path}` : '');
+  
+  let tmdbId = rawItem.tmdbId || (source === 'tmdb' ? rawItem.id : null);
+  let igdbId = rawItem.igdbId || (source === 'igdb' ? rawItem.id : null);
+
+  if(localDiaryEntry){
+    if(localDiaryEntry.tmdbId) tmdbId = localDiaryEntry.tmdbId;
+    if(localDiaryEntry.igdbId) igdbId = localDiaryEntry.igdbId;
+  }
+
+  const isLogged = Boolean(localDiaryEntry && localDiaryEntry.id && (localDiaryEntry.rating || localDiaryEntry.status));
+  const isWatchlist = Boolean(!isLogged && localWLEntry);
+  const isFav = Boolean(localDiaryEntry && localDiaryEntry.fav);
+
+  return {
+    id: localDiaryEntry ? localDiaryEntry.id : (rawItem.id || tmdbId || igdbId),
+    tmdbId,
+    igdbId,
+    source: source || 'logger',
+    type: mediaType,
+    mediaType: mediaType,
+    title,
+    year: String(year || ''),
+    poster,
+    genre: rawItem.genre || '',
+    overview: rawItem.overview || rawItem.summary || (localDiaryEntry ? localDiaryEntry.notes : '') || '',
+    
+    // Personal Enrichment
+    isLogged,
+    isWatchlist,
+    isFav,
+    userRating: localDiaryEntry ? localDiaryEntry.rating : null,
+    userStatus: localDiaryEntry ? (localDiaryEntry.rewatched ? 'rewatched' : (localDiaryEntry.status || 'done')) : null,
+    userNotes: localDiaryEntry ? (localDiaryEntry.notes || '') : '',
+    loggedDate: localDiaryEntry ? localDiaryEntry.id : null,
+    localEntry: localDiaryEntry || localWLEntry || null
+  };
+}
+
+function renderUniversalSearchResults(query){
   const resultsContainer = document.getElementById('diarySearchResults');
   const countEl = document.getElementById('diarySearchCount');
   const clearBtn = document.getElementById('diarySearchClearBtn');
@@ -6062,77 +7079,199 @@ function renderDiarySearchResults(query){
   const q = rawQ.toLowerCase();
   clearBtn.style.display = rawQ.length > 0 ? 'flex' : 'none';
 
-  let list = (typeof DATA !== 'undefined' && DATA.length) ? [...DATA] : (window.DATA ? [...window.DATA] : []);
-  if(_diarySearchFilter !== 'all'){
-    list = list.filter(x => x.type === _diarySearchFilter);
-  }
+  const currentSeq = ++_searchSequenceId;
+
+  // Local datasets
+  const localDiary = (typeof DATA !== 'undefined' && DATA.length) ? [...DATA] : (window.DATA ? [...window.DATA] : []);
+  const localWL = getWL() || [];
 
   if(!q){
+    let list = localDiary;
+    if(_diarySearchFilter !== 'all'){
+      list = list.filter(x => x.type === _diarySearchFilter);
+    }
     countEl.textContent = `${list.length} logged`;
     if(!list.length){
       resultsContainer.innerHTML = `
         <div class="diary-search-empty">
-          <div class="diary-search-empty-icon">📖</div>
-          <div class="diary-search-empty-title">Nothing in your diary yet</div>
-          <div class="diary-search-empty-sub">Start logging movies, series, and games to search them here.</div>
+          <div class="diary-search-empty-icon">🔍</div>
+          <div class="diary-search-empty-title">Universal Search</div>
+          <div class="diary-search-empty-sub">Search across your diary, watchlist, or find any movie, series, or game worldwide.</div>
         </div>
       `;
       return;
     }
-    // Show recent entries when search is blank
-    resultsContainer.innerHTML = list.slice(0, 40).map(e => renderDiarySearchCard(e, '', '')).join('');
+    resultsContainer.innerHTML = list.slice(0, 40).map(e => {
+      const unified = normalizeToUnifiedModel(e, 'logger', e, null);
+      return renderSearchItemCard(unified, '');
+    }).join('');
     return;
   }
 
-  // Filter & Score matches
-  const scored = [];
-  for(const item of list){
+  // 1. Instant local search
+  const localMatches = [];
+  const seenKeys = new Set();
+
+  for(const item of localDiary){
+    if(_diarySearchFilter !== 'all' && item.type !== _diarySearchFilter) continue;
     const title = (item.title || '').toLowerCase();
     const notes = (item.notes || '').toLowerCase();
     const genre = (item.genre || '').toLowerCase();
     const year = String(item.year || '');
 
     let score = 0;
-    let matchType = '';
-
-    if(title === q){
-      score = 100; matchType = 'title';
-    } else if(title.startsWith(q)){
-      score = 80; matchType = 'title';
-    } else if(title.includes(q)){
-      score = 60; matchType = 'title';
-    } else if(notes.includes(q)){
-      score = 40; matchType = 'notes';
-    } else if(genre.includes(q) || year.includes(q)){
-      score = 20; matchType = 'meta';
-    }
+    if(title === q){ score = 100; }
+    else if(title.startsWith(q)){ score = 80; }
+    else if(title.includes(q)){ score = 60; }
+    else if(notes.includes(q)){ score = 40; }
+    else if(genre.includes(q) || year.includes(q)){ score = 20; }
 
     if(score > 0){
-      scored.push({ item, score, matchType });
+      const key = `${item.type}:${title.trim()}`;
+      seenKeys.add(key);
+      const unified = normalizeToUnifiedModel(item, 'logger', item, null);
+      localMatches.push({ item: unified, score });
     }
   }
 
-  // Sort by score desc, then by date desc
-  scored.sort((a,b) => b.score - a.score || b.item.id - a.item.id);
+  for(const item of localWL){
+    if(_diarySearchFilter !== 'all' && item.type !== _diarySearchFilter) continue;
+    const title = (item.title || '').toLowerCase();
+    const key = `${item.type}:${title.trim()}`;
+    if(seenKeys.has(key)) continue;
 
-  countEl.textContent = `${scored.length} ${scored.length === 1 ? 'match' : 'matches'}`;
+    let score = 0;
+    if(title === q) score = 90;
+    else if(title.startsWith(q)) score = 70;
+    else if(title.includes(q)) score = 50;
 
-  if(!scored.length){
-    const safeQ = rawQ.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    resultsContainer.innerHTML = `
-      <div class="diary-search-empty">
-        <div class="diary-search-empty-icon">🔍</div>
-        <div class="diary-search-empty-title">Nothing in your diary yet</div>
-        <div class="diary-search-empty-sub">No logged entries matched "${safeQ}"</div>
-      </div>
-    `;
-    return;
+    if(score > 0){
+      seenKeys.add(key);
+      const unified = normalizeToUnifiedModel(item, 'logger', null, item);
+      localMatches.push({ item: unified, score });
+    }
   }
 
-  resultsContainer.innerHTML = scored.map(s => renderDiarySearchCard(s.item, q, s.matchType)).join('');
+  localMatches.sort((a,b) => b.score - a.score || (b.item.id||0) - (a.item.id||0));
+
+  // Render local results immediately
+  countEl.textContent = `${localMatches.length} local matches`;
+  resultsContainer.innerHTML = localMatches.map(m => renderSearchItemCard(m.item, q)).join('');
+
+  // 2. Parallel External Search (TMDB Movies, TMDB Series, IGDB Games)
+  clearTimeout(_searchDebounceTimer);
+  _searchDebounceTimer = setTimeout(async () => {
+    if(q.length < 2) return;
+
+    try {
+      const fetchPromises = [];
+      const filter = _diarySearchFilter;
+
+      if(filter === 'all' || filter === 'movie'){
+        fetchPromises.push(
+          fetch(`${API_BASE}/api/search/movie?query=${encodeURIComponent(rawQ)}`)
+            .then(r => r.json())
+            .then(d => (d.results||[]).slice(0, 8).map(x => ({
+              raw: x,
+              id: x.id,
+              tmdbId: x.id,
+              title: x.title || x.original_title,
+              type: 'movie',
+              year: x.release_date ? x.release_date.slice(0, 4) : '',
+              poster: x.poster_path ? `https://image.tmdb.org/t/p/w200${x.poster_path}` : '',
+              genre: (x.genre_ids||[]).slice(0,2).map(id=>TMDB_GENRES[id]).filter(Boolean).join(', '),
+              voteAverage: x.vote_average,
+              overview: x.overview
+            })))
+            .catch(() => [])
+        );
+      }
+
+      if(filter === 'all' || filter === 'series'){
+        fetchPromises.push(
+          fetch(`${API_BASE}/api/search/tv?query=${encodeURIComponent(rawQ)}`)
+            .then(r => r.json())
+            .then(d => (d.results||[]).slice(0, 8).map(x => ({
+              raw: x,
+              id: x.id,
+              tmdbId: x.id,
+              title: x.name || x.original_name,
+              type: 'series',
+              year: x.first_air_date ? x.first_air_date.slice(0, 4) : '',
+              poster: x.poster_path ? `https://image.tmdb.org/t/p/w200${x.poster_path}` : '',
+              genre: (x.genre_ids||[]).slice(0,2).map(id=>TMDB_GENRES[id]).filter(Boolean).join(', '),
+              voteAverage: x.vote_average,
+              overview: x.overview
+            })))
+            .catch(() => [])
+        );
+      }
+
+      if(filter === 'all' || filter === 'game'){
+        fetchPromises.push(
+          fetch(`${API_BASE}/api/search/game?query=${encodeURIComponent(rawQ)}&page_size=8`)
+            .then(r => r.json())
+            .then(d => (d.results||[]).slice(0, 8).map(x => ({
+              raw: x,
+              id: x.id,
+              igdbId: x.id,
+              title: x.name,
+              type: 'game',
+              year: x.released ? x.released.slice(0, 4) : '',
+              poster: x.background_image || '',
+              genre: (x.genres||[]).slice(0, 2).map(g => g.name).join(', '),
+              releaseDate: x.released || '',
+              rating: x.rating
+            })))
+            .catch(() => [])
+        );
+      }
+
+      const resultsNested = await Promise.all(fetchPromises);
+      if(currentSeq !== _searchSequenceId) return; // Discard stale request
+
+      const externalResults = resultsNested.flat();
+      const combined = [...localMatches];
+
+      for(const ext of externalResults){
+        const key = `${ext.type}:${(ext.title||'').toLowerCase().trim()}`;
+        if(seenKeys.has(key)) continue;
+        seenKeys.add(key);
+
+        // Check if item exists in diary or watchlist under different casing
+        const existingDiary = localDiary.find(x => x.type === ext.type && x.title.toLowerCase() === ext.title.toLowerCase());
+        const existingWL = !existingDiary && localWL.find(x => x.type === ext.type && x.title.toLowerCase() === ext.title.toLowerCase());
+
+        const unified = normalizeToUnifiedModel(ext, ext.type === 'game' ? 'igdb' : 'tmdb', existingDiary, existingWL);
+
+        combined.push({
+          item: unified,
+          score: 10
+        });
+      }
+
+      countEl.textContent = `${combined.length} results`;
+
+      if(!combined.length){
+        const safeQ = rawQ.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        resultsContainer.innerHTML = `
+          <div class="diary-search-empty">
+            <div class="diary-search-empty-icon">🔍</div>
+            <div class="diary-search-empty-title">No results found</div>
+            <div class="diary-search-empty-sub">No entries or worldwide titles matched "${safeQ}"</div>
+          </div>
+        `;
+        return;
+      }
+
+      resultsContainer.innerHTML = combined.map(m => renderSearchItemCard(m.item, q)).join('');
+    } catch(e) {
+      console.warn('Universal search error:', e);
+    }
+  }, 240);
 }
 
-function renderDiarySearchCard(e, q, matchType){
+function renderSearchItemCard(e, q){
   const typeIcons = { movie: '🎬', series: '📺', game: '🎮' };
   const typeNames = { movie: 'Film', series: 'Series', game: 'Game' };
   const icon = typeIcons[e.type] || '🎬';
@@ -6142,36 +7281,49 @@ function renderDiarySearchCard(e, q, matchType){
     ? `<img class="diary-search-thumb" src="${e.poster}" loading="lazy" alt="">`
     : `<div class="diary-search-thumb-ph">${icon}</div>`;
 
-  const rKey = RATINGS.includes(e.rating) ? e.rating : 'decent';
-  const rBadge = `<span class="rating-badge ${RATING_CLASS[rKey]}">★ ${RATING_LABELS[rKey]}</span>`;
-  const sKey = e.rewatched ? 'rewatched' : (e.status || 'done');
-  const sPill = `<span class="pill ${pillCls[sKey] || 'pill-done'}">${getPillLabel(sKey, e.type, e)}</span>`;
-  const favTag = e.fav ? `<span style="font-size:11px">❤️</span>` : '';
+  // Status Badge
+  let statusBadgeHtml = '';
+  if(e.isLogged && e.localEntry){
+    const rKey = RATINGS.includes(e.userRating) ? e.userRating : 'decent';
+    const rClass = RATING_CLASS[rKey] || 'r-decent';
+    const rLabel = RATING_LABELS[rKey] || 'Decent';
+    const sKey = e.userStatus || 'done';
+    const sLabel = getPillLabel(sKey, e.type, e.localEntry);
+    const favPart = e.isFav ? ' · ♥ Favourite' : '';
+    statusBadgeHtml = `<span class="search-status-pill logged">★ ${rLabel} · ${sLabel}${favPart}</span>`;
+  } else if(e.isWatchlist){
+    statusBadgeHtml = `<span class="search-status-pill wl">✓ Watchlist</span>`;
+  } else {
+    statusBadgeHtml = `<span class="search-status-pill unlogged">Not logged yet</span>`;
+  }
 
+  // Fav heart tag
+  const favTag = e.isFav ? `<span style="font-size:11px">❤️</span>` : '';
+
+  // Notes snippet if matched
   let notesSnippet = '';
-  if(e.notes && (matchType === 'notes' || (q && e.notes.toLowerCase().includes(q)))){
-    const idx = e.notes.toLowerCase().indexOf(q);
+  if(e.userNotes && (q && e.userNotes.toLowerCase().includes(q))){
+    const idx = e.userNotes.toLowerCase().indexOf(q);
     const start = Math.max(0, idx - 15);
-    const end = Math.min(e.notes.length, idx + (q ? q.length : 0) + 35);
-    let snippet = (start > 0 ? '…' : '') + e.notes.substring(start, end) + (end < e.notes.length ? '…' : '');
-    // Escape HTML first
+    const end = Math.min(e.userNotes.length, idx + (q ? q.length : 0) + 35);
+    let snippet = (start > 0 ? '…' : '') + e.userNotes.substring(start, end) + (end < e.userNotes.length ? '…' : '');
     snippet = snippet.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    // Highlight matched term
-    if(q){
-      const regex = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-      snippet = snippet.replace(regex, '<mark>$1</mark>');
-    }
+    const regex = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    snippet = snippet.replace(regex, '<mark>$1</mark>');
     notesSnippet = `<div class="diary-search-notes-preview">"${snippet}"</div>`;
-  } else if(e.notes && e.notes.trim()){
-    let snippet = e.notes.trim().substring(0, 50) + (e.notes.trim().length > 50 ? '…' : '');
+  } else if(e.userNotes && e.userNotes.trim()){
+    let snippet = e.userNotes.trim().substring(0, 50) + (e.userNotes.trim().length > 50 ? '…' : '');
     snippet = snippet.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
     notesSnippet = `<div class="diary-search-notes-preview" style="color:var(--text3)">"${snippet}"</div>`;
   }
 
   const metaText = [e.year, typeName, e.genre ? e.genre.split(',')[0] : ''].filter(Boolean).join(' · ');
 
+  // Store item in cache for fast click opening
+  const itemDataStr = encodeURIComponent(JSON.stringify(e.localEntry || e));
+
   return `
-    <div class="diary-search-card ${e.type}" onclick="selectDiarySearchResult(${e.id})">
+    <div class="diary-search-card ${e.type}" onclick="selectUniversalSearchResult('${itemDataStr}')">
       <div class="diary-search-thumb-wrap">${thumb}</div>
       <div class="diary-search-info">
         <div class="diary-search-title-row">
@@ -6180,8 +7332,7 @@ function renderDiarySearchCard(e, q, matchType){
         </div>
         <div class="diary-search-meta">${metaText}</div>
         <div class="diary-search-badges">
-          ${rBadge}
-          ${sPill}
+          ${statusBadgeHtml}
         </div>
         ${notesSnippet}
       </div>
@@ -6189,25 +7340,960 @@ function renderDiarySearchCard(e, q, matchType){
   `;
 }
 
-function selectDiarySearchResult(id){
+function selectUniversalSearchResult(itemDataStr){
   closeDiarySearch();
-  const list = (typeof DATA !== 'undefined' && DATA.length) ? DATA : (window.DATA || []);
-  const entry = list.find(x => String(x.id) === String(id));
-  setTimeout(() => {
-    if(entry) openInfo(entry, 'logged');
-    else openInfo(id, 'logged');
-  }, 100);
+  try {
+    const item = JSON.parse(decodeURIComponent(itemDataStr));
+    setTimeout(() => {
+      openDeepCard(item);
+    }, 80);
+  } catch(e){
+    console.error('Failed to open search result:', e);
+  }
 }
 
-// Wire Search Event Listeners
+// ── COMPLETE DEEP MEDIA INFO CARD (ENCYCLOPEDIA MODE) ──
+let _activeDeepItem = null;
+
+function closeDeepCard(){
+  const overlay = document.getElementById('deepOverlay');
+  if(overlay){
+    overlay.classList.remove('show');
+    overlay.style.display = 'none';
+  }
+  _activeDeepItem = null;
+}
+
+async function openDeepCard(mediaItem){
+  if(!mediaItem) return;
+  _activeDeepItem = mediaItem;
+
+  const overlay = document.getElementById('deepOverlay');
+  const scrollBody = document.getElementById('deepScrollBody');
+  const skeletonContainer = document.getElementById('deepSkeletonContainer');
+  const contentContainer = document.getElementById('deepContentContainer');
+
+  if(scrollBody) scrollBody.scrollTop = 0;
+  if(overlay){
+    overlay.style.display = 'flex';
+    requestAnimationFrame(() => overlay.classList.add('show'));
+  }
+
+  // Pre-fill basic Hero UI immediately from existing item
+  const typeIcons = { movie: '🎬', series: '📺', game: '🎮' };
+  const typeNames = { movie: 'Film', series: 'Series', game: 'Game' };
+  const mediaType = mediaItem.type || mediaItem.mediaType || 'movie';
+
+  document.getElementById('deepTitle').textContent = mediaItem.title || 'Loading…';
+  document.getElementById('deepOriginalTitle').style.display = 'none';
+  document.getElementById('deepTagline').style.display = 'none';
+
+  const typeChip = document.getElementById('deepTypeChip');
+  typeChip.textContent = `${typeIcons[mediaType]||'🎬'} ${typeNames[mediaType]||'Film'}`;
+  typeChip.className = `deep-chip chip-type-${mediaType}`;
+
+  const yearChip = document.getElementById('deepYearChip');
+  yearChip.textContent = mediaItem.year || '—';
+  yearChip.style.display = mediaItem.year ? 'inline-flex' : 'none';
+
+  document.getElementById('deepAgeChip').style.display = 'none';
+  document.getElementById('deepRuntimeChip').style.display = 'none';
+  document.getElementById('deepScoreChip').style.display = 'none';
+
+  // Backdrop & Poster
+  const posterEl = document.getElementById('deepPoster');
+  const posterPh = document.getElementById('deepPosterPh');
+  if(mediaItem.poster){
+    posterEl.src = mediaItem.poster;
+    posterEl.style.display = 'block';
+    posterPh.style.display = 'none';
+  } else {
+    posterEl.style.display = 'none';
+    posterPh.style.display = 'flex';
+    posterPh.textContent = typeIcons[mediaType]||'🎬';
+  }
+
+  const backdropEl = document.getElementById('deepBackdrop');
+  const backdropPh = document.getElementById('deepBackdropPh');
+  backdropEl.style.display = 'none';
+  backdropPh.style.display = 'block';
+
+  // Show skeleton, hide deep content container initially
+  if(skeletonContainer) skeletonContainer.style.display = 'block';
+  if(contentContainer) contentContainer.style.display = 'none';
+
+  // Check in-memory cache
+  const cacheKey = `${mediaType}:${(mediaItem.title||'').toLowerCase().trim()}:${mediaItem.tmdbId||mediaItem.igdbId||mediaItem.id||''}`;
+  if(DEEP_CACHE.has(cacheKey)){
+    const cachedData = DEEP_CACHE.get(cacheKey);
+    renderDeepCard(cachedData, mediaItem);
+    if(skeletonContainer) skeletonContainer.style.display = 'none';
+    if(contentContainer) contentContainer.style.display = 'block';
+    return;
+  }
+
+  // Fetch rich deep metadata
+  try {
+    const deepData = await fetchDeepDetails(mediaItem);
+    if(deepData){
+      DEEP_CACHE.set(cacheKey, deepData);
+      // Only render if modal is still open for this item
+      if(_activeDeepItem && _activeDeepItem.title === mediaItem.title){
+        renderDeepCard(deepData, mediaItem);
+        if(skeletonContainer) skeletonContainer.style.display = 'none';
+        if(contentContainer) contentContainer.style.display = 'block';
+      }
+    } else {
+      if(skeletonContainer) skeletonContainer.style.display = 'none';
+      if(contentContainer) contentContainer.style.display = 'block';
+      renderDeepCardFallback(mediaItem);
+    }
+  } catch(e) {
+    console.error('Failed to load deep details:', e);
+    if(skeletonContainer) skeletonContainer.style.display = 'none';
+    if(contentContainer) contentContainer.style.display = 'block';
+    renderDeepCardFallback(mediaItem);
+  }
+}
+
+async function fetchDeepDetails(item){
+  const type = item.type || item.mediaType || 'movie';
+  const title = item.title || item.name || '';
+
+  if(type === 'movie'){
+    let tmdbId = item.tmdbId;
+    if(!tmdbId || isNaN(Number(tmdbId)) || Number(tmdbId) > 2000000000){
+      const s = await fetch(`${API_BASE}/api/search/movie?query=${encodeURIComponent(title)}`);
+      const sd = await s.json();
+      const first = sd.results?.[0];
+      if(first) tmdbId = first.id;
+    }
+    if(!tmdbId) return null;
+    const r = await fetch(`${API_BASE}/api/movie/${tmdbId}?append_to_response=credits,release_dates,videos,keywords,similar`);
+    return await r.json();
+  }
+
+  if(type === 'series'){
+    let tmdbId = item.tmdbId;
+    if(!tmdbId || isNaN(Number(tmdbId)) || Number(tmdbId) > 2000000000){
+      const s = await fetch(`${API_BASE}/api/search/tv?query=${encodeURIComponent(title)}`);
+      const sd = await s.json();
+      const first = sd.results?.[0];
+      if(first) tmdbId = first.id;
+    }
+    if(!tmdbId) return null;
+    const r = await fetch(`${API_BASE}/api/tv/${tmdbId}?append_to_response=credits,aggregate_credits,content_ratings,videos,keywords,similar,external_ids`);
+    return await r.json();
+  }
+
+  if(type === 'game'){
+    let queryId = item.igdbId;
+    if(!queryId || isNaN(Number(queryId)) || Number(queryId) > 1000000000){
+      if(item.id && !isNaN(Number(item.id)) && Number(item.id) < 1000000000 && item.source === 'igdb'){
+        queryId = item.id;
+      } else {
+        const s = await fetch(`${API_BASE}/api/search/game?query=${encodeURIComponent(title)}&page_size=5`);
+        const sd = await s.json();
+        const first = sd.results?.[0];
+        if(first) queryId = first.id;
+      }
+    }
+    const r = await fetch(`${API_BASE}/api/game/${queryId || encodeURIComponent(title)}`);
+    return await r.json();
+  }
+
+  return null;
+}
+
+function renderDeepCard(data, initialItem){
+  const type = initialItem.type || 'movie';
+
+  // 1. BACKDROP & HERO
+  const backdropEl = document.getElementById('deepBackdrop');
+  const backdropPh = document.getElementById('deepBackdropPh');
+  let backdropUrl = '';
+
+  if(type === 'movie' || type === 'series'){
+    if(data.backdrop_path) backdropUrl = `https://image.tmdb.org/t/p/original${data.backdrop_path}`;
+  } else if(type === 'game'){
+    if(data.artworks && data.artworks[0]) backdropUrl = data.artworks[0];
+    else if(data.screenshots && data.screenshots[0]) backdropUrl = data.screenshots[0].image || data.screenshots[0];
+    else if(data.background_image) backdropUrl = data.background_image;
+  }
+
+  if(backdropUrl){
+    backdropEl.src = backdropUrl;
+    backdropEl.style.display = 'block';
+    backdropPh.style.display = 'none';
+  } else {
+    backdropEl.style.display = 'none';
+    backdropPh.style.display = 'block';
+  }
+
+  // Titles
+  const mainTitle = data.name || data.title || initialItem.title;
+  document.getElementById('deepTitle').textContent = mainTitle;
+
+  const originalTitle = data.original_title || data.original_name;
+  const origEl = document.getElementById('deepOriginalTitle');
+  if(originalTitle && originalTitle.toLowerCase() !== mainTitle.toLowerCase()){
+    origEl.textContent = `Original: ${originalTitle}`;
+    origEl.style.display = 'block';
+  } else {
+    origEl.style.display = 'none';
+  }
+
+  const taglineEl = document.getElementById('deepTagline');
+  if(data.tagline && data.tagline.trim()){
+    taglineEl.textContent = `“${data.tagline.trim()}”`;
+    taglineEl.style.display = 'block';
+  } else {
+    taglineEl.style.display = 'none';
+  }
+
+  // Chips
+  const score = data.vote_average || data.total_rating || data.rating;
+  const scoreChip = document.getElementById('deepScoreChip');
+  if(score && Number(score) > 0){
+    const formattedScore = Number(score) > 10 ? (Number(score)/10).toFixed(1) : Number(score).toFixed(1);
+    const count = data.vote_count || data.total_rating_count || data.rating_count;
+    scoreChip.textContent = `★ ${formattedScore}${count ? ` (${count > 1000 ? (count/1000).toFixed(1)+'k' : count})` : ''}`;
+    scoreChip.style.display = 'inline-flex';
+  } else {
+    scoreChip.style.display = 'none';
+  }
+
+  const runtimeChip = document.getElementById('deepRuntimeChip');
+  if(data.runtime && data.runtime > 0){
+    const h = Math.floor(data.runtime / 60);
+    const m = data.runtime % 60;
+    runtimeChip.textContent = h > 0 ? `${h}h ${m}m` : `${m}m`;
+    runtimeChip.style.display = 'inline-flex';
+  } else if(data.episode_run_time && data.episode_run_time[0]){
+    runtimeChip.textContent = `~${data.episode_run_time[0]}m / ep`;
+    runtimeChip.style.display = 'inline-flex';
+  } else if(data.playtime && data.playtime > 0){
+    runtimeChip.textContent = `~${data.playtime}h playtime`;
+    runtimeChip.style.display = 'inline-flex';
+  } else {
+    runtimeChip.style.display = 'none';
+  }
+
+  // 2. AGE & CONTENT RATING (REQUIRED)
+  const ageSec = document.getElementById('deepAgeSec');
+  const ageChip = document.getElementById('deepAgeChip');
+  const ageGrid = document.getElementById('deepAgeBadgesGrid');
+  const ageDesc = document.getElementById('deepAgeDesc');
+
+  const ageData = extractAllAgeRatings(data, type);
+
+  if(ageData && ageData.ratings && ageData.ratings.length){
+    ageChip.textContent = ageData.primaryBadge;
+    ageChip.style.display = 'inline-flex';
+
+    if(ageGrid){
+      ageGrid.innerHTML = ageData.ratings.map(r => `
+        <div class="deep-age-item">
+          <div class="deep-age-val">${r.badge}</div>
+          <div class="deep-age-country">${r.flag} ${r.countryName}</div>
+        </div>
+      `).join('');
+    }
+
+    if(ageDesc){
+      if(ageData.primaryDesc && ageData.primaryDesc.trim()){
+        ageDesc.textContent = ageData.primaryDesc.trim();
+        ageDesc.style.display = 'block';
+      } else {
+        ageDesc.style.display = 'none';
+      }
+    }
+
+    if(ageSec) ageSec.style.display = 'block';
+  } else {
+    ageChip.style.display = 'none';
+    if(ageSec) ageSec.style.display = 'none';
+  }
+
+  // 3. OVERVIEW / ABOUT
+  const overviewSec = document.getElementById('deepOverviewSec');
+  const overviewText = document.getElementById('deepOverviewText');
+  const storylineText = document.getElementById('deepStorylineText');
+  const rawOverview = data.overview || data.description_raw || data.summary || initialItem.notes || '';
+
+  if(rawOverview.trim()){
+    overviewText.textContent = rawOverview.trim();
+    overviewSec.style.display = 'block';
+  } else {
+    overviewSec.style.display = 'none';
+  }
+
+  if(data.storyline && data.storyline.trim() && data.storyline.trim() !== rawOverview.trim()){
+    storylineText.textContent = `Storyline: ${data.storyline.trim()}`;
+    storylineText.style.display = 'block';
+  } else {
+    storylineText.style.display = 'none';
+  }
+
+  // 4. INFORMATION / METADATA GRID
+  const detailsSec = document.getElementById('deepDetailsSec');
+  const detailsGrid = document.getElementById('deepDetailsGrid');
+  const kvItems = [];
+
+  if(type === 'movie'){
+    if(data.release_date) kvItems.push({ l: 'Release Date', v: data.release_date });
+    if(data.status) kvItems.push({ l: 'Status', v: data.status });
+    if(data.budget && data.budget > 0) kvItems.push({ l: 'Budget', v: `$${(data.budget/1e6).toFixed(1)}M` });
+    if(data.revenue && data.revenue > 0) kvItems.push({ l: 'Box Office', v: `$${(data.revenue/1e6).toFixed(1)}M` });
+    if(data.original_language) kvItems.push({ l: 'Language', v: data.original_language.toUpperCase() });
+    if(data.production_countries && data.production_countries.length){
+      kvItems.push({ l: 'Country', v: data.production_countries.map(c => c.name || c.iso_3166_1).join(', ') });
+    }
+    const director = data.credits?.crew?.find(x => x.job === 'Director');
+    if(director) kvItems.push({ l: 'Director', v: director.name });
+    const writers = data.credits?.crew?.filter(x => x.job === 'Writer' || x.job === 'Screenplay').map(x => x.name);
+    if(writers && writers.length) kvItems.push({ l: 'Writers', v: [...new Set(writers)].slice(0, 2).join(', ') });
+    if(data.genres && data.genres.length) kvItems.push({ l: 'Genres', v: data.genres.map(g => g.name).join(', ') });
+  } else if(type === 'series'){
+    if(data.first_air_date) kvItems.push({ l: 'First Aired', v: data.first_air_date });
+    if(data.last_air_date) kvItems.push({ l: 'Last Aired', v: data.last_air_date });
+    if(data.number_of_seasons) kvItems.push({ l: 'Total Seasons', v: `${data.number_of_seasons} Seasons` });
+    if(data.number_of_episodes) kvItems.push({ l: 'Total Episodes', v: `${data.number_of_episodes} Episodes` });
+    if(data.status) kvItems.push({ l: 'Status', v: data.status });
+    if(data.networks && data.networks.length) kvItems.push({ l: 'Networks', v: data.networks.map(n => n.name).join(', ') });
+    if(data.created_by && data.created_by.length) kvItems.push({ l: 'Created By', v: data.created_by.map(c => c.name).join(', ') });
+    if(data.genres && data.genres.length) kvItems.push({ l: 'Genres', v: data.genres.map(g => g.name).join(', ') });
+  } else if(type === 'game'){
+    if(data.released || data.first_release_date) kvItems.push({ l: 'Released', v: data.released || data.first_release_date });
+    if(data.developers && data.developers.length) kvItems.push({ l: 'Developers', v: data.developers.map(d => d.name).join(', ') });
+    if(data.publishers && data.publishers.length) kvItems.push({ l: 'Publishers', v: data.publishers.map(p => p.name).join(', ') });
+    if(data.game_engines && data.game_engines.length) kvItems.push({ l: 'Game Engine', v: data.game_engines.join(', ') });
+    if(data.game_modes && data.game_modes.length) kvItems.push({ l: 'Game Modes', v: data.game_modes.map(m => m.name || m).join(', ') });
+    if(data.player_perspectives && data.player_perspectives.length){
+      kvItems.push({ l: 'Perspectives', v: data.player_perspectives.map(p => p.name || p).join(', ') });
+    }
+    if(data.genres && data.genres.length) kvItems.push({ l: 'Genres', v: data.genres.map(g => g.name).join(', ') });
+    if(data.themes && data.themes.length) kvItems.push({ l: 'Themes', v: data.themes.map(t => t.name || t).join(', ') });
+  }
+
+  if(kvItems.length){
+    detailsGrid.innerHTML = kvItems.map(kv => `
+      <div class="deep-kv-item">
+        <div class="deep-kv-lbl">${kv.l}</div>
+        <div class="deep-kv-val">${kv.v}</div>
+      </div>
+    `).join('');
+    detailsSec.style.display = 'block';
+  } else {
+    detailsSec.style.display = 'none';
+  }
+
+  // 5. PLATFORMS & RELEASE HISTORY (FOR GAMES)
+  const platformsSec = document.getElementById('deepPlatformsSec');
+  const platformsList = document.getElementById('deepPlatformsList');
+  if(type === 'game' && data.platforms && data.platforms.length){
+    let pContent = data.platforms.map(p => {
+      const pName = p.platform ? p.platform.name : (p.name || p);
+      return `<span class="deep-chip" style="background:rgba(0,197,102,0.12);color:var(--green);border-color:rgba(0,197,102,0.3)">🎮 ${pName}</span>`;
+    }).join('');
+
+    if(data.release_history && data.release_history.length){
+      pContent += `
+        <div style="width:100%;margin-top:10px;display:flex;flex-direction:column;gap:6px">
+          <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px">Platform Release History</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px">
+            ${data.release_history.slice(0, 6).map(rh => `
+              <span class="deep-chip" style="font-size:10px;padding:2px 8px;background:var(--bg3);border:1px solid var(--border)">
+                <strong style="color:var(--text2)">${rh.platform}:</strong> ${rh.date}
+              </span>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    platformsList.innerHTML = pContent;
+    platformsSec.style.display = 'block';
+  } else {
+    platformsSec.style.display = 'none';
+  }
+
+  // 6. CAST & CREW
+  const castSec = document.getElementById('deepCastSec');
+  const castRow = document.getElementById('deepCastRow');
+  const castList = (data.credits?.cast || data.aggregate_credits?.cast || []).slice(0, 14);
+
+  if(castList.length){
+    castRow.innerHTML = castList.map(actor => {
+      const photo = actor.profile_path
+        ? `<img class="deep-cast-photo" src="https://image.tmdb.org/t/p/w185${actor.profile_path}" loading="lazy" alt="">`
+        : `<div class="deep-cast-photo-ph">👤</div>`;
+      const charName = actor.character || (actor.roles && actor.roles[0] ? actor.roles[0].character : '');
+      return `
+        <div class="deep-cast-card">
+          <div class="deep-cast-photo-wrap">${photo}</div>
+          <div class="deep-cast-name">${actor.name}</div>
+          <div class="deep-cast-char">${charName || 'Actor'}</div>
+        </div>
+      `;
+    }).join('');
+    castSec.style.display = 'block';
+  } else {
+    castSec.style.display = 'none';
+  }
+
+  // 7. SEASONS (FOR SERIES)
+  const seasonsSec = document.getElementById('deepSeasonsSec');
+  const seasonsGrid = document.getElementById('deepSeasonsGrid');
+  if(type === 'series' && data.seasons && data.seasons.length){
+    const validSeasons = data.seasons.filter(s => s.season_number > 0);
+    seasonsGrid.innerHTML = validSeasons.map(s => {
+      const sPoster = s.poster_path
+        ? `<img class="deep-season-poster" src="https://image.tmdb.org/t/p/w185${s.poster_path}" loading="lazy" alt="">`
+        : `<div class="deep-season-poster" style="display:flex;align-items:center;justify-content:center;font-size:18px">📺</div>`;
+      return `
+        <div class="deep-season-card">
+          ${sPoster}
+          <div class="deep-season-info">
+            <div class="deep-season-title">${s.name || `Season ${s.season_number}`}</div>
+            <div class="deep-season-meta">${s.air_date ? s.air_date.slice(0,4) : ''} · ${s.episode_count || 0} Episodes</div>
+            ${s.overview ? `<div class="deep-season-overview">${s.overview}</div>` : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
+    seasonsSec.style.display = 'block';
+  } else {
+    seasonsSec.style.display = 'none';
+  }
+
+  // 8. COLLECTION / FRANCHISE / EXPANSIONS
+  const franchiseSec = document.getElementById('deepFranchiseSec');
+  const franchiseRow = document.getElementById('deepFranchiseRow');
+  const franchiseHdr = document.getElementById('deepFranchiseHdr');
+
+  if(type === 'movie' && data.belongs_to_collection){
+    franchiseHdr.textContent = data.belongs_to_collection.name || 'Movie Collection';
+    const cPoster = data.belongs_to_collection.poster_path
+      ? `https://image.tmdb.org/t/p/w185${data.belongs_to_collection.poster_path}`
+      : (data.belongs_to_collection.backdrop_path ? `https://image.tmdb.org/t/p/w300${data.belongs_to_collection.backdrop_path}` : '');
+    franchiseRow.innerHTML = `
+      <div class="deep-cast-card" style="flex:0 0 110px">
+        <div class="deep-poster-wrap" style="width:105px;height:150px;margin-bottom:6px">
+          ${cPoster ? `<img src="${cPoster}" class="deep-poster">` : `<div class="deep-poster-ph">🎬</div>`}
+        </div>
+        <div class="deep-cast-name">${data.belongs_to_collection.name}</div>
+      </div>
+    `;
+    franchiseSec.style.display = 'block';
+  } else if(type === 'game' && (data.franchises || data.collection || data.expansions || data.dlcs)){
+    const collGames = data.collection?.games || [];
+    const expList = [...(data.expansions||[]), ...(data.dlcs||[])];
+    const related = [...collGames, ...expList];
+
+    if(related.length){
+      franchiseHdr.textContent = data.collection?.name || (data.franchises && data.franchises[0] ? `${data.franchises[0]} Series` : 'Franchise & Expansions');
+      franchiseRow.innerHTML = related.slice(0, 10).map(rel => `
+        <div class="deep-cast-card" style="flex:0 0 100px;cursor:pointer" onclick="openDeepCard({ title: '${(rel.name||'').replace(/'/g,"\\'")}', type: 'game', poster: '${rel.cover||''}' })">
+          <div class="deep-poster-wrap" style="width:96px;height:130px;margin-bottom:6px">
+            ${rel.cover ? `<img src="${rel.cover}" class="deep-poster">` : `<div class="deep-poster-ph">🎮</div>`}
+          </div>
+          <div class="deep-cast-name">${rel.name}</div>
+          ${rel.year ? `<div class="deep-cast-char">${rel.year}</div>` : ''}
+        </div>
+      `).join('');
+      franchiseSec.style.display = 'block';
+    } else if(data.franchises && data.franchises.length){
+      franchiseHdr.textContent = 'Franchise';
+      franchiseRow.innerHTML = `
+        <div style="font-size:13px;font-weight:600;color:var(--text2);padding:4px 0">
+          Part of the <strong style="color:var(--text)">${data.franchises.join(', ')}</strong> franchise.
+        </div>
+      `;
+      franchiseSec.style.display = 'block';
+    } else {
+      franchiseSec.style.display = 'none';
+    }
+  } else {
+    franchiseSec.style.display = 'none';
+  }
+
+  // 9. MEDIA & TRAILERS GALLERY
+  const mediaSec = document.getElementById('deepMediaSec');
+  const mediaGallery = document.getElementById('deepMediaGallery');
+  const mediaItems = [];
+
+  // Videos
+  if(data.videos && data.videos.results){
+    const ytTrailers = data.videos.results.filter(v => v.site === 'YouTube' && (v.type === 'Trailer' || v.type === 'Teaser')).slice(0, 3);
+    ytTrailers.forEach(v => {
+      mediaItems.push(`
+        <a href="https://www.youtube.com/watch?v=${v.key}" target="_blank" rel="noopener noreferrer" class="deep-media-item" title="${v.name}">
+          <img class="deep-media-thumb" src="https://img.youtube.com/vi/${v.key}/hqdefault.jpg" loading="lazy" alt="">
+          <div class="deep-media-play">▶</div>
+        </a>
+      `);
+    });
+  } else if(data.videos && Array.isArray(data.videos) && data.videos.length){
+    data.videos.slice(0, 3).forEach(v => {
+      const vId = v.id || v.video_id;
+      if(vId){
+        mediaItems.push(`
+          <a href="https://www.youtube.com/watch?v=${vId}" target="_blank" rel="noopener noreferrer" class="deep-media-item" title="${v.name || 'Trailer'}">
+            <img class="deep-media-thumb" src="https://img.youtube.com/vi/${vId}/hqdefault.jpg" loading="lazy" alt="">
+            <div class="deep-media-play">▶</div>
+          </a>
+        `);
+      }
+    });
+  }
+
+  // Screenshots & Artworks
+  const allShots = [...(data.screenshots||[]), ...(data.artworks||[])];
+  if(allShots.length){
+    allShots.slice(0, 8).forEach(s => {
+      const sUrl = s.image || s;
+      mediaItems.push(`
+        <a href="${sUrl}" target="_blank" rel="noopener noreferrer" class="deep-media-item">
+          <img class="deep-media-thumb" src="${sUrl}" loading="lazy" alt="">
+        </a>
+      `);
+    });
+  }
+
+  if(mediaItems.length){
+    mediaGallery.innerHTML = mediaItems.join('');
+    mediaSec.style.display = 'block';
+  } else {
+    mediaSec.style.display = 'none';
+  }
+
+  // 10. WHERE TO WATCH (TMDB PROVIDERS)
+  const providersSec = document.getElementById('deepProvidersSec');
+  const providersWrap = document.getElementById('deepProvidersWrap');
+  if((type === 'movie' || type === 'series') && data['watch/providers'] && data['watch/providers'].results){
+    const wpResults = data['watch/providers'].results;
+    const userCountry = wpResults.US || wpResults.IN || wpResults.GB || Object.values(wpResults)[0];
+    if(userCountry && (userCountry.flatrate || userCountry.rent || userCountry.buy)){
+      let pGroupsHtml = '';
+      if(userCountry.flatrate && userCountry.flatrate.length){
+        pGroupsHtml += `
+          <div class="deep-provider-group">
+            <div class="deep-provider-group-title">Stream</div>
+            <div class="deep-provider-logos">
+              ${userCountry.flatrate.map(p => `<img class="deep-provider-logo" src="https://image.tmdb.org/t/p/w92${p.logo_path}" title="${p.provider_name}" alt="${p.provider_name}">`).join('')}
+            </div>
+          </div>
+        `;
+      }
+      if(userCountry.rent && userCountry.rent.length){
+        pGroupsHtml += `
+          <div class="deep-provider-group">
+            <div class="deep-provider-group-title">Rent</div>
+            <div class="deep-provider-logos">
+              ${userCountry.rent.slice(0, 6).map(p => `<img class="deep-provider-logo" src="https://image.tmdb.org/t/p/w92${p.logo_path}" title="${p.provider_name}" alt="${p.provider_name}">`).join('')}
+            </div>
+          </div>
+        `;
+      }
+      if(userCountry.buy && userCountry.buy.length && !userCountry.rent){
+        pGroupsHtml += `
+          <div class="deep-provider-group">
+            <div class="deep-provider-group-title">Buy</div>
+            <div class="deep-provider-logos">
+              ${userCountry.buy.slice(0, 6).map(p => `<img class="deep-provider-logo" src="https://image.tmdb.org/t/p/w92${p.logo_path}" title="${p.provider_name}" alt="${p.provider_name}">`).join('')}
+            </div>
+          </div>
+        `;
+      }
+      providersWrap.innerHTML = pGroupsHtml;
+      providersSec.style.display = 'block';
+    } else {
+      providersSec.style.display = 'none';
+    }
+  } else {
+    providersSec.style.display = 'none';
+  }
+
+  // 11. WEBSITES & EXTERNAL LINKS
+  const websitesSec = document.getElementById('deepWebsitesSec');
+  const websitesList = document.getElementById('deepWebsitesList');
+  const extLinks = [];
+
+  if(data.homepage) extLinks.push({ name: 'Official Website', url: data.homepage, icon: '🌐' });
+  if(data.imdb_id || data.external_ids?.imdb_id){
+    const imdbId = data.imdb_id || data.external_ids?.imdb_id;
+    extLinks.push({ name: 'IMDb', url: `https://www.imdb.com/title/${imdbId}`, icon: '⭐' });
+  }
+  if(data.websites && data.websites.length){
+    data.websites.forEach(w => {
+      let wName = 'Website';
+      let icon = '🔗';
+      const u = (w.url || '').toLowerCase();
+      if(w.category === 13 || u.includes('steampowered.com')){ wName = 'Steam'; icon = '🎮'; }
+      else if(w.category === 16 || u.includes('epicgames.com')){ wName = 'Epic Games'; icon = '⚡'; }
+      else if(w.category === 17 || u.includes('gog.com')){ wName = 'GOG'; icon = '💿'; }
+      else if(w.category === 18 || u.includes('discord')){ wName = 'Discord'; icon = '💬'; }
+      else if(w.category === 14 || u.includes('twitch.tv')){ wName = 'Twitch'; icon = '🟣'; }
+      else if(w.category === 3 || u.includes('wikipedia.org')){ wName = 'Wikipedia'; icon = '📖'; }
+      else if(w.category === 1){ wName = 'Official Site'; icon = '🌐'; }
+      extLinks.push({ name: wName, url: w.url, icon });
+    });
+  }
+
+  if(extLinks.length){
+    websitesList.innerHTML = extLinks.map(l => `
+      <a href="${l.url}" target="_blank" rel="noopener noreferrer" class="deep-chip" style="text-decoration:none">
+        <span>${l.icon}</span> ${l.name}
+      </a>
+    `).join('');
+    websitesSec.style.display = 'block';
+  } else {
+    websitesSec.style.display = 'none';
+  }
+
+  // 12. SIMILAR TITLES
+  const similarSec = document.getElementById('deepSimilarSec');
+  const similarRow = document.getElementById('deepSimilarRow');
+  const simList = (data.similar?.results || data.similar_games || []).slice(0, 8);
+
+  if(simList.length){
+    similarRow.innerHTML = simList.map(sim => {
+      const sTitle = sim.title || sim.name;
+      const sPoster = sim.poster_path
+        ? `https://image.tmdb.org/t/p/w185${sim.poster_path}`
+        : (sim.cover || '');
+      const sYear = sim.year || (sim.release_date ? sim.release_date.slice(0,4) : (sim.first_air_date ? sim.first_air_date.slice(0,4) : ''));
+      return `
+        <div class="deep-cast-card" style="flex:0 0 94px;cursor:pointer" onclick="openDeepCard({ title: '${(sTitle||'').replace(/'/g,"\\'")}', type: '${type}', tmdbId: ${sim.id||'null'}, igdbId: ${sim.id||'null'}, poster: '${sPoster}' })">
+          <div class="deep-poster-wrap" style="width:90px;height:130px;margin-bottom:6px">
+            ${sPoster ? `<img src="${sPoster}" class="deep-poster" alt="">` : `<div class="deep-poster-ph">🎬</div>`}
+          </div>
+          <div class="deep-cast-name">${sTitle}</div>
+          ${sYear ? `<div class="deep-cast-char">${sYear}</div>` : ''}
+        </div>
+      `;
+    }).join('');
+    similarSec.style.display = 'block';
+  } else {
+    similarSec.style.display = 'none';
+  }
+
+  // 13. YOUR LOGGER ENTRY
+  renderDeepPersonalSection(initialItem, data);
+}
+
+function renderDeepCardFallback(item){
+  document.getElementById('deepTitle').textContent = item.title;
+  document.getElementById('deepOverviewText').textContent = item.notes || 'No extended overview available for this entry.';
+  document.getElementById('deepOverviewSec').style.display = 'block';
+  renderDeepPersonalSection(item, {});
+}
+
+function renderDeepPersonalSection(item, deepData){
+  const personalContent = document.getElementById('deepPersonalContent');
+  if(!personalContent) return;
+
+  const allData = (typeof DATA !== 'undefined' && DATA.length) ? DATA : (window.DATA || []);
+  const allWL = getWL() || [];
+
+  const itemTitle = (item.title || item.name || '').toLowerCase().trim();
+  const itemType = item.type || item.mediaType || 'movie';
+
+  // Check if item is logged in diary
+  const loggedEntry = allData.find(x => x.id === item.id)
+    || (item.tmdbId && allData.find(x => x.tmdbId && Number(x.tmdbId) === Number(item.tmdbId)))
+    || (item.igdbId && allData.find(x => x.igdbId && Number(x.igdbId) === Number(item.igdbId)))
+    || allData.find(x => x.type === itemType && (x.title||'').toLowerCase().trim() === itemTitle);
+
+  // Check if in watchlist
+  const wlItem = !loggedEntry && allWL.find(x => x.type === itemType && (x.title||'').toLowerCase().trim() === itemTitle);
+
+  if(loggedEntry){
+    const rKey = RATINGS.includes(loggedEntry.rating) ? loggedEntry.rating : 'decent';
+    const rClass = RATING_CLASS[rKey] || 'r-decent';
+    const rLabel = RATING_LABELS[rKey] || 'Decent';
+    const sKey = loggedEntry.rewatched ? 'rewatched' : (loggedEntry.status || 'done');
+    const sLabel = getPillLabel(sKey, loggedEntry.type, loggedEntry);
+
+    // Duration / dates for games & ongoing media
+    let dateLine = formatLogDate(loggedEntry.id);
+    if(loggedEntry.type === 'game'){
+      if(loggedEntry.startDate && loggedEntry.finishDate){
+        dateLine = `${loggedEntry.startDate} → ${loggedEntry.finishDate}`;
+      } else if(loggedEntry.startDate){
+        dateLine = `Started: ${loggedEntry.startDate} · Ongoing`;
+      }
+    }
+
+    personalContent.innerHTML = `
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">
+        <div style="display:flex;align-items:center;gap:6px">
+          <div class="info-rating-pill ${rClass}">★ ${rLabel}</div>
+          <div class="pill ${pillCls[sKey] || 'pill-done'}">${sLabel}</div>
+        </div>
+        <div style="font-size:11.5px;color:var(--text3);font-weight:600">${dateLine}</div>
+      </div>
+      ${loggedEntry.notes && loggedEntry.notes.trim() ? `
+        <div class="info-review-box" style="margin-bottom:12px">
+          <div class="info-review-lbl">My Review</div>
+          <div class="info-review-content">${loggedEntry.notes.trim()}</div>
+        </div>
+      ` : ''}
+      <div class="deep-personal-actions">
+        <button class="deep-action-btn btn-log" onclick="closeDeepCard(); setTimeout(() => openModal(${JSON.stringify(loggedEntry).replace(/"/g, '&quot;')}), 120)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+          Edit Review
+        </button>
+      </div>
+    `;
+  } else if(wlItem){
+    personalContent.innerHTML = `
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+        <span class="search-status-pill wl">✓ Saved in Watchlist</span>
+      </div>
+      <div style="font-size:12px;color:var(--text3);margin-bottom:12px">This title is saved to your watchlist. Log it once you have finished watching or playing.</div>
+      <div class="deep-personal-actions">
+        <button class="deep-action-btn btn-log" onclick="closeDeepCard(); setTimeout(() => { openModal(); document.getElementById('mTitle').value = '${(item.title||'').replace(/'/g,"\\'")}'; setModalType('${itemType}'); validateForm(); }, 120)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          Log to Diary
+        </button>
+      </div>
+    `;
+  } else {
+    // Unlogged title
+    personalContent.innerHTML = `
+      <div style="font-size:12.5px;color:var(--text2);margin-bottom:12px">
+        You haven't logged <strong style="color:var(--text)">${item.title || item.name}</strong> yet.
+      </div>
+      <div class="deep-personal-actions">
+        <button class="deep-action-btn btn-log" onclick="closeDeepCard(); setTimeout(() => { openModal(); document.getElementById('mTitle').value = '${(item.title||'').replace(/'/g,"\\'")}'; if(document.getElementById('mYear')) document.getElementById('mYear').value = '${item.year||''}'; if(document.getElementById('mPoster')) document.getElementById('mPoster').value = '${item.poster||''}'; setModalType('${itemType}'); validateForm(); }, 120)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          Log Entry
+        </button>
+        <button class="deep-action-btn btn-wl" onclick="quickAddDeepToWL('${(item.title||'').replace(/'/g,"\\'")}', '${itemType}', '${item.year||''}', '${item.poster||''}')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+          + Watchlist
+        </button>
+      </div>
+    `;
+  }
+}
+
+async function quickAddDeepToWL(title, type, year, poster){
+  const wl = getWL();
+  if(!wl.some(x => x.title.toLowerCase() === title.toLowerCase() && x.type === type)){
+    wl.unshift({ title, type, year, poster, genre: '' });
+    saveWL(wl);
+    if(currentUser) await fsSaveWL(wl);
+    renderWL();
+    toast('Added to watchlist');
+    if(_activeDeepItem) renderDeepPersonalSection(_activeDeepItem, {});
+  } else {
+    toast('Already in watchlist');
+  }
+}
+
+// ── AGE & CONTENT RATING EXTRACTORS ──
+const COUNTRY_FLAGS = {
+  'US': '🇺🇸', 'GB': '🇬🇧', 'UK': '🇬🇧', 'JP': '🇯🇵', 'IN': '🇮🇳',
+  'AU': '🇦🇺', 'CA': '🇨🇦', 'DE': '🇩🇪', 'FR': '🇫🇷', 'KR': '🇰🇷',
+  'BR': '🇧🇷', 'ES': '🇪🇸', 'IT': '🇮🇹', 'MX': '🇲🇽', 'EU': '🇪🇺', 'NZ': '🇳🇿'
+};
+
+const COUNTRY_NAMES = {
+  'US': 'United States', 'GB': 'United Kingdom', 'UK': 'United Kingdom', 'JP': 'Japan', 'IN': 'India',
+  'AU': 'Australia', 'CA': 'Canada', 'DE': 'Germany', 'FR': 'France', 'KR': 'South Korea',
+  'BR': 'Brazil', 'ES': 'Spain', 'IT': 'Italy', 'MX': 'Mexico', 'EU': 'Europe', 'NZ': 'New Zealand'
+};
+
+const TV_CERT_DESCS = {
+  'TV-Y': 'All Children — Appropriate for all ages',
+  'TV-Y7': 'Children 7+ — Designed for children age 7 and older',
+  'TV-Y7-FV': 'Children 7+ with Fantasy Violence',
+  'TV-G': 'General Audience — Suitable for all ages',
+  'TV-PG': 'Parental Guidance Suggested — Unsuitable for younger children',
+  'TV-14': 'Parents Strongly Cautioned — Unsuitable for children under 14',
+  'TV-MA': 'Mature Audience Only — Unsuitable for viewers under 17',
+  'PG12': 'Parental Guidance for children under 12',
+  'R15+': 'Restricted to viewers 15 and older',
+  'R18+': 'Adults Only (18+)',
+  'U': 'Universal — Suitable for all audiences',
+  'U/A': 'Parental Guidance for children below 12',
+  'U/A 7+': 'Suitable for 7+ with parental guidance',
+  'U/A 13+': 'Suitable for 13+ with parental guidance',
+  'U/A 16+': 'Suitable for 16+ with parental guidance',
+  'A': 'Restricted to Adults Only (18+)',
+  '12': 'Suitable for 12 years and older',
+  '12+': 'Suitable for 12 years and older',
+  '14': 'Suitable for 14 years and older',
+  '16': 'Suitable for 16 years and older',
+  '18': 'Restricted to adults only (18+)',
+  '0': 'Approved without age restriction',
+  '6': 'Suitable for 6 years and older'
+};
+
+const MOVIE_CERT_DESCS = {
+  'G': 'General Audiences — All ages admitted',
+  'PG': 'Parental Guidance Suggested — Some material may not be suitable for children',
+  'PG-13': 'Parents Strongly Cautioned — Inappropriate for children under 13',
+  'R': 'Restricted — Under 17 requires accompanying parent or adult guardian',
+  'NC-17': 'Adults Only — No one 17 and under admitted',
+  'U': 'Universal — Unrestricted public exhibition',
+  'U/A': 'Parental Guidance for children below 12',
+  'U/A 7+': 'Suitable for 7 years and above with guidance',
+  'U/A 13+': 'Suitable for 13 years and above with guidance',
+  'U/A 16+': 'Suitable for 16 years and above with guidance',
+  'A': 'Adults Only (18+)',
+  '12': 'Suitable for 12 years and older',
+  '12A': 'Cinema: Under 12 must be accompanied by adult',
+  '15': 'Suitable for 15 years and older',
+  '18': 'Suitable for adults only (18+)',
+  'PG12': 'Parental Guidance for children under 12',
+  'R15+': 'Restricted to viewers 15 and older',
+  'R18+': 'Adults Only (18+)'
+};
+
+function extractAllAgeRatings(data, type){
+  if(!data) return null;
+  const items = [];
+
+  if(type === 'series'){
+    const rawList = Array.isArray(data.content_ratings) ? data.content_ratings : (data.content_ratings?.results || []);
+    const preferredCountries = ['US', 'GB', 'JP', 'IN', 'AU', 'CA', 'DE', 'FR', 'KR'];
+    const seen = new Set();
+
+    // Preferred countries first
+    for(const c of preferredCountries){
+      const entry = rawList.find(r => (r.iso_3166_1 === c || r.country === c) && r.rating && r.rating.trim() && r.rating !== '—' && r.rating !== '-');
+      if(entry && !seen.has(entry.rating.trim())){
+        const cert = entry.rating.trim();
+        seen.add(cert);
+        const countryCode = entry.iso_3166_1 || c;
+        const flag = COUNTRY_FLAGS[countryCode] || '🌐';
+        const cName = COUNTRY_NAMES[countryCode] || countryCode;
+        items.push({
+          badge: cert,
+          countryCode,
+          countryName: cName,
+          flag,
+          desc: TV_CERT_DESCS[cert] || `Official ${cName} TV rating: ${cert}`
+        });
+      }
+    }
+
+    // Other countries
+    for(const entry of rawList){
+      if(items.length >= 4) break;
+      const cert = entry.rating ? entry.rating.trim() : '';
+      if(cert && cert !== '—' && cert !== '-' && !seen.has(cert)){
+        seen.add(cert);
+        const countryCode = entry.iso_3166_1 || 'INTL';
+        const flag = COUNTRY_FLAGS[countryCode] || '🌐';
+        const cName = COUNTRY_NAMES[countryCode] || countryCode;
+        items.push({
+          badge: cert,
+          countryCode,
+          countryName: cName,
+          flag,
+          desc: TV_CERT_DESCS[cert] || `Official ${cName} classification: ${cert}`
+        });
+      }
+    }
+  } else if(type === 'movie'){
+    const rawList = Array.isArray(data.release_dates) ? data.release_dates : (data.release_dates?.results || []);
+    const preferredCountries = ['US', 'GB', 'IN', 'JP', 'AU', 'CA', 'DE', 'FR'];
+    const seen = new Set();
+
+    for(const c of preferredCountries){
+      const entry = rawList.find(r => r.iso_3166_1 === c);
+      if(entry && entry.release_dates){
+        const certObj = entry.release_dates.find(d => d.certification && d.certification.trim() && d.certification !== '—' && d.certification !== '-');
+        if(certObj && !seen.has(certObj.certification.trim())){
+          const cert = certObj.certification.trim();
+          seen.add(cert);
+          const flag = COUNTRY_FLAGS[c] || '🌐';
+          const cName = COUNTRY_NAMES[c] || c;
+          items.push({
+            badge: cert,
+            countryCode: c,
+            countryName: cName,
+            flag,
+            desc: MOVIE_CERT_DESCS[cert] || certObj.note || `Official ${cName} classification: ${cert}`
+          });
+        }
+      }
+    }
+
+    for(const entry of rawList){
+      if(items.length >= 4) break;
+      if(entry.release_dates){
+        const certObj = entry.release_dates.find(d => d.certification && d.certification.trim() && d.certification !== '—' && d.certification !== '-');
+        if(certObj && !seen.has(certObj.certification.trim())){
+          const cert = certObj.certification.trim();
+          seen.add(cert);
+          const c = entry.iso_3166_1;
+          const flag = COUNTRY_FLAGS[c] || '🌐';
+          const cName = COUNTRY_NAMES[c] || c;
+          items.push({
+            badge: cert,
+            countryCode: c,
+            countryName: cName,
+            flag,
+            desc: MOVIE_CERT_DESCS[cert] || certObj.note || `Official ${cName} classification: ${cert}`
+          });
+        }
+      }
+    }
+  } else if(type === 'game'){
+    if(data.age_ratings_detailed && data.age_ratings_detailed.length){
+      for(const r of data.age_ratings_detailed){
+        if(r.label && r.label !== '—' && r.label !== '-'){
+          const org = r.organization || 'ESRB';
+          const flag = org.includes('ESRB') ? '🇺🇸' : (org.includes('PEGI') ? '🇪🇺' : (org.includes('CERO') ? '🇯🇵' : (org.includes('USK') ? '🇩🇪' : (org.includes('ACB') ? '🇦🇺' : '🎮'))));
+          items.push({
+            badge: r.label,
+            countryCode: org,
+            countryName: org,
+            flag,
+            desc: r.synopsis || (r.descriptors && r.descriptors.length ? r.descriptors.join(' · ') : `Official ${org} game rating`)
+          });
+        }
+      }
+    }
+    if(!items.length && data.esrb_rating && data.esrb_rating.name && data.esrb_rating.name !== '—' && data.esrb_rating.name !== '-'){
+      items.push({
+        badge: data.esrb_rating.name,
+        countryCode: 'ESRB',
+        countryName: 'ESRB',
+        flag: '🇺🇸',
+        desc: `Official ESRB rating: ${data.esrb_rating.name}`
+      });
+    }
+  }
+
+  if(!items.length) return null;
+  return {
+    primaryBadge: items[0].badge,
+    ratings: items,
+    primaryDesc: items[0].desc
+  };
+}
+
+// ── EVENT LISTENERS ───────────────────────────────────────
+document.getElementById('deepClose')?.addEventListener('click', closeDeepCard);
+document.getElementById('deepOverlay')?.addEventListener('click', (e) => {
+  if(e.target === document.getElementById('deepOverlay')) closeDeepCard();
+});
+
 document.getElementById('toolbarSearchBtn')?.addEventListener('click', openDiarySearch);
 document.getElementById('diarySearchCancelBtn')?.addEventListener('click', closeDiarySearch);
 document.getElementById('diarySearchClearBtn')?.addEventListener('click', () => {
   const inp = document.getElementById('diarySearchInput');
-  if(inp){ inp.value = ''; inp.focus(); renderDiarySearchResults(''); }
+  if(inp){ inp.value = ''; inp.focus(); renderUniversalSearchResults(''); }
 });
 document.getElementById('diarySearchInput')?.addEventListener('input', (e) => {
-  renderDiarySearchResults(e.target.value);
+  renderUniversalSearchResults(e.target.value);
 });
 document.getElementById('diarySearchOverlay')?.addEventListener('click', (e) => {
   if(e.target === document.getElementById('diarySearchOverlay')){
@@ -6219,7 +8305,7 @@ document.querySelectorAll('.diary-search-seg .seg-btn').forEach(btn => {
     document.querySelectorAll('.diary-search-seg .seg-btn').forEach(b => b.classList.remove('on'));
     btn.classList.add('on');
     _diarySearchFilter = btn.dataset.sf || 'all';
-    renderDiarySearchResults(document.getElementById('diarySearchInput')?.value || '');
+    renderUniversalSearchResults(document.getElementById('diarySearchInput')?.value || '');
   });
 });
 
@@ -6237,6 +8323,8 @@ window.openInfo         = openInfo;
 window.openInfoFromWL   = openInfoFromWL;
 window.showInfoCard     = showInfoCard;
 window.updateInfoCard   = updateInfoCard;
+window.openDeepCard     = openDeepCard;
+window.closeDeepCard    = closeDeepCard;
 window.profileCardClick = profileCardClick;
 window.editProfileName  = editProfileName;
 window.openFavsFromProfile = openFavsFromProfile;
@@ -6253,8 +8341,9 @@ window.renderLog        = renderLog;
 window.renderFavs       = renderFavs;
 window.openDiarySearch  = openDiarySearch;
 window.closeDiarySearch = closeDiarySearch;
-window.renderDiarySearchResults = renderDiarySearchResults;
-window.selectDiarySearchResult = selectDiarySearchResult;
+window.renderUniversalSearchResults = renderUniversalSearchResults;
+window.selectUniversalSearchResult = selectUniversalSearchResult;
+window.quickAddDeepToWL = quickAddDeepToWL;
 </script>
 </body>
 </html>
