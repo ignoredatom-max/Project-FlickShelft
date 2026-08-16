@@ -116,6 +116,20 @@ body::before{
   transition:stroke 0.18s ease, filter 0.18s ease;
   display:block;
 }
+.nav-avatar-img{
+  width:22px;
+  height:22px;
+  min-width:22px;
+  min-height:22px;
+  max-width:22px;
+  max-height:22px;
+  border-radius:50%;
+  object-fit:cover;
+  display:block;
+  border:1.5px solid transparent;
+  transition:border-color 0.18s ease, filter 0.18s ease;
+  box-sizing:border-box;
+}
 .nav-btn .nav-lbl{
   font-size:11px;
   font-weight:500;
@@ -140,6 +154,7 @@ body::before{
 
 .nav-btn[data-page="profile"].on{color:#bf5af2;}
 .nav-btn[data-page="profile"].on .nav-svg{stroke:#bf5af2;filter:drop-shadow(0 0 4px rgba(191,90,242,0.5));}
+.nav-btn[data-page="profile"].on .nav-avatar-img{border-color:#bf5af2;filter:drop-shadow(0 0 4px rgba(191,90,242,0.5));}
 .nav-btn[data-page="profile"].on .nav-lbl{color:#bf5af2;font-weight:600;}
 
 .nav-btn:active .nav-ico-wrap{
@@ -2900,6 +2915,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   border-radius:12px;
   padding:8px 14px;
   min-width:76px;
+  box-sizing:border-box;
 }
 .deep-age-val{
   font-size:15px;
@@ -2922,6 +2938,22 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   color:var(--text2);
   line-height:1.4;
   margin-top:6px;
+}
+@media (max-width: 480px){
+  .deep-age-badges-grid{
+    gap:8px;
+  }
+  .deep-age-item{
+    padding:7px 11px;
+    min-width:68px;
+    border-radius:10px;
+  }
+  .deep-age-val{
+    font-size:13.5px;
+  }
+  .deep-age-country{
+    font-size:10px;
+  }
 }
 
 /* Details Grid */
@@ -8446,6 +8478,7 @@ function renderDeepCard(data, initialItem){
 }
 
 function renderDeepCardFallback(item){
+  const type = item.type || item.mediaType || 'movie';
   const typeIcons = { movie: '🎬', series: '📺', game: '🎮' };
   const posterEl = document.getElementById('deepPoster');
   const posterPh = document.getElementById('deepPosterPh');
@@ -8456,11 +8489,42 @@ function renderDeepCardFallback(item){
   } else {
     posterEl.style.display = 'none';
     posterPh.style.display = 'flex';
-    posterPh.textContent = typeIcons[item.type] || '🎬';
+    posterPh.textContent = typeIcons[type] || '🎬';
   }
   document.getElementById('deepTitle').textContent = item.title;
   document.getElementById('deepOverviewText').textContent = item.notes || 'No extended overview available for this entry.';
   document.getElementById('deepOverviewSec').style.display = 'block';
+
+  // Age & Content Rating
+  const ageSec = document.getElementById('deepAgeSec');
+  const ageChip = document.getElementById('deepAgeChip');
+  const ageGrid = document.getElementById('deepAgeBadgesGrid');
+  const ageDesc = document.getElementById('deepAgeDesc');
+  const ageData = extractAllAgeRatings(item, type);
+  if(ageData && ageData.ratings && ageData.ratings.length){
+    if(ageChip){
+      ageChip.textContent = ageData.primaryBadge;
+      ageChip.style.display = 'inline-flex';
+    }
+    if(ageGrid){
+      ageGrid.innerHTML = ageData.ratings.map(r => `
+        <div class="deep-age-item">
+          <div class="deep-age-val">${r.badge}</div>
+          <div class="deep-age-country">${r.flag} ${r.countryName}</div>
+        </div>
+      `).join('');
+    }
+    if(ageDesc){
+      if(ageData.primaryDesc && ageData.primaryDesc.trim()){
+        ageDesc.textContent = ageData.primaryDesc.trim();
+        ageDesc.style.display = 'block';
+      } else {
+        ageDesc.style.display = 'none';
+      }
+    }
+    if(ageSec) ageSec.style.display = 'block';
+  }
+
   renderDeepPersonalSection(item, {});
 }
 
@@ -8761,38 +8825,42 @@ function extractAllAgeRatings(data, type){
       }
     }
   } else if(type === 'movie'){
-    const rawList = Array.isArray(data.release_dates) ? data.release_dates : (data.release_dates?.results || []);
+    const rawList = Array.isArray(data.release_dates) ? data.release_dates : (data.release_dates?.results || data.releases?.countries || []);
     const preferredCountries = ['US', 'GB', 'IN', 'JP', 'AU', 'CA', 'DE', 'FR'];
     const seen = new Set();
 
     for(const c of preferredCountries){
-      const entry = rawList.find(r => r.iso_3166_1 === c);
-      if(entry && entry.release_dates){
-        const certObj = entry.release_dates.find(d => d.certification && d.certification.trim() && d.certification !== '—' && d.certification !== '-');
-        if(certObj && !seen.has(certObj.certification.trim())){
-          const cert = certObj.certification.trim();
-          seen.add(cert);
-          const flag = COUNTRY_FLAGS[c] || '🌐';
-          const cName = COUNTRY_NAMES[c] || c;
-          items.push({
-            badge: cert,
-            countryCode: c,
-            countryName: cName,
-            flag,
-            desc: MOVIE_CERT_DESCS[cert] || certObj.note || `Official ${cName} classification: ${cert}`
-          });
+      const entry = rawList.find(r => (r.iso_3166_1 === c || r.country === c));
+      if(entry){
+        const list = entry.release_dates || [entry];
+        const certObj = list.find(d => (d.certification || d.certification_code || d.rating) && (d.certification || d.certification_code || d.rating).trim() && (d.certification || d.certification_code || d.rating) !== '—' && (d.certification || d.certification_code || d.rating) !== '-');
+        if(certObj){
+          const cert = (certObj.certification || certObj.certification_code || certObj.rating).trim();
+          if(!seen.has(cert)){
+            seen.add(cert);
+            const flag = COUNTRY_FLAGS[c] || '🌐';
+            const cName = COUNTRY_NAMES[c] || c;
+            items.push({
+              badge: cert,
+              countryCode: c,
+              countryName: cName,
+              flag,
+              desc: MOVIE_CERT_DESCS[cert] || certObj.note || `Official ${cName} classification: ${cert}`
+            });
+          }
         }
       }
     }
 
     for(const entry of rawList){
       if(items.length >= 4) break;
-      if(entry.release_dates){
-        const certObj = entry.release_dates.find(d => d.certification && d.certification.trim() && d.certification !== '—' && d.certification !== '-');
-        if(certObj && !seen.has(certObj.certification.trim())){
-          const cert = certObj.certification.trim();
+      const c = entry.iso_3166_1 || entry.country || 'INTL';
+      const list = entry.release_dates || [entry];
+      const certObj = list.find(d => (d.certification || d.certification_code || d.rating) && (d.certification || d.certification_code || d.rating).trim() && (d.certification || d.certification_code || d.rating) !== '—' && (d.certification || d.certification_code || d.rating) !== '-');
+      if(certObj){
+        const cert = (certObj.certification || certObj.certification_code || certObj.rating).trim();
+        if(!seen.has(cert)){
           seen.add(cert);
-          const c = entry.iso_3166_1;
           const flag = COUNTRY_FLAGS[c] || '🌐';
           const cName = COUNTRY_NAMES[c] || c;
           items.push({
@@ -8832,7 +8900,22 @@ function extractAllAgeRatings(data, type){
     }
   }
 
-  if(!items.length) return null;
+  if(!items.length){
+    const dateStr = data.release_date || data.first_air_date || data.released || '';
+    const isFuture = dateStr && new Date(dateStr) > new Date();
+    const fallbackBadge = isFuture ? 'PG-13 (Expected)' : 'Not Rated';
+    const fallbackDesc = isFuture
+      ? 'Official age & content classification is pending and will be certified closer to release.'
+      : 'This title has not yet been assigned an official content rating or is unrated.';
+    items.push({
+      badge: fallbackBadge,
+      countryCode: 'INTL',
+      countryName: 'Worldwide',
+      flag: '🌐',
+      desc: fallbackDesc
+    });
+  }
+
   return {
     primaryBadge: items[0].badge,
     ratings: items,
