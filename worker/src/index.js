@@ -586,15 +586,20 @@ export default {
 
         const tmdbUrl = `https://api.themoviedb.org/3/movie/${id}?api_key=${tmdbKey}&append_to_response=credits,release_dates,videos,keywords,similar`;
         const wpUrl = `https://api.themoviedb.org/3/movie/${id}/watch/providers?api_key=${tmdbKey}`;
+        const rdUrl = `https://api.themoviedb.org/3/movie/${id}/release_dates?api_key=${tmdbKey}`;
 
         try {
-          const [mainResp, wpResp] = await Promise.all([
+          const [mainResp, wpResp, rdResp] = await Promise.all([
             fetch(tmdbUrl, fetchOpts).then(r => r.json()),
-            fetch(wpUrl, fetchOpts).then(r => r.json()).catch(() => ({}))
+            fetch(wpUrl, fetchOpts).then(r => r.json()).catch(() => ({})),
+            fetch(rdUrl, fetchOpts).then(r => r.json()).catch(() => ({}))
           ]);
 
           if (wpResp && wpResp.results) {
             mainResp['watch/providers'] = wpResp;
+          }
+          if (rdResp && rdResp.results && (!mainResp.release_dates || !mainResp.release_dates.results)) {
+            mainResp.release_dates = rdResp;
           }
 
           return jsonResponse(mainResp, 200, corsHeaders);
