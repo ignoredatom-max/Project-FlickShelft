@@ -7671,14 +7671,17 @@ function renderUniversalSearchResults(query){
         return;
       }
 
-      resultsContainer.innerHTML = combined.map(m => renderSearchItemCard(m.item, q)).join('');
+      _currentSearchResults = combined.map(m => m.item);
+      resultsContainer.innerHTML = combined.map((m, idx) => renderSearchItemCard(m.item, idx, q)).join('');
     } catch(e) {
       console.warn('Universal search error:', e);
     }
   }, 220);
 }
 
-function renderSearchItemCard(e, q){
+let _currentSearchResults = [];
+
+function renderSearchItemCard(e, index, q){
   const typeIcons = { movie: '🎬', series: '📺', game: '🎮' };
   const typeNames = { movie: 'Film', series: 'Series', game: 'Game' };
   const icon = typeIcons[e.type] || '🎬';
@@ -7726,11 +7729,8 @@ function renderSearchItemCard(e, q){
 
   const metaText = [e.year, typeName, e.genre ? e.genre.split(',')[0] : ''].filter(Boolean).join(' · ');
 
-  // Store item in cache for fast click opening
-  const itemDataStr = encodeURIComponent(JSON.stringify(e.localEntry || e));
-
   return `
-    <div class="diary-search-card ${e.type}" onclick="selectUniversalSearchResult('${itemDataStr}')">
+    <div class="diary-search-card ${e.type}" onclick="selectUniversalSearchResult(${index})">
       <div class="diary-search-thumb-wrap">${thumb}</div>
       <div class="diary-search-info">
         <div class="diary-search-title-row">
@@ -7747,14 +7747,20 @@ function renderSearchItemCard(e, q){
   `;
 }
 
-function selectUniversalSearchResult(itemDataStr){
+function selectUniversalSearchResult(itemDataStrOrIndex){
   closeDiarySearch();
   try {
-    const item = JSON.parse(decodeURIComponent(itemDataStr));
+    let item = null;
+    if(typeof itemDataStrOrIndex === 'number'){
+      item = _currentSearchResults && _currentSearchResults[itemDataStrOrIndex];
+    } else if(typeof itemDataStrOrIndex === 'string'){
+      item = JSON.parse(decodeURIComponent(itemDataStrOrIndex));
+    } else {
+      item = itemDataStrOrIndex;
+    }
+    if(!item) return;
     const matchingLogged = findMatchingLoggedEntry(item, null);
-    setTimeout(() => {
-      openDeepCard(matchingLogged || item);
-    }, 80);
+    openDeepCard(matchingLogged || item);
   } catch(e){
     console.error('Failed to open search result:', e);
   }
