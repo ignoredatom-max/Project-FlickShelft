@@ -561,6 +561,22 @@ export default {
         }
       }
 
+      // 4a. TMDB Collection Details (must come before /api/movie/:id to avoid mis-match)
+      const collectionMatch = pathname.match(/^\/api\/movie\/collection\/(\d+)$/);
+      if (collectionMatch) {
+        const id = collectionMatch[1];
+        const tmdbKey = env.TMDB_API_KEY;
+        if (!tmdbKey) return errorResponse('TMDB_API_KEY secret not configured', 500, corsHeaders);
+        try {
+          const url = `https://api.themoviedb.org/3/collection/${id}?api_key=${tmdbKey}`;
+          const resp = await fetch(url, fetchOpts);
+          const data = await resp.json();
+          return jsonResponse(data, 200, corsHeaders);
+        } catch (e) {
+          return errorResponse(`Collection details error: ${e.message}`, 500, corsHeaders);
+        }
+      }
+
       // 4. Movie Details & Credits (TMDB)
       const movieMatch = pathname.match(/^\/api\/movie\/(\d+)$/);
       if (movieMatch) {

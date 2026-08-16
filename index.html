@@ -375,28 +375,56 @@ body::before{
 }
 .logo-dot{width:5px;height:5px;background:var(--blue);border-radius:50%;margin-left:3px;margin-bottom:8px;flex-shrink:0;align-self:flex-end;box-shadow:0 0 8px var(--blue)}
 /* ── HEADER ──────────────────────────────────── */
-.header{padding:16px 16px 8px;display:flex;align-items:flex-end;justify-content:space-between}
-.header-sub{font-size:11px;color:var(--text3);margin-top:5px;letter-spacing:0.2px}
-.counts{display:flex;gap:14px;align-items:flex-end}
-.count-item{text-align:right}
-.count-num{font-size:20px;font-weight:700;letter-spacing:-0.5px;line-height:1;transition:all 0.3s}
-.count-label{font-size:9px;color:var(--text3);margin-top:1px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase}
-.count-item.m .count-num{color:var(--red)}
-.count-item.s .count-num{color:var(--teal)}
-.count-item.g .count-num{color:var(--green)}
-.settings-btn{background:none;border:none;color:var(--text3);font-size:19px;cursor:pointer;padding:4px;transition:color 0.2s;line-height:1}
-.settings-btn:active{color:var(--text)}
-.avatar-btn{background:none;border:none;cursor:pointer;padding:0;flex-shrink:0;}
-.avatar-img,.avatar-ph{width:32px;height:32px;border-radius:50%;object-fit:cover;display:block;}
-.avatar-ph{background:var(--bg4);border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--text2);}
-/* Nav avatar */
-.nav-avatar-wrap{display:flex;align-items:center;justify-content:center;}
-.nav-avatar-img{width:22px;height:22px;border-radius:50%;object-fit:cover;}
-.nav-avatar-ph{font-size:18px;line-height:1;}
+.header{padding:14px 16px 8px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.header-sub{font-size:11px;color:var(--text3);margin-top:3px;letter-spacing:0.2px}
+.counts{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  padding:5px 10px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:rgba(255,255,255,0.02);
+}
+.count-item{
+  text-align:right;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+}
+.count-num{
+  font-size:18px;
+  font-weight:700;
+  letter-spacing:-0.5px;
+  line-height:1;
+  font-variant-numeric:tabular-nums;
+  transition:all 0.3s;
+}
+.count-label{
+  font-size:9px;
+  color:var(--text3);
+  margin-top:2px;
+  font-weight:600;
+  letter-spacing:0.5px;
+  text-transform:uppercase;
+  display:inline-flex;
+  align-items:center;
+  gap:3.5px;
+  line-height:1;
+}
+.count-ico{
+  opacity:0.85;
+}
+.count-item.m .count-num,
+.count-item.m .count-ico{ color:var(--red); }
+.count-item.s .count-num,
+.count-item.s .count-ico{ color:var(--teal); }
+.count-item.g .count-num,
+.count-item.g .count-ico{ color:var(--green); }
 
 /* ── TOOLBAR ─────────────────────────────────── */
 .toolbar{
-  padding:4px 16px 8px;
+  padding:6px 16px 10px;
   display:flex;
   justify-content:space-between;
   align-items:center;
@@ -436,74 +464,109 @@ body::before{
   color:var(--text);
   box-shadow:0 1px 4px rgba(0,0,0,0.3);
 }
-.toolbar-right{
+
+/* ── TOOLBAR ACTION BUTTONS ([ 🔍 ] [ ⚙️ ] [ ⇅ ]) ── */
+.toolbar-actions{
   display:inline-flex;
   align-items:center;
   gap:8px;
   flex-shrink:0;
 }
-.sort-sel{
+.tool-btn{
+  width:36px;
   height:36px;
+  border-radius:11px;
   background:var(--bg2);
   border:1px solid var(--border2);
   color:var(--text2);
-  padding:0 10px;
-  border-radius:12px;
-  font-family:'Inter',sans-serif;
-  font-size:11.5px;
-  font-weight:600;
-  cursor:pointer;
-  outline:none;
-  transition:all 0.15s ease;
-  min-width:82px;
-}
-.sort-sel:hover{
-  border-color:var(--border3);
-  color:var(--text);
-}
-.toolbar-search-btn{
-  height:36px;
-  background:rgba(45, 127, 249, 0.12);
-  border:1px solid rgba(45, 127, 249, 0.35);
-  color:var(--blue);
-  padding:0 14px 0 11px;
-  border-radius:12px;
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  gap:6px;
   cursor:pointer;
-  font-family:'Inter',sans-serif;
-  font-size:12px;
-  font-weight:700;
-  letter-spacing:-0.1px;
-  box-shadow:0 0 14px rgba(45, 127, 249, 0.16);
+  position:relative;
   transition:all 0.18s ease;
-  white-space:nowrap;
   flex-shrink:0;
-  min-width:86px;
+  padding:0;
+  outline:none;
+  box-sizing:border-box;
 }
-.toolbar-search-btn:hover{
-  background:rgba(45, 127, 249, 0.22);
-  border-color:rgba(45, 127, 249, 0.55);
-  box-shadow:0 0 20px rgba(45, 127, 249, 0.3);
-  color:#fff;
+.tool-btn svg{
+  color:var(--text2);
+  transition:color 0.18s ease, transform 0.18s ease;
+  pointer-events:none;
 }
-.toolbar-search-btn:active{
-  transform:scale(0.96);
-  background:rgba(45, 127, 249, 0.28);
+.tool-btn:hover{
+  background:var(--bg4);
+  border-color:var(--border3);
+  color:var(--text);
+  transform:translateY(-1px);
+  box-shadow:0 2px 8px rgba(0,0,0,0.25);
 }
+.tool-btn:hover svg{
+  color:var(--text);
+  transform:scale(1.06);
+}
+.tool-btn:active{
+  background:var(--bg3);
+  transform:scale(0.95);
+}
+.tool-btn.sort-wrap{
+  overflow:hidden;
+}
+.tool-btn.sort-wrap select.sort-sel-overlay{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  opacity:0;
+  cursor:pointer;
+  -webkit-appearance:none;
+  appearance:none;
+  border:none;
+  background:transparent;
+}
+.tool-btn.sort-wrap select.sort-sel-overlay option{
+  background:var(--bg3);
+  color:var(--text);
+}
+
 @media(max-width: 480px){
   .toolbar{
-    padding:4px 12px 6px;
-    gap:6px;
-    overflow-x:auto;
-    scrollbar-width:none;
+    padding:4px 12px 8px;
+    gap:8px;
   }
-  .toolbar::-webkit-scrollbar{ display:none; }
-  .seg-btn{ padding:0 8px; font-size:11px; }
-  .sort-sel{ min-width:74px; padding:0 6px; }
-  .toolbar-search-btn{ min-width:80px; padding:0 10px 0 8px; font-size:11.5px; }
+  .seg-btn{ padding:0 9px; font-size:11px; }
+  .tool-btn{
+    width:34px;
+    height:34px;
+    border-radius:10px;
+  }
+  .tool-btn svg{
+    width:15px;
+    height:15px;
+  }
+  .toolbar-actions{
+    gap:6px;
+  }
+}
+@media(max-width: 360px){
+  .toolbar{
+    padding:4px 8px 8px;
+    gap:6px;
+  }
+  .seg-btn{ padding:0 7px; font-size:10.5px; }
+  .tool-btn{
+    width:31px;
+    height:31px;
+    border-radius:9px;
+  }
+  .tool-btn svg{
+    width:14px;
+    height:14px;
+  }
+  .toolbar-actions{
+    gap:4px;
+  }
 }
 
 /* Favourites Back Button */
@@ -1252,7 +1315,7 @@ input[type=range].r-slider::-moz-range-thumb{
 
 /* ── SHARE OVERLAY ────────────────────────────── */
 .share-overlay{
-  position:fixed;inset:0;z-index:1000;
+  position:fixed;inset:0;z-index:10000;
   background:rgba(0,0,0,0.85);
   display:none;align-items:center;justify-content:center;
   padding:20px;
@@ -1764,6 +1827,7 @@ body.readonly .row{cursor:default}
   flex-direction:column;
   animation:fadeUp 0.22s cubic-bezier(.32,1,.23,1);
   box-sizing:border-box;
+  overflow:hidden;
 }
 @media (min-width: 560px){
   .diary-search-sheet{
@@ -1772,6 +1836,7 @@ body.readonly .row{cursor:default}
     border-radius:24px;
     border:1px solid var(--border2);
     box-shadow:0 24px 70px rgba(0,0,0,0.85);
+    overflow:hidden;
   }
 }
 .diary-search-header{
@@ -1781,6 +1846,8 @@ body.readonly .row{cursor:default}
   padding:14px 16px 12px;
   border-bottom:1px solid var(--border);
   background:rgba(15,15,15,0.95);
+  border-top-left-radius:inherit;
+  border-top-right-radius:inherit;
 }
 .diary-search-input-wrap{
   flex:1;
@@ -1989,6 +2056,33 @@ body.readonly .row{cursor:default}
 .diary-search-empty-sub{
   font-size:12px;
   color:var(--text3);
+}
+
+/* Loading State */
+@keyframes diarySearchSpin{
+  from{transform:rotate(0deg);}
+  to{transform:rotate(360deg);}
+}
+.diary-search-loading{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:54px 20px;
+  gap:14px;
+}
+.diary-search-loading-icon{
+  width:36px;
+  height:36px;
+  color:var(--blue);
+  animation:diarySearchSpin 0.75s linear infinite;
+}
+.diary-search-loading-text{
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:0.5px;
+  color:var(--text3);
+  text-transform:uppercase;
 }
 
 /* ── TUTORIAL OVERLAY ────────────────────────── */
@@ -3122,18 +3216,28 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
         </div>
         <div class="header-sub" id="headerSub">personal media diary</div>
       </div>
-      <div style="display:flex;align-items:flex-start;gap:14px">
-        <div style="display:flex;gap:12px">
-          <div class="count-item m"><div class="count-num" id="cm">0</div><div class="count-label">Films</div></div>
-          <div class="count-item s"><div class="count-num" id="cs">0</div><div class="count-label">Series</div></div>
-          <div class="count-item g"><div class="count-num" id="cg">0</div><div class="count-label">Games</div></div>
+      <div class="counts" role="region" aria-label="Media counts">
+        <div class="count-item m">
+          <div class="count-num" id="cm">0</div>
+          <div class="count-label">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="count-ico"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg>
+            <span>Films</span>
+          </div>
         </div>
-        <button class="settings-btn" id="settingsBtn" aria-label="Settings" title="Settings">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="3"></circle>
-            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-          </svg>
-        </button>
+        <div class="count-item s">
+          <div class="count-num" id="cs">0</div>
+          <div class="count-label">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="count-ico"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect><polyline points="17 2 12 7 7 2"></polyline></svg>
+            <span>Series</span>
+          </div>
+        </div>
+        <div class="count-item g">
+          <div class="count-num" id="cg">0</div>
+          <div class="count-label">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="count-ico"><rect x="2" y="6" width="20" height="12" rx="6"></rect><line x1="6" y1="12" x2="10" y2="12"></line><line x1="8" y1="10" x2="8" y2="14"></line><line x1="15" y1="13" x2="15.01" y2="13"></line><line x1="18" y1="11" x2="18.01" y2="11"></line></svg>
+            <span>Games</span>
+          </div>
+        </div>
       </div>
     </div>
     <div class="toolbar" style="position:relative;border-bottom:1px solid var(--border)">
@@ -3143,20 +3247,32 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
         <button class="seg-btn" data-f="series">Series</button>
         <button class="seg-btn" data-f="game">Game</button>
       </div>
-      <div class="toolbar-right">
-        <select class="sort-sel" id="sortSel" aria-label="Sort entries">
-          <option value="new">Newest ▾</option>
-          <option value="old">Oldest ▾</option>
-          <option value="rate">Rating ▾</option>
-          <option value="az">A–Z ▾</option>
-        </select>
-        <button class="toolbar-search-btn" id="toolbarSearchBtn" type="button" title="Universal Search" aria-label="Universal Search">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+      <div class="toolbar-actions" role="group" aria-label="Media controls">
+        <button class="tool-btn" id="toolbarSearchBtn" type="button" aria-label="Universal Search" title="Universal Search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
-          <span>Search</span>
         </button>
+        <button class="tool-btn" id="settingsBtn" type="button" aria-label="Settings" title="Settings">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </button>
+        <div class="tool-btn sort-wrap" title="Sort entries" aria-label="Sort entries">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="4" y1="6" x2="20" y2="6"></line>
+            <line x1="4" y1="12" x2="14" y2="12"></line>
+            <line x1="4" y1="18" x2="8" y2="18"></line>
+          </svg>
+          <select class="sort-sel-overlay" id="sortSel" aria-label="Sort entries">
+            <option value="new">Newest</option>
+            <option value="old">Oldest</option>
+            <option value="rate">Rating</option>
+            <option value="az">A–Z</option>
+          </select>
+        </div>
       </div>
     </div>
   </div>
@@ -3493,7 +3609,29 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
         <!-- REAL DATA SECTIONS (shown when loaded) -->
         <div class="deep-content-container" id="deepContentContainer" style="display:none">
           
-          <!-- AGE & CONTENT RATING (REQUIRED) -->
+          <!-- 1. YOUR LOGGER ENTRY (PRIMARY SECTION) -->
+          <div class="deep-sec deep-personal-sec" id="deepPersonalSec">
+            <div class="deep-sec-hdr" style="color:var(--blue)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+              <span>Your Logger Entry</span>
+            </div>
+            <div id="deepPersonalContent"></div>
+          </div>
+
+          <!-- 2. GAME / SERIES JOURNEY TIMELINE -->
+          <div class="deep-sec info-journey-section" id="deepJourneySec" style="display:none">
+            <div class="deep-sec-hdr" id="deepJourneyHdr" style="color:var(--purple, #bf5af2)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              <span id="deepJourneyHdrText">Journey</span>
+            </div>
+            <div class="info-timeline" id="deepTimeline"></div>
+            <div class="timeline-duration-card" id="deepTlDurationCard" style="display:none">
+              <div class="timeline-duration-lbl" id="deepTlDurationLbl">Finished in</div>
+              <div class="timeline-duration-val" id="deepTlDurationVal"></div>
+            </div>
+          </div>
+
+          <!-- 3. AGE & CONTENT RATING -->
           <div class="deep-sec" id="deepAgeSec" style="display:none">
             <div class="deep-sec-hdr">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg>
@@ -3503,7 +3641,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
             <div class="deep-age-desc" id="deepAgeDesc" style="display:none"></div>
           </div>
 
-          <!-- OVERVIEW / ABOUT -->
+          <!-- 4. OVERVIEW / ABOUT -->
           <div class="deep-sec" id="deepOverviewSec" style="display:none">
             <div class="deep-sec-hdr">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
@@ -3513,7 +3651,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
             <div class="deep-storyline-text" id="deepStorylineText" style="display:none;margin-top:10px;font-size:12.5px;color:var(--text2);line-height:1.6"></div>
           </div>
 
-          <!-- DETAILS / METADATA GRID -->
+          <!-- 5. DETAILS / METADATA GRID -->
           <div class="deep-sec" id="deepDetailsSec" style="display:none">
             <div class="deep-sec-hdr">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
@@ -3522,7 +3660,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
             <div class="deep-grid" id="deepDetailsGrid"></div>
           </div>
 
-          <!-- PLATFORMS (FOR GAMES) -->
+          <!-- 6. PLATFORMS (FOR GAMES) -->
           <div class="deep-sec" id="deepPlatformsSec" style="display:none">
             <div class="deep-sec-hdr">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="6" width="20" height="12" rx="2"></rect><path d="M6 12h4M8 10v4M15 13h.01M18 11h.01"></path></svg>
@@ -3531,7 +3669,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
             <div class="deep-chips-row" id="deepPlatformsList"></div>
           </div>
 
-          <!-- CAST & CREW / CREATORS -->
+          <!-- 7. CAST & CREW / CREATORS (SECONDARY METADATA BELOW LOGGED INFO) -->
           <div class="deep-sec" id="deepCastSec" style="display:none">
             <div class="deep-sec-hdr">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
@@ -3540,7 +3678,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
             <div class="deep-cast-row" id="deepCastRow"></div>
           </div>
 
-          <!-- SEASONS & EPISODES (FOR SERIES) -->
+          <!-- 8. SEASONS & EPISODES (FOR SERIES) -->
           <div class="deep-sec" id="deepSeasonsSec" style="display:none">
             <div class="deep-sec-hdr">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect><polyline points="17 2 12 7 7 2"></polyline></svg>
@@ -3549,7 +3687,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
             <div class="deep-seasons-grid" id="deepSeasonsGrid"></div>
           </div>
 
-          <!-- COLLECTION / FRANCHISE / EXPANSIONS -->
+          <!-- 9. COLLECTION / FRANCHISE / EXPANSIONS -->
           <div class="deep-sec" id="deepFranchiseSec" style="display:none">
             <div class="deep-sec-hdr">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
@@ -3558,7 +3696,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
             <div class="deep-cast-row" id="deepFranchiseRow"></div>
           </div>
 
-          <!-- MEDIA GALLERY (VIDEOS & SCREENSHOTS) -->
+          <!-- 10. MEDIA GALLERY (VIDEOS & SCREENSHOTS) -->
           <div class="deep-sec" id="deepMediaSec" style="display:none">
             <div class="deep-sec-hdr">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg>
@@ -3567,7 +3705,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
             <div class="deep-media-gallery" id="deepMediaGallery"></div>
           </div>
 
-          <!-- WHERE TO WATCH (WATCH PROVIDERS) -->
+          <!-- 11. WHERE TO WATCH (WATCH PROVIDERS) -->
           <div class="deep-sec" id="deepProvidersSec" style="display:none">
             <div class="deep-sec-hdr">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><polygon points="10 8 16 12 10 16 10 8"></polygon></svg>
@@ -3577,7 +3715,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
             <div class="deep-justwatch-attr">Streaming data provided by <a href="https://www.justwatch.com" target="_blank">JustWatch</a> via TMDB</div>
           </div>
 
-          <!-- WEBSITES & EXTERNAL LINKS -->
+          <!-- 12. WEBSITES & EXTERNAL LINKS -->
           <div class="deep-sec" id="deepWebsitesSec" style="display:none">
             <div class="deep-sec-hdr">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
@@ -3586,7 +3724,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
             <div class="deep-chips-row" id="deepWebsitesList"></div>
           </div>
 
-          <!-- SIMILAR / MORE LIKE THIS -->
+          <!-- 13. SIMILAR / MORE LIKE THIS -->
           <div class="deep-sec" id="deepSimilarSec" style="display:none">
             <div class="deep-sec-hdr">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
@@ -3595,16 +3733,8 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
             <div class="deep-cast-row" id="deepSimilarRow"></div>
           </div>
 
-          <!-- YOUR LOGGER ENTRY -->
-          <div class="deep-sec deep-personal-sec" id="deepPersonalSec">
-            <div class="deep-sec-hdr" style="color:var(--blue)">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
-              <span>Your Logger Entry</span>
-            </div>
-            <div id="deepPersonalContent"></div>
-          </div>
-
         </div>
+
 
       </div>
     </div>
@@ -3810,7 +3940,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
         <span class="lbl">Seasons watched</span>
         <div class="season-picker" id="seasonPicker"></div>
       </div>
-      <div class="field">
+      <div class="field" id="ratingField">
         <span class="lbl">Rating</span>
         <div class="rating-slider-wrap">
           <div class="rating-labels">
@@ -3827,7 +3957,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
           <div class="r-ticks"></div>
         </div>
       </div>
-      <div class="field">
+      <div class="field" id="notesField">
         <span class="lbl">Notes</span>
         <textarea class="inp" id="fNotes" placeholder="Your thoughts…"></textarea>
       </div>
@@ -3987,10 +4117,12 @@ async function fsSave(entry){
 }
 // ── DELETE entry from Firestore ──────────────────────────
 async function fsDelete(id){
-  if(!currentUser) return;
-  await deleteDoc(doc(db_fs,`users/${currentUser.uid}/entries/${id}`));
   DATA = DATA.filter(x=>x.id!==id);
   cacheWrite(DATA);
+  if(!currentUser) return;
+  try{
+    await deleteDoc(doc(db_fs,`users/${currentUser.uid}/entries/${id}`));
+  }catch(e){}
 }
 // ── SAVE watchlist to Firestore ──────────────────────────
 async function fsWLSave(wl){
@@ -4311,7 +4443,8 @@ function renderLog(){
   // Disable row animations after first render to avoid flash on Firestore sync
   if(_initialRenderDone) container.classList.add('no-anim');
   else { container.classList.remove('no-anim'); _initialRenderDone = true; }
-  let list=filter==='all'?[...DATA]:DATA.filter(x=>x.type===filter);
+  let list=(filter==='all'?[...DATA]:DATA.filter(x=>x.type===filter))
+    .filter(x => !(x.type === 'game' && (x.status === 'started' || x.status === 'playing')));
   if(sortBy==='new')  list.sort((a,b)=>b.id-a.id);
   if(sortBy==='old')  list.sort((a,b)=>a.id-b.id);
   if(sortBy==='rate') list.sort((a,b)=>RATINGS.indexOf(b.rating)-RATINGS.indexOf(a.rating));
@@ -4353,7 +4486,7 @@ function renderRow(e,i){
   const typeIco=`<span class="row-type-ico">${icon}</span>`;
   const noteIco=e.notes?`<span class="note-icon">ᯓ</span>`:'';
   const fav=`<button class="row-fav-inline ${e.fav?'on':''}" onclick="toggleFav(${e.id},event)">${e.fav?'❤️':'🤍'}</button>`;
-  return `<div class="row ${e.type}" style="animation-delay:${Math.min(i*0.03,0.4)}s" onclick="openInfo(${e.id},'logged',event)">
+  return `<div class="row ${e.type}" style="animation-delay:${Math.min(i*0.03,0.4)}s" onclick="event.stopPropagation();openDeepCard(DATA.find(x=>x.id===${e.id})||{id:${e.id},title:'${e.title.replace(/'/g,String.fromCharCode(92,39))}',type:'${e.type}',year:'${e.year||''}',poster:'${(e.poster||'').replace(/'/g,String.fromCharCode(92,39))}',tmdbId:${e.tmdbId||'null'},igdbId:${e.igdbId||'null'}})">
     <div class="row-day">${day}</div>
     ${thumb}
     <div class="row-info">
@@ -4376,13 +4509,14 @@ async function toggleFav(id,ev){
   toast(e.fav?'❤️ Added to favourites':'Removed from favourites');
 }
 async function delEntry(id,ev){
-  ev.stopPropagation();
-  if(!confirm('Delete this entry?'))return;
+  if(ev && typeof ev.stopPropagation === 'function') ev.stopPropagation();
+  if(!confirm('Delete this entry?')) return;
+  closeDeepCard();
   await fsDelete(id);
   renderLog();renderFavs();
   if(document.getElementById('page-profile')?.classList.contains('on')) renderProfile();
   if(document.getElementById('page-calendar')?.classList.contains('on')) renderCalendar();
-  toast('Deleted');
+  toast('Removed from diary');
 }
 
 // ── RENDER FAVS ─────────────────────────────────────────
@@ -4410,7 +4544,7 @@ function renderFavs(){
     const thumb=e.poster
       ?`<img class="fav-thumb" src="${e.poster}" loading="lazy" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="fav-ph" style="display:none">${icon}</div>`
       :`<div class="fav-ph">${icon}</div>`;
-    return `<div class="fav-card ${e.type}" style="animation-delay:${i*0.04}s" onclick="openInfo(${e.id},'logged',event)">
+    return `<div class="fav-card ${e.type}" style="animation-delay:${i*0.04}s" onclick="event.stopPropagation();openDeepCard(DATA.find(x=>x.id===${e.id})||{id:${e.id},title:'${e.title.replace(/'/g,String.fromCharCode(92,39))}',type:'${e.type}',year:'${e.year||''}',poster:'${(e.poster||'').replace(/'/g,String.fromCharCode(92,39))}',tmdbId:${e.tmdbId||'null'},igdbId:${e.igdbId||'null'}})">
       ${thumb}
       <div class="fav-info">
         <div class="fav-title">${e.title}</div>
@@ -4453,7 +4587,7 @@ function renderWL(){
     return `<div class="wl-card ${item.type}" style="animation-delay:${released.indexOf(item)*0.05}s">
       ${thumb}
       <div class="wl-info">
-        <div class="wl-title" onclick="openInfoFromWL(${i},event)">${item.title}</div>
+        <div class="wl-title" style="cursor:pointer" onclick="(function(e){e.stopPropagation();const wl=getWL();const it=wl[${i}];if(it)openDeepCard(Object.assign({},it,{_wlIdx:${i}}));})(event)">${item.title}</div>
         ${sub?`<div class="wl-sub">${sub}</div>`:''}
       </div>
       <div class="wl-actions">
@@ -4866,16 +5000,44 @@ const dropdown=document.getElementById('dropdown');
 const spin=document.getElementById('spin');
 function closeDD(){dropdown.classList.remove('show');}
 
+function isEntryRewatch(title, type, lastSeason, existingEditId, currentEntryId){
+  if(!title) return false;
+  const tNorm = title.toLowerCase().trim();
+  const effectiveId = currentEntryId || existingEditId || (Date.now() + 100000);
+  
+  if(type === 'game'){
+    // For games: ONLY a rewatch if an earlier completed playthrough (status === 'done') already exists in DATA
+    return DATA.some(x => 
+      x.type === 'game' && 
+      (x.title || '').toLowerCase().trim() === tNorm && 
+      x.status === 'done' && 
+      x.id < effectiveId && 
+      (!existingEditId || x.id !== existingEditId)
+    );
+  }
+  
+  if(type === 'series'){
+    const seriesLogs = DATA.filter(x => x.type === 'series' && (x.title||'').toLowerCase().trim() === tNorm && (!existingEditId || x.id !== existingEditId));
+    const ex = seriesLogs[0];
+    return !!ex && !(ex.lastSeason > 0 && lastSeason > ex.lastSeason);
+  }
+  
+  // For movies: any previous entry of the same movie is a rewatch
+  const movieLogs = DATA.filter(x => x.type === 'movie' && (x.title||'').toLowerCase().trim() === tNorm && (!existingEditId || x.id !== existingEditId));
+  return movieLogs.length > 0;
+}
+
 function checkDup(title){
   if(!title||editId)return;
-  const ex=DATA.find(x=>x.title.toLowerCase()===title.toLowerCase()&&x.type===mType);
-  // For series: only flag as rewatch if same or lower season — new season = new entry, not rewatch
-  const isRewatch = !!ex && !(mType==='series' && ex.lastSeason>0 && mLastSeason>ex.lastSeason);
+  const isRewatch = isEntryRewatch(title, mType, mLastSeason, editId, null);
   document.getElementById('dupBanner').classList.toggle('show', isRewatch);
   // Pre-fill season from last entry of same series
-  if(ex && mType==='series' && ex.lastSeason>0){
-    mLastSeason = ex.lastSeason;
-    if(mSeasons>0) renderSeasonPicker(mLastSeason);
+  if(mType==='series'){
+    const ex = DATA.find(x=>x.title.toLowerCase()===title.toLowerCase()&&x.type==='series');
+    if(ex && ex.lastSeason>0){
+      mLastSeason = ex.lastSeason;
+      if(mSeasons>0) renderSeasonPicker(mLastSeason);
+    }
   }
 }
 
@@ -4938,15 +5100,21 @@ function setStatusOpts(val){
   const sel=document.getElementById('fStatus');
   sel.innerHTML=statusOpts(mType).map(o=>`<option value="${o.v}">${o.l}</option>`).join('');
   if(val)sel.value=val;
-  updateSeasonField();
+  updateStatusDependentFields();
 }
-document.getElementById('fStatus').addEventListener('change', updateSeasonField);
+document.getElementById('fStatus').addEventListener('change', updateStatusDependentFields);
 
-function updateSeasonField(){
+function updateStatusDependentFields(){
   const field = document.getElementById('seasonField');
   const status = document.getElementById('fStatus')?.value;
   if(mType==='series' && status==='done'){ field.style.display='block'; }
   else { field.style.display='none'; if(mType!=='series'){ mSeasons=0; mLastSeason=0; } }
+
+  const ratingField = document.getElementById('ratingField');
+  const notesField = document.getElementById('notesField');
+  const isGameStarted = (mType==='game' && (status==='started' || status==='playing'));
+  if(ratingField) ratingField.style.display = isGameStarted ? 'none' : 'block';
+  if(notesField) notesField.style.display = isGameStarted ? 'none' : 'block';
 }
 
 async function fetchAndRenderSeasons(title, existingLastSeason){
@@ -4981,8 +5149,7 @@ function renderSeasonPicker(selectedUpTo){
       renderSeasonPicker(mLastSeason);
       // Update rewatch banner without calling checkDup (avoids loop)
       if(mType==='series' && mTitle){
-        const ex=DATA.find(x=>x.title.toLowerCase()===mTitle.toLowerCase()&&x.type==='series');
-        const isRewatch = !!ex && !(ex.lastSeason>0 && mLastSeason>ex.lastSeason);
+        const isRewatch = isEntryRewatch(mTitle, 'series', mLastSeason, editId, null);
         document.getElementById('dupBanner').classList.toggle('show', isRewatch);
       }
     });
@@ -5215,9 +5382,11 @@ document.getElementById('confirmDeleteBtn')?.addEventListener('click', async () 
 document.getElementById('saveBtn').addEventListener('click',async()=>{
   const title=(mTitle||searchInp.value).trim();
   if(!title){searchInp.style.boxShadow='0 0 0 2px var(--red)';setTimeout(()=>searchInp.style.boxShadow='',900);searchInp.focus();return;}
-  const ratingKey=RATINGS[mRating]||'decent';
-  const dupEntry=!editId&&DATA.find(x=>x.title.toLowerCase()===title.toLowerCase()&&x.type===mType);
-  const isDup = !!dupEntry && !(mType==='series' && dupEntry.lastSeason>0 && mLastSeason>dupEntry.lastSeason);
+  const statusVal = document.getElementById('fStatus').value;
+  const isGameStarted = (mType==='game' && (statusVal==='started' || statusVal==='playing'));
+  const ratingKey = isGameStarted ? '' : (RATINGS[mRating]||'decent');
+  const notesVal = isGameStarted ? '' : document.getElementById('fNotes').value.trim();
+
   let entryId=editId||Date.now();
   const forcedTs = mDateOverride ? dateToMidnightTs(mDateOverride) : null;
   if(!editId && forcedTs){
@@ -5232,13 +5401,51 @@ document.getElementById('saveBtn').addEventListener('click',async()=>{
   }
   const movedFromId = (editId && entryId !== editId) ? editId : null;
   if(!editId){while(DATA.find(x=>x.id===entryId))entryId++;}
+  
+  // Game Started / Completed Journey handling
+  let preservedStartedDate = null;
+  if(mType === 'game'){
+    if(statusVal === 'done'){
+      // Find if there is an in-progress Started record for this game
+      const existingStarted = DATA.find(x => 
+        x.type === 'game' && 
+        (x.title||'').toLowerCase().trim() === title.toLowerCase().trim() && 
+        (x.status === 'started' || x.status === 'playing') && 
+        (!editId || x.id !== editId)
+      );
+      if(existingStarted){
+        preservedStartedDate = existingStarted.startedDate || existingStarted.startDate || existingStarted.id;
+        // Clean up the in-progress Started entry from DATA and Firestore
+        DATA = DATA.filter(x => x.id !== existingStarted.id);
+        try { await fsDelete(existingStarted.id); } catch(e){}
+      } else if(editId){
+        const existingSelf = DATA.find(x => x.id === editId);
+        if(existingSelf && (existingSelf.startedDate || existingSelf.startDate)){
+          preservedStartedDate = existingSelf.startedDate || existingSelf.startDate;
+        } else if(existingSelf && (existingSelf.status === 'started' || existingSelf.status === 'playing')){
+          preservedStartedDate = existingSelf.id;
+        }
+      }
+    } else if(editId){
+      const existingSelf = DATA.find(x => x.id === editId);
+      if(existingSelf && (existingSelf.startedDate || existingSelf.startDate)){
+        preservedStartedDate = existingSelf.startedDate || existingSelf.startDate;
+      }
+    }
+  }
+
+  const isDup = isEntryRewatch(title, mType, mLastSeason, editId, entryId);
   const entry={
     id:entryId,type:mType,title,poster:mPoster,genre:mGenre,year:mYear,
-    status:document.getElementById('fStatus').value,
+    status:statusVal,
     rating:ratingKey,fav:mFav,rewatched:!!isDup,
-    notes:document.getElementById('fNotes').value.trim(),
+    notes:notesVal,
     lastSeason:mType==='series'?mLastSeason:0
   };
+  if(preservedStartedDate){
+    entry.startedDate = preservedStartedDate;
+  }
+
   // Update DATA first so cacheWrite in fsSave captures the new entry
   if(editId) DATA=DATA.map(x=>x.id===editId?entry:x); else DATA.unshift(entry);
   // If we moved dates, delete the old Firestore doc so it doesn't come back on refresh.
@@ -5298,9 +5505,24 @@ async function ensureImgDecoded(img, timeoutMs=2500){
   });
 }
 
-function openShareCard(){
-  const entry = DATA.find(x=>x.id===editId);
+let _shareEntry = null;
+
+function openShareCard(entryOrId){
+  let entry = null;
+  const list = (typeof DATA !== 'undefined' && DATA.length) ? DATA : (window.DATA || []);
+  if(entryOrId && typeof entryOrId === 'object'){
+    entry = entryOrId;
+  } else if(entryOrId != null){
+    entry = list.find(x => String(x.id) === String(entryOrId));
+  } else if(typeof window !== 'undefined' && window.editId != null){
+    entry = list.find(x => String(x.id) === String(window.editId));
+  } else if(editId != null){
+    entry = list.find(x => String(x.id) === String(editId));
+  }
   if(!entry) return;
+  _shareEntry = entry;
+  editId = entry.id;
+  if(typeof window !== 'undefined') window.editId = entry.id;
   const overlay = document.getElementById('shareOverlay');
   const icon = entry.type==='game'?'🎮':entry.type==='movie'?'🎬':'📺';
   const rKey = RATINGS.includes(entry.rating)?entry.rating:'decent';
@@ -5344,7 +5566,7 @@ function openShareCard(){
   overlay.classList.add('show');
 }
 
-document.getElementById('shareBtn').addEventListener('click', openShareCard);
+document.getElementById('shareBtn').addEventListener('click', () => openShareCard());
 document.getElementById('shareCloseBtn').addEventListener('click',()=>{
   document.getElementById('shareOverlay').classList.remove('show');
 });
@@ -5359,7 +5581,7 @@ document.getElementById('shareDlBtn').addEventListener('click', async()=>{
   btn.disabled = true;
   try{
     const card = document.getElementById('shareCard');
-    const entry = DATA.find(x=>x.id===editId);
+    const entry = _shareEntry || DATA.find(x=>x.id===editId);
 
     // Temporarily make bg visible for canvas capture
     const bg = document.getElementById('scBg');
@@ -6044,7 +6266,7 @@ function renderUpcoming(){
       ? `<img class="upcoming-poster" src="${item.poster}" alt="">`
       : `<div class="upcoming-poster-ph">${icon}</div>`;
     const genre = item.genre?`<div class="upcoming-genre">${item.genre.split(',')[0]}</div>`:'';
-    return `<div class="upcoming-card ${item.type}" style="animation-delay:${i*0.05}s;cursor:pointer" onclick="openInfoFromWL(${wlIdx},event)">
+    return `<div class="upcoming-card ${item.type}" style="animation-delay:${i*0.05}s;cursor:pointer" onclick="(function(e){e.stopPropagation();const wl=getWL();const it=wl[${wlIdx}];if(it)openDeepCard(Object.assign({},it,{_wlIdx:${wlIdx}}));})(event)">
       <div class="upcoming-poster-wrap">
         ${poster}
         <div class="upcoming-type-bar"></div>
@@ -6068,8 +6290,7 @@ async function openInfo(id, context, ev){
   const entry = (typeof id === 'object' && id !== null) ? id : (list.find(x=>String(x.id)===String(id)) || getPicks().find(x=>String(x.id)===String(id)));
   if(!entry) return;
   _infoEntry = entry;
-  showInfoCard(entry, context);
-  fetchExtraInfo(entry);
+  openDeepCard(entry);
 }
 
 async function openInfoFromWL(idx, ev){
@@ -6077,15 +6298,60 @@ async function openInfoFromWL(idx, ev){
   const wl = getWL();
   const item = wl[idx];
   if(!item) return;
-  // Keep real item data, just tag the wlIdx for action buttons
   _infoEntry = {...item, _wlIdx: idx};
-  showInfoCard(_infoEntry, 'watchlist');
-  fetchExtraInfo(item);
+  openDeepCard(_infoEntry);
+}
+
+function cleanTitle(t){
+  return (t || '').toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]/g, '');
+}
+
+function findMatchingLoggedEntry(item, deepData){
+  const allData = (typeof DATA !== 'undefined' && DATA.length) ? DATA : ((typeof window !== 'undefined' && window.DATA) ? window.DATA : []);
+  if(!allData.length || !item) return null;
+
+  const targetType = (item.type || item.mediaType || 'movie').toLowerCase();
+  const rawTitle = item.title || item.name || deepData?.title || deepData?.name || '';
+  const targetClean = cleanTitle(rawTitle);
+  
+  const targetTmdb = item.tmdbId || (targetType !== 'game' ? (item.id || deepData?.id) : null);
+  const targetIgdb = item.igdbId || (targetType === 'game' ? (item.id || deepData?.id) : null);
+
+  return allData.find(x => {
+    // 1. Direct ID match in diary
+    if(item.id && x.id === item.id) return true;
+    if(item.localEntry && item.localEntry.id && x.id === item.localEntry.id) return true;
+
+    const xType = (x.type || 'movie').toLowerCase();
+    const typeMatches = (xType === targetType) || (xType === 'movie' && targetType === 'film') || (xType === 'film' && targetType === 'movie');
+    if(!typeMatches) return false;
+
+    // 2. TMDB ID match
+    if(targetTmdb && x.tmdbId && Number(x.tmdbId) === Number(targetTmdb)) return true;
+
+    // 3. IGDB ID match
+    if(targetIgdb && x.igdbId && Number(x.igdbId) === Number(targetIgdb)) return true;
+
+    // 4. Normalized clean title match
+    const xClean = cleanTitle(x.title);
+    if(xClean && targetClean && xClean === targetClean) return true;
+
+    return false;
+  }) || null;
 }
 
 function showInfoCard(entry, context){
   const sheet = document.getElementById('infoSheet');
   const overlay = document.getElementById('infoOverlay');
+
+  const loggedEntry = findMatchingLoggedEntry(entry, null);
+  if(loggedEntry){
+    entry = loggedEntry;
+    context = 'logged';
+  }
+  _infoEntry = entry;
 
   // Reset scroll
   const scrollBody = document.getElementById('infoScrollBody') || sheet;
@@ -6196,22 +6462,10 @@ function showInfoCard(entry, context){
 
     const logBtn = document.createElement('button');
     logBtn.className = 'info-btn-edit';
-    logBtn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:-2px"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>Log to Diary';
+    logBtn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:-2px"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>Log It';
     logBtn.onclick = () => {
       closeInfoCard();
-      setTimeout(() => {
-        openModal();
-        const mTitle = document.getElementById('mTitle');
-        const mYear = document.getElementById('mYear');
-        const mPoster = document.getElementById('mPoster');
-        const mGenre = document.getElementById('mGenre');
-        if(mTitle) mTitle.value = entry.title || '';
-        if(mYear) mYear.value = entry.year || '';
-        if(mPoster) mPoster.value = entry.poster || '';
-        if(mGenre) mGenre.value = entry.genre || '';
-        if(typeof setModalType === 'function') setModalType(entry.type || 'movie');
-        if(typeof validateForm === 'function') validateForm();
-      }, 120);
+      setTimeout(() => openModal(null, { title: entry.title, type: entry.type || 'movie', year: entry.year, poster: entry.poster }), 120);
     };
     primaryRow.appendChild(logBtn);
 
@@ -6264,7 +6518,7 @@ function showInfoCard(entry, context){
       const delBtn = document.createElement('button');
       delBtn.className = 'info-btn-danger';
       delBtn.type = 'button';
-      delBtn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:-2px"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>Remove from List';
+      delBtn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;vertical-align:-2px"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>Remove from Diary';
       delBtn.onclick = () => {
         const conf = document.getElementById('confirmOverlay');
         if(conf) conf.style.display = 'flex';
@@ -6301,26 +6555,28 @@ function showInfoCard(entry, context){
 }
 
 function renderJourneySection(entry, context){
-  const jSec = document.getElementById('infoJourneySection');
+  const jSec = document.getElementById('deepJourneySec') || document.getElementById('infoJourneySection');
   if(!jSec) return;
-  if(context === 'watchlist' || context === 'unlogged' || entry.type === 'movie'){
+  if(context === 'watchlist' || context === 'unlogged' || !entry || entry.type === 'movie'){
     jSec.style.display = 'none';
     return;
   }
 
-  const hdr = document.getElementById('infoJourneyHdr');
-  const tl = document.getElementById('infoTimeline');
-  const durCard = document.getElementById('tlDurationCard');
-  const durLbl = document.getElementById('tlDurationLbl');
-  const durVal = document.getElementById('tlDurationVal');
+  const hdr = document.getElementById('deepJourneyHdrText') || document.getElementById('infoJourneyHdr');
+  const tl = document.getElementById('deepTimeline') || document.getElementById('infoTimeline');
+  const durCard = document.getElementById('deepTlDurationCard') || document.getElementById('tlDurationCard');
+  const durLbl = document.getElementById('deepTlDurationLbl') || document.getElementById('tlDurationLbl');
+  const durVal = document.getElementById('deepTlDurationVal') || document.getElementById('tlDurationVal');
+
+  if(!tl || !durCard) return;
 
   const allData = (typeof DATA !== 'undefined' && DATA.length) ? DATA : (window.DATA || []);
 
   if(entry.type === 'game'){
-    hdr.innerHTML = '🎮 Game Journey';
+    if(hdr) hdr.textContent = 'Game Journey';
     
     // Find all entries in dataset for this game
-    const gameEntries = allData.filter(x => x.type === 'game' && x.title.toLowerCase() === entry.title.toLowerCase())
+    const gameEntries = allData.filter(x => x.type === 'game' && (x.title||'').toLowerCase().trim() === (entry.title||'').toLowerCase().trim())
       .sort((a,b) => a.id - b.id);
     
     const startEntry = gameEntries.find(x => x.status === 'started' || x.status === 'playing' || x.status === 'ongoing') || gameEntries[0];
@@ -6333,7 +6589,7 @@ function renderJourneySection(entry, context){
     const isCompleted = entry.status === 'done' || (doneEntry && doneEntry.id >= startDate);
     const isOngoing = entry.status === 'ongoing' || (!isCompleted && (entry.status === 'started' || entry.status === 'playing'));
     
-    if(isCompleted && doneDate > startDate){
+    if(isCompleted && (doneDate > startDate || explicitStart)){
       // Completed game with separate started date
       tl.innerHTML = `
         <div class="timeline-step">
@@ -6356,8 +6612,8 @@ function renderJourneySection(entry, context){
           </div>
         </div>
       `;
-      durLbl.textContent = 'Finished in';
-      durVal.textContent = formatDateDiff(startDate, doneDate);
+      if(durLbl) durLbl.textContent = 'Finished in';
+      if(durVal) durVal.textContent = formatDateDiff(startDate, doneDate);
       durCard.style.display = 'flex';
       jSec.style.display = 'block';
     } else if(isCompleted && entry.status === 'done'){
@@ -6406,10 +6662,10 @@ function renderJourneySection(entry, context){
       jSec.style.display = 'none';
     }
   } else if(entry.type === 'series'){
-    hdr.innerHTML = '📺 Series Journey';
+    if(hdr) hdr.textContent = 'Series Journey';
     
     // Find all entries in dataset for this series
-    const seriesEntries = allData.filter(x => x.type === 'series' && x.title.toLowerCase() === entry.title.toLowerCase())
+    const seriesEntries = allData.filter(x => x.type === 'series' && (x.title||'').toLowerCase().trim() === (entry.title||'').toLowerCase().trim())
       .sort((a,b) => a.id - b.id);
     
     const seasonEntries = seriesEntries.filter(x => (x.lastSeason && x.lastSeason > 0) || x.status === 'done' || x.status === 'watching');
@@ -6442,8 +6698,8 @@ function renderJourneySection(entry, context){
           </div>
         </div>
       `;
-      durLbl.textContent = 'Journey';
-      durVal.textContent = formatDateDiff(first.id, last.id);
+      if(durLbl) durLbl.textContent = 'Journey';
+      if(durVal) durVal.textContent = formatDateDiff(first.id, last.id);
       durCard.style.display = 'flex';
       jSec.style.display = 'block';
     } else if(entry.lastSeason > 0){
@@ -6468,6 +6724,7 @@ function renderJourneySection(entry, context){
     jSec.style.display = 'none';
   }
 }
+
 
 async function fetchExtraInfo(entry){
   try{
@@ -6584,10 +6841,10 @@ document.getElementById('infoOverlay').addEventListener('click', e=>{
   if(e.target===document.getElementById('infoOverlay')) closeInfoCard();
 });
 
-// Profile card click opens info
+// Profile card click opens deep card
 function profileCardClick(id){
   const entry = DATA.find(x=>x.id===id) || getPicks().find(x=>x.id===id);
-  if(entry) openInfo(id,'profile',null);
+  if(entry) openDeepCard(entry);
 }
 
 function editProfileName(){
@@ -7069,6 +7326,81 @@ function normalizeToUnifiedModel(rawItem, source, localDiaryEntry, localWLEntry)
   };
 }
 
+function computeRelevanceScore(title, rawQ, type, popScore, isLogged, isWatchlist){
+  const t = (title || '').toLowerCase().trim();
+  const q = (rawQ || '').toLowerCase().trim();
+  if(!t || !q) return 0;
+
+  const cleanT = t.replace(/[^a-z0-9]/g, '');
+  const cleanQ = q.replace(/[^a-z0-9]/g, '');
+
+  let score = 0;
+  let hasMatch = false;
+
+  // 1. Exact title match (absolute highest priority)
+  if(t === q){
+    score += 1200;
+    hasMatch = true;
+  } else if(cleanT === cleanQ && cleanQ.length > 0){
+    score += 1000;
+    hasMatch = true;
+  }
+  // 2. Starts with query
+  else if(t.startsWith(q)){
+    score += 700;
+    hasMatch = true;
+  } else if(cleanT.startsWith(cleanQ) && cleanQ.length > 0){
+    score += 600;
+    hasMatch = true;
+  }
+  // 3. Word boundary exact match (e.g. "The Minecraft Movie" vs query "Minecraft")
+  else if(new RegExp('(^|[\\s:—-])' + cleanQ.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\$&') + '([\\s:—-]|$)', 'i').test(t)){
+    score += 450;
+    hasMatch = true;
+  }
+  // 4. Substring contains
+  else if(t.includes(q)){
+    score += 300;
+    hasMatch = true;
+  } else if(cleanT.includes(cleanQ) && cleanQ.length > 0){
+    score += 250;
+    hasMatch = true;
+  } else {
+    // Check multi-word query overlap
+    const qWords = q.split(/\s+/).filter(w => w.length > 1);
+    if(qWords.length > 1){
+      const matchCount = qWords.filter(w => t.includes(w)).length;
+      if(matchCount > 0){
+        score += (matchCount / qWords.length) * 200;
+        hasMatch = true;
+      }
+    }
+  }
+
+  // If there is no title match whatsoever, score is 0
+  if(!hasMatch) return 0;
+
+  // Length penalty: concise exact titles beat verbose subtitle entries
+  const lenDiff = Math.abs(cleanT.length - cleanQ.length);
+  score -= Math.min(80, lenDiff * 2);
+
+  // Popularity / Rating count bonus (tasteful boost for known titles)
+  if(popScore && Number(popScore) > 0){
+    score += Math.min(60, Number(popScore) * 3);
+  }
+
+  // Personal Logger Boost
+  if(isLogged) score += 180;
+  else if(isWatchlist) score += 90;
+
+  // Media filter match boost
+  if(_diarySearchFilter !== 'all' && type === _diarySearchFilter){
+    score += 120;
+  }
+
+  return Math.max(1, Math.round(score));
+}
+
 function renderUniversalSearchResults(query){
   const resultsContainer = document.getElementById('diarySearchResults');
   const countEl = document.getElementById('diarySearchCount');
@@ -7080,6 +7412,7 @@ function renderUniversalSearchResults(query){
   clearBtn.style.display = rawQ.length > 0 ? 'flex' : 'none';
 
   const currentSeq = ++_searchSequenceId;
+  clearTimeout(_searchDebounceTimer);
 
   // Local datasets
   const localDiary = (typeof DATA !== 'undefined' && DATA.length) ? [...DATA] : (window.DATA ? [...window.DATA] : []);
@@ -7108,62 +7441,66 @@ function renderUniversalSearchResults(query){
     return;
   }
 
-  // 1. Instant local search
-  const localMatches = [];
-  const seenKeys = new Set();
+  // Active query: clear previous results immediately and show clean SVG search loader
+  countEl.textContent = 'Searching...';
+  resultsContainer.innerHTML = `
+    <div class="diary-search-loading">
+      <svg class="diary-search-loading-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10" stroke-opacity="0.2"></circle>
+        <path d="M12 2a10 10 0 0 1 10 10"></path>
+      </svg>
+      <div class="diary-search-loading-text">Searching...</div>
+    </div>
+  `;
 
-  for(const item of localDiary){
-    if(_diarySearchFilter !== 'all' && item.type !== _diarySearchFilter) continue;
-    const title = (item.title || '').toLowerCase();
-    const notes = (item.notes || '').toLowerCase();
-    const genre = (item.genre || '').toLowerCase();
-    const year = String(item.year || '');
-
-    let score = 0;
-    if(title === q){ score = 100; }
-    else if(title.startsWith(q)){ score = 80; }
-    else if(title.includes(q)){ score = 60; }
-    else if(notes.includes(q)){ score = 40; }
-    else if(genre.includes(q) || year.includes(q)){ score = 20; }
-
-    if(score > 0){
-      const key = `${item.type}:${title.trim()}`;
-      seenKeys.add(key);
-      const unified = normalizeToUnifiedModel(item, 'logger', item, null);
-      localMatches.push({ item: unified, score });
-    }
-  }
-
-  for(const item of localWL){
-    if(_diarySearchFilter !== 'all' && item.type !== _diarySearchFilter) continue;
-    const title = (item.title || '').toLowerCase();
-    const key = `${item.type}:${title.trim()}`;
-    if(seenKeys.has(key)) continue;
-
-    let score = 0;
-    if(title === q) score = 90;
-    else if(title.startsWith(q)) score = 70;
-    else if(title.includes(q)) score = 50;
-
-    if(score > 0){
-      seenKeys.add(key);
-      const unified = normalizeToUnifiedModel(item, 'logger', null, item);
-      localMatches.push({ item: unified, score });
-    }
-  }
-
-  localMatches.sort((a,b) => b.score - a.score || (b.item.id||0) - (a.item.id||0));
-
-  // Render local results immediately
-  countEl.textContent = `${localMatches.length} local matches`;
-  resultsContainer.innerHTML = localMatches.map(m => renderSearchItemCard(m.item, q)).join('');
-
-  // 2. Parallel External Search (TMDB Movies, TMDB Series, IGDB Games)
-  clearTimeout(_searchDebounceTimer);
+  // Debounced API search (TMDB Movies, TMDB Series, IGDB Games) + strictly matched local entries
   _searchDebounceTimer = setTimeout(async () => {
-    if(q.length < 2) return;
+    if(q.length < 2){
+      if(currentSeq !== _searchSequenceId) return;
+      countEl.textContent = 'Type more...';
+      resultsContainer.innerHTML = `
+        <div class="diary-search-empty">
+          <div class="diary-search-empty-icon">⌨️</div>
+          <div class="diary-search-empty-title">Keep typing</div>
+          <div class="diary-search-empty-sub">Type at least 2 characters to search worldwide titles</div>
+        </div>
+      `;
+      return;
+    }
 
     try {
+      // 1. Strictly matched local results
+      const localMatches = [];
+      const seenKeys = new Set();
+
+      for(const item of localDiary){
+        if(_diarySearchFilter !== 'all' && item.type !== _diarySearchFilter) continue;
+        const title = item.title || '';
+        const score = computeRelevanceScore(title, rawQ, item.type, item.rating ? 5 : 0, true, false);
+
+        if(score > 0 || title.toLowerCase().includes(q) || (item.notes && item.notes.toLowerCase().includes(q))){
+          const key = `${item.type}:${title.toLowerCase().trim()}`;
+          seenKeys.add(key);
+          const unified = normalizeToUnifiedModel(item, 'logger', item, null);
+          localMatches.push({ item: unified, score: Math.max(score, 60) });
+        }
+      }
+
+      for(const item of localWL){
+        if(_diarySearchFilter !== 'all' && item.type !== _diarySearchFilter) continue;
+        const title = item.title || '';
+        const key = `${item.type}:${title.toLowerCase().trim()}`;
+        if(seenKeys.has(key)) continue;
+
+        const score = computeRelevanceScore(title, rawQ, item.type, 0, false, true);
+        if(score > 0 || title.toLowerCase().includes(q)){
+          seenKeys.add(key);
+          const unified = normalizeToUnifiedModel(item, 'logger', null, item);
+          localMatches.push({ item: unified, score: Math.max(score, 50) });
+        }
+      }
+
+      // 2. Parallel External Search (TMDB Movies, TMDB Series, IGDB Games)
       const fetchPromises = [];
       const filter = _diarySearchFilter;
 
@@ -7171,7 +7508,7 @@ function renderUniversalSearchResults(query){
         fetchPromises.push(
           fetch(`${API_BASE}/api/search/movie?query=${encodeURIComponent(rawQ)}`)
             .then(r => r.json())
-            .then(d => (d.results||[]).slice(0, 8).map(x => ({
+            .then(d => (d.results||[]).slice(0, 10).map(x => ({
               raw: x,
               id: x.id,
               tmdbId: x.id,
@@ -7181,6 +7518,7 @@ function renderUniversalSearchResults(query){
               poster: x.poster_path ? `https://image.tmdb.org/t/p/w200${x.poster_path}` : '',
               genre: (x.genre_ids||[]).slice(0,2).map(id=>TMDB_GENRES[id]).filter(Boolean).join(', '),
               voteAverage: x.vote_average,
+              popularity: x.popularity,
               overview: x.overview
             })))
             .catch(() => [])
@@ -7191,7 +7529,7 @@ function renderUniversalSearchResults(query){
         fetchPromises.push(
           fetch(`${API_BASE}/api/search/tv?query=${encodeURIComponent(rawQ)}`)
             .then(r => r.json())
-            .then(d => (d.results||[]).slice(0, 8).map(x => ({
+            .then(d => (d.results||[]).slice(0, 10).map(x => ({
               raw: x,
               id: x.id,
               tmdbId: x.id,
@@ -7201,6 +7539,7 @@ function renderUniversalSearchResults(query){
               poster: x.poster_path ? `https://image.tmdb.org/t/p/w200${x.poster_path}` : '',
               genre: (x.genre_ids||[]).slice(0,2).map(id=>TMDB_GENRES[id]).filter(Boolean).join(', '),
               voteAverage: x.vote_average,
+              popularity: x.popularity,
               overview: x.overview
             })))
             .catch(() => [])
@@ -7209,9 +7548,9 @@ function renderUniversalSearchResults(query){
 
       if(filter === 'all' || filter === 'game'){
         fetchPromises.push(
-          fetch(`${API_BASE}/api/search/game?query=${encodeURIComponent(rawQ)}&page_size=8`)
+          fetch(`${API_BASE}/api/search/game?query=${encodeURIComponent(rawQ)}&page_size=10`)
             .then(r => r.json())
-            .then(d => (d.results||[]).slice(0, 8).map(x => ({
+            .then(d => (d.results||[]).slice(0, 10).map(x => ({
               raw: x,
               id: x.id,
               igdbId: x.id,
@@ -7221,7 +7560,8 @@ function renderUniversalSearchResults(query){
               poster: x.background_image || '',
               genre: (x.genres||[]).slice(0, 2).map(g => g.name).join(', '),
               releaseDate: x.released || '',
-              rating: x.rating
+              rating: x.rating,
+              popularity: x.rating ? x.rating * 5 : 5
             })))
             .catch(() => [])
         );
@@ -7231,24 +7571,59 @@ function renderUniversalSearchResults(query){
       if(currentSeq !== _searchSequenceId) return; // Discard stale request
 
       const externalResults = resultsNested.flat();
-      const combined = [...localMatches];
+      const combinedMap = new Map();
 
+      // Add local matches first to map
+      for(const m of localMatches){
+        const key = `${m.item.type}:${(m.item.title||'').toLowerCase().trim()}`;
+        combinedMap.set(key, m);
+      }
+
+      // Merge and score external results
       for(const ext of externalResults){
         const key = `${ext.type}:${(ext.title||'').toLowerCase().trim()}`;
-        if(seenKeys.has(key)) continue;
-        seenKeys.add(key);
+        
+        // Find existing local diary or watchlist entry
+        const existingDiary = findMatchingLoggedEntry(ext, null);
+        const existingWL = !existingDiary && localWL.find(x => {
+          const xType = (x.type || 'movie').toLowerCase();
+          const extType = (ext.type || 'movie').toLowerCase();
+          const typeMatch = (xType === extType) || (xType === 'movie' && extType === 'film') || (xType === 'film' && extType === 'movie');
+          return typeMatch && cleanTitle(x.title) === cleanTitle(ext.title);
+        });
 
-        // Check if item exists in diary or watchlist under different casing
-        const existingDiary = localDiary.find(x => x.type === ext.type && x.title.toLowerCase() === ext.title.toLowerCase());
-        const existingWL = !existingDiary && localWL.find(x => x.type === ext.type && x.title.toLowerCase() === ext.title.toLowerCase());
+        const isLogged = Boolean(existingDiary);
+        const isWL = Boolean(existingWL);
+
+        const score = computeRelevanceScore(
+          ext.title,
+          rawQ,
+          ext.type,
+          (ext.voteAverage ? ext.voteAverage * 10 : (ext.popularity || 0)),
+          isLogged,
+          isWL
+        );
 
         const unified = normalizeToUnifiedModel(ext, ext.type === 'game' ? 'igdb' : 'tmdb', existingDiary, existingWL);
 
-        combined.push({
-          item: unified,
-          score: 10
-        });
+        if(combinedMap.has(key)){
+          // Upgrade score if external popularity or exact matching gives a better score
+          const existing = combinedMap.get(key);
+          if(score > existing.score){
+            existing.score = score;
+          }
+          // Merge metadata
+          if(!existing.item.poster && unified.poster) existing.item.poster = unified.poster;
+          if(!existing.item.year && unified.year) existing.item.year = unified.year;
+          if(!existing.item.genre && unified.genre) existing.item.genre = unified.genre;
+        } else {
+          combinedMap.set(key, { item: unified, score });
+        }
       }
+
+      const combined = Array.from(combinedMap.values());
+      // Globally sort by relevance score descending
+      combined.sort((a,b) => b.score - a.score || (b.item.year||'').localeCompare(a.item.year||''));
 
       countEl.textContent = `${combined.length} results`;
 
@@ -7268,7 +7643,7 @@ function renderUniversalSearchResults(query){
     } catch(e) {
       console.warn('Universal search error:', e);
     }
-  }, 240);
+  }, 220);
 }
 
 function renderSearchItemCard(e, q){
@@ -7344,13 +7719,15 @@ function selectUniversalSearchResult(itemDataStr){
   closeDiarySearch();
   try {
     const item = JSON.parse(decodeURIComponent(itemDataStr));
+    const matchingLogged = findMatchingLoggedEntry(item, null);
     setTimeout(() => {
-      openDeepCard(item);
+      openDeepCard(matchingLogged || item);
     }, 80);
   } catch(e){
     console.error('Failed to open search result:', e);
   }
 }
+
 
 // ── COMPLETE DEEP MEDIA INFO CARD (ENCYCLOPEDIA MODE) ──
 let _activeDeepItem = null;
@@ -7366,6 +7743,8 @@ function closeDeepCard(){
 
 async function openDeepCard(mediaItem){
   if(!mediaItem) return;
+  const initialPoster = mediaItem.poster || mediaItem.background_image || mediaItem.cover || mediaItem.image || '';
+  mediaItem.poster = initialPoster;
   _activeDeepItem = mediaItem;
 
   const overlay = document.getElementById('deepOverlay');
@@ -7488,18 +7867,42 @@ async function fetchDeepDetails(item){
 
   if(type === 'game'){
     let queryId = item.igdbId;
+    let fallbackPoster = item.poster || item.background_image || item.cover || item.image || '';
     if(!queryId || isNaN(Number(queryId)) || Number(queryId) > 1000000000){
       if(item.id && !isNaN(Number(item.id)) && Number(item.id) < 1000000000 && item.source === 'igdb'){
         queryId = item.id;
       } else {
         const s = await fetch(`${API_BASE}/api/search/game?query=${encodeURIComponent(title)}&page_size=5`);
         const sd = await s.json();
-        const first = sd.results?.[0];
-        if(first) queryId = first.id;
+        const list = sd.results || sd;
+        const first = Array.isArray(list) ? list[0] : null;
+        if(first) {
+          queryId = first.id;
+          if(first.background_image && !fallbackPoster) fallbackPoster = first.background_image;
+        }
       }
     }
     const r = await fetch(`${API_BASE}/api/game/${queryId || encodeURIComponent(title)}`);
-    return await r.json();
+    const resData = await r.json();
+    if(resData){
+      if(!resData.background_image && !resData.cover && fallbackPoster){
+        resData.background_image = fallbackPoster;
+        resData.cover = fallbackPoster;
+      }
+      if(!resData.background_image && !resData.cover){
+        try {
+          const s2 = await fetch(`${API_BASE}/api/search/game?query=${encodeURIComponent(resData.name || title)}&page_size=3`);
+          const s2d = await s2.json();
+          const list2 = s2d.results || s2d;
+          const match2 = Array.isArray(list2) ? list2[0] : null;
+          if(match2 && match2.background_image){
+            resData.background_image = match2.background_image;
+            resData.cover = match2.background_image;
+          }
+        } catch(e){}
+      }
+    }
+    return resData;
   }
 
   return null;
@@ -7507,6 +7910,7 @@ async function fetchDeepDetails(item){
 
 function renderDeepCard(data, initialItem){
   const type = initialItem.type || 'movie';
+  const typeIcons = { movie: '🎬', series: '📺', game: '🎮' };
 
   // 1. BACKDROP & HERO
   const backdropEl = document.getElementById('deepBackdrop');
@@ -7516,8 +7920,8 @@ function renderDeepCard(data, initialItem){
   if(type === 'movie' || type === 'series'){
     if(data.backdrop_path) backdropUrl = `https://image.tmdb.org/t/p/original${data.backdrop_path}`;
   } else if(type === 'game'){
-    if(data.artworks && data.artworks[0]) backdropUrl = data.artworks[0];
-    else if(data.screenshots && data.screenshots[0]) backdropUrl = data.screenshots[0].image || data.screenshots[0];
+    if(data.artworks && data.artworks[0]) backdropUrl = typeof data.artworks[0] === 'string' ? data.artworks[0] : (data.artworks[0].image || `https://images.igdb.com/igdb/image/upload/t_1080p/${data.artworks[0].image_id}.jpg`);
+    else if(data.screenshots && data.screenshots[0]) backdropUrl = typeof data.screenshots[0] === 'string' ? data.screenshots[0] : (data.screenshots[0].image || `https://images.igdb.com/igdb/image/upload/t_1080p/${data.screenshots[0].image_id}.jpg`);
     else if(data.background_image) backdropUrl = data.background_image;
   }
 
@@ -7529,6 +7933,32 @@ function renderDeepCard(data, initialItem){
     backdropEl.style.display = 'none';
     backdropPh.style.display = 'block';
   }
+
+  // Poster
+  const posterEl = document.getElementById('deepPoster');
+  const posterPh = document.getElementById('deepPosterPh');
+  let posterUrl = initialItem.poster || initialItem.background_image || initialItem.cover || '';
+  if(!posterUrl){
+    if(type === 'movie' || type === 'series'){
+      if(data.poster_path) posterUrl = `https://image.tmdb.org/t/p/w500${data.poster_path}`;
+    } else if(type === 'game'){
+      if(data.background_image) posterUrl = data.background_image;
+      else if(data.cover) posterUrl = typeof data.cover === 'string' ? data.cover : (data.cover?.image_id ? `https://images.igdb.com/igdb/image/upload/t_cover_big/${data.cover.image_id}.jpg` : '');
+      else if(data.artworks && data.artworks[0]) posterUrl = typeof data.artworks[0] === 'string' ? data.artworks[0] : (data.artworks[0].image_id ? `https://images.igdb.com/igdb/image/upload/t_cover_big/${data.artworks[0].image_id}.jpg` : '');
+      else if(data.screenshots && data.screenshots[0]) posterUrl = typeof data.screenshots[0] === 'string' ? data.screenshots[0] : (data.screenshots[0].image || (data.screenshots[0].image_id ? `https://images.igdb.com/igdb/image/upload/t_screenshot_big/${data.screenshots[0].image_id}.jpg` : ''));
+    }
+  }
+
+  if(posterUrl){
+    posterEl.src = posterUrl;
+    posterEl.style.display = 'block';
+    posterPh.style.display = 'none';
+  } else {
+    posterEl.style.display = 'none';
+    posterPh.style.display = 'flex';
+    posterPh.textContent = typeIcons[type] || '🎬';
+  }
+
 
   // Titles
   const mainTitle = data.name || data.title || initialItem.title;
@@ -7773,19 +8203,50 @@ function renderDeepCard(data, initialItem){
   const franchiseHdr = document.getElementById('deepFranchiseHdr');
 
   if(type === 'movie' && data.belongs_to_collection){
-    franchiseHdr.textContent = data.belongs_to_collection.name || 'Movie Collection';
-    const cPoster = data.belongs_to_collection.poster_path
-      ? `https://image.tmdb.org/t/p/w185${data.belongs_to_collection.poster_path}`
-      : (data.belongs_to_collection.backdrop_path ? `https://image.tmdb.org/t/p/w300${data.belongs_to_collection.backdrop_path}` : '');
+    const coll = data.belongs_to_collection;
+    franchiseHdr.textContent = coll.name || 'Movie Collection';
+    const cPoster = coll.poster_path
+      ? `https://image.tmdb.org/t/p/w185${coll.poster_path}`
+      : (coll.backdrop_path ? `https://image.tmdb.org/t/p/w300${coll.backdrop_path}` : '');
+
     franchiseRow.innerHTML = `
-      <div class="deep-cast-card" style="flex:0 0 110px">
+      <div class="deep-cast-card" style="flex:0 0 110px;cursor:pointer" onclick="openCollectionSheet(${coll.id}, '${(coll.name||'').replace(/'/g, "\\'")}')">
         <div class="deep-poster-wrap" style="width:105px;height:150px;margin-bottom:6px">
           ${cPoster ? `<img src="${cPoster}" class="deep-poster">` : `<div class="deep-poster-ph">🎬</div>`}
         </div>
-        <div class="deep-cast-name">${data.belongs_to_collection.name}</div>
+        <div class="deep-cast-name">${coll.name}</div>
+        <div class="deep-cast-char" style="color:var(--blue)">Explore Collection →</div>
       </div>
     `;
     franchiseSec.style.display = 'block';
+
+    // Auto-fetch collection parts and display all films directly
+    if(coll.id){
+      fetch(`${API_BASE}/api/movie/collection/${coll.id}`)
+        .then(r => r.json())
+        .then(cData => {
+          if(cData && cData.parts && cData.parts.length){
+            const sortedParts = [...cData.parts].sort((a,b) => (a.release_date||'').localeCompare(b.release_date||''));
+            franchiseHdr.textContent = `${cData.name || coll.name} (${sortedParts.length} Films)`;
+            franchiseRow.innerHTML = sortedParts.map(p => {
+              const pPoster = p.poster_path ? `https://image.tmdb.org/t/p/w185${p.poster_path}` : '';
+              const pYear = p.release_date ? p.release_date.slice(0,4) : '';
+              const isCurrent = p.id === data.id;
+              return `
+                <div class="deep-cast-card" style="flex:0 0 100px;cursor:pointer;${isCurrent ? 'opacity:0.75' : ''}" onclick="openDeepCard({ id: ${p.id}, tmdbId: ${p.id}, title: '${(p.title||'').replace(/'/g, "\\'")}', type: 'movie', poster: '${pPoster}', year: '${pYear}' })">
+                  <div class="deep-poster-wrap" style="width:96px;height:136px;margin-bottom:6px;position:relative">
+                    ${pPoster ? `<img src="${pPoster}" class="deep-poster" alt="">` : `<div class="deep-poster-ph">🎬</div>`}
+                    ${isCurrent ? `<div style="position:absolute;bottom:4px;right:4px;background:var(--blue);color:#fff;font-size:9px;font-weight:800;padding:2px 5px;border-radius:6px">Viewing</div>` : ''}
+                  </div>
+                  <div class="deep-cast-name">${p.title}</div>
+                  ${pYear ? `<div class="deep-cast-char">${pYear}</div>` : ''}
+                </div>
+              `;
+            }).join('');
+          }
+        })
+        .catch(err => console.warn('Collection fetch error:', err));
+    }
   } else if(type === 'game' && (data.franchises || data.collection || data.expansions || data.dlcs)){
     const collGames = data.collection?.games || [];
     const expList = [...(data.expansions||[]), ...(data.dlcs||[])];
@@ -7817,6 +8278,7 @@ function renderDeepCard(data, initialItem){
   } else {
     franchiseSec.style.display = 'none';
   }
+
 
   // 9. MEDIA & TRAILERS GALLERY
   const mediaSec = document.getElementById('deepMediaSec');
@@ -7984,10 +8446,55 @@ function renderDeepCard(data, initialItem){
 }
 
 function renderDeepCardFallback(item){
+  const typeIcons = { movie: '🎬', series: '📺', game: '🎮' };
+  const posterEl = document.getElementById('deepPoster');
+  const posterPh = document.getElementById('deepPosterPh');
+  if(item.poster){
+    posterEl.src = item.poster;
+    posterEl.style.display = 'block';
+    posterPh.style.display = 'none';
+  } else {
+    posterEl.style.display = 'none';
+    posterPh.style.display = 'flex';
+    posterPh.textContent = typeIcons[item.type] || '🎬';
+  }
   document.getElementById('deepTitle').textContent = item.title;
   document.getElementById('deepOverviewText').textContent = item.notes || 'No extended overview available for this entry.';
   document.getElementById('deepOverviewSec').style.display = 'block';
   renderDeepPersonalSection(item, {});
+}
+
+async function openCollectionSheet(collectionId, collectionName){
+  try {
+    const res = await fetch(`${API_BASE}/api/movie/collection/${collectionId}`);
+    const data = await res.json();
+    if(!data || !data.parts || !data.parts.length){
+      toast('Collection details unavailable');
+      return;
+    }
+    const parts = [...data.parts].sort((a,b) => (a.release_date||'').localeCompare(b.release_date||''));
+    const franchiseHdr = document.getElementById('deepFranchiseHdr');
+    const franchiseRow = document.getElementById('deepFranchiseRow');
+    if(franchiseHdr) franchiseHdr.textContent = `${data.name || collectionName} (${parts.length} Films)`;
+    if(franchiseRow){
+      franchiseRow.innerHTML = parts.map(p => {
+        const pPoster = p.poster_path ? `https://image.tmdb.org/t/p/w185${p.poster_path}` : '';
+        const pYear = p.release_date ? p.release_date.slice(0,4) : '';
+        return `
+          <div class="deep-cast-card" style="flex:0 0 100px;cursor:pointer" onclick="openDeepCard({ id: ${p.id}, tmdbId: ${p.id}, title: '${(p.title||'').replace(/'/g, "\\'")}', type: 'movie', poster: '${pPoster}', year: '${pYear}' })">
+            <div class="deep-poster-wrap" style="width:96px;height:136px;margin-bottom:6px">
+              ${pPoster ? `<img src="${pPoster}" class="deep-poster" alt="">` : `<div class="deep-poster-ph">🎬</div>`}
+            </div>
+            <div class="deep-cast-name">${p.title}</div>
+            ${pYear ? `<div class="deep-cast-char">${pYear}</div>` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+    toast(`Loaded ${parts.length} films from ${data.name || collectionName}`);
+  } catch(e){
+    console.error('Failed to open collection:', e);
+  }
 }
 
 function renderDeepPersonalSection(item, deepData){
@@ -7997,17 +8504,30 @@ function renderDeepPersonalSection(item, deepData){
   const allData = (typeof DATA !== 'undefined' && DATA.length) ? DATA : (window.DATA || []);
   const allWL = getWL() || [];
 
-  const itemTitle = (item.title || item.name || '').toLowerCase().trim();
+  const itemTitle = (item.title || item.name || deepData?.title || deepData?.name || '').toLowerCase().trim();
   const itemType = item.type || item.mediaType || 'movie';
 
-  // Check if item is logged in diary
-  const loggedEntry = allData.find(x => x.id === item.id)
-    || (item.tmdbId && allData.find(x => x.tmdbId && Number(x.tmdbId) === Number(item.tmdbId)))
-    || (item.igdbId && allData.find(x => x.igdbId && Number(x.igdbId) === Number(item.igdbId)))
-    || allData.find(x => x.type === itemType && (x.title||'').toLowerCase().trim() === itemTitle);
+  // Check if item is logged in diary using robust multi-attribute resolution
+  const loggedEntry = findMatchingLoggedEntry(item, deepData);
 
   // Check if in watchlist
-  const wlItem = !loggedEntry && allWL.find(x => x.type === itemType && (x.title||'').toLowerCase().trim() === itemTitle);
+  let wlItem = null;
+  let wlIdx = typeof item._wlIdx === 'number' ? item._wlIdx : -1;
+  if(!loggedEntry){
+    if(wlIdx >= 0){
+      wlItem = allWL[wlIdx];
+    } else {
+      const cleanTarget = cleanTitle(itemTitle);
+      const found = allWL.findIndex(x => {
+        const xType = (x.type || 'movie').toLowerCase();
+        const typeMatch = (xType === itemType) || (xType === 'movie' && itemType === 'film') || (xType === 'film' && itemType === 'movie');
+        return typeMatch && cleanTitle(x.title) === cleanTarget;
+      });
+      if(found >= 0){ wlItem = allWL[found]; wlIdx = found; }
+    }
+  }
+
+  const readonly = document.body.classList.contains('readonly');
 
   if(loggedEntry){
     const rKey = RATINGS.includes(loggedEntry.rating) ? loggedEntry.rating : 'decent';
@@ -8015,6 +8535,7 @@ function renderDeepPersonalSection(item, deepData){
     const rLabel = RATING_LABELS[rKey] || 'Decent';
     const sKey = loggedEntry.rewatched ? 'rewatched' : (loggedEntry.status || 'done');
     const sLabel = getPillLabel(sKey, loggedEntry.type, loggedEntry);
+    const favBadge = loggedEntry.fav ? '<span style="font-size:12px;color:var(--text2);margin-left:6px">❤️ Favourite</span>' : '';
 
     // Duration / dates for games & ongoing media
     let dateLine = formatLogDate(loggedEntry.id);
@@ -8027,56 +8548,94 @@ function renderDeepPersonalSection(item, deepData){
     }
 
     personalContent.innerHTML = `
-      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">
-        <div style="display:flex;align-items:center;gap:6px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
           <div class="info-rating-pill ${rClass}">★ ${rLabel}</div>
           <div class="pill ${pillCls[sKey] || 'pill-done'}">${sLabel}</div>
+          ${favBadge}
         </div>
         <div style="font-size:11.5px;color:var(--text3);font-weight:600">${dateLine}</div>
       </div>
       ${loggedEntry.notes && loggedEntry.notes.trim() ? `
-        <div class="info-review-box" style="margin-bottom:12px">
-          <div class="info-review-lbl">My Review</div>
+        <div class="info-review-box" style="margin-bottom:14px">
+          <div class="info-review-lbl">Your Review</div>
           <div class="info-review-content">${loggedEntry.notes.trim()}</div>
         </div>
-      ` : ''}
-      <div class="deep-personal-actions">
-        <button class="deep-action-btn btn-log" onclick="closeDeepCard(); setTimeout(() => openModal(${JSON.stringify(loggedEntry).replace(/"/g, '&quot;')}), 120)">
+      ` : '<div style="font-size:12px;color:var(--text3);margin-bottom:14px;font-style:italic">No review notes added.</div>'}
+      <div class="deep-personal-actions" style="display:flex;gap:10px;flex-wrap:wrap">
+        ${!readonly ? `
+        <button class="deep-action-btn btn-log" onclick="closeDeepCard(); setTimeout(() => openEdit(${loggedEntry.id}), 120)">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
           Edit Review
         </button>
+        <button class="deep-action-btn btn-share" onclick="closeDeepCard(); setTimeout(() => openShareCard(${loggedEntry.id}), 120)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+          Share Card
+        </button>
+        ` : ''}
       </div>
+      ${!readonly ? `
+      <div style="margin-top:14px">
+        <button class="deep-action-btn" style="background:rgba(255,59,48,0.08);border:1px solid rgba(255,59,48,0.22);color:rgba(255,80,70,0.9);font-size:11px;padding:6px 12px"
+          onclick="delEntry(${loggedEntry.id}, event)">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+          Remove from Diary
+        </button>
+      </div>` : ''}
     `;
-  } else if(wlItem){
+
+    // Render Journey timeline (Game / Series)
+    renderJourneySection(loggedEntry, 'logged');
+
+  } else if(wlItem || wlIdx >= 0){
+    const realWlIdx = wlIdx >= 0 ? wlIdx : allWL.findIndex(x => x.type === itemType && cleanTitle(x.title) === cleanTitle(itemTitle));
+    const safeTitle = (item.title || item.name || '').replace(/'/g, "\\'");
+    const safePoster = (item.poster || '').replace(/'/g, "\\'");
     personalContent.innerHTML = `
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
         <span class="search-status-pill wl">✓ Saved in Watchlist</span>
       </div>
-      <div style="font-size:12px;color:var(--text3);margin-bottom:12px">This title is saved to your watchlist. Log it once you have finished watching or playing.</div>
-      <div class="deep-personal-actions">
-        <button class="deep-action-btn btn-log" onclick="closeDeepCard(); setTimeout(() => { openModal(); document.getElementById('mTitle').value = '${(item.title||'').replace(/'/g,"\\'")}'; setModalType('${itemType}'); validateForm(); }, 120)">
+      <div style="font-size:12px;color:var(--text3);margin-bottom:12px">This title is in your watchlist. Log it once you have finished watching or playing.</div>
+      <div class="deep-personal-actions" style="display:flex;gap:10px;flex-wrap:wrap">
+        ${!readonly ? `
+        <button class="deep-action-btn btn-log" onclick="closeDeepCard(); setTimeout(() => openModal(null, { title: '${safeTitle}', type: '${itemType}', year: '${item.year||''}', poster: '${safePoster}' }), 120)">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
           Log to Diary
         </button>
+        <button class="deep-action-btn" style="background:rgba(255,59,48,0.08);border:1px solid rgba(255,59,48,0.22);color:rgba(255,80,70,0.9)"
+          onclick="if(${realWlIdx}>=0){wlDel(${realWlIdx});closeDeepCard();}">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+          Remove from Watchlist
+        </button>
+        ` : ''}
       </div>
     `;
+
+    renderJourneySection(item, 'watchlist');
+
   } else {
-    // Unlogged title
+    // Unlogged title — compact with Log It + Watchlist actions
+    const safeTitle = (item.title || item.name || '').replace(/'/g, "\\'");
+    const safePoster = (item.poster || '').replace(/'/g, "\\'");
     personalContent.innerHTML = `
       <div style="font-size:12.5px;color:var(--text2);margin-bottom:12px">
         You haven't logged <strong style="color:var(--text)">${item.title || item.name}</strong> yet.
       </div>
-      <div class="deep-personal-actions">
-        <button class="deep-action-btn btn-log" onclick="closeDeepCard(); setTimeout(() => { openModal(); document.getElementById('mTitle').value = '${(item.title||'').replace(/'/g,"\\'")}'; if(document.getElementById('mYear')) document.getElementById('mYear').value = '${item.year||''}'; if(document.getElementById('mPoster')) document.getElementById('mPoster').value = '${item.poster||''}'; setModalType('${itemType}'); validateForm(); }, 120)">
+      <div class="deep-personal-actions" style="display:flex;gap:10px;flex-wrap:wrap">
+        ${!readonly ? `
+        <button class="deep-action-btn btn-log" onclick="closeDeepCard(); setTimeout(() => openModal(null, { title: '${safeTitle}', type: '${itemType}', year: '${item.year||''}', poster: '${safePoster}' }), 120)">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-          Log Entry
+          Log It
         </button>
-        <button class="deep-action-btn btn-wl" onclick="quickAddDeepToWL('${(item.title||'').replace(/'/g,"\\'")}', '${itemType}', '${item.year||''}', '${item.poster||''}')">
+        <button class="deep-action-btn btn-wl" onclick="quickAddDeepToWL('${safeTitle}', '${itemType}', '${item.year||''}', '${safePoster}')">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
           + Watchlist
         </button>
+        ` : ''}
       </div>
     `;
+
+    renderJourneySection(item, 'unlogged');
   }
 }
 
@@ -8093,6 +8652,7 @@ async function quickAddDeepToWL(title, type, year, poster){
     toast('Already in watchlist');
   }
 }
+
 
 // ── AGE & CONTENT RATING EXTRACTORS ──
 const COUNTRY_FLAGS = {
@@ -8325,6 +8885,7 @@ window.showInfoCard     = showInfoCard;
 window.updateInfoCard   = updateInfoCard;
 window.openDeepCard     = openDeepCard;
 window.closeDeepCard    = closeDeepCard;
+window.openShareCard    = openShareCard;
 window.profileCardClick = profileCardClick;
 window.editProfileName  = editProfileName;
 window.openFavsFromProfile = openFavsFromProfile;
