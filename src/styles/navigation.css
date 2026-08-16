@@ -1,0 +1,160 @@
+/* ==========================================================================
+   LOGGER DESIGN SYSTEM - BOTTOM NAVIGATION
+   ========================================================================== */
+
+.nav {
+  position: fixed;
+  left: 14px;
+  right: 14px;
+  bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+  z-index: 100;
+  max-width: 480px;
+  margin: 0 auto;
+  background: rgba(24, 24, 27, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 8px calc(4px + env(safe-area-inset-bottom, 0px));
+  backdrop-filter: blur(30px) saturate(180%) brightness(0.95);
+  -webkit-backdrop-filter: blur(30px) saturate(180%) brightness(0.95);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.55), 0 1px 0 rgba(255, 255, 255, 0.06) inset;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+}
+
+.nav.hidden {
+  transform: translateY(100px);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.nav-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 0 6px;
+  gap: 3px;
+  border: none;
+  background: transparent;
+  color: var(--text3);
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  transition: color 0.18s ease;
+  position: relative;
+  border-radius: 16px;
+  min-width: 0;
+}
+
+.nav-ico-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  transition: transform 0.18s cubic-bezier(.32, 1, .23, 1);
+}
+
+.nav-svg {
+  width: 21px;
+  height: 21px;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  transition: stroke 0.18s ease, filter 0.18s ease;
+  display: block;
+}
+
+.nav-btn .nav-lbl {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text3);
+  transition: color 0.18s ease, font-weight 0.18s ease;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+/* Active Signature Colors & Tight Localized Halos */
+.nav-btn[data-page="log"].on {
+  color: #ff9f0a;
+}
+.nav-btn[data-page="log"].on .nav-svg {
+  stroke: #ff9f0a;
+  filter: drop-shadow(0 0 4px rgba(255, 159, 10, 0.5));
+}
+.nav-btn[data-page="log"].on .nav-lbl {
+  color: #ff9f0a;
+  font-weight: 600;
+}
+
+.nav-btn[data-page="calendar"].on {
+  color: #ffd60a;
+}
+.nav-btn[data-page="calendar"].on .nav-svg {
+  stroke: #ffd60a;
+  filter: drop-shadow(0 0 4px rgba(255, 214, 10, 0.5));
+}
+.nav-btn[data-page="calendar"].on .nav-lbl {
+  color: #ffd60a;
+  font-weight: 600;
+}
+
+.nav-btn[data-page="watchlist"].on {
+  color: #ff375f;
+}
+.nav-btn[data-page="watchlist"].on .nav-svg {
+  stroke: #ff375f;
+  filter: drop-shadow(0 0 4px rgba(255, 55, 95, 0.5));
+}
+.nav-btn[data-page="watchlist"].on .nav-lbl {
+  color: #ff375f;
+  font-weight: 600;
+}
+
+.nav-btn[data-page="profile"].on {
+  color: #bf5af2;
+}
+.nav-btn[data-page="profile"].on .nav-svg {
+  stroke: #bf5af2;
+  filter: drop-shadow(0 0 4px rgba(191, 90, 242, 0.5));
+}
+.nav-btn[data-page="profile"].on .nav-lbl {
+  color: #bf5af2;
+  font-weight: 600;
+}
+
+.nav-btn:active .nav-ico-wrap {
+  transform: scale(0.90);
+}
+
+/* Center Hero Add Button */
+.nav-add-btn {
+  width: 46px;
+  height: 46px;
+  border-radius: 16px;
+  background: var(--blue);
+  color: #ffffff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(45, 127, 249, 0.5), 0 1px 0 rgba(255, 255, 255, 0.3) inset;
+  transition: transform 0.15s cubic-bezier(.32, 1, .23, 1), box-shadow 0.15s ease;
+  margin: 0 8px;
+  flex-shrink: 0;
+  padding: 0;
+}
+.nav-add-btn:active {
+  transform: scale(0.92);
+  box-shadow: 0 2px 8px rgba(45, 127, 249, 0.35);
+}
+.nav-add-svg {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
