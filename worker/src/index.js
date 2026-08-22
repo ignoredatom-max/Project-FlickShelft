@@ -482,6 +482,18 @@ export default {
         return await fetchJsonSafe(tmdbUrl, fetchOpts, corsHeaders);
       }
 
+      // 1b. Search Collection (TMDB)
+      if (pathname === '/api/search/collection') {
+        const query = normalizeSearchQuery(searchParams.get('query'), false);
+        if (!query) return errorResponse('Missing "query" parameter', 400, corsHeaders);
+
+        const tmdbKey = env.TMDB_API_KEY;
+        if (!tmdbKey) return errorResponse('TMDB_API_KEY secret not configured', 500, corsHeaders);
+
+        const tmdbUrl = `https://api.themoviedb.org/3/search/collection?query=${encodeURIComponent(query)}&api_key=${tmdbKey}`;
+        return await fetchJsonSafe(tmdbUrl, fetchOpts, corsHeaders);
+      }
+
       // 2. Search TV Series (TMDB)
       if (pathname === '/api/search/tv') {
         const query = normalizeSearchQuery(searchParams.get('query'), false);

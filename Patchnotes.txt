@@ -1,5 +1,5 @@
 LOGGER — Patch Notes
-Personal Media Diary by Aditya
+Personal Media Diary by ATOMYN
 ————————————————————————————————————————
 2.1.1
 15 August 2026
@@ -91,7 +91,7 @@ Personal Media Diary by Aditya
   - Banner has a Sign in button that returns to tutorial
 
   - Support & Contact card added
-  - Tap Aditya in any footer to open it
+  - Tap ATOMYN in any footer to open it
   - Settings → Support & Contact also opens it
   - Shows name, Creator & Developer title, email, Instagram,
     Discord and Telegram — all tappable links
@@ -199,7 +199,7 @@ Personal Media Diary by Aditya
 
   - Shareable profile links via ?u=UID in URL
   - Plain link shows tutorial page for new visitors with sign in button
-  - Tutorial footer says made with ♥️ by Aditya
+  - Tutorial footer shows ATOMYN
   - ?u=UID shows that persons public diary read-only
   - Profile tab has Copy my link button (top right, signed in only)
   - Firestore rules updated — meta/profile now publicly readable
@@ -333,7 +333,7 @@ Personal Media Diary by Aditya
   - Log it on watchlist now removes the item after logging
   - Animations added throughout — rows stagger in, counts pulse
   - Settings sheet added behind the gear icon
-  - "made with love by Aditya ♥️" footer on every list
+  - "ATOMYN" footer on every list
   - Removed all seed data — starts blank
 
 
@@ -351,4 +351,4 @@ Personal Media Diary by Aditya
 
 
 ————————————————————————————————————————
-made with love by Aditya ♥️
+ATOMYN
