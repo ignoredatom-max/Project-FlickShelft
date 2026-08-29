@@ -683,9 +683,54 @@ body::before{
 }
 .row-thumb-ph{
   width:36px;height:54px;
-  background:var(--bg3);border-radius:4px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:18px;flex-shrink:0;margin-left:10px;
+  background:linear-gradient(145deg, rgba(34, 34, 42, 0.95), rgba(18, 18, 22, 0.98));
+  border:1px solid rgba(255, 255, 255, 0.08);border-radius:4px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  flex-shrink:0;margin-left:10px;box-shadow:0 2px 8px rgba(0,0,0,0.4);
+  box-sizing:border-box;overflow:hidden;
+}
+
+/* ── UNIFIED POLISHED POSTER PLACEHOLDERS ────── */
+.row-thumb-ph, .wl-ph, .fav-ph, .cal-poster-ph, .upcoming-poster-ph, 
+.deep-poster-ph, .diary-search-thumb-ph, .diary-search-coll-poster-ph,
+.dr-ph, .info-poster-ph, .coll-header-poster-ph, .coll-film-poster-ph {
+  background:linear-gradient(145deg, rgba(34, 34, 42, 0.95), rgba(18, 18, 22, 0.98));
+  border:1px solid rgba(255, 255, 255, 0.08);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  box-sizing:border-box;
+  position:relative;
+  overflow:hidden;
+  color:var(--text3);
+  box-shadow:0 4px 12px rgba(0, 0, 0, 0.45);
+  user-select:none;
+}
+
+.row-thumb-ph svg, .cal-poster-ph svg, .dr-ph svg { width:16px; height:16px; }
+.wl-ph svg, .fav-ph svg, .diary-search-thumb-ph svg { width:20px; height:20px; }
+.upcoming-poster-ph svg, .coll-film-poster-ph svg, .diary-search-coll-poster-ph svg { width:26px; height:26px; }
+.deep-poster-ph svg, .info-poster-ph svg, .coll-header-poster-ph svg { width:38px; height:38px; }
+
+.ph-game svg, [data-type="game"] svg { color:var(--green) !important; filter:drop-shadow(0 0 6px rgba(0,197,102,0.3)); }
+.ph-movie svg, [data-type="movie"] svg, [data-type="film"] svg { color:var(--red) !important; filter:drop-shadow(0 0 6px rgba(255,69,58,0.3)); }
+.ph-series svg, [data-type="series"] svg, [data-type="tv"] svg { color:var(--teal) !important; filter:drop-shadow(0 0 6px rgba(0,180,216,0.3)); }
+.ph-collection svg, [data-type="collection"] svg { color:var(--blue) !important; filter:drop-shadow(0 0 6px rgba(45,127,249,0.3)); }
+
+.deep-poster-ph .ph-title, .info-poster-ph .ph-title, .coll-header-poster-ph .ph-title, .upcoming-poster-ph .ph-title {
+  display:block;
+  font-size:10px;
+  font-weight:700;
+  color:var(--text2);
+  margin-top:6px;
+  padding:0 4px;
+  line-height:1.2;
+  letter-spacing:-0.2px;
+  word-break:break-word;
+  max-height:2.4em;
+  overflow:hidden;
 }
 
 /* Info — tight gap from poster */
@@ -924,17 +969,30 @@ body::before{
 
 /* ── TOAST ───────────────────────────────────── */
 .toast{
-  position:fixed;bottom:96px;left:50%;transform:translateX(-50%) translateY(20px);
-  background:rgba(30,30,40,0.95);color:var(--text);
-  padding:10px 22px;border-radius:22px;
-  font-size:13px;font-weight:500;
-  transition:all 0.3s cubic-bezier(.32,1,.23,1);
-  z-index:9999;white-space:nowrap;opacity:0;pointer-events:none;
-  border:1px solid var(--border2);
-  backdrop-filter:blur(12px);
-  box-shadow:0 8px 32px rgba(0,0,0,0.4);
+  position:fixed;bottom:84px;left:50%;transform:translateX(-50%) translateY(20px) scale(0.96);
+  background:rgba(22,22,28,0.94);color:var(--text);
+  padding:7px 16px 7px 10px;border-radius:9999px;
+  font-size:12.5px;font-weight:550;letter-spacing:-0.1px;
+  display:inline-flex;align-items:center;gap:8px;
+  transition:opacity 0.22s cubic-bezier(0.16,1,0.3,1),transform 0.24s cubic-bezier(0.16,1,0.3,1);
+  z-index:100000;white-space:nowrap;opacity:0;pointer-events:none;
+  border:1px solid rgba(255,255,255,0.12);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  box-shadow:0 10px 36px rgba(0,0,0,0.55),0 0 0 1px rgba(255,255,255,0.04);
 }
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}
+.toast-icon{
+  display:flex;align-items:center;justify-content:center;
+  width:20px;height:20px;border-radius:50%;flex-shrink:0;
+}
+.toast-icon svg{width:12px;height:12px;}
+.toast-icon.toast-success{background:rgba(0,197,102,0.18);color:#00e676;}
+.toast-icon.toast-watchlist{background:rgba(0,197,102,0.18);color:#00e676;}
+.toast-icon.toast-neutral{background:rgba(255,255,255,0.1);color:var(--text2);}
+.toast-icon.toast-error{background:rgba(255,69,58,0.2);color:#ff453a;}
+.toast-icon.toast-heart{background:rgba(255,59,92,0.2);color:#ff3b5c;}
+.toast-icon.toast-cloud{background:rgba(0,180,216,0.2);color:#00b4d8;}
+.toast-icon.toast-link{background:rgba(191,90,242,0.2);color:#bf5af2;}
 
 /* ── MODAL ───────────────────────────────────── */
 .overlay{
@@ -1244,9 +1302,10 @@ input[type=range].r-slider::-moz-range-thumb{
 .wl-card::before{
   content:'';position:absolute;right:0;top:0;bottom:0;width:3px;
 }
-.wl-card.movie::before {background:var(--red);}
-.wl-card.series::before{background:var(--teal);}
-.wl-card.game::before  {background:var(--green);}
+.wl-card.movie::before      {background:var(--red);}
+.wl-card.series::before     {background:var(--teal);}
+.wl-card.game::before       {background:var(--green);}
+.wl-card.collection::before {background:var(--orange);}
 .wl-thumb{width:44px;height:64px;object-fit:cover;border-radius:7px;background:var(--bg3);flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,0.4)}
 .wl-ph{width:44px;height:64px;background:var(--bg3);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
 .wl-info{flex:1;min-width:0}
@@ -1263,6 +1322,16 @@ input[type=range].r-slider::-moz-range-thumb{
   transition:transform 0.15s,box-shadow 0.15s;
 }
 .wl-log-btn:active{transform:scale(0.94);box-shadow:none}
+.wl-view-btn{
+  background:var(--bg3);color:var(--text);border:1px solid var(--border2);
+  padding:9px 14px;border-radius:10px;
+  font-family:'Inter',sans-serif;font-size:12px;font-weight:700;
+  cursor:pointer;white-space:nowrap;letter-spacing:0.2px;
+  box-shadow:0 3px 10px rgba(0,0,0,0.25);
+  transition:transform 0.15s,box-shadow 0.15s,background 0.15s;
+}
+.wl-view-btn:hover{background:var(--bg4);}
+.wl-view-btn:active{transform:scale(0.94);box-shadow:none}
 .wl-del{background:var(--bg4);border:none;color:var(--text3);font-size:13px;padding:9px 10px;cursor:pointer;border-radius:10px;transition:color 0.15s;line-height:1;}
 .wl-del:active{color:var(--pink)}
 
@@ -1822,12 +1891,13 @@ body.readonly .row{cursor:default}
   position:fixed;
   inset:0;
   z-index:850;
-  background:rgba(0,0,0,0.85);
+  background:rgba(0,0,0,0.72);
   display:none;
   align-items:flex-start;
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
-  padding:0;
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
+  padding:0 12px 24px;
+  overflow:hidden;
 }
 .diary-search-overlay.show{
   display:flex;
@@ -1835,20 +1905,22 @@ body.readonly .row{cursor:default}
 .diary-search-sheet{
   width:100%;
   max-width:540px;
-  height:100%;
-  max-height:100vh;
-  margin:0 auto;
+  max-height:calc(100dvh - var(--sticky-header-height, 112px) - 34px);
+  margin:calc(var(--sticky-header-height, 112px) + 14px) auto 0;
   background:var(--bg);
+  border-radius:20px;
+  border:1px solid var(--border2);
   display:flex;
   flex-direction:column;
   animation:fadeUp 0.22s cubic-bezier(.32,1,.23,1);
   box-sizing:border-box;
   overflow:hidden;
+  box-shadow:0 18px 60px rgba(0,0,0,0.85);
 }
 @media (min-width: 560px){
   .diary-search-sheet{
-    max-height:85vh;
-    margin-top:36px;
+    max-height:calc(85vh - var(--sticky-header-height, 112px));
+    margin:calc(var(--sticky-header-height, 112px) + 16px) auto 0;
     border-radius:24px;
     border:1px solid var(--border2);
     box-shadow:0 24px 70px rgba(0,0,0,0.85);
@@ -3308,6 +3380,35 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   margin-top:3px;
   font-weight:600;
 }
+.coll-header-wl-btn{
+  display:none;
+  align-items:center;
+  gap:5px;
+  padding:5px 12px;
+  border-radius:var(--radius-pill);
+  font-family:'Inter',sans-serif;
+  font-size:11.5px;
+  font-weight:700;
+  cursor:pointer;
+  background:var(--bg3);
+  color:var(--text2);
+  border:1px solid var(--border2);
+  margin-top:7px;
+  transition:all 0.18s ease;
+  width:fit-content;
+}
+.coll-header-wl-btn:hover{
+  background:var(--bg4);
+  color:var(--text);
+}
+.coll-header-wl-btn.in-wl{
+  background:rgba(0,197,102,0.14);
+  color:var(--green);
+  border-color:rgba(0,197,102,0.32);
+}
+.coll-header-wl-btn.in-wl svg{
+  stroke:var(--green);
+}
 .coll-close{
   position:absolute;
   top:16px;
@@ -3475,6 +3576,23 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
 .coll-film-chip.chip-current{ background:rgba(255,159,10,0.12); color:var(--orange); border-color:rgba(255,159,10,0.25); }
 .coll-film-chip.chip-soon{ background:rgba(255,69,58,0.08); color:var(--red); border-color:rgba(255,69,58,0.2); }
 .coll-rating-row{ display:flex; align-items:center; gap:3px; font-size:10.5px; font-weight:700; color:var(--yellow); }
+.coll-film-actions{ display:flex; gap:8px; align-items:center; margin-top:8px; flex-wrap:wrap; }
+.coll-action-log-btn{
+  background:var(--green); color:#000; border:none; padding:5px 13px; border-radius:8px;
+  font-family:'Inter',sans-serif; font-size:11.5px; font-weight:800; cursor:pointer;
+  letter-spacing:0.2px; box-shadow:0 2px 8px rgba(0,0,0,0.3); transition:transform 0.15s, background 0.15s;
+}
+.coll-action-log-btn:active{ transform:scale(0.94); }
+.coll-action-wl-btn{
+  background:var(--bg3); color:var(--text2); border:1px solid var(--border2); padding:5px 11px;
+  border-radius:8px; font-family:'Inter',sans-serif; font-size:11px; font-weight:700;
+  cursor:pointer; transition:all 0.15s;
+}
+.coll-action-wl-btn:hover{ background:var(--bg4); color:var(--text); }
+.coll-action-wl-btn.in-wl{
+  background:rgba(45,127,249,0.14); color:var(--blue); border-color:rgba(45,127,249,0.32);
+}
+.coll-action-wl-btn:active{ transform:scale(0.94); }
 .coll-loading{
   display:flex; align-items:center; justify-content:center;
   gap:10px; padding:52px 0; color:var(--text3); font-size:13px; font-weight:600;
@@ -3713,7 +3831,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
 
 <!-- LOG PAGE -->
 <div class="page on" id="page-log">
-  <div style="position:sticky;top:0;z-index:91;background:rgba(15,15,15,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border2)">
+  <div id="logStickyHeader" style="position:sticky;top:0;z-index:860;background:rgba(15,15,15,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border2)">
     <div class="header" style="position:relative">
       <div>
         <div class="logo-wrap">
@@ -4049,7 +4167,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
         <button class="seg-btn" data-sf="series">📺</button>
         <button class="seg-btn" data-sf="game">🎮</button>
       </div>
-      <div class="diary-search-count" id="diarySearchCount">0 results</div>
+      <div class="diary-search-count" id="diarySearchCount"></div>
     </div>
 
     <!-- Results List -->
@@ -4189,9 +4307,14 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
                 <span id="deepFranchiseHdr">Franchise &amp; Related</span>
               </div>
-              <button id="deepFranchiseBtn" style="display:none;padding:3px 10px;font-size:11px;font-weight:700;background:rgba(45,127,249,0.12);color:var(--blue);border:1px solid rgba(45,127,249,0.25);border-radius:8px;cursor:pointer;line-height:1.4">
-                View Full Collection →
-              </button>
+              <div style="display:flex;align-items:center;gap:6px">
+                <button id="deepFranchiseWlBtn" style="display:none;padding:3px 9px;font-size:11px;font-weight:700;background:var(--bg3);color:var(--text2);border:1px solid var(--border2);border-radius:8px;cursor:pointer;line-height:1.4">
+                  + Watchlist
+                </button>
+                <button id="deepFranchiseBtn" style="display:none;padding:3px 10px;font-size:11px;font-weight:700;background:rgba(45,127,249,0.12);color:var(--blue);border:1px solid rgba(45,127,249,0.25);border-radius:8px;cursor:pointer;line-height:1.4">
+                  View Full Collection →
+                </button>
+              </div>
             </div>
             <div class="deep-cast-row" id="deepFranchiseRow"></div>
           </div>
@@ -4251,6 +4374,10 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
       <div class="coll-header-meta">
         <div class="coll-header-title" id="collHeaderTitle">Collection</div>
         <div class="coll-header-sub" id="collHeaderSub"></div>
+        <button class="coll-header-wl-btn" id="collHeaderWlBtn" onclick="toggleActiveCollectionWL()" aria-label="Toggle collection watchlist" style="display:none">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+          <span id="collHeaderWlText">+ Watchlist</span>
+        </button>
       </div>
     </div>
     <div class="coll-scroll" id="collScroll">
@@ -4372,6 +4499,14 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
       <div class="sheet-sub" id="authSub">Sync your data to the cloud</div>
     </div>
     <div class="sheet-arrow" id="authArrow">›</div>
+  </div>
+  <div class="sheet-item" id="refreshDataBtn">
+    <div class="sheet-ico">🔄</div>
+    <div class="sheet-info">
+      <div class="sheet-label">Refresh Data</div>
+      <div class="sheet-sub">Reload diary, watchlist &amp; counters</div>
+    </div>
+    <div class="sheet-arrow">›</div>
   </div>
   <div class="sheet-item" id="exportBtn">
     <div class="sheet-ico">⬇️</div>
@@ -4708,6 +4843,7 @@ async function fsLoad(){
     if(wlSnap.exists()) saveWL(wlSnap.data().items || []);
     renderLog(); renderFavs(); renderWL();
     flashCloud();
+    hydrateMissingMediaArtwork();
   } catch(e){ console.error('Sync failed', e); }
 }
 
@@ -4783,11 +4919,11 @@ document.getElementById('authBtn').addEventListener('click', async()=>{
   closeSheet();
   if(currentUser){
     await signOut(auth);
-    toast('Signed out');
+    toast('Signed out', 'cloud');
   } else {
     try{
       await signInWithPopup(auth, new GoogleAuthProvider());
-    } catch(e){ toast('❌ Sign-in failed: '+e.message); }
+    } catch(e){ toast('Sign-in failed: ' + e.message, 'error'); }
   }
 });
 
@@ -4847,6 +4983,7 @@ let DATA=[],filter='all',sortBy='new';
 window.DATA = DATA;
 let _initialRenderDone = false;
 let editId=null,mType='movie',mRating=2,mPoster='',mTitle='',mFav=false,mGenre='',mYear='',mReleaseDate='';
+let mTmdbId=null,mIgdbId=null;
 let mDateOverride=''; // yyyy-mm-dd
 let searchTmr=null,dropData=[];
 let mSeasons=0, mLastSeason=0; // series season state
@@ -4959,16 +5096,144 @@ function getTypeIcon(type){
   return type==='game'?'🎮':type==='movie'?'🎬':'📺';
 }
 
-function toast(msg,dur=2400){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),dur);
+const MEDIA_TYPE_SVGS = {
+  game: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="6"></rect><line x1="6" y1="12" x2="10" y2="12"></line><line x1="8" y1="10" x2="8" y2="14"></line><line x1="15" y1="13" x2="15.01" y2="13"></line><line x1="18" y1="11" x2="18.01" y2="11"></line></svg>`,
+  movie: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg>`,
+  series: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect><polyline points="17 2 12 7 7 2"></polyline></svg>`,
+  collection: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>`
+};
+
+function getMediaSvgIcon(type){
+  const t = (type || 'movie').toLowerCase();
+  if(t === 'game') return MEDIA_TYPE_SVGS.game;
+  if(t === 'series' || t === 'tv') return MEDIA_TYPE_SVGS.series;
+  if(t === 'collection') return MEDIA_TYPE_SVGS.collection;
+  return MEDIA_TYPE_SVGS.movie;
+}
+
+function onPosterError(img, type, title, phClass){
+  if(!img) return;
+  const safeTitle = (title || '').replace(/"/g, '&quot;');
+  const iconSvg = getMediaSvgIcon(type);
+  const isLarge = phClass.includes('deep-poster') || phClass.includes('info-poster') || phClass.includes('coll-header') || phClass.includes('upcoming-poster');
+  const titleHtml = isLarge && title ? `<span class="ph-title">${safeTitle}</span>` : '';
+  const ph = document.createElement('div');
+  ph.className = `${phClass} ph-${type}`;
+  ph.dataset.type = type;
+  ph.title = safeTitle;
+  ph.innerHTML = `${iconSvg}${titleHtml}`;
+  img.replaceWith(ph);
+}
+
+function renderPosterHtml(posterUrl, title, type, imgClass, phClass, extraImgAttrs = ''){
+  const safeTitle = (title || '').replace(/"/g, '&quot;');
+  const iconSvg = getMediaSvgIcon(type);
+  const isLarge = phClass.includes('deep-poster') || phClass.includes('info-poster') || phClass.includes('coll-header') || phClass.includes('upcoming-poster');
+  const titleHtml = isLarge && title ? `<span class="ph-title">${safeTitle}</span>` : '';
+  
+  if(!posterUrl){
+    return `<div class="${phClass} ph-${type}" data-type="${type}" title="${safeTitle}">${iconSvg}${titleHtml}</div>`;
+  }
+  
+  const safeTitleParam = safeTitle.replace(/'/g, "\\'");
+  return `<img class="${imgClass}" src="${posterUrl}" loading="lazy" alt="${safeTitle}" ${extraImgAttrs} onerror="onPosterError(this, '${type}', '${safeTitleParam}', '${phClass}')">`;
+}
+
+let _toastTimer = null;
+
+const TOAST_ICONS = {
+  success: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`,
+  watchlist: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>`,
+  heart: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>`,
+  neutral: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>`,
+  error: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>`,
+  cloud: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg>`,
+  link: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>`
+};
+
+function toast(msg, type = 'success', dur = 2200){
+  const t = document.getElementById('toast');
+  if(!t) return;
+  
+  // Clean emoji if accidentally passed in legacy string
+  let cleanMsg = typeof msg === 'string' ? msg.replace(/^[✅❌🔖❤️★\s]+/, '').trim() : '';
+  if(!cleanMsg) cleanMsg = String(msg || '');
+  
+  // Auto-detect type if not explicitly provided
+  let finalType = type;
+  if(type === 'success' || !type){
+    const lower = cleanMsg.toLowerCase();
+    if(lower.includes('error') || lower.includes('failed') || lower.includes('invalid') || lower.includes('could not')) finalType = 'error';
+    else if(lower.includes('removed') || lower.includes('remove') || lower.includes('already') || lower.includes('first') || lower.includes('maximum') || lower.includes('please')) finalType = 'neutral';
+    else if(lower.includes('watchlist')) finalType = 'watchlist';
+    else if(lower.includes('favourite') || lower.includes('favorite')) finalType = 'heart';
+    else if(lower.includes('link') || lower.includes('copied')) finalType = 'link';
+    else if(lower.includes('cloud') || lower.includes('sync') || lower.includes('signed out') || lower.includes('sign in')) finalType = 'cloud';
+  }
+
+  const iconSvg = TOAST_ICONS[finalType] || TOAST_ICONS.success;
+  
+  t.innerHTML = `
+    <div class="toast-icon toast-${finalType}">${iconSvg}</div>
+    <div class="toast-msg">${cleanMsg}</div>
+  `;
+  
+  t.classList.add('show');
+  
+  if(_toastTimer) clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => {
+    t.classList.remove('show');
+  }, dur);
+}
+
+function getUniqueMediaKey(entry, titleToIdMap){
+  if(!entry) return '';
+  const type = (entry.type || 'movie').toLowerCase();
+  const clean = cleanTitle(entry.title || '');
+  
+  if(type === 'game'){
+    const igdbId = entry.igdbId || (titleToIdMap?.get(`game:${clean}`));
+    if(igdbId && Number(igdbId) > 0){
+      return `game:igdb:${igdbId}`;
+    }
+  } else {
+    const tmdbId = entry.tmdbId || (titleToIdMap?.get(`${type}:${clean}`));
+    if(tmdbId && Number(tmdbId) > 0){
+      return `${type}:tmdb:${tmdbId}`;
+    }
+  }
+  
+  return `${type}:title:${clean}`;
+}
+
+function countUniqueMedia(entries, type){
+  const list = (entries || []).filter(e => !type || e.type === type);
+  if(!list.length) return 0;
+  
+  const titleToIdMap = new Map();
+  for(const e of entries){
+    const t = (e.type || 'movie').toLowerCase();
+    const clean = cleanTitle(e.title || '');
+    if(!clean) continue;
+    if(t === 'game' && e.igdbId && Number(e.igdbId) > 0){
+      titleToIdMap.set(`game:${clean}`, Number(e.igdbId));
+    } else if(t !== 'game' && e.tmdbId && Number(e.tmdbId) > 0){
+      titleToIdMap.set(`${t}:${clean}`, Number(e.tmdbId));
+    }
+  }
+
+  const uniqueKeys = new Set();
+  for(const e of list){
+    const key = getUniqueMediaKey(e, titleToIdMap);
+    if(key) uniqueKeys.add(key);
+  }
+  return uniqueKeys.size;
 }
 
 function refreshStats(){
-  animCount('cm',DATA.filter(x=>x.type==='movie').length);
-  animCount('cs',DATA.filter(x=>x.type==='series').length);
-  animCount('cg',DATA.filter(x=>x.type==='game').length);
+  animCount('cm', countUniqueMedia(DATA, 'movie'));
+  animCount('cs', countUniqueMedia(DATA, 'series'));
+  animCount('cg', countUniqueMedia(DATA, 'game'));
 }
 function animCount(id,val){
   const el=document.getElementById(id);
@@ -4980,6 +5245,38 @@ function animCount(id,val){
 
 const FOOTER='<div class="list-footer"><span class="atomyn-signature" onclick="openAbout()" role="button" tabindex="0" aria-label="ATOMYN">ATOMYN</span></div>';
 
+function isStartedGameActive(entry, allData){
+  if(!entry || entry.type !== 'game') return false;
+  if(entry.status !== 'started' && entry.status !== 'playing') return false;
+  
+  const dataset = allData || (typeof DATA !== 'undefined' ? DATA : []);
+  const title = (entry.title || '').toLowerCase().trim();
+  const igdbId = entry.igdbId ? Number(entry.igdbId) : null;
+  
+  // A started entry is active if there is NO completed (done) entry for this game
+  // logged on or after this started entry's timestamp (or referencing this startedDate)
+  const isCompleted = dataset.some(x => {
+    if(x.type !== 'game' || x.status !== 'done' || x.id === entry.id) return false;
+    const sameGame = (igdbId && x.igdbId && Number(x.igdbId) === igdbId) ||
+                     (cleanTitle(x.title || '') === cleanTitle(title));
+    if(!sameGame) return false;
+    
+    if(x.startedDate && (Number(x.startedDate) === entry.id || String(x.startedDate) === String(entry.id))){
+      return true;
+    }
+    return x.id >= entry.id;
+  });
+
+  return !isCompleted;
+}
+
+function shouldDisplayInLog(entry, allData){
+  if(!entry) return false;
+  if(entry.type !== 'game') return true;
+  if(entry.status === 'done' || entry.status === 'ongoing') return true;
+  return isStartedGameActive(entry, allData);
+}
+
 // ── RENDER LOG ──────────────────────────────────────────
 function renderLog(){
   updateStickyTop();
@@ -4987,8 +5284,9 @@ function renderLog(){
   // Disable row animations after first render to avoid flash on Firestore sync
   if(_initialRenderDone) container.classList.add('no-anim');
   else { container.classList.remove('no-anim'); _initialRenderDone = true; }
+  const allData = DATA;
   let list=(filter==='all'?[...DATA]:DATA.filter(x=>x.type===filter))
-    .filter(x => !(x.type === 'game' && (x.status === 'started' || x.status === 'playing')));
+    .filter(x => shouldDisplayInLog(x, allData));
   if(sortBy==='new')  list.sort((a,b)=>b.id-a.id);
   if(sortBy==='old')  list.sort((a,b)=>a.id-b.id);
   if(sortBy==='rate') list.sort((a,b)=>RATINGS.indexOf(b.rating)-RATINGS.indexOf(a.rating));
@@ -5020,9 +5318,7 @@ function renderLog(){
 function renderRow(e,i){
   const icon=getTypeIcon(e.type);
   const day=new Date(e.id).getDate();
-  const thumb=e.poster
-    ?`<img class="row-thumb" src="${e.poster}" loading="lazy" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="row-thumb-ph" style="display:none">${icon}</div>`
-    :`<div class="row-thumb-ph">${icon}</div>`;
+  const thumb=renderPosterHtml(e.poster, e.title, e.type, 'row-thumb', 'row-thumb-ph');
   const rKey=RATINGS.includes(e.rating)?e.rating:'decent';
   const rBadge=`<span class="rating-badge ${RATING_CLASS[rKey]}">${RATING_LABELS[rKey]}</span>`;
   const sKey=e.rewatched?'rewatched':(e.status||'done');
@@ -5050,7 +5346,7 @@ async function toggleFav(id,ev){
   renderLog();renderFavs();
   if(document.getElementById('page-profile')?.classList.contains('on')) renderProfile();
   if(document.getElementById('page-calendar')?.classList.contains('on')) renderCalendar();
-  toast(e.fav?'❤️ Added to favourites':'Removed from favourites');
+  toast(e.fav ? 'Added to Favourites' : 'Removed from Favourites', e.fav ? 'heart' : 'neutral');
 }
 async function delEntry(id,ev){
   if(ev && typeof ev.stopPropagation === 'function') ev.stopPropagation();
@@ -5060,7 +5356,7 @@ async function delEntry(id,ev){
   renderLog();renderFavs();
   if(document.getElementById('page-profile')?.classList.contains('on')) renderProfile();
   if(document.getElementById('page-calendar')?.classList.contains('on')) renderCalendar();
-  toast('Removed from diary');
+  toast('Removed from Diary', 'neutral');
 }
 
 // ── RENDER FAVS ─────────────────────────────────────────
@@ -5085,9 +5381,7 @@ function renderFavs(){
   el.innerHTML=favs.map((e,i)=>{
     const icon=e.type==='game'?'🎮':e.type==='movie'?'🎬':'📺';
     const rKey=RATINGS.includes(e.rating)?e.rating:'decent';
-    const thumb=e.poster
-      ?`<img class="fav-thumb" src="${e.poster}" loading="lazy" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="fav-ph" style="display:none">${icon}</div>`
-      :`<div class="fav-ph">${icon}</div>`;
+    const thumb=renderPosterHtml(e.poster, e.title, e.type, 'fav-thumb', 'fav-ph');
     return `<div class="fav-card ${e.type}" style="animation-delay:${i*0.04}s" onclick="event.stopPropagation();openDeepCard(DATA.find(x=>x.id===${e.id})||{id:${e.id},title:'${e.title.replace(/'/g,String.fromCharCode(92,39))}',type:'${e.type}',year:'${e.year||''}',poster:'${(e.poster||'').replace(/'/g,String.fromCharCode(92,39))}',tmdbId:${e.tmdbId||'null'},igdbId:${e.igdbId||'null'}})">
       ${thumb}
       <div class="fav-info">
@@ -5109,11 +5403,15 @@ document.querySelectorAll('[data-ff]').forEach(btn=>{
 });
 
 function openWatchlistItem(index, e){
-  if(e && e.target && e.target.closest('.wl-actions')) return;
+  if(e && e.target && e.target.closest('.wl-actions button.wl-del')) return;
   const wl = getWL();
   const item = wl[index];
   if(item){
-    openDeepCard(Object.assign({}, item, { _wlIdx: index }));
+    if(item.type === 'collection'){
+      openCollectionOverlay(item.collectionId || item.id || item.tmdbId, item.title, null);
+    } else {
+      openDeepCard(Object.assign({}, item, { _wlIdx: index }));
+    }
   }
 }
 window.openWatchlistItem = openWatchlistItem;
@@ -5132,13 +5430,24 @@ function renderWL(){
     el.innerHTML='<div class="empty"><div class="empty-ico-svg"><svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></div><div class="empty-title">Your watchlist is empty</div><div class="empty-sub">Search above and add something</div></div>';return;
   }
   el.innerHTML=released.map((item, relIdx)=>{
-    const i=wl.findIndex(x=>x.title===item.title && x.type===item.type);
+    const i=wl.findIndex(x=>(x.id && item.id && x.id===item.id) || (x.title===item.title && x.type===item.type));
     const targetIdx = i >= 0 ? i : relIdx;
-    const icon=item.type==='game'?'🎮':item.type==='movie'?'🎬':'📺';
-    const thumb=item.poster
-      ?`<img class="wl-thumb" src="${item.poster}" loading="lazy" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="wl-ph" style="display:none">${icon}</div>`
-      :`<div class="wl-ph">${icon}</div>`;
-    const sub=[item.year,item.genre].filter(Boolean).join(' · ');
+    const isColl = item.type === 'collection';
+    const icon = isColl ? '🎞️' : (item.type==='game'?'🎮':item.type==='movie'?'🎬':'📺');
+    const thumb=renderPosterHtml(item.poster, item.title, item.type, 'wl-thumb', 'wl-ph');
+    
+    let sub = '';
+    if(isColl){
+      const partsText = item.partsCount ? `${item.partsCount} ${item.partsCount === 1 ? 'Film' : 'Films'}` : '';
+      sub = ['Franchise', partsText, item.year].filter(Boolean).join(' · ');
+    } else {
+      sub = [item.year, item.genre].filter(Boolean).join(' · ');
+    }
+
+    const actionBtn = isColl
+      ? `<button class="wl-view-btn" onclick="event.stopPropagation();openWatchlistItem(${targetIdx}, event)">View →</button>`
+      : `<button class="wl-log-btn" onclick="event.stopPropagation();wlLog(${targetIdx})">Log it ✓</button>`;
+
     return `<div class="wl-card ${item.type}" style="animation-delay:${relIdx*0.05}s;cursor:pointer" onclick="openWatchlistItem(${targetIdx}, event)">
       ${thumb}
       <div class="wl-info">
@@ -5146,13 +5455,13 @@ function renderWL(){
         ${sub?`<div class="wl-sub">${sub}</div>`:''}
       </div>
       <div class="wl-actions">
-        <button class="wl-log-btn" onclick="event.stopPropagation();wlLog(${targetIdx})">Log it ✓</button>
+        ${actionBtn}
         <button class="wl-del" onclick="event.stopPropagation();wlDel(${targetIdx})">✕</button>
       </div>
     </div>`;
   }).join('');
 }
-function wlDel(i){const wl=getWL();wl.splice(i,1);saveWL(wl);renderWL();renderUpcoming();toast('Removed from watchlist');}
+function wlDel(i){const wl=getWL();wl.splice(i,1);saveWL(wl);renderWL();renderUpcoming();toast('Removed from Watchlist', 'neutral');}
 
 let wlLogIdx=-1;
 
@@ -5178,7 +5487,7 @@ function renderCalendar(){
 
   // Date lookup map: { 'YYYY-MM-DD': [entries] }
   const dateMap = {};
-  DATA.forEach(entry => {
+  DATA.filter(entry => shouldDisplayInLog(entry, DATA)).forEach(entry => {
     const d = new Date(entry.id);
     if(isNaN(d.getTime())) return;
     const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
@@ -5205,23 +5514,14 @@ function renderCalendar(){
     let mediaHtml = '';
     if(entries.length === 1){
       const e = entries[0];
-      const icon = getTypeIcon(e.type);
-      const thumb = e.poster
-        ? `<img class="cal-poster-thumb" src="${e.poster}" loading="lazy" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="cal-poster-ph" style="display:none">${icon}</div>`
-        : `<div class="cal-poster-ph">${icon}</div>`;
+      const thumb = renderPosterHtml(e.poster, e.title, e.type, 'cal-poster-thumb', 'cal-poster-ph');
       mediaHtml = `<div class="cal-media-wrap">${thumb}</div>`;
     } else if(entries.length === 2){
-      const t1 = entries[0].poster
-        ? `<img class="cal-poster-thumb" src="${entries[0].poster}" loading="lazy" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="cal-poster-ph" style="display:none">${getTypeIcon(entries[0].type)}</div>`
-        : `<div class="cal-poster-ph">${getTypeIcon(entries[0].type)}</div>`;
-      const t2 = entries[1].poster
-        ? `<img class="cal-poster-thumb" src="${entries[1].poster}" loading="lazy" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="cal-poster-ph" style="display:none">${getTypeIcon(entries[1].type)}</div>`
-        : `<div class="cal-poster-ph">${getTypeIcon(entries[1].type)}</div>`;
+      const t1 = renderPosterHtml(entries[0].poster, entries[0].title, entries[0].type, 'cal-poster-thumb', 'cal-poster-ph');
+      const t2 = renderPosterHtml(entries[1].poster, entries[1].title, entries[1].type, 'cal-poster-thumb', 'cal-poster-ph');
       mediaHtml = `<div class="cal-media-wrap">${t1}${t2}</div>`;
     } else if(entries.length > 2){
-      const t1 = entries[0].poster
-        ? `<img class="cal-poster-thumb" src="${entries[0].poster}" loading="lazy" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="cal-poster-ph" style="display:none">${getTypeIcon(entries[0].type)}</div>`
-        : `<div class="cal-poster-ph">${getTypeIcon(entries[0].type)}</div>`;
+      const t1 = renderPosterHtml(entries[0].poster, entries[0].title, entries[0].type, 'cal-poster-thumb', 'cal-poster-ph');
       const extraCount = entries.length - 1;
       mediaHtml = `<div class="cal-media-wrap">${t1}<span class="cal-more-badge">+${extraCount}</span></div>`;
     }
@@ -5267,6 +5567,7 @@ function renderCalendarSelectedEntries(dateMap){
   if(!activeSelectedDate){
     // Show entire month overview when no specific date is selected
     const monthEntries = DATA.filter(entry => {
+      if(!shouldDisplayInLog(entry, DATA)) return false;
       const dt = new Date(entry.id);
       return dt.getFullYear() === calYear && dt.getMonth() === calMonth;
     }).sort((a,b) => b.id - a.id);
@@ -5303,6 +5604,7 @@ function renderCalendarSelectedEntries(dateMap){
   });
 
   const entries = (dateMap && dateMap[activeSelectedDate]) || DATA.filter(entry => {
+    if(!shouldDisplayInLog(entry, DATA)) return false;
     const dt = new Date(entry.id);
     return `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}-${String(dt.getDate()).padStart(2, '0')}` === activeSelectedDate;
   });
@@ -5411,12 +5713,15 @@ document.getElementById('modalWlBtn')?.addEventListener('click', () => {
     return;
   }
   const wl = getWL();
-  if(wl.find(x => x.title.toLowerCase() === title.toLowerCase())){
-    toast('Already in watchlist');
+  if(wl.find(x => x.title.toLowerCase() === title.toLowerCase() && x.type === (mType || 'movie'))){
+    toast('Already in Watchlist', 'neutral');
     closeModal();
     return;
   }
   const item = {
+    id: mType === 'game' ? mIgdbId : mTmdbId,
+    tmdbId: mType !== 'game' ? mTmdbId : null,
+    igdbId: mType === 'game' ? mIgdbId : null,
     title: title,
     poster: mPoster || '',
     year: mYear || '',
@@ -5429,7 +5734,7 @@ document.getElementById('modalWlBtn')?.addEventListener('click', () => {
   closeModal();
   renderWL();
   renderUpcoming();
-  toast('🔖 Added to watchlist');
+  toast('Added to Watchlist', 'watchlist');
 });
 
 // Calendar Month Controls
@@ -5453,13 +5758,118 @@ document.getElementById('calTodayBtn')?.addEventListener('click', () => {
   renderCalendar();
 });
 
-// ── SETTINGS ────────────────────────────────────────────
 const settingsSheet=document.getElementById('settingsSheet');
 const sheetOverlay=document.getElementById('sheetOverlay');
 function openSheet(){settingsSheet.classList.add('show');sheetOverlay.classList.add('show');}
 function closeSheet(){settingsSheet.classList.remove('show');sheetOverlay.classList.remove('show');}
 document.getElementById('settingsBtn').addEventListener('click',openSheet);
 sheetOverlay.addEventListener('click',closeSheet);
+
+async function hydrateMissingMediaArtwork(){
+  if(!DATA || !DATA.length) return;
+  const missing = DATA.filter(x => !x.poster && (x.igdbId || x.tmdbId || x.title));
+  if(!missing.length) return;
+
+  let updatedAny = false;
+  for(const item of missing){
+    try {
+      const type = item.type || 'movie';
+      let foundUrl = '';
+      if(type === 'game'){
+        const q = item.igdbId || item.title;
+        const r = await fetch(`${API_BASE}/api/game/${encodeURIComponent(q)}`);
+        if(r.ok){
+          const d = await r.json();
+          foundUrl = d.background_image || d.cover || (d.artworks && d.artworks[0]) || (d.screenshots && d.screenshots[0]) || '';
+          if(d.id && !item.igdbId) item.igdbId = d.id;
+        }
+      } else {
+        const q = item.tmdbId || item.title;
+        const endpoint = type === 'series' ? 'tv' : 'movie';
+        const r = await fetch(`${API_BASE}/api/${endpoint}/${encodeURIComponent(q)}`);
+        if(r.ok){
+          const d = await r.json();
+          foundUrl = d.poster_path ? `https://image.tmdb.org/t/p/w500${d.poster_path}` : '';
+          if(d.id && !item.tmdbId) item.tmdbId = d.id;
+        }
+      }
+
+      if(foundUrl){
+        item.poster = foundUrl;
+        fsSave(item);
+        updatedAny = true;
+      }
+    } catch(e){}
+  }
+
+  if(updatedAny){
+    cacheWrite(DATA);
+    renderLog();
+    renderFavs();
+  }
+}
+
+async function refreshAllUserData(isManual = false){
+  try {
+    if(currentUser){
+      try {
+        const snap = await getDocs(colEntries());
+        if(snap && snap.docs && snap.docs.length > 0){
+          DATA = snap.docs.map(d => d.data());
+          cacheWrite(DATA);
+        } else if(!DATA || !DATA.length){
+          const cached = cacheRead();
+          if(cached && cached.length) DATA = cached;
+        }
+        const wlSnap = await getDoc(docWL());
+        if(wlSnap && wlSnap.exists()){
+          const items = wlSnap.data()?.items;
+          if(Array.isArray(items)) saveWL(items);
+        }
+        flashCloud();
+      } catch(netErr){
+        console.warn('Network read skipped during refresh, using local cache:', netErr);
+        const cached = cacheRead();
+        if(cached && cached.length) DATA = cached;
+      }
+    } else if(PUBLIC_UID){
+      await fsLoadPublic(PUBLIC_UID);
+    } else {
+      const cached = cacheRead();
+      if(cached && cached.length) DATA = cached;
+    }
+
+    renderLog();
+    renderFavs();
+    renderWL();
+    renderUpcoming();
+    if(typeof renderCalendar === 'function') renderCalendar();
+    if(typeof refreshStats === 'function') refreshStats();
+    if(typeof renderStats === 'function') renderStats();
+
+    const profilePage = document.getElementById('page-profile');
+    if(profilePage && profilePage.classList.contains('on') && typeof renderProfile === 'function'){
+      renderProfile();
+    }
+
+    if(isManual){
+      toast('List refreshed', 'success');
+    }
+
+    // Hydrate any missing media artwork silently in background
+    hydrateMissingMediaArtwork();
+  } catch(e){
+    console.error('Refresh encountered an issue:', e);
+    if(isManual){
+      toast('List refreshed', 'neutral');
+    }
+  }
+}
+
+document.getElementById('refreshDataBtn')?.addEventListener('click', async () => {
+  closeSheet();
+  await refreshAllUserData(true);
+});
 document.getElementById('exportBtn').addEventListener('click',()=>{
   closeSheet();
   const payload=JSON.stringify({exported:new Date().toISOString(),entries:DATA,watchlist:getWL()},null,2);
@@ -5467,7 +5877,7 @@ document.getElementById('exportBtn').addEventListener('click',()=>{
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);
   a.download=`logger-backup-${new Date().toISOString().slice(0,10)}.json`;
   a.click();URL.revokeObjectURL(a.href);
-  toast('✅ Backup downloaded!');
+  toast('Backup downloaded', 'success');
 });
 document.getElementById('importBtn').addEventListener('click',()=>{closeSheet();document.getElementById('fileInput').click();});
 document.getElementById('fileInput').addEventListener('change',async e=>{
@@ -5487,8 +5897,8 @@ document.getElementById('fileInput').addEventListener('change',async e=>{
       if(wlAdd.length) saveWL([...wl,...wlAdd]);
     }
     renderLog();renderFavs();renderWL();
-    toast(`✅ ${add.length} entries restored!`);
-  }catch{ toast('❌ Invalid backup file'); }
+    toast(`${add.length} entries restored`, 'success');
+  }catch{ toast('Invalid backup file', 'error'); }
   e.target.value='';
 });
 
@@ -5579,10 +5989,9 @@ async function runSearch(q){
   spin.classList.add('show');closeDD();
   try{
     dropData=await apiSearch(q);spin.classList.remove('show');
-    const icon=mType==='game'?'🎮':mType==='movie'?'🎬':'📺';
     dropdown.innerHTML=!dropData.length?'<div class="dr-empty">No results found</div>'
       :dropData.map((r,i)=>{
-        const th=r.poster?`<img class="dr-thumb" src="${r.poster}" alt="">`:`<div class="dr-ph">${icon}</div>`;
+        const th=renderPosterHtml(r.poster, r.title, mType, 'dr-thumb', 'dr-ph');
         return `<div class="dr-item" data-i="${i}">${th}<div><div class="dr-name">${r.title}</div><div class="dr-meta">${[r.year,r.genre].filter(Boolean).join(' · ')||'—'}</div></div></div>`;
       }).join('');
     dropdown.querySelectorAll('.dr-item').forEach(el=>el.addEventListener('click',()=>pickResult(dropData[+el.dataset.i])));
@@ -5592,6 +6001,8 @@ async function runSearch(q){
 
 function pickResult(r){
   closeDD();mTitle=r.title;mPoster=r.poster||'';mGenre=r.genre||'';mYear=r.year||'';mReleaseDate=r.releaseDate||'';
+  mTmdbId=r.tmdbId||(r.type!=='game'?r.id:null);
+  mIgdbId=r.igdbId||(r.type==='game'?r.id:null);
   searchInp.value=r.title;checkDup(r.title);
   showPreview(mPoster,mTitle,[r.year,r.genre].filter(Boolean).join(' · '));
   if(mType==='series'){ mLastSeason=0; fetchAndRenderSeasons(r.title,0); }
@@ -5720,6 +6131,8 @@ function openModal(entry,prefill){
   mGenre=entry?(entry.genre||''):(prefill?prefill.genre||'':'');
   mYear=entry?(entry.year||''):(prefill?prefill.year||'':'');
   mReleaseDate=entry?(entry.releaseDate||''):(prefill?prefill.releaseDate||'':'');
+  mTmdbId=entry?(entry.tmdbId||null):(prefill?(prefill.tmdbId||(prefill.type==='game'?null:prefill.id)||null):null);
+  mIgdbId=entry?(entry.igdbId||null):(prefill?(prefill.igdbId||(prefill.type==='game'?prefill.id:null)||null):null);
   mFav=entry?!!entry.fav:false;
   // Date override (rare)
   mDateOverride = '';
@@ -5906,7 +6319,7 @@ document.getElementById('confirmDeleteBtn')?.addEventListener('click', async () 
   renderFavs();
   if(document.getElementById('page-profile')?.classList.contains('on')) renderProfile();
   if(document.getElementById('page-calendar')?.classList.contains('on')) renderCalendar();
-  toast('Removed from diary');
+  toast('Removed from Diary', 'neutral');
 });
 
 // Save
@@ -5946,9 +6359,6 @@ document.getElementById('saveBtn').addEventListener('click',async()=>{
       );
       if(existingStarted){
         preservedStartedDate = existingStarted.startedDate || existingStarted.startDate || existingStarted.id;
-        // Clean up the in-progress Started entry from DATA and Firestore
-        DATA = DATA.filter(x => x.id !== existingStarted.id);
-        try { await fsDelete(existingStarted.id); } catch(e){}
       } else if(editId){
         const existingSelf = DATA.find(x => x.id === editId);
         if(existingSelf && (existingSelf.startedDate || existingSelf.startDate)){
@@ -5973,6 +6383,8 @@ document.getElementById('saveBtn').addEventListener('click',async()=>{
     notes:notesVal,
     lastSeason:mType==='series'?mLastSeason:0
   };
+  if(mTmdbId && mType !== 'game') entry.tmdbId = Number(mTmdbId);
+  if(mIgdbId && mType === 'game') entry.igdbId = Number(mIgdbId);
   if(preservedStartedDate){
     entry.startedDate = preservedStartedDate;
   }
@@ -5992,11 +6404,15 @@ document.getElementById('saveBtn').addEventListener('click',async()=>{
   const wl=getWL();
   const wi=wlLogIdx>=0?wlLogIdx:wl.findIndex(x=>x.title.toLowerCase()===title.toLowerCase());
   if(wi>=0){wl.splice(wi,1);saveWL(wl);}
+  checkCollectionWatchlistCompletion(entry);
   closeModal();
   renderLog();renderFavs();renderWL();renderUpcoming();
   if(document.getElementById('page-profile')?.classList.contains('on')) renderProfile();
   if(document.getElementById('page-calendar')?.classList.contains('on')) renderCalendar();
-  toast(isDup?'✅ Saved as Rewatched!':(editId?'✅ Updated!':'✅ Saved!'));
+  if(_activeCollectionId){
+    openCollectionOverlay(_activeCollectionId, _activeCollectionData?.title || null, null);
+  }
+  toast(isDup ? 'Saved as Rewatched' : (editId ? 'Entry updated' : 'Saved to Diary'), 'success');
 });
 
 // ── SHARE CARD ───────────────────────────────────────────
@@ -6218,10 +6634,10 @@ document.getElementById('shareDlBtn').addEventListener('click', async()=>{
     a.href = finalCanvas.toDataURL('image/jpeg',0.95);
     a.download = `logger-${(entry?.title||'card').replace(/\s+/g,'-').toLowerCase()}.jpg`;
     a.click();
-    toast('✅ Card saved!');
+    toast('Card saved to photos', 'success');
   } catch(e){
     console.error(e);
-    toast('❌ Could not generate image');
+    toast('Could not generate image', 'error');
   }
   btn.textContent = '⬇ Save Image';
   btn.disabled = false;
@@ -6728,7 +7144,7 @@ async function runPickSearch(q, type){
 function addPickFromSearch(r){
   try{
     const picks = getPicks();
-    if(picks.length>=6){ toast('Already have 6 picks'); return; }
+    if(picks.length>=6){ toast('Maximum 6 picks allowed', 'neutral'); return; }
     const existing = DATA.find(x=>x.title.toLowerCase()===r.title.toLowerCase()&&x.type===r.type);
     const pickEntry = existing || { id: Date.now(), title:r.title, poster:r.poster||'', year:r.year||'', genre:r.genre||'', type:r.type, rating:'decent', fav:false, notes:'' };
     if(!picks.find(x=>x.id===pickEntry.id)){
@@ -6737,8 +7153,8 @@ function addPickFromSearch(r){
     }
     document.getElementById('pickSheet')?.remove();
     renderTopPicks();
-    toast('✅ Added to Top Picks');
-  } catch(e){ toast('Something went wrong'); console.error(e); }
+    toast('Added to Top Picks', 'success');
+  } catch(e){ toast('Something went wrong', 'error'); console.error(e); }
 }
 
 document.getElementById('editPicksBtn').addEventListener('click',()=>{
@@ -6792,10 +7208,7 @@ function renderUpcoming(){
     const days = Math.ceil((rel-today)/(1000*60*60*24));
     const numDisplay = days===1?'1':String(days);
     const lblDisplay = days===1?'day away':days===0?'today':'days away';
-    const icon = item.type==='game'?'🎮':item.type==='movie'?'🎬':'📺';
-    const poster = item.poster
-      ? `<img class="upcoming-poster" src="${item.poster}" alt="">`
-      : `<div class="upcoming-poster-ph">${icon}</div>`;
+    const poster = renderPosterHtml(item.poster, item.title, item.type, 'upcoming-poster', 'upcoming-poster-ph');
     const genre = item.genre?`<div class="upcoming-genre">${item.genre.split(',')[0]}</div>`:'';
     return `<div class="upcoming-card ${item.type}" style="animation-delay:${i*0.05}s;cursor:pointer" onclick="openWatchlistItem(${wlIdx>=0?wlIdx:i}, event)">
       <div class="upcoming-poster-wrap">
@@ -6900,10 +7313,15 @@ function showInfoCard(entry, context){
     poster.src = entry.poster;
     poster.style.display = 'block';
     posterPh.style.display = 'none';
+    poster.onerror = () => {
+      poster.style.display = 'none';
+      posterPh.style.display = 'flex';
+      posterPh.innerHTML = `${getMediaSvgIcon(entry.type)}<span class="ph-title">${(entry.title||'').replace(/"/g, '&quot;')}</span>`;
+    };
   } else {
     poster.style.display = 'none';
     posterPh.style.display = 'flex';
-    posterPh.textContent = icon;
+    posterPh.innerHTML = `${getMediaSvgIcon(entry.type)}<span class="ph-title">${(entry.title||'').replace(/"/g, '&quot;')}</span>`;
   }
 
   // Meta
@@ -7007,6 +7425,9 @@ function showInfoCard(entry, context){
       const wl = getWL();
       if(!wl.some(x => x.title.toLowerCase() === entry.title.toLowerCase() && x.type === entry.type)){
         wl.unshift({
+          id: entry.id || entry.tmdbId || entry.igdbId,
+          tmdbId: entry.tmdbId || (entry.type !== 'game' ? entry.id : null),
+          igdbId: entry.igdbId || (entry.type === 'game' ? entry.id : null),
           title: entry.title,
           type: entry.type || 'movie',
           year: entry.year || '',
@@ -7017,9 +7438,9 @@ function showInfoCard(entry, context){
         saveWL(wl);
         if(currentUser) await fsSaveWL(wl);
         renderWL();
-        toast('Added to watchlist');
+        toast('Added to Watchlist', 'watchlist');
       } else {
-        toast('Already in watchlist');
+        toast('Already in Watchlist', 'neutral');
       }
     };
     primaryRow.appendChild(wlBtn);
@@ -7063,7 +7484,7 @@ function showInfoCard(entry, context){
           renderFavs();
           if(document.getElementById('page-profile')?.classList.contains('on')) renderProfile();
           if(document.getElementById('page-calendar')?.classList.contains('on')) renderCalendar();
-          toast('Removed from diary');
+          toast('Removed from Diary', 'neutral');
         };
       };
       actions.appendChild(delBtn);
@@ -7393,7 +7814,7 @@ function editProfileName(){
     div.className='profile-name'; div.id='profileName';
     div.onclick=editProfileName; div.textContent=val;
     input.replaceWith(div);
-    if(val!==current){ saveCustomName(val); toast('✅ Name updated'); }
+    if(val!==current){ saveCustomName(val); toast('Name updated', 'success'); }
   };
   input.addEventListener('blur', done);
   input.addEventListener('keydown', e=>{ if(e.key==='Enter') input.blur(); if(e.key==='Escape'){input.value=current;input.blur();} });
@@ -7408,7 +7829,7 @@ document.getElementById('guestBtn').addEventListener('click',()=>{
 document.getElementById('guestSignInInstead').addEventListener('click', async()=>{
   document.getElementById('guestWarning').style.display='none';
   try{ await signInWithPopup(auth, new GoogleAuthProvider()); }
-  catch(e){ toast('❌ Sign-in failed: '+e.message); }
+  catch(e){ toast('Sign-in failed: ' + e.message, 'error'); }
 });
 
 document.getElementById('guestContinueAnyway').addEventListener('click',()=>{
@@ -7435,16 +7856,16 @@ function hideTutorial(){
 document.getElementById('tutorialSignInBtn').addEventListener('click', async()=>{
   try{
     await signInWithPopup(auth, new GoogleAuthProvider());
-  } catch(e){ toast('❌ Sign-in failed: '+e.message); }
+  } catch(e){ toast('Sign-in failed: ' + e.message, 'error'); }
 });
 
 // ── PROFILE SHARE LINK ────────────────────────────────────
 document.getElementById('profileShareBtn').addEventListener('click',()=>{
-  if(!currentUser){ toast('Sign in first'); return; }
+  if(!currentUser){ toast('Sign in first', 'neutral'); return; }
   const base = window.location.origin + window.location.pathname;
   const link = `${base}?u=${currentUser.uid}`;
   navigator.clipboard.writeText(link).then(()=>{
-    toast('✅ Link copied! Share it on Instagram');
+    toast('Link copied to clipboard', 'link');
   }).catch(()=>{
     // Fallback for browsers that block clipboard
     prompt('Copy your share link:', link);
@@ -7511,7 +7932,7 @@ function showInstallBanner(){
     const { outcome } = await _installPrompt.userChoice;
     _installPrompt = null;
     banner.remove();
-    if(outcome==='accepted') toast('✅ Logger installed!');
+    if(outcome==='accepted') toast('Logger installed', 'success');
   });
 
   document.getElementById('installDismiss').addEventListener('click', ()=>{
@@ -7794,7 +8215,19 @@ let _searchDebounceTimer = null;
 let _searchSequenceId = 0;
 const DEEP_CACHE = new Map();
 
+function updateStickyHeaderHeight(){
+  const header = document.getElementById('logStickyHeader');
+  if(header){
+    const h = header.offsetHeight;
+    if(h > 0){
+      document.documentElement.style.setProperty('--sticky-header-height', `${h}px`);
+    }
+  }
+}
+window.addEventListener('resize', updateStickyHeaderHeight);
+
 function openDiarySearch(){
+  updateStickyHeaderHeight();
   const overlay = document.getElementById('diarySearchOverlay');
   const input = document.getElementById('diarySearchInput');
   if(!overlay || !input) return;
@@ -7818,7 +8251,7 @@ function normalizeToUnifiedModel(rawItem, source, localDiaryEntry, localWLEntry)
   const mediaType = rawItem.type || rawItem.mediaType || 'movie';
   const title = rawItem.title || rawItem.name || '';
   const year = rawItem.year || (rawItem.release_date ? rawItem.release_date.slice(0,4) : (rawItem.first_air_date ? rawItem.first_air_date.slice(0,4) : (rawItem.released ? rawItem.released.slice(0,4) : '')));
-  const poster = rawItem.poster || rawItem.background_image || (rawItem.poster_path ? `https://image.tmdb.org/t/p/w200${rawItem.poster_path}` : '');
+  const poster = rawItem.poster || rawItem.background_image || (typeof rawItem.cover === 'string' ? rawItem.cover : (rawItem.cover?.image_id ? `https://images.igdb.com/igdb/image/upload/t_cover_big/${rawItem.cover.image_id}.jpg` : '')) || (rawItem.poster_path ? `https://image.tmdb.org/t/p/w200${rawItem.poster_path}` : '');
   
   let tmdbId = rawItem.tmdbId || (source === 'tmdb' ? rawItem.id : null);
   let igdbId = rawItem.igdbId || (source === 'igdb' ? rawItem.id : null);
@@ -7958,31 +8391,15 @@ function renderUniversalSearchResults(query){
   const localDiary = (typeof DATA !== 'undefined' && DATA.length) ? [...DATA] : (window.DATA ? [...window.DATA] : []);
   const localWL = getWL() || [];
 
-  if(!q){
-    let list = localDiary;
-    if(_diarySearchFilter !== 'all'){
-      list = list.filter(x => x.type === _diarySearchFilter);
-    }
-    countEl.textContent = `${list.length} logged`;
-    if(!list.length){
-      resultsContainer.innerHTML = `
-        <div class="diary-search-empty">
-          <div class="diary-search-empty-icon">🔍</div>
-          <div class="diary-search-empty-title">Universal Search</div>
-          <div class="diary-search-empty-sub">Search across your diary, watchlist, or find any movie, series, or game worldwide.</div>
-        </div>
-      `;
-      return;
-    }
-    resultsContainer.innerHTML = list.slice(0, 40).map(e => {
-      const unified = normalizeToUnifiedModel(e, 'logger', e, null);
-      return renderSearchItemCard(unified, '');
-    }).join('');
+  if(q.length < 2){
+    _currentSearchResults = [];
+    if(countEl) countEl.textContent = '';
+    resultsContainer.innerHTML = '';
     return;
   }
 
   // Active query: clear previous results immediately and show clean SVG search loader
-  countEl.textContent = 'Searching...';
+  if(countEl) countEl.textContent = 'Searching...';
   resultsContainer.innerHTML = `
     <div class="diary-search-loading">
       <svg class="diary-search-loading-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -7995,18 +8412,7 @@ function renderUniversalSearchResults(query){
 
   // Debounced API search (TMDB Movies, TMDB Collections, TMDB Series, IGDB Games) + strictly matched local entries
   _searchDebounceTimer = setTimeout(async () => {
-    if(q.length < 2){
-      if(currentSeq !== _searchSequenceId) return;
-      countEl.textContent = 'Type more...';
-      resultsContainer.innerHTML = `
-        <div class="diary-search-empty">
-          <div class="diary-search-empty-icon">⌨️</div>
-          <div class="diary-search-empty-title">Keep typing</div>
-          <div class="diary-search-empty-sub">Type at least 2 characters to search worldwide titles</div>
-        </div>
-      `;
-      return;
-    }
+    if(currentSeq !== _searchSequenceId) return;
 
     try {
       // 1. Strictly matched local results
@@ -8341,7 +8747,7 @@ function renderSearchCollectionCard(c){
   return `
     <div class="diary-search-coll-card" onclick="closeDiarySearch(); openCollectionOverlay(${c.id}, '${safeName}', null)">
       <div class="diary-search-coll-poster-wrap">
-        ${cPoster ? `<img class="diary-search-coll-poster" src="${cPoster}" loading="lazy" alt="">` : `<div class="diary-search-coll-poster-ph">🎬</div>`}
+        ${renderPosterHtml(cPoster, c.name, 'collection', 'diary-search-coll-poster', 'diary-search-coll-poster-ph')}
       </div>
       <div class="diary-search-coll-meta">
         <div class="diary-search-coll-kicker">
@@ -8367,9 +8773,7 @@ function renderSearchItemCard(e, index, q){
   const icon = typeIcons[e.type] || '🎬';
   const typeName = typeNames[e.type] || 'Film';
 
-  const thumb = e.poster
-    ? `<img class="diary-search-thumb" src="${e.poster}" loading="lazy" alt="">`
-    : `<div class="diary-search-thumb-ph">${icon}</div>`;
+  const thumb = renderPosterHtml(e.poster, e.title, e.type, 'diary-search-thumb', 'diary-search-thumb-ph');
 
   // Status Badge
   let statusBadgeHtml = '';
@@ -8504,10 +8908,15 @@ async function openDeepCard(mediaItem){
     posterEl.src = mediaItem.poster;
     posterEl.style.display = 'block';
     posterPh.style.display = 'none';
+    posterEl.onerror = () => {
+      posterEl.style.display = 'none';
+      posterPh.style.display = 'flex';
+      posterPh.innerHTML = `${getMediaSvgIcon(mediaType)}<span class="ph-title">${(mediaItem.title||'').replace(/"/g, '&quot;')}</span>`;
+    };
   } else {
     posterEl.style.display = 'none';
     posterPh.style.display = 'flex';
-    posterPh.textContent = typeIcons[mediaType]||'🎬';
+    posterPh.innerHTML = `${getMediaSvgIcon(mediaType)}<span class="ph-title">${(mediaItem.title||'').replace(/"/g, '&quot;')}</span>`;
   }
 
   const backdropEl = document.getElementById('deepBackdrop');
@@ -8667,19 +9076,49 @@ function renderDeepCard(data, initialItem){
     }
   }
 
+  const mainTitle = data.name || data.title || initialItem.title;
+
   if(posterUrl){
     posterEl.src = posterUrl;
     posterEl.style.display = 'block';
     posterPh.style.display = 'none';
+    posterEl.onerror = () => {
+      posterEl.style.display = 'none';
+      posterPh.style.display = 'flex';
+      posterPh.innerHTML = `${getMediaSvgIcon(type)}<span class="ph-title">${(mainTitle||'').replace(/"/g, '&quot;')}</span>`;
+    };
+
+    // Auto-backfill to DATA and Watchlist if entry previously lacked a poster
+    if(initialItem && !initialItem.poster){
+      initialItem.poster = posterUrl;
+      const allLogs = (typeof DATA !== 'undefined' && DATA.length) ? DATA : (window.DATA || []);
+      const matched = findMatchingLoggedEntry(initialItem, data);
+      if(matched && (!matched.poster || matched.poster !== posterUrl)){
+        matched.poster = posterUrl;
+        if(data.id){
+          if(matched.type === 'game' && !matched.igdbId) matched.igdbId = data.id;
+          else if(matched.type !== 'game' && !matched.tmdbId) matched.tmdbId = data.id;
+        }
+        fsSave(matched);
+        renderLog();
+        renderFavs();
+      }
+      const wl = getWL();
+      const wlItem = wl.find(x => cleanTitle(x.title) === cleanTitle(initialItem.title) && x.type === initialItem.type);
+      if(wlItem && !wlItem.poster){
+        wlItem.poster = posterUrl;
+        saveWL(wl);
+        renderWL();
+        renderUpcoming();
+      }
+    }
   } else {
     posterEl.style.display = 'none';
     posterPh.style.display = 'flex';
-    posterPh.textContent = typeIcons[type] || '🎬';
+    posterPh.innerHTML = `${getMediaSvgIcon(type)}<span class="ph-title">${(mainTitle||'').replace(/"/g, '&quot;')}</span>`;
   }
 
-
   // Titles
-  const mainTitle = data.name || data.title || initialItem.title;
   document.getElementById('deepTitle').textContent = mainTitle;
 
   const originalTitle = data.original_title || data.original_name;
@@ -8960,6 +9399,7 @@ function renderDeepCard(data, initialItem){
   const franchiseRow = document.getElementById('deepFranchiseRow');
   const franchiseHdr = document.getElementById('deepFranchiseHdr');
   const franchiseBtn = document.getElementById('deepFranchiseBtn');
+  const franchiseWlBtn = document.getElementById('deepFranchiseWlBtn');
 
   if(type === 'movie' && data.belongs_to_collection){
     const coll = data.belongs_to_collection;
@@ -8968,6 +9408,45 @@ function renderDeepCard(data, initialItem){
       : (coll.backdrop_path ? `https://image.tmdb.org/t/p/w300${coll.backdrop_path}` : '');
     franchiseHdr.textContent = coll.name || 'Movie Collection';
     
+    let collYearSpan = '';
+    let collPartsCount = 0;
+    let collParts = [];
+
+    function updateDeepFranchiseWlBtn(){
+      if(!franchiseWlBtn) return;
+      const inWl = isCollectionInWL(coll.id, coll.name);
+      if(inWl){
+        franchiseWlBtn.textContent = '✓ In Watchlist';
+        franchiseWlBtn.style.background = 'rgba(0,197,102,0.14)';
+        franchiseWlBtn.style.color = 'var(--green)';
+        franchiseWlBtn.style.borderColor = 'rgba(0,197,102,0.32)';
+      } else {
+        franchiseWlBtn.textContent = '+ Watchlist';
+        franchiseWlBtn.style.background = 'var(--bg3)';
+        franchiseWlBtn.style.color = 'var(--text2)';
+        franchiseWlBtn.style.borderColor = 'var(--border2)';
+      }
+      franchiseWlBtn.style.display = 'inline-flex';
+    }
+
+    if(franchiseWlBtn){
+      updateDeepFranchiseWlBtn();
+      franchiseWlBtn.onclick = async (e) => {
+        e.stopPropagation();
+        await toggleCollectionWL({
+          id: coll.id,
+          collectionId: coll.id,
+          title: coll.name || 'Movie Collection',
+          poster: cPoster,
+          year: collYearSpan,
+          partsCount: collPartsCount,
+          parts: collParts,
+          partIds: collParts.map(p => p.id)
+        });
+        updateDeepFranchiseWlBtn();
+      };
+    }
+
     if(franchiseBtn){
       franchiseBtn.style.display = 'inline-flex';
       franchiseBtn.onclick = () => openCollectionOverlay(coll.id, coll.name || 'Movie Collection', data.id);
@@ -8995,6 +9474,10 @@ function renderDeepCard(data, initialItem){
         .then(cData => {
           if(cData && cData.parts && cData.parts.length){
             const sorted = [...cData.parts].sort((a,b) => (a.release_date||'').localeCompare(b.release_date||''));
+            collParts = sorted.map(p => ({ id: Number(p.id), title: p.title || '' }));
+            const years = sorted.map(p => p.release_date ? p.release_date.slice(0,4) : '').filter(Boolean);
+            collYearSpan = years.length > 1 ? `${years[0]}–${years[years.length - 1]}` : (years.length === 1 ? years[0] : '');
+            collPartsCount = sorted.length;
             franchiseHdr.textContent = `${cData.name || coll.name} · ${sorted.length} Films`;
             const filmRow = document.getElementById('deepCollFilmsRow');
             if(filmRow){
@@ -9020,6 +9503,7 @@ function renderDeepCard(data, initialItem){
     }
   } else if(type === 'game' && (data.franchises || data.collection || data.expansions || data.dlcs)){
     if(franchiseBtn) franchiseBtn.style.display = 'none';
+    if(franchiseWlBtn) franchiseWlBtn.style.display = 'none';
     const collGames = data.collection?.games || [];
     const expList = [...(data.expansions||[]), ...(data.dlcs||[])];
     const related = [...collGames, ...expList];
@@ -9248,17 +9732,21 @@ function renderDeepCard(data, initialItem){
 
 function renderDeepCardFallback(item){
   const type = item.type || item.mediaType || 'movie';
-  const typeIcons = { movie: '🎬', series: '📺', game: '🎮' };
   const posterEl = document.getElementById('deepPoster');
   const posterPh = document.getElementById('deepPosterPh');
   if(item.poster){
     posterEl.src = item.poster;
     posterEl.style.display = 'block';
     posterPh.style.display = 'none';
+    posterEl.onerror = () => {
+      posterEl.style.display = 'none';
+      posterPh.style.display = 'flex';
+      posterPh.innerHTML = `${getMediaSvgIcon(type)}<span class="ph-title">${(item.title||'').replace(/"/g, '&quot;')}</span>`;
+    };
   } else {
     posterEl.style.display = 'none';
     posterPh.style.display = 'flex';
-    posterPh.textContent = typeIcons[type] || '🎬';
+    posterPh.innerHTML = `${getMediaSvgIcon(type)}<span class="ph-title">${(item.title||'').replace(/"/g, '&quot;')}</span>`;
   }
   document.getElementById('deepTitle').textContent = item.title;
   document.getElementById('deepOverviewText').textContent = item.notes || 'No extended overview available for this entry.';
@@ -9298,6 +9786,194 @@ function renderDeepCardFallback(item){
 }
 
 let _activeCollectionId = null;
+let _activeCollectionData = null;
+
+function isCollectionInWL(collectionId, title){
+  const wl = getWL();
+  const cId = Number(collectionId);
+  const cTitle = cleanTitle(title || '');
+  return wl.some(x => x.type === 'collection' && ((x.collectionId && Number(x.collectionId) === cId) || (x.id && Number(x.id) === cId) || (x.tmdbId && Number(x.tmdbId) === cId) || cleanTitle(x.title || '') === cTitle));
+}
+
+function updateCollOverlayWlButton(){
+  const btn = document.getElementById('collHeaderWlBtn');
+  const txt = document.getElementById('collHeaderWlText');
+  if(!btn || !_activeCollectionData) return;
+  const inWl = isCollectionInWL(_activeCollectionData.id, _activeCollectionData.title);
+  if(inWl){
+    btn.classList.add('in-wl');
+    if(txt) txt.textContent = '✓ In Watchlist';
+  } else {
+    btn.classList.remove('in-wl');
+    if(txt) txt.textContent = '+ Watchlist';
+  }
+  btn.style.display = 'inline-flex';
+}
+
+async function toggleActiveCollectionWL(){
+  if(!_activeCollectionData) return;
+  await toggleCollectionWL(_activeCollectionData);
+  updateCollOverlayWlButton();
+  const franchiseWlBtn = document.getElementById('deepFranchiseWlBtn');
+  if(franchiseWlBtn && franchiseWlBtn.style.display !== 'none'){
+    const inWl = isCollectionInWL(_activeCollectionData.id, _activeCollectionData.title);
+    if(inWl){
+      franchiseWlBtn.textContent = '✓ In Watchlist';
+      franchiseWlBtn.style.background = 'rgba(0,197,102,0.14)';
+      franchiseWlBtn.style.color = 'var(--green)';
+      franchiseWlBtn.style.borderColor = 'rgba(0,197,102,0.32)';
+    } else {
+      franchiseWlBtn.textContent = '+ Watchlist';
+      franchiseWlBtn.style.background = 'var(--bg3)';
+      franchiseWlBtn.style.color = 'var(--text2)';
+      franchiseWlBtn.style.borderColor = 'var(--border2)';
+    }
+  }
+}
+
+function isPartLogged(part, allData){
+  if(!part) return false;
+  const pId = typeof part === 'object' ? Number(part.id || part.tmdbId) : Number(part);
+  const pTitle = typeof part === 'object' ? cleanTitle(part.title || '') : '';
+  
+  return allData.some(entry => {
+    if(entry.type !== 'movie') return false;
+    if(pId && entry.tmdbId && Number(entry.tmdbId) === pId) return true;
+    if(pTitle && cleanTitle(entry.title || '') === pTitle) return true;
+    return false;
+  });
+}
+
+function isCollectionComplete(collItem, allData){
+  if(!collItem || collItem.type !== 'collection') return false;
+  
+  // 1. Check collItem.parts (array of { id, title })
+  if(Array.isArray(collItem.parts) && collItem.parts.length > 0){
+    return collItem.parts.every(part => isPartLogged(part, allData));
+  }
+
+  // 2. Check if _activeCollectionData matches this collection
+  const cId = Number(collItem.id || collItem.collectionId || collItem.tmdbId);
+  if(_activeCollectionData && Number(_activeCollectionData.id) === cId && Array.isArray(_activeCollectionData.parts) && _activeCollectionData.parts.length > 0){
+    return _activeCollectionData.parts.every(part => isPartLogged(part, allData));
+  }
+
+  // 3. Fallback: if partIds exists
+  if(Array.isArray(collItem.partIds) && collItem.partIds.length > 0){
+    return collItem.partIds.every(pid => {
+      const pNum = Number(pid);
+      return allData.some(entry => entry.type === 'movie' && ((entry.tmdbId && Number(entry.tmdbId) === pNum) || (entry.id && Number(entry.id) === pNum)));
+    });
+  }
+
+  return false;
+}
+
+async function toggleCollectionWL(collectionData){
+  if(!collectionData || !collectionData.title) return;
+  const wl = getWL();
+  const cId = Number(collectionData.id || collectionData.collectionId);
+  const cTitle = cleanTitle(collectionData.title);
+  
+  const existingIdx = wl.findIndex(x => x.type === 'collection' && ((x.collectionId && Number(x.collectionId) === cId) || (x.id && Number(x.id) === cId) || (x.tmdbId && Number(x.tmdbId) === cId) || cleanTitle(x.title || '') === cTitle));
+  
+  if(existingIdx >= 0){
+    wl.splice(existingIdx, 1);
+    saveWL(wl);
+    renderWL();
+    renderUpcoming();
+    toast('Removed collection from Watchlist', 'neutral');
+  } else {
+    const item = {
+      id: collectionData.id || collectionData.collectionId,
+      collectionId: collectionData.id || collectionData.collectionId,
+      tmdbId: collectionData.id || collectionData.collectionId,
+      type: 'collection',
+      title: collectionData.title,
+      poster: collectionData.poster || '',
+      year: collectionData.year || '',
+      genre: 'Franchise',
+      partsCount: collectionData.partsCount || 0,
+      parts: collectionData.parts || [],
+      partIds: collectionData.partIds || (collectionData.parts ? collectionData.parts.map(p => Number(p.id)) : []),
+      releaseDate: ''
+    };
+    wl.unshift(item);
+    saveWL(wl);
+    renderWL();
+    renderUpcoming();
+    toast('Added collection to Watchlist', 'watchlist');
+  }
+}
+
+function checkCollectionWatchlistCompletion(loggedEntry){
+  const wl = getWL();
+  const allData = (typeof DATA !== 'undefined' && DATA.length) ? DATA : (window.DATA || []);
+  let changed = false;
+
+  for(let i = wl.length - 1; i >= 0; i--){
+    const item = wl[i];
+    if(item.type === 'collection'){
+      if(isCollectionComplete(item, allData)){
+        wl.splice(i, 1);
+        changed = true;
+      }
+    }
+  }
+
+  if(changed){
+    saveWL(wl);
+    renderWL();
+    renderUpcoming();
+    if(_activeCollectionData){
+      updateCollOverlayWlButton();
+    }
+  }
+}
+
+function logMovieFromCollection(tmdbId, title, poster, year, collectionId){
+  openModal(null, {
+    id: tmdbId,
+    tmdbId: tmdbId,
+    title: title,
+    type: 'movie',
+    poster: poster,
+    year: year
+  });
+}
+
+function toggleMovieWLFromCollection(tmdbId, title, poster, year, releaseDate){
+  const wl = getWL();
+  const cTitle = cleanTitle(title);
+  const existingIdx = wl.findIndex(x => x.type === 'movie' && ((x.tmdbId && Number(x.tmdbId) === Number(tmdbId)) || (x.id && Number(x.id) === Number(tmdbId)) || cleanTitle(x.title) === cTitle));
+
+  if(existingIdx >= 0){
+    wl.splice(existingIdx, 1);
+    saveWL(wl);
+    renderWL();
+    renderUpcoming();
+    toast('Removed from Watchlist', 'neutral');
+  } else {
+    wl.unshift({
+      id: tmdbId,
+      tmdbId: tmdbId,
+      title: title,
+      type: 'movie',
+      year: year || '',
+      genre: '',
+      poster: poster || '',
+      releaseDate: releaseDate || ''
+    });
+    saveWL(wl);
+    renderWL();
+    renderUpcoming();
+    toast('Added to Watchlist', 'watchlist');
+  }
+
+  if(_activeCollectionId){
+    openCollectionOverlay(_activeCollectionId, _activeCollectionData?.title || null, null);
+  }
+}
 
 function closeCollectionOverlay(){
   const overlay = document.getElementById('collOverlay');
@@ -9308,6 +9984,7 @@ function closeCollectionOverlay(){
     }, 250);
   }
   _activeCollectionId = null;
+  _activeCollectionData = null;
 }
 
 function formatCollectionDate(dateStr){
@@ -9339,7 +10016,9 @@ async function openCollectionOverlay(collectionId, collectionName, currentMovieI
   const subEl = document.getElementById('collHeaderSub');
   const posterEl = document.getElementById('collHeaderPoster');
   const posterPh = document.getElementById('collHeaderPosterPh');
+  const wlBtn = document.getElementById('collHeaderWlBtn');
 
+  if(wlBtn) wlBtn.style.display = 'none';
   if(scroll) scroll.scrollTop = 0;
   if(titleEl) titleEl.textContent = collectionName || 'Movie Collection';
   if(subEl) subEl.textContent = 'Loading franchise timeline…';
@@ -9373,6 +10052,17 @@ async function openCollectionOverlay(collectionId, collectionName, currentMovieI
       posterEl.src = cPoster;
       posterEl.style.display = 'block';
       if(posterPh) posterPh.style.display = 'none';
+      posterEl.onerror = () => {
+        posterEl.style.display = 'none';
+        if(posterPh){
+          posterPh.style.display = 'flex';
+          posterPh.innerHTML = `${getMediaSvgIcon('collection')}<span class="ph-title">${name.replace(/"/g, '&quot;')}</span>`;
+        }
+      };
+    } else if(posterPh){
+      if(posterEl) posterEl.style.display = 'none';
+      posterPh.style.display = 'flex';
+      posterPh.innerHTML = `${getMediaSvgIcon('collection')}<span class="ph-title">${name.replace(/"/g, '&quot;')}</span>`;
     }
 
     // Sort parts chronologically by release_date
@@ -9382,13 +10072,46 @@ async function openCollectionOverlay(collectionId, collectionName, currentMovieI
       return dateA.localeCompare(dateB);
     });
 
+    const partsList = parts.map(p => ({ id: Number(p.id), title: p.title || '' }));
+    const partIds = parts.map(p => Number(p.id));
+    const years = parts.map(p => p.release_date ? p.release_date.slice(0,4) : '').filter(Boolean);
+    const yearSpan = years.length > 1 ? `${years[0]}–${years[years.length - 1]}` : (years.length === 1 ? years[0] : '');
+    const spanStr = yearSpan ? ` · ${yearSpan}` : '';
     if(subEl){
-      const years = parts.map(p => p.release_date ? p.release_date.slice(0,4) : '').filter(Boolean);
-      const spanStr = years.length > 1 ? ` · ${years[0]}–${years[years.length - 1]}` : (years.length === 1 ? ` · ${years[0]}` : '');
       subEl.textContent = `${parts.length} ${parts.length === 1 ? 'Film' : 'Films'}${spanStr} · Chronological Order`;
     }
 
+    _activeCollectionData = {
+      id: collectionId,
+      collectionId: collectionId,
+      tmdbId: collectionId,
+      title: name,
+      poster: cPoster,
+      year: yearSpan,
+      genre: 'Franchise',
+      partsCount: parts.length,
+      parts: partsList,
+      partIds: partIds
+    };
+
     const allData = (typeof DATA !== 'undefined' && DATA.length) ? DATA : (window.DATA || []);
+    const wl = getWL() || [];
+    const cIdx = wl.findIndex(x => x.type === 'collection' && ((x.collectionId && Number(x.collectionId) === Number(collectionId)) || (x.id && Number(x.id) === Number(collectionId)) || cleanTitle(x.title) === cleanTitle(name)));
+    
+    if(cIdx >= 0){
+      wl[cIdx].parts = partsList;
+      wl[cIdx].partIds = partIds;
+      wl[cIdx].partsCount = parts.length;
+      if(isCollectionComplete(wl[cIdx], allData)){
+        wl.splice(cIdx, 1);
+        renderWL();
+        renderUpcoming();
+      }
+      saveWL(wl);
+    }
+
+    updateCollOverlayWlButton();
+
     const allWL = getWL() || [];
     const today = new Date().toISOString().slice(0, 10);
 
@@ -9445,20 +10168,30 @@ async function openCollectionOverlay(collectionId, collectionName, currentMovieI
           const dotCls = isCurrent ? 'is-current' : (isUnreleased ? 'is-unreleased' : '');
 
           return `
-            <div class="coll-film-row" onclick="selectCollectionMovie(${pId}, '${pSafeTitle}', '${pPoster}', '${pYear}')">
+            <div class="coll-film-row">
               <div class="coll-film-node">
                 <div class="coll-film-node-badge ${dotCls}">#${idx + 1}</div>
               </div>
               <div class="coll-film-card ${isCurrent ? 'is-current' : ''}">
-                <div class="coll-film-poster-wrap">
-                  ${pPoster ? `<img class="coll-film-poster" src="${pPoster}" loading="lazy" alt="">` : `<div class="coll-film-poster-ph">🎬</div>`}
+                <div class="coll-film-poster-wrap" style="cursor:pointer" onclick="selectCollectionMovie(${pId}, '${pSafeTitle}', '${pPoster}', '${pYear}')">
+                  ${renderPosterHtml(pPoster, pTitle, 'movie', 'coll-film-poster', 'coll-film-poster-ph')}
                   ${isCurrent ? `<div class="coll-film-now-badge">NOW</div>` : ''}
                 </div>
                 <div class="coll-film-meta">
-                  <div class="coll-film-title">${pTitle}</div>
+                  <div class="coll-film-title" style="cursor:pointer" onclick="selectCollectionMovie(${pId}, '${pSafeTitle}', '${pPoster}', '${pYear}')">${pTitle}</div>
                   <div class="coll-film-release-date">📅 ${pDate}</div>
                   ${p.overview ? `<div class="coll-film-overview">${p.overview}</div>` : ''}
                   <div class="coll-film-chips">${chipsHtml}</div>
+                  ${!logged ? `
+                    <div class="coll-film-actions">
+                      <button class="coll-action-log-btn" onclick="event.stopPropagation(); logMovieFromCollection(${pId}, '${pSafeTitle}', '${pPoster}', '${pYear}', ${collectionId})">
+                        Log it ✓
+                      </button>
+                      <button class="coll-action-wl-btn ${inWL ? 'in-wl' : ''}" onclick="event.stopPropagation(); toggleMovieWLFromCollection(${pId}, '${pSafeTitle}', '${pPoster}', '${pYear}', '${p.release_date||''}')">
+                        ${inWL ? '🔖 In Watchlist' : '+ Watchlist'}
+                      </button>
+                    </div>
+                  ` : ''}
                 </div>
               </div>
             </div>
@@ -9631,10 +10364,10 @@ async function quickAddDeepToWL(title, type, year, poster){
     saveWL(wl);
     if(currentUser) await fsSaveWL(wl);
     renderWL();
-    toast('Added to watchlist');
+    toast('Added to Watchlist', 'watchlist');
     if(_activeDeepItem) renderDeepPersonalSection(_activeDeepItem, {});
   } else {
-    toast('Already in watchlist');
+    toast('Already in Watchlist', 'neutral');
   }
 }
 
@@ -9979,6 +10712,17 @@ window.renderUniversalSearchResults = renderUniversalSearchResults;
 window.selectUniversalSearchResult = selectUniversalSearchResult;
 window.toggleSearchSectionMore = toggleSearchSectionMore;
 window.quickAddDeepToWL = quickAddDeepToWL;
+window.toggleActiveCollectionWL = toggleActiveCollectionWL;
+window.toggleCollectionWL = toggleCollectionWL;
+window.isCollectionInWL = isCollectionInWL;
+window.logMovieFromCollection = logMovieFromCollection;
+window.toggleMovieWLFromCollection = toggleMovieWLFromCollection;
+window.checkCollectionWatchlistCompletion = checkCollectionWatchlistCompletion;
+window.countUniqueMedia = countUniqueMedia;
+window.getUniqueMediaKey = getUniqueMediaKey;
+window.isStartedGameActive = isStartedGameActive;
+window.shouldDisplayInLog = shouldDisplayInLog;
 </script>
 </body>
 </html>
+

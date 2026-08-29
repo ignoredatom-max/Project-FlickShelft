@@ -223,24 +223,53 @@ const server = http.createServer(async (req, res) => {
         }
       }
 
-      // Enrich Game Details with background_image / cover if missing from old deployed worker
-      const gameMatch = pathname.match(/^\/api\/game\/([a-zA-Z0-9_-]+)$/);
-      if (gameMatch && data && !data.background_image && !data.cover) {
-        const gameIdOrTitle = gameMatch[1];
-        const searchQ = data.name || gameIdOrTitle.replace(/-/g, ' ');
-        try {
-          const sRes = await fetch(`${UPSTREAM_PROXY}/api/search/game?query=${encodeURIComponent(searchQ)}&page_size=5`);
-          const sData = await sRes.json();
-          const list = sData.results || sData;
-          if (Array.isArray(list) && list.length > 0) {
-            const matched = list.find(g => String(g.id) === String(data.id) || (g.name && data.name && g.name.toLowerCase() === data.name.toLowerCase())) || list[0];
-            if (matched && matched.background_image) {
-              data.background_image = matched.background_image;
-              data.cover = matched.background_image;
+      // Enrich Game Search Results with artwork/screenshots if background_image is missing
+      const gameSearchMatch = pathname === '/api/search/game';
+      if (gameSearchMatch && data && Array.isArray(data.results)) {
+        for (const item of data.results) {
+          if (!item.background_image && item.id) {
+            try {
+              const detailRes = await fetch(`${UPSTREAM_PROXY}/api/game/${item.id}`);
+              if (detailRes.ok) {
+                const detailData = await detailRes.json();
+                const art = (detailData.artworks && detailData.artworks[0]) || (detailData.screenshots && detailData.screenshots[0]) || detailData.cover;
+                if (art) {
+                  item.background_image = art;
+                }
+              }
+            } catch (err) {
+              // ignore
             }
           }
-        } catch (err) {
-          // ignore
+        }
+      }
+
+      // Enrich Game Details with background_image / cover if missing
+      const gameMatch = pathname.match(/^\/api\/game\/([a-zA-Z0-9_-]+)$/);
+      if (gameMatch && data) {
+        if (!data.background_image && !data.cover) {
+          const art = (data.artworks && data.artworks[0]) || (data.screenshots && data.screenshots[0]);
+          if (art) {
+            data.background_image = art;
+            data.cover = art;
+          } else {
+            const gameIdOrTitle = gameMatch[1];
+            const searchQ = data.name || gameIdOrTitle.replace(/-/g, ' ');
+            try {
+              const sRes = await fetch(`${UPSTREAM_PROXY}/api/search/game?query=${encodeURIComponent(searchQ)}&page_size=5`);
+              const sData = await sRes.json();
+              const list = sData.results || sData;
+              if (Array.isArray(list) && list.length > 0) {
+                const matched = list.find(g => String(g.id) === String(data.id) || (g.name && data.name && g.name.toLowerCase() === data.name.toLowerCase())) || list[0];
+                if (matched && matched.background_image) {
+                  data.background_image = matched.background_image;
+                  data.cover = matched.background_image;
+                }
+              }
+            } catch (err) {
+              // ignore
+            }
+          }
         }
       }
 
