@@ -1434,6 +1434,7 @@ body.readonly .row-fav-inline,
 body.readonly #page-watchlist,
 body.readonly .nav-btn[data-page="watchlist"],
 body.readonly .rev-btn-edit,
+body.readonly .nav,
 body.readonly #editPicksBtn{display:none!important}
 body.readonly .row{cursor:default}
 .readonly-banner{
@@ -3707,6 +3708,613 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
 .modal-close-btn:active{
   transform:scale(0.92);
 }
+
+/* ── PUBLIC PROFILE (Letterboxd-inspired) ────── */
+#page-public-profile{
+  padding-bottom:30px;
+}
+.pub-container{
+  max-width:960px;
+  margin:0 auto;
+  padding:0 16px 60px;
+}
+@media (min-width: 768px){
+  .pub-container{
+    padding:0 24px 80px;
+  }
+}
+
+/* Public Top Navigation Bar */
+.pub-topbar{
+  position:sticky;
+  top:0;
+  z-index:95;
+  background:rgba(13, 13, 15, 0.88);
+  backdrop-filter:blur(24px);
+  -webkit-backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:12px 18px;
+  margin:0 -16px 20px;
+}
+@media (min-width: 768px){
+  .pub-topbar{
+    margin:0 -24px 26px;
+    padding:14px 28px;
+  }
+}
+.pub-brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  text-decoration:none;
+  cursor:pointer;
+  user-select:none;
+}
+.pub-brand-logo{
+  height:24px;
+  width:auto;
+  display:block;
+}
+.pub-brand-badge{
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--text3);
+  background:var(--bg3);
+  border:1px solid var(--border);
+  padding:3px 8px;
+  border-radius:999px;
+  line-height:1;
+}
+.pub-cta-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  background:var(--text);
+  color:var(--bg);
+  font-family:'Inter', sans-serif;
+  font-size:12px;
+  font-weight:700;
+  padding:7px 14px;
+  border-radius:999px;
+  border:none;
+  cursor:pointer;
+  box-shadow:0 2px 10px rgba(255,255,255,0.12);
+  transition:transform 0.15s, opacity 0.15s;
+}
+.pub-cta-btn:hover{
+  opacity:0.92;
+  transform:translateY(-1px);
+}
+.pub-cta-btn:active{
+  transform:scale(0.96);
+}
+
+/* Public Hero Header */
+.pub-hero{
+  background:linear-gradient(180deg, var(--bg2) 0%, rgba(21, 21, 24, 0.4) 100%);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:22px 18px 20px;
+  margin-bottom:22px;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 8px 30px rgba(0,0,0,0.3);
+}
+@media (min-width: 640px){
+  .pub-hero{
+    padding:28px 28px 24px;
+  }
+}
+.pub-hero-inner{
+  display:flex;
+  align-items:flex-start;
+  gap:16px;
+}
+@media (min-width: 640px){
+  .pub-hero-inner{
+    gap:22px;
+  }
+}
+.pub-avatar-wrap{
+  width:68px;
+  height:68px;
+  border-radius:50%;
+  overflow:hidden;
+  flex-shrink:0;
+  border:2px solid var(--border2);
+  background:var(--bg3);
+  position:relative;
+  box-shadow:0 4px 16px rgba(0,0,0,0.4);
+}
+@media (min-width: 640px){
+  .pub-avatar-wrap{
+    width:82px;
+    height:82px;
+  }
+}
+.pub-avatar-img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.pub-avatar-ph{
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:28px;
+  font-weight:800;
+  color:var(--text);
+  background:linear-gradient(135deg, var(--bg3), var(--bg4));
+}
+.pub-hero-meta{
+  flex:1;
+  min-width:0;
+}
+.pub-hero-name{
+  font-size:22px;
+  font-weight:800;
+  letter-spacing:-0.5px;
+  color:var(--text);
+  line-height:1.2;
+  margin-bottom:4px;
+  word-break:break-word;
+}
+@media (min-width: 640px){
+  .pub-hero-name{
+    font-size:26px;
+  }
+}
+.pub-hero-tagline{
+  font-size:12px;
+  color:var(--text3);
+  line-height:1.4;
+  margin-bottom:12px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex-wrap:wrap;
+}
+.pub-badge-media{
+  color:var(--text2);
+  background:rgba(255,255,255,0.06);
+  padding:2px 8px;
+  border-radius:6px;
+  font-size:11px;
+  font-weight:600;
+}
+
+/* Stat Pills Strip */
+.pub-stat-strip{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  scrollbar-width:none;
+  padding-bottom:4px;
+}
+.pub-stat-strip::-webkit-scrollbar{ display:none; }
+.pub-stat-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  background:var(--bg3);
+  border:1px solid var(--border);
+  padding:6px 12px;
+  border-radius:10px;
+  flex-shrink:0;
+  cursor:pointer;
+  transition:border-color 0.15s, background 0.15s;
+}
+.pub-stat-pill:hover{
+  border-color:var(--border2);
+  background:var(--bg4);
+}
+.pub-stat-pill-num{
+  font-size:13.5px;
+  font-weight:800;
+  color:#fff;
+}
+.pub-stat-pill-lbl{
+  font-size:10px;
+  font-weight:600;
+  color:var(--text3);
+  text-transform:uppercase;
+  letter-spacing:0.3px;
+}
+.pub-stat-pill.film .pub-stat-pill-num{ color:var(--red); }
+.pub-stat-pill.series .pub-stat-pill-num{ color:var(--teal); }
+.pub-stat-pill.game .pub-stat-pill-num{ color:var(--green); }
+.pub-stat-pill.favs .pub-stat-pill-num{ color:var(--pink); }
+.pub-stat-pill.wl .pub-stat-pill-num{ color:var(--blue); }
+
+/* Navigation Tabs (Letterboxd Style) */
+.pub-tabs-bar{
+  display:flex;
+  gap:4px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:22px;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+.pub-tabs-bar::-webkit-scrollbar{ display:none; }
+.pub-tab-btn{
+  background:none;
+  border:none;
+  color:var(--text3);
+  font-family:'Inter', sans-serif;
+  font-size:13px;
+  font-weight:600;
+  padding:10px 14px;
+  cursor:pointer;
+  position:relative;
+  white-space:nowrap;
+  transition:color 0.15s;
+}
+.pub-tab-btn:hover{
+  color:var(--text);
+}
+.pub-tab-btn.on{
+  color:#fff;
+  font-weight:700;
+}
+.pub-tab-btn.on::after{
+  content:'';
+  position:absolute;
+  bottom:-1px;
+  left:10px;
+  right:10px;
+  height:2px;
+  background:var(--text);
+  border-radius:2px;
+}
+.pub-tab-badge{
+  font-size:10px;
+  font-weight:700;
+  background:var(--bg4);
+  color:var(--text2);
+  padding:1px 6px;
+  border-radius:10px;
+  margin-left:4px;
+}
+.pub-tab-btn.on .pub-tab-badge{
+  background:rgba(255,255,255,0.18);
+  color:#fff;
+}
+
+/* Section Container & Headers */
+.pub-section{
+  margin-bottom:34px;
+}
+.pub-sec-header{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  margin-bottom:14px;
+  padding:0 2px;
+}
+.pub-sec-title-group{
+  display:flex;
+  align-items:baseline;
+  gap:8px;
+}
+.pub-sec-title{
+  font-size:13px;
+  font-weight:800;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--text);
+}
+.pub-sec-subtitle{
+  font-size:11px;
+  color:var(--text3);
+}
+.pub-sec-more{
+  font-size:12px;
+  font-weight:600;
+  color:var(--blue);
+  background:none;
+  border:none;
+  cursor:pointer;
+  padding:4px 6px;
+  transition:opacity 0.15s;
+}
+.pub-sec-more:hover{
+  opacity:0.8;
+}
+
+/* Poster Grids */
+.pub-cards-grid{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:10px;
+}
+@media (min-width: 600px){
+  .pub-cards-grid{
+    grid-template-columns:repeat(4, 1fr);
+    gap:12px;
+  }
+}
+@media (min-width: 820px){
+  .pub-cards-grid{
+    grid-template-columns:repeat(5, 1fr);
+    gap:14px;
+  }
+}
+
+/* Favourites Top Picks Row (Prominent 4-6) */
+.pub-favs-grid{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:10px;
+}
+@media (min-width: 600px){
+  .pub-favs-grid{
+    grid-template-columns:repeat(4, 1fr);
+    gap:14px;
+  }
+}
+@media (min-width: 820px){
+  .pub-favs-grid{
+    grid-template-columns:repeat(6, 1fr);
+    gap:14px;
+  }
+}
+
+/* Individual Poster Card */
+.pub-poster-card{
+  position:relative;
+  aspect-ratio:2/3;
+  border-radius:10px;
+  overflow:hidden;
+  background:var(--bg3);
+  border:1px solid var(--border);
+  cursor:pointer;
+  box-shadow:0 4px 14px rgba(0,0,0,0.35);
+  transition:transform 0.2s cubic-bezier(0.2,0,0,1), box-shadow 0.2s cubic-bezier(0.2,0,0,1), border-color 0.15s;
+}
+.pub-poster-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 10px 24px rgba(0,0,0,0.6);
+  border-color:var(--border2);
+}
+.pub-poster-card:active{
+  transform:scale(0.97);
+}
+.pub-poster-img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.pub-poster-ph{
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:26px;
+  background:var(--bg3);
+}
+.pub-poster-overlay{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.4) 40%, transparent 70%);
+  pointer-events:none;
+}
+.pub-poster-type-bar{
+  position:absolute;
+  top:0;
+  right:0;
+  bottom:0;
+  width:3px;
+  z-index:2;
+}
+.pub-poster-card.movie .pub-poster-type-bar{ background:var(--red); }
+.pub-poster-card.series .pub-poster-type-bar{ background:var(--teal); }
+.pub-poster-card.game .pub-poster-type-bar{ background:var(--green); }
+
+.pub-poster-content{
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  padding:8px;
+  z-index:2;
+  pointer-events:none;
+}
+.pub-poster-title{
+  font-size:11px;
+  font-weight:700;
+  color:#fff;
+  line-height:1.25;
+  margin-bottom:4px;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+  text-shadow:0 1px 4px rgba(0,0,0,0.8);
+}
+.pub-poster-badges{
+  display:flex;
+  align-items:center;
+  gap:4px;
+  flex-wrap:wrap;
+}
+.pub-rating-badge{
+  font-size:9px;
+  font-weight:700;
+  padding:2px 6px;
+  border-radius:8px;
+  color:#fff;
+  display:inline-block;
+  line-height:1;
+}
+.pub-type-badge{
+  font-size:8.5px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.3px;
+  padding:2px 5px;
+  border-radius:6px;
+  background:rgba(255,255,255,0.14);
+  color:var(--text2);
+}
+.pub-date-badge{
+  font-size:8.5px;
+  color:var(--text3);
+  margin-left:auto;
+}
+.pub-note-badge{
+  font-size:9px;
+  color:var(--text2);
+  margin-left:auto;
+}
+
+/* Filter Chips Bar */
+.pub-filter-bar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  margin-bottom:16px;
+  flex-wrap:wrap;
+}
+.pub-chips{
+  display:flex;
+  gap:6px;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+.pub-chips::-webkit-scrollbar{ display:none; }
+.pub-chip{
+  background:var(--bg3);
+  border:1px solid var(--border);
+  color:var(--text3);
+  font-family:'Inter', sans-serif;
+  font-size:11px;
+  font-weight:600;
+  padding:5px 12px;
+  border-radius:20px;
+  cursor:pointer;
+  transition:all 0.15s;
+  white-space:nowrap;
+}
+.pub-chip:hover{
+  color:var(--text);
+  border-color:var(--border2);
+}
+.pub-chip.on{
+  background:var(--text);
+  color:var(--bg);
+  border-color:var(--text);
+  font-weight:700;
+}
+
+/* Diary List View (Letterboxd Style) */
+.pub-diary-list{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.pub-diary-row{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:10px 12px;
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:12px;
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+  transition:border-color 0.15s, background 0.15s;
+}
+.pub-diary-row:hover{
+  background:var(--bg3);
+  border-color:var(--border2);
+}
+.pub-diary-row::before{
+  content:'';
+  position:absolute;
+  right:0;
+  top:0;
+  bottom:0;
+  width:3px;
+}
+.pub-diary-row.movie::before{ background:var(--red); }
+.pub-diary-row.series::before{ background:var(--teal); }
+.pub-diary-row.game::before{ background:var(--green); }
+.pub-diary-thumb{
+  width:40px;
+  height:58px;
+  object-fit:cover;
+  border-radius:6px;
+  background:var(--bg3);
+  flex-shrink:0;
+}
+.pub-diary-ph{
+  width:40px;
+  height:58px;
+  background:var(--bg3);
+  border-radius:6px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  flex-shrink:0;
+}
+.pub-diary-info{
+  flex:1;
+  min-width:0;
+}
+.pub-diary-title-wrap{
+  display:flex;
+  align-items:baseline;
+  gap:6px;
+  margin-bottom:4px;
+}
+.pub-diary-title{
+  font-size:13.5px;
+  font-weight:700;
+  color:var(--text);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.pub-diary-year{
+  font-size:11px;
+  color:var(--text3);
+}
+.pub-diary-meta{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex-wrap:wrap;
+}
+.pub-diary-notes{
+  margin-top:6px;
+  font-size:11.5px;
+  color:var(--text2);
+  font-style:italic;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+  line-height:1.35;
+}
+.pub-diary-date{
+  font-size:11px;
+  color:var(--text3);
+  flex-shrink:0;
+  font-weight:600;
+}
 </style>
 </head>
 <body>
@@ -3899,12 +4507,20 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
     <div class="profile-info">
       <div class="profile-name" id="profileName" onclick="editProfileName()">Aditya</div>
       <div class="profile-sub" id="profileSub">—</div>
-      <button class="profile-share-btn" id="profileShareBtn" style="display:none">
-        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:-1px">
-          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-        </svg>Copy my link
-      </button>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:2px">
+        <button class="profile-share-btn" id="profileShareBtn" style="display:none">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:-1px">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+          </svg>Copy my link
+        </button>
+        <button class="profile-share-btn" id="profilePreviewBtn" style="display:none;background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.12)" onclick="openMyPublicProfilePreview()">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:-1px">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>Preview Public Profile
+        </button>
+      </div>
     </div>
   </div>
 
@@ -3952,6 +4568,90 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   </div>
   <div class="list-footer">
     <span class="atomyn-signature" onclick="openAbout()" role="button" tabindex="0" aria-label="ATOMYN">ATOMYN</span>
+  </div>
+</div>
+
+<!-- PUBLIC / SHARED PROFILE PAGE -->
+<div class="page" id="page-public-profile">
+  <div class="pub-container">
+    <header class="pub-topbar">
+      <div class="pub-brand" onclick="handlePubBrandClick()">
+        <span class="pub-brand-logo">loGGer</span>
+        <span class="pub-brand-tagline">Film • Series • Games</span>
+      </div>
+      <div class="pub-topbar-actions">
+        <button class="pub-cta-btn" id="pubCtaBtn" onclick="openPublicGetStarted()">Get loGGer</button>
+        <button class="pub-exit-btn" id="pubExitPreviewBtn" style="display:none" onclick="exitPublicPreview()">Exit Preview</button>
+      </div>
+    </header>
+
+    <div class="pub-banner" id="pubPreviewBanner" style="display:none">
+      <span>👁️ <strong>Public Profile Preview Mode</strong> — This is how visitors see your profile.</span>
+      <button class="pub-banner-close" onclick="exitPublicPreview()">Back to App ✕</button>
+    </div>
+
+    <section class="pub-hero" id="pubHero">
+      <div class="pub-avatar-wrap">
+        <div class="pub-avatar" id="pubAvatar">?</div>
+      </div>
+      <div class="pub-hero-info">
+        <div class="pub-name-row">
+          <h1 class="pub-name" id="pubName">Member Profile</h1>
+          <span class="pub-badge">Public Profile</span>
+        </div>
+        <div class="pub-meta-line" id="pubMetaLine">Tracking on loGGer</div>
+        <div class="pub-bio" id="pubBio">A personal media diary tracking movies, series, and video games.</div>
+      </div>
+    </section>
+
+    <!-- STAT SUMMARY STRIP -->
+    <section class="pub-stat-strip" id="pubStatStrip">
+      <div class="pub-stat-cell" onclick="switchPublicTab('overview')">
+        <div class="pub-stat-num" id="pubStatTotal">0</div>
+        <div class="pub-stat-lbl">Logged</div>
+      </div>
+      <div class="pub-stat-cell" onclick="switchPublicTab('overview')">
+        <div class="pub-stat-num" id="pubStatMovies">0</div>
+        <div class="pub-stat-lbl">Movies</div>
+      </div>
+      <div class="pub-stat-cell" onclick="switchPublicTab('overview')">
+        <div class="pub-stat-num" id="pubStatTV">0</div>
+        <div class="pub-stat-lbl">Series</div>
+      </div>
+      <div class="pub-stat-cell" onclick="switchPublicTab('overview')">
+        <div class="pub-stat-num" id="pubStatGames">0</div>
+        <div class="pub-stat-lbl">Games</div>
+      </div>
+      <div class="pub-stat-cell" onclick="switchPublicTab('watchlist')">
+        <div class="pub-stat-num" id="pubStatWL">0</div>
+        <div class="pub-stat-lbl">Watchlist</div>
+      </div>
+    </section>
+
+    <!-- TABS BAR -->
+    <nav class="pub-tabs-bar" id="pubTabsBar">
+      <button class="pub-tab-btn active" data-pubtab="overview" onclick="switchPublicTab('overview')">Overview</button>
+      <button class="pub-tab-btn" data-pubtab="diary" onclick="switchPublicTab('diary')">Diary / Log</button>
+      <button class="pub-tab-btn" data-pubtab="favs" onclick="switchPublicTab('favs')">Favourites</button>
+      <button class="pub-tab-btn" data-pubtab="watchlist" onclick="switchPublicTab('watchlist')">Watchlist</button>
+      <button class="pub-tab-btn" data-pubtab="stats" onclick="switchPublicTab('stats')">Stats</button>
+    </nav>
+
+    <!-- TAB CONTENTS -->
+    <div id="pubTabOverview" class="pub-tab-content active"></div>
+    <div id="pubTabDiary" class="pub-tab-content"></div>
+    <div id="pubTabFavs" class="pub-tab-content"></div>
+    <div id="pubTabWatchlist" class="pub-tab-content"></div>
+    <div id="pubTabStats" class="pub-tab-content"></div>
+
+    <footer class="pub-footer">
+      <div class="pub-footer-cta">
+        <div class="pub-footer-brand">loGGer</div>
+        <div class="pub-footer-tagline">Track what you watch, what you play, and what you want to experience next.</div>
+        <button class="pub-footer-btn" onclick="openPublicGetStarted()">Start Your Own loGGer — It's Free</button>
+      </div>
+      <div class="atomyn-signature" style="margin-top:24px">ATOMYN</div>
+    </footer>
   </div>
 </div>
 
@@ -4748,34 +5448,34 @@ const OWNER_UID = 'kFMRmHi4hzakOaQFx7ccanUsIbl1';
 // Check URL for ?u= param
 const _urlUID = new URLSearchParams(window.location.search).get('u');
 const PUBLIC_UID = _urlUID || null; // null = no public view, show tutorial
+let PUBLIC_WL = [];
+window.PUBLIC_WL = PUBLIC_WL;
 
 function setReadOnly(isReadOnly){
   document.body.classList.toggle('readonly', isReadOnly);
-  document.getElementById('readonlyBanner').style.display = isReadOnly ? 'flex' : 'none';
+  const isPubOn = document.getElementById('page-public-profile')?.classList.contains('on');
+  document.getElementById('readonlyBanner').style.display = (isReadOnly && !isPubOn) ? 'flex' : 'none';
 }
 
 onAuthStateChanged(auth, async user=>{
   currentUser = user;
   updateAuthUI();
-  if(user){
+  if(PUBLIC_UID && (!user || user.uid !== PUBLIC_UID)){
+    // Visiting someone else's shared profile
+    hideTutorial();
+    setReadOnly(true);
+    await fsLoadPublic(PUBLIC_UID);
+  } else if(user){
     hideTutorial();
     setReadOnly(false);
     await loadUserProfile();
     await fsLoad();
   } else {
     updateHeaderAvatar('', 'A');
-    if(PUBLIC_UID){
-      // Someone shared their ?u= link — show their public diary
-      hideTutorial();
-      setReadOnly(true);
-      await fsLoadPublic(PUBLIC_UID);
-    } else {
-      // No ?u= — show tutorial, empty app
-      setReadOnly(false);
-      DATA = [];
-      renderLog();
-      showTutorial();
-    }
+    setReadOnly(false);
+    DATA = [];
+    renderLog();
+    showTutorial();
   }
 });
 
@@ -4791,38 +5491,29 @@ document.getElementById('authBtn').addEventListener('click', async()=>{
   }
 });
 
-// Load public entries for a given UID
+// Load public entries and watchlist for a given UID
 async function fsLoadPublic(uid){
-  const cached = cacheRead();
-  if(cached && cached.length){
-    DATA = cached; renderLog(); renderFavs();
-  } else {
-    // Show loading skeleton while Firestore fetches
-    document.getElementById('list').innerHTML = `
-      <div style="padding:40px 20px;text-align:center">
-        <div style="font-size:13px;color:var(--text3);margin-bottom:8px;">Loading diary…</div>
-        <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px">
-          ${[1,2,3,4].map(()=>`
-            <div style="display:flex;gap:12px;align-items:center;padding:10px 16px;opacity:0.4;animation:pulse 1.4s ease infinite">
-              <div style="width:36px;height:54px;border-radius:6px;background:var(--bg3);flex-shrink:0"></div>
-              <div style="flex:1">
-                <div style="height:13px;background:var(--bg3);border-radius:6px;margin-bottom:8px;width:60%"></div>
-                <div style="height:10px;background:var(--bg3);border-radius:6px;width:40%"></div>
-              </div>
-            </div>
-          `).join('')}
-        </div>
-      </div>`;
-  }
+  showPublicProfilePage();
+  renderPublicSkeleton();
   await loadPublicProfile(uid);
   try{
-    const snap = await getDocs(collection(db_fs,`users/${uid}/entries`));
-    DATA = snap.docs.map(d => d.data());
-    cacheWrite(DATA);
-    renderLog(); renderFavs();
-    if(document.getElementById('page-profile').classList.contains('on')) renderProfile();
+    const [snapEntries, snapWL] = await Promise.all([
+      getDocs(collection(db_fs, `users/${uid}/entries`)),
+      getDoc(doc(db_fs, `users/${uid}/meta/watchlist`)).catch(()=>null)
+    ]);
+    DATA = snapEntries.docs.map(d => d.data());
+    window.DATA = DATA;
+    if(snapWL && snapWL.exists() && Array.isArray(snapWL.data().items)){
+      PUBLIC_WL = snapWL.data().items;
+      window.PUBLIC_WL = PUBLIC_WL;
+    } else {
+      PUBLIC_WL = [];
+      window.PUBLIC_WL = [];
+    }
+    renderPublicProfile(uid);
   } catch(e){
-    if(!cached){ DATA = []; renderLog(); }
+    console.error('Failed to load public data:', e);
+    renderPublicProfile(uid);
   }
 }
 
@@ -7451,10 +8142,12 @@ document.getElementById('profileShareBtn').addEventListener('click',()=>{
   });
 });
 
-// Show share button only when signed in
+// Show share and preview buttons only when signed in
 function updateProfileShareBtn(){
   const btn = document.getElementById('profileShareBtn');
-  if(btn) btn.style.display = currentUser ? 'block' : 'none';
+  if(btn) btn.style.display = currentUser ? 'inline-flex' : 'none';
+  const prevBtn = document.getElementById('profilePreviewBtn');
+  if(prevBtn) prevBtn.style.display = currentUser ? 'inline-flex' : 'none';
 }
 
 // ── PWA INSTALL PROMPT ───────────────────────────────────
@@ -7786,6 +8479,488 @@ function hoverActivityMonth(key){
   document.querySelectorAll('.act-bar-col').forEach(col => {
     col.classList.toggle('selected', col.getAttribute('onclick')?.includes(key));
   });
+}
+
+// ── PUBLIC / SHARED PROFILE EXPERIENCE ───────────────────
+let _pubActiveTab = 'overview';
+let _pubDiaryFilter = 'all';
+let _pubPreviewActive = false;
+let _pubActiveUid = null;
+
+function showPublicProfilePage(){
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  const pubPage = document.getElementById('page-public-profile');
+  if(pubPage) pubPage.classList.add('on');
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+function renderPublicSkeleton(){
+  const overview = document.getElementById('pubTabOverview');
+  if(overview){
+    overview.innerHTML = `
+      <div style="padding:40px 20px;text-align:center">
+        <div style="font-size:13px;color:var(--text3);margin-bottom:8px">Loading public profile…</div>
+        <div class="pub-cards-grid" style="opacity:0.4;animation:pulse 1.4s ease infinite;margin-top:20px">
+          ${[1,2,3,4,5,6].map(()=>`
+            <div style="aspect-ratio:2/3;background:var(--bg3);border-radius:10px"></div>
+          `).join('')}
+        </div>
+      </div>`;
+  }
+}
+
+function getPubDisplayName(uid){
+  const u = uid || _pubActiveUid || PUBLIC_UID || OWNER_UID;
+  const custom = localStorage.getItem(`lgr_${u}_name`);
+  if(custom) return custom;
+  if(currentUser && currentUser.uid === u) return currentUser.displayName || currentUser.email?.split('@')[0] || 'Member';
+  return 'Member';
+}
+
+function getPubPfp(uid){
+  const u = uid || _pubActiveUid || PUBLIC_UID || OWNER_UID;
+  return localStorage.getItem(`lgr_${u}_pfp`) || '';
+}
+
+function getPubPicks(uid){
+  const u = uid || _pubActiveUid || PUBLIC_UID || OWNER_UID;
+  try{
+    const raw = JSON.parse(localStorage.getItem(`lgr_${u}_picks`) || '[]');
+    if(raw.length && typeof raw[0] === 'object') return raw;
+    const extras = JSON.parse(localStorage.getItem(`lgr_${u}_extras`) || '[]');
+    return raw.map(id => DATA.find(x => x.id === id) || extras.find(x => x.id === id)).filter(Boolean);
+  }catch(e){ return []; }
+}
+
+function renderPublicProfile(explicitUid){
+  const uid = explicitUid || _pubActiveUid || PUBLIC_UID || (currentUser ? currentUser.uid : OWNER_UID);
+  _pubActiveUid = uid;
+
+  const name = getPubDisplayName(uid);
+  const pfp = getPubPfp(uid);
+  const picks = getPubPicks(uid);
+  const entries = (typeof DATA !== 'undefined' && Array.isArray(DATA)) ? DATA : [];
+  const wlEntries = (typeof PUBLIC_WL !== 'undefined' && Array.isArray(PUBLIC_WL)) ? PUBLIC_WL : (getWL() || []);
+  const favs = entries.filter(x => x.fav);
+
+  // Update Hero
+  const nameEl = document.getElementById('pubName');
+  if(nameEl) nameEl.textContent = name;
+  const avatarEl = document.getElementById('pubAvatar');
+  if(avatarEl){
+    if(pfp){
+      avatarEl.innerHTML = `<img src="${pfp}" alt="${name}" style="width:100%;height:100%;object-fit:cover">`;
+    } else {
+      avatarEl.textContent = name ? name[0].toUpperCase() : '?';
+    }
+  }
+
+  // Update stats in strip
+  const movies = entries.filter(x => (x.type || 'movie') === 'movie').length;
+  const tv = entries.filter(x => x.type === 'tv' || x.type === 'series').length;
+  const games = entries.filter(x => x.type === 'game').length;
+  const peaks = entries.filter(x => x.rating === 'peak').length;
+
+  const totalEl = document.getElementById('pubStatTotal');
+  if(totalEl) totalEl.textContent = entries.length;
+  const movEl = document.getElementById('pubStatMovies');
+  if(movEl) movEl.textContent = movies;
+  const tvEl = document.getElementById('pubStatTV');
+  if(tvEl) tvEl.textContent = tv;
+  const gamesEl = document.getElementById('pubStatGames');
+  if(gamesEl) gamesEl.textContent = games;
+  const wlEl = document.getElementById('pubStatWL');
+  if(wlEl) wlEl.textContent = wlEntries.length;
+
+  const metaEl = document.getElementById('pubMetaLine');
+  if(metaEl){
+    metaEl.textContent = `${entries.length} logged · ${peaks} peaks · ${favs.length} favourites · ${wlEntries.length} on watchlist`;
+  }
+
+  const bioEl = document.getElementById('pubBio');
+  if(bioEl){
+    bioEl.textContent = `${name}'s personal tracking archive across films, series, and video games on loGGer.`;
+  }
+
+  // Preview banner & CTA button handling
+  const isPreview = _pubPreviewActive || (currentUser && currentUser.uid === uid);
+  const previewBanner = document.getElementById('pubPreviewBanner');
+  const exitBtn = document.getElementById('pubExitPreviewBtn');
+  const ctaBtn = document.getElementById('pubCtaBtn');
+
+  if(previewBanner) previewBanner.style.display = isPreview ? 'flex' : 'none';
+  if(exitBtn) exitBtn.style.display = isPreview ? 'inline-block' : 'none';
+  if(ctaBtn) ctaBtn.style.display = isPreview ? 'none' : 'inline-block';
+
+  // Render tabs content
+  renderPublicOverview(favs, entries, wlEntries, picks);
+  renderPublicDiary(entries);
+  renderPublicFavs(favs.length ? favs : picks);
+  renderPublicWatchlist(wlEntries);
+  renderPublicStats(entries);
+
+  switchPublicTab(_pubActiveTab);
+}
+
+function switchPublicTab(tabId){
+  _pubActiveTab = tabId;
+  const tabs = ['overview', 'diary', 'favs', 'watchlist', 'stats'];
+  tabs.forEach(t => {
+    const btn = document.querySelector(`.pub-tab-btn[data-pubtab="${t}"]`);
+    if(btn) btn.classList.toggle('active', t === tabId);
+    const content = document.getElementById(`pubTab${t.charAt(0).toUpperCase() + t.slice(1)}`);
+    if(content) content.classList.toggle('active', t === tabId);
+  });
+}
+
+function encodeItemForClick(item){
+  const clean = {
+    id: item.id || item.tmdbId || item.igdbId,
+    title: item.title || item.name || '',
+    type: item.type || item.mediaType || 'movie',
+    year: item.year || '',
+    poster: item.poster || '',
+    rating: item.rating || '',
+    genre: item.genre || '',
+    notes: item.notes || '',
+    rewatched: !!item.rewatched,
+    status: item.status || '',
+    startDate: item.startDate || '',
+    finishDate: item.finishDate || '',
+    hours: item.hours || '',
+    tmdbId: item.tmdbId || (item.type !== 'game' ? item.id : null),
+    igdbId: item.igdbId || (item.type === 'game' ? item.id : null)
+  };
+  return encodeURIComponent(JSON.stringify(clean));
+}
+
+function handlePublicCardClick(encodedItem){
+  try {
+    const item = JSON.parse(decodeURIComponent(encodedItem));
+    if(typeof openDeepCard === 'function'){
+      openDeepCard(item);
+    }
+  } catch(e) {
+    console.error('Failed to open deep card from public profile:', e);
+  }
+}
+
+function pubPosterCard(item, badgeText){
+  const title = item.title || item.name || 'Untitled';
+  const year = item.year || '';
+  const type = item.type || item.mediaType || 'movie';
+  const typeIcons = { movie: '🎬', series: '📺', tv: '📺', game: '🎮' };
+  const icon = typeIcons[type] || '🎬';
+  const encoded = encodeItemForClick(item);
+
+  const posterHtml = item.poster
+    ? `<img src="${item.poster}" alt="${title}" loading="lazy" class="pub-poster-img" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\\'pub-poster-ph\\'>${icon}</div>'">`
+    : `<div class="pub-poster-ph">${icon}</div>`;
+
+  const badgeHtml = badgeText ? `<div class="pub-poster-badge">${badgeText}</div>` : '';
+
+  return `
+    <div class="pub-poster-card" onclick="handlePublicCardClick('${encoded}')" role="button" tabindex="0" title="${title} (${year || type})">
+      <div class="pub-poster-box">
+        ${posterHtml}
+        ${badgeHtml}
+      </div>
+      <div class="pub-card-title">${title}</div>
+      <div class="pub-card-sub">${year ? year : type}</div>
+    </div>
+  `;
+}
+
+function pubDiaryRow(entry){
+  const title = entry.title || entry.name || 'Untitled';
+  const year = entry.year || '';
+  const type = entry.type || 'movie';
+  const typeIcons = { movie: '🎬', series: '📺', tv: '📺', game: '🎮' };
+  const icon = typeIcons[type] || '🎬';
+  const encoded = encodeItemForClick(entry);
+  const rKey = RATINGS.includes(entry.rating) ? entry.rating : 'decent';
+  const rClass = RATING_CLASS[rKey] || 'r-decent';
+  const rLabel = RATING_LABELS[rKey] || 'Decent';
+  const dateStr = formatLogDate(entry.id);
+
+  const posterHtml = entry.poster
+    ? `<img src="${entry.poster}" alt="${title}" loading="lazy" class="pub-row-thumb" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\\'pub-row-ph\\'>${icon}</div>'">`
+    : `<div class="pub-row-ph">${icon}</div>`;
+
+  return `
+    <div class="pub-diary-row" onclick="handlePublicCardClick('${encoded}')" role="button" tabindex="0">
+      <div class="pub-row-thumb-wrap">
+        ${posterHtml}
+      </div>
+      <div class="pub-row-info">
+        <div class="pub-row-top">
+          <span class="pub-row-title">${title}</span>
+          ${year ? `<span class="pub-row-year">(${year})</span>` : ''}
+          <span class="pub-row-type">${icon}</span>
+        </div>
+        <div class="pub-row-meta">
+          <span class="pub-row-rating ${rClass}">★ ${rLabel}</span>
+          ${entry.fav ? '<span class="pub-row-fav">❤️ Favourite</span>' : ''}
+          <span class="pub-row-date">${dateStr}</span>
+        </div>
+        ${entry.notes && entry.notes.trim() ? `
+          <div class="pub-row-notes">${entry.notes.trim()}</div>
+        ` : ''}
+      </div>
+    </div>
+  `;
+}
+
+function renderPublicOverview(favs, entries, wlEntries, picks){
+  const container = document.getElementById('pubTabOverview');
+  if(!container) return;
+
+  const topPicksOrFavs = (favs && favs.length) ? favs.slice(0, 5) : (picks || []).slice(0, 5);
+  const recentLogs = [...entries].sort((a,b) => (b.id||0) - (a.id||0)).slice(0, 10);
+  const recentWL = [...wlEntries].slice(0, 10);
+
+  let html = '';
+
+  // 1. Favourites / Top Picks
+  html += `
+    <section class="pub-sec">
+      <div class="pub-sec-hdr">
+        <div class="pub-sec-title">❤️ Favourites & Top Picks</div>
+        <button class="pub-sec-link" onclick="switchPublicTab('favs')">See all ›</button>
+      </div>
+      ${topPicksOrFavs.length ? `
+        <div class="pub-favs-grid">
+          ${topPicksOrFavs.map(item => pubPosterCard(item, '★ Top Pick')).join('')}
+        </div>
+      ` : `
+        <div class="pub-empty-card">No favourites selected yet.</div>
+      `}
+    </section>
+  `;
+
+  // 2. Recent Activity / Log
+  html += `
+    <section class="pub-sec">
+      <div class="pub-sec-hdr">
+        <div class="pub-sec-title">📋 Recent Activity</div>
+        <button class="pub-sec-link" onclick="switchPublicTab('diary')">View diary ›</button>
+      </div>
+      ${recentLogs.length ? `
+        <div class="pub-cards-grid">
+          ${recentLogs.map(item => {
+            const rLabel = RATING_LABELS[item.rating] || 'Decent';
+            return pubPosterCard(item, `★ ${rLabel}`);
+          }).join('')}
+        </div>
+      ` : `
+        <div class="pub-empty-card">No media logged yet.</div>
+      `}
+    </section>
+  `;
+
+  // 3. Watchlist
+  html += `
+    <section class="pub-sec">
+      <div class="pub-sec-hdr">
+        <div class="pub-sec-title">📌 Watchlist & Up Next</div>
+        <button class="pub-sec-link" onclick="switchPublicTab('watchlist')">View all (${wlEntries.length}) ›</button>
+      </div>
+      ${recentWL.length ? `
+        <div class="pub-cards-grid">
+          ${recentWL.map(item => pubPosterCard(item, '+ Watchlist')).join('')}
+        </div>
+      ` : `
+        <div class="pub-empty-card">Watchlist is currently empty.</div>
+      `}
+    </section>
+  `;
+
+  container.innerHTML = html;
+}
+
+function setPubDiaryFilter(filterType){
+  _pubDiaryFilter = filterType;
+  document.querySelectorAll('.pub-filter-btn').forEach(b => {
+    b.classList.toggle('active', b.getAttribute('data-filter') === filterType);
+  });
+  renderPublicDiary(DATA || []);
+}
+
+function renderPublicDiary(entries){
+  const container = document.getElementById('pubTabDiary');
+  if(!container) return;
+
+  const filtered = entries.filter(e => {
+    if(_pubDiaryFilter === 'all') return true;
+    const t = (e.type || 'movie').toLowerCase();
+    if(_pubDiaryFilter === 'movie') return t === 'movie' || t === 'film';
+    if(_pubDiaryFilter === 'series') return t === 'tv' || t === 'series';
+    if(_pubDiaryFilter === 'game') return t === 'game';
+    return true;
+  }).sort((a,b) => (b.id||0) - (a.id||0));
+
+  let filterBarHtml = `
+    <div class="pub-filter-bar">
+      <button class="pub-filter-btn ${_pubDiaryFilter==='all'?'active':''}" data-filter="all" onclick="setPubDiaryFilter('all')">All (${entries.length})</button>
+      <button class="pub-filter-btn ${_pubDiaryFilter==='movie'?'active':''}" data-filter="movie" onclick="setPubDiaryFilter('movie')">Films</button>
+      <button class="pub-filter-btn ${_pubDiaryFilter==='series'?'active':''}" data-filter="series" onclick="setPubDiaryFilter('series')">Series</button>
+      <button class="pub-filter-btn ${_pubDiaryFilter==='game'?'active':''}" data-filter="game" onclick="setPubDiaryFilter('game')">Games</button>
+    </div>
+  `;
+
+  if(!filtered.length){
+    container.innerHTML = filterBarHtml + `<div class="pub-empty-card">No entries found for this category.</div>`;
+    return;
+  }
+
+  container.innerHTML = filterBarHtml + `
+    <div class="pub-diary-list">
+      ${filtered.map(pubDiaryRow).join('')}
+    </div>
+  `;
+}
+
+function renderPublicFavs(favs){
+  const container = document.getElementById('pubTabFavs');
+  if(!container) return;
+
+  if(!favs || !favs.length){
+    container.innerHTML = `<div class="pub-empty-card" style="margin-top:20px">No favourites added yet.</div>`;
+    return;
+  }
+
+  container.innerHTML = `
+    <div style="font-size:12px;color:var(--text3);margin-bottom:14px;font-weight:600">Saved Favourites & Top Recommendations (${favs.length})</div>
+    <div class="pub-cards-grid">
+      ${favs.map(item => pubPosterCard(item, '❤️ Fav')).join('')}
+    </div>
+  `;
+}
+
+function renderPublicWatchlist(wlEntries){
+  const container = document.getElementById('pubTabWatchlist');
+  if(!container) return;
+
+  if(!wlEntries || !wlEntries.length){
+    container.innerHTML = `<div class="pub-empty-card" style="margin-top:20px">No titles on the watchlist right now.</div>`;
+    return;
+  }
+
+  container.innerHTML = `
+    <div style="font-size:12px;color:var(--text3);margin-bottom:14px;font-weight:600">Queue & Upcoming Media (${wlEntries.length})</div>
+    <div class="pub-cards-grid">
+      ${wlEntries.map(item => pubPosterCard(item, '+ Watchlist')).join('')}
+    </div>
+  `;
+}
+
+function renderPublicStats(entries){
+  const container = document.getElementById('pubTabStats');
+  if(!container) return;
+
+  const total = entries.length;
+  const films = entries.filter(x => (x.type || 'movie') === 'movie' || x.type === 'film').length;
+  const series = entries.filter(x => x.type === 'tv' || x.type === 'series').length;
+  const games = entries.filter(x => x.type === 'game').length;
+  const favCount = entries.filter(x => x.fav).length;
+
+  const rCounts = { peak: 0, excellent: 0, decent: 0, mediocre: 0, skip: 0 };
+  entries.forEach(x => {
+    if(rCounts[x.rating] !== undefined) rCounts[x.rating]++;
+  });
+
+  container.innerHTML = `
+    <div class="pub-stats-container">
+      <div class="pub-sec-title" style="margin-bottom:14px">📊 Media Breakdown</div>
+      <div class="pub-stats-grid">
+        <div class="pub-stat-box">
+          <div class="pub-stat-box-num">${total}</div>
+          <div class="pub-stat-box-lbl">Total Logged</div>
+        </div>
+        <div class="pub-stat-box">
+          <div class="pub-stat-box-num">${films}</div>
+          <div class="pub-stat-box-lbl">Movies</div>
+        </div>
+        <div class="pub-stat-box">
+          <div class="pub-stat-box-num">${series}</div>
+          <div class="pub-stat-box-lbl">TV Series</div>
+        </div>
+        <div class="pub-stat-box">
+          <div class="pub-stat-box-num">${games}</div>
+          <div class="pub-stat-box-lbl">Games</div>
+        </div>
+        <div class="pub-stat-box">
+          <div class="pub-stat-box-num">${favCount}</div>
+          <div class="pub-stat-box-lbl">Favourites</div>
+        </div>
+        <div class="pub-stat-box">
+          <div class="pub-stat-box-num">${rCounts.peak}</div>
+          <div class="pub-stat-box-lbl">Peak Ratings</div>
+        </div>
+      </div>
+
+      <div class="pub-sec-title" style="margin-top:24px;margin-bottom:14px">⭐ Rating Distribution</div>
+      <div class="pub-rating-dist">
+        ${['peak', 'excellent', 'decent', 'mediocre', 'skip'].map(r => {
+          const count = rCounts[r] || 0;
+          const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+          return `
+            <div class="pub-dist-row">
+              <span class="pub-dist-label ${RATING_CLASS[r] || ''}">★ ${RATING_LABELS[r]}</span>
+              <div class="pub-dist-bar-track">
+                <div class="pub-dist-bar-fill ${RATING_CLASS[r] || ''}" style="width:${pct}%"></div>
+              </div>
+              <span class="pub-dist-count">${count} (${pct}%)</span>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function openMyPublicProfilePreview(){
+  _pubPreviewActive = true;
+  setReadOnly(true);
+  showPublicProfilePage();
+  renderPublicProfile(currentUser ? currentUser.uid : OWNER_UID);
+}
+
+function exitPublicPreview(){
+  _pubPreviewActive = false;
+  if(currentUser){
+    setReadOnly(false);
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+    const profilePage = document.getElementById('page-profile');
+    if(profilePage) profilePage.classList.add('on');
+    renderProfile();
+  } else {
+    // If visitor, reset to public profile or tutorial
+    if(PUBLIC_UID){
+      renderPublicProfile(PUBLIC_UID);
+    } else {
+      setReadOnly(false);
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+      document.getElementById('page-log').classList.add('on');
+      showTutorial();
+    }
+  }
+}
+
+function openPublicGetStarted(){
+  const authBtn = document.getElementById('authBtn');
+  if(authBtn) authBtn.click();
+}
+
+function handlePubBrandClick(){
+  if(currentUser && !_pubPreviewActive){
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+    document.getElementById('page-log').classList.add('on');
+  } else if(_pubPreviewActive){
+    exitPublicPreview();
+  } else {
+    openPublicGetStarted();
+  }
 }
 
 // ── UNIVERSAL GLOBAL SEARCH & DEEP MEDIA DETAILS ────────
@@ -9484,7 +10659,9 @@ function renderDeepPersonalSection(item, deepData){
   if(!personalContent) return;
 
   const allData = (typeof DATA !== 'undefined' && DATA.length) ? DATA : (window.DATA || []);
-  const allWL = getWL() || [];
+  const readonly = document.body.classList.contains('readonly');
+  const allWL = (readonly && typeof PUBLIC_WL !== 'undefined' && PUBLIC_WL.length) ? PUBLIC_WL : (getWL() || []);
+  const activeName = (readonly && typeof getPubDisplayName === 'function') ? getPubDisplayName() : getDisplayName();
 
   const itemTitle = (item.title || item.name || deepData?.title || deepData?.name || '').toLowerCase().trim();
   const itemType = item.type || item.mediaType || 'movie';
@@ -9509,8 +10686,6 @@ function renderDeepPersonalSection(item, deepData){
     }
   }
 
-  const readonly = document.body.classList.contains('readonly');
-
   if(loggedEntry){
     const rKey = RATINGS.includes(loggedEntry.rating) ? loggedEntry.rating : 'decent';
     const rClass = RATING_CLASS[rKey] || 'r-decent';
@@ -9529,6 +10704,8 @@ function renderDeepPersonalSection(item, deepData){
       }
     }
 
+    const reviewLabel = readonly ? `${activeName}'s Review` : 'Your Review';
+
     personalContent.innerHTML = `
       <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px;flex-wrap:wrap">
         <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
@@ -9540,7 +10717,7 @@ function renderDeepPersonalSection(item, deepData){
       </div>
       ${loggedEntry.notes && loggedEntry.notes.trim() ? `
         <div class="info-review-box" style="margin-bottom:14px">
-          <div class="info-review-lbl">Your Review</div>
+          <div class="info-review-lbl">${reviewLabel}</div>
           <div class="info-review-content">${loggedEntry.notes.trim()}</div>
         </div>
       ` : '<div style="font-size:12px;color:var(--text3);margin-bottom:14px;font-style:italic">No review notes added.</div>'}
@@ -9573,11 +10750,12 @@ function renderDeepPersonalSection(item, deepData){
     const realWlIdx = wlIdx >= 0 ? wlIdx : allWL.findIndex(x => x.type === itemType && cleanTitle(x.title) === cleanTitle(itemTitle));
     const safeTitle = (item.title || item.name || '').replace(/'/g, "\\'");
     const safePoster = (item.poster || '').replace(/'/g, "\\'");
+    const wlNote = readonly ? `This title is on ${activeName}'s watchlist.` : 'This title is in your watchlist. Log it once you have finished watching or playing.';
     personalContent.innerHTML = `
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
         <span class="search-status-pill wl">✓ Saved in Watchlist</span>
       </div>
-      <div style="font-size:12px;color:var(--text3);margin-bottom:12px">This title is in your watchlist. Log it once you have finished watching or playing.</div>
+      <div style="font-size:12px;color:var(--text3);margin-bottom:12px">${wlNote}</div>
       <div class="deep-personal-actions" style="display:flex;gap:10px;flex-wrap:wrap">
         ${!readonly ? `
         <button class="deep-action-btn btn-log" onclick="closeDeepCard(); setTimeout(() => openModal(null, { title: '${safeTitle}', type: '${itemType}', year: '${item.year||''}', poster: '${safePoster}' }), 120)">
@@ -9599,9 +10777,12 @@ function renderDeepPersonalSection(item, deepData){
     // Unlogged title — compact with Log It + Watchlist actions
     const safeTitle = (item.title || item.name || '').replace(/'/g, "\\'");
     const safePoster = (item.poster || '').replace(/'/g, "\\'");
+    const unloggedMsg = readonly
+      ? `<strong style="color:var(--text)">${item.title || item.name}</strong> is not in ${activeName}'s diary.`
+      : `You haven't logged <strong style="color:var(--text)">${item.title || item.name}</strong> yet.`;
     personalContent.innerHTML = `
       <div style="font-size:12.5px;color:var(--text2);margin-bottom:12px">
-        You haven't logged <strong style="color:var(--text)">${item.title || item.name}</strong> yet.
+        ${unloggedMsg}
       </div>
       <div class="deep-personal-actions" style="display:flex;gap:10px;flex-wrap:wrap">
         ${!readonly ? `
@@ -9979,6 +11160,15 @@ window.renderUniversalSearchResults = renderUniversalSearchResults;
 window.selectUniversalSearchResult = selectUniversalSearchResult;
 window.toggleSearchSectionMore = toggleSearchSectionMore;
 window.quickAddDeepToWL = quickAddDeepToWL;
+window.showPublicProfilePage = showPublicProfilePage;
+window.renderPublicProfile = renderPublicProfile;
+window.switchPublicTab = switchPublicTab;
+window.setPubDiaryFilter = setPubDiaryFilter;
+window.handlePublicCardClick = handlePublicCardClick;
+window.openMyPublicProfilePreview = openMyPublicProfilePreview;
+window.exitPublicPreview = exitPublicPreview;
+window.openPublicGetStarted = openPublicGetStarted;
+window.handlePubBrandClick = handlePubBrandClick;
 </script>
 </body>
 </html>
