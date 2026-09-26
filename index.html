@@ -4196,69 +4196,141 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   opacity:0.8;
 }
 
-/* Poster Grids */
+/* ── Section Structure & Typography ── */
+.pub-sec{
+  margin-bottom:28px;
+}
+.pub-sec-header{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  margin-bottom:12px;
+  padding:0 2px;
+}
+.pub-sec-title-group{
+  display:flex;
+  align-items:baseline;
+  gap:8px;
+}
+.pub-sec-title{
+  font-size:12.5px;
+  font-weight:800;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  color:var(--text);
+}
+.pub-sec-subtitle{
+  font-size:11px;
+  font-weight:600;
+  color:var(--text3);
+}
+.pub-sec-more{
+  background:none;
+  border:none;
+  color:var(--blue);
+  font-family:'Inter', sans-serif;
+  font-size:12px;
+  font-weight:600;
+  cursor:pointer;
+  padding:3px 6px;
+  transition:opacity 0.15s;
+}
+.pub-sec-more:hover{
+  opacity:0.8;
+}
+
+/* ── Poster Grids (Responsive Breakpoints) ── */
 .pub-cards-grid{
   display:grid;
   grid-template-columns:repeat(3, 1fr);
-  gap:10px;
+  gap:8px;
 }
-@media (min-width: 600px){
+@media (min-width: 480px){
   .pub-cards-grid{
     grid-template-columns:repeat(4, 1fr);
+    gap:10px;
+  }
+}
+@media (min-width: 720px){
+  .pub-cards-grid{
+    grid-template-columns:repeat(5, 1fr);
     gap:12px;
   }
 }
-@media (min-width: 820px){
+@media (min-width: 880px){
   .pub-cards-grid{
-    grid-template-columns:repeat(5, 1fr);
-    gap:14px;
+    grid-template-columns:repeat(6, 1fr);
+    gap:12px;
   }
 }
 
-/* Favourites Top Picks Row (Prominent 4-6) */
+/* Top 6 Picks Showcase Grid */
 .pub-favs-grid{
   display:grid;
   grid-template-columns:repeat(3, 1fr);
-  gap:10px;
+  gap:8px;
 }
-@media (min-width: 600px){
+@media (min-width: 480px){
   .pub-favs-grid{
-    grid-template-columns:repeat(4, 1fr);
-    gap:14px;
+    grid-template-columns:repeat(3, 1fr);
+    gap:10px;
   }
 }
-@media (min-width: 820px){
+@media (min-width: 720px){
   .pub-favs-grid{
     grid-template-columns:repeat(6, 1fr);
-    gap:14px;
+    gap:12px;
   }
 }
 
-/* Individual Poster Card */
+/* ── Individual Poster Card (Controlled 2:3 Frame) ── */
 .pub-poster-card{
   position:relative;
   aspect-ratio:2/3;
-  border-radius:10px;
+  width:100%;
+  border-radius:8px;
   overflow:hidden;
-  background:var(--bg3);
+  background:#101115;
   border:1px solid var(--border);
   cursor:pointer;
-  box-shadow:0 4px 14px rgba(0,0,0,0.35);
-  transition:transform 0.2s cubic-bezier(0.2,0,0,1), box-shadow 0.2s cubic-bezier(0.2,0,0,1), border-color 0.15s;
+  box-shadow:0 3px 10px rgba(0,0,0,0.35);
+  transition:transform 0.18s cubic-bezier(0.2,0,0,1), box-shadow 0.18s cubic-bezier(0.2,0,0,1), border-color 0.15s;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 .pub-poster-card:hover{
-  transform:translateY(-4px);
-  box-shadow:0 10px 24px rgba(0,0,0,0.6);
-  border-color:var(--border2);
+  transform:translateY(-3px);
+  box-shadow:0 8px 22px rgba(0,0,0,0.55);
+  border-color:rgba(255,255,255,0.22);
 }
 .pub-poster-card:active{
   transform:scale(0.97);
 }
 .pub-poster-img{
+  position:relative;
+  z-index:1;
   width:100%;
   height:100%;
   object-fit:cover;
   display:block;
+}
+/* Controlled containment for games — never breaks aspect-ratio, preserves full artwork */
+.pub-poster-card.game{
+  background:#090a0d;
+}
+.pub-poster-card.game .pub-poster-img{
+  object-fit:contain;
+}
+.pub-poster-backdrop{
+  position:absolute;
+  inset:-12px;
+  background-size:cover;
+  background-position:center;
+  filter:blur(14px) brightness(0.35);
+  transform:scale(1.15);
+  z-index:0;
+  pointer-events:none;
 }
 .pub-poster-ph{
   width:100%;
@@ -4268,12 +4340,15 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   justify-content:center;
   font-size:26px;
   background:var(--bg3);
+  position:relative;
+  z-index:1;
 }
 .pub-poster-overlay{
   position:absolute;
   inset:0;
-  background:linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.4) 40%, transparent 70%);
+  background:linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.5) 35%, transparent 65%);
   pointer-events:none;
+  z-index:1;
 }
 .pub-poster-type-bar{
   position:absolute;
@@ -4288,130 +4363,147 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
 .pub-poster-card.game .pub-poster-type-bar{ background:var(--green); }
 .pub-poster-card.collection .pub-poster-type-bar{ background:var(--accent); }
 
+.pub-card-top-tag{
+  position:absolute;
+  top:6px;
+  left:6px;
+  z-index:3;
+  font-size:8.5px;
+  font-weight:700;
+  padding:2px 5px;
+  border-radius:5px;
+  background:rgba(0,0,0,0.72);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  border:1px solid rgba(255,255,255,0.14);
+  color:#fff;
+  letter-spacing:0.2px;
+  pointer-events:none;
+  line-height:1.2;
+}
+
 .pub-poster-content{
   position:absolute;
   bottom:0;
   left:0;
   right:0;
-  padding:8px;
+  padding:6px 7px;
   z-index:2;
   pointer-events:none;
 }
 .pub-poster-title{
-  font-size:11px;
+  font-size:10.5px;
   font-weight:700;
   color:#fff;
-  line-height:1.25;
-  margin-bottom:4px;
+  line-height:1.2;
+  margin-bottom:3px;
   display:-webkit-box;
   -webkit-line-clamp:2;
   -webkit-box-orient:vertical;
   overflow:hidden;
-  text-shadow:0 1px 4px rgba(0,0,0,0.8);
+  text-shadow:0 1px 3px rgba(0,0,0,0.9);
 }
-.pub-poster-badges{
+.pub-poster-badges,
+.pub-poster-meta{
   display:flex;
   align-items:center;
   gap:4px;
   flex-wrap:wrap;
 }
 .pub-rating-badge{
-  font-size:9px;
+  font-size:8.5px;
   font-weight:700;
-  padding:2px 6px;
-  border-radius:8px;
+  padding:1.5px 5px;
+  border-radius:5px;
   color:#fff;
   display:inline-block;
   line-height:1;
 }
 .pub-type-badge{
-  font-size:8.5px;
+  font-size:8px;
   font-weight:700;
   text-transform:uppercase;
   letter-spacing:0.3px;
-  padding:2px 5px;
-  border-radius:6px;
-  background:rgba(255,255,255,0.14);
+  padding:1.5px 4px;
+  border-radius:4px;
+  background:rgba(255,255,255,0.12);
   color:var(--text2);
 }
-.pub-date-badge{
+.pub-date-badge,
+.pub-poster-year{
   font-size:8.5px;
-  color:var(--text3);
+  font-weight:600;
+  color:rgba(255,255,255,0.7);
   margin-left:auto;
 }
 .pub-note-badge{
-  font-size:9px;
+  font-size:8.5px;
   color:var(--text2);
   margin-left:auto;
 }
 
-/* Filter Chips Bar */
+/* ── Filter Chips Bar ── */
 .pub-filter-bar{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:8px;
-  margin-bottom:16px;
-  flex-wrap:wrap;
-}
-.pub-chips{
   display:flex;
   gap:6px;
   overflow-x:auto;
   scrollbar-width:none;
+  margin-bottom:14px;
 }
-.pub-chips::-webkit-scrollbar{ display:none; }
-.pub-chip{
+.pub-filter-bar::-webkit-scrollbar{ display:none; }
+.pub-filter-btn{
   background:var(--bg3);
   border:1px solid var(--border);
   color:var(--text3);
-  font-family:'Inter', sans-serif;
-  font-size:11px;
+  font-family:'Inter',sans-serif;
+  font-size:11.5px;
   font-weight:600;
-  padding:5px 12px;
+  padding:5px 13px;
   border-radius:20px;
   cursor:pointer;
-  transition:all 0.15s;
   white-space:nowrap;
+  flex-shrink:0;
+  transition:all 0.15s;
 }
-.pub-chip:hover{
+.pub-filter-btn:hover{
   color:var(--text);
   border-color:var(--border2);
 }
-.pub-chip.on{
+.pub-filter-btn.active{
   background:var(--text);
   color:var(--bg);
   border-color:var(--text);
   font-weight:700;
 }
 
-/* Diary List View (Letterboxd Style) */
+/* ── Compact Diary / Log List (Letterboxd Style) ── */
 .pub-diary-list{
   display:flex;
   flex-direction:column;
-  gap:8px;
+  gap:5px;
 }
 .pub-diary-row{
   display:flex;
   align-items:center;
-  gap:12px;
-  padding:10px 12px;
+  gap:10px;
+  padding:7px 10px;
   background:var(--bg2);
   border:1px solid var(--border);
-  border-radius:12px;
+  border-radius:10px;
   cursor:pointer;
   position:relative;
   overflow:hidden;
-  transition:border-color 0.15s, background 0.15s;
+  transition:border-color 0.15s, background 0.15s, transform 0.15s;
 }
 .pub-diary-row:hover{
   background:var(--bg3);
   border-color:var(--border2);
+  transform:translateX(2px);
 }
 .pub-diary-row::before{
   content:'';
   position:absolute;
-  right:0;
+  left:0;
   top:0;
   bottom:0;
   width:3px;
@@ -4420,22 +4512,26 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
 .pub-diary-row.series::before{ background:var(--teal); }
 .pub-diary-row.game::before{ background:var(--green); }
 .pub-diary-thumb{
-  width:40px;
-  height:58px;
+  width:36px;
+  height:52px;
   object-fit:cover;
-  border-radius:6px;
+  border-radius:4px;
   background:var(--bg3);
   flex-shrink:0;
 }
+.pub-diary-row.game .pub-diary-thumb{
+  object-fit:contain;
+  background:#090a0d;
+}
 .pub-diary-ph{
-  width:40px;
-  height:58px;
+  width:36px;
+  height:52px;
   background:var(--bg3);
-  border-radius:6px;
+  border-radius:4px;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:18px;
+  font-size:16px;
   flex-shrink:0;
 }
 .pub-diary-info{
@@ -4446,10 +4542,10 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   display:flex;
   align-items:baseline;
   gap:6px;
-  margin-bottom:4px;
+  margin-bottom:2px;
 }
 .pub-diary-title{
-  font-size:13.5px;
+  font-size:13px;
   font-weight:700;
   color:var(--text);
   white-space:nowrap;
@@ -4459,6 +4555,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
 .pub-diary-year{
   font-size:11px;
   color:var(--text3);
+  flex-shrink:0;
 }
 .pub-diary-meta{
   display:flex;
@@ -4466,22 +4563,23 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   gap:6px;
   flex-wrap:wrap;
 }
+.pub-diary-date{
+  font-size:10.5px;
+  color:var(--text3);
+  margin-left:auto;
+  font-weight:600;
+  white-space:nowrap;
+}
 .pub-diary-notes{
-  margin-top:6px;
-  font-size:11.5px;
+  margin-top:3px;
+  font-size:11px;
   color:var(--text2);
   font-style:italic;
   display:-webkit-box;
-  -webkit-line-clamp:2;
+  -webkit-line-clamp:1;
   -webkit-box-orient:vertical;
   overflow:hidden;
-  line-height:1.35;
-}
-.pub-diary-date{
-  font-size:11px;
-  color:var(--text3);
-  flex-shrink:0;
-  font-weight:600;
+  line-height:1.3;
 }
 
 /* ── ADDITIONAL: Footer, Banner, Empty State, Stats ── */
@@ -4623,38 +4721,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   color:var(--text3);
   text-align:right;
 }
-.pub-filter-bar{
-  display:flex;
-  gap:6px;
-  overflow-x:auto;
-  scrollbar-width:none;
-  margin-bottom:14px;
-}
-.pub-filter-bar::-webkit-scrollbar{ display:none; }
-.pub-filter-btn{
-  background:var(--bg3);
-  border:1px solid var(--border);
-  color:var(--text3);
-  font-family:'Inter',sans-serif;
-  font-size:11.5px;
-  font-weight:600;
-  padding:5px 13px;
-  border-radius:20px;
-  cursor:pointer;
-  white-space:nowrap;
-  flex-shrink:0;
-  transition:all 0.15s;
-}
-.pub-filter-btn.active{
-  background:var(--text);
-  color:var(--bg);
-  border-color:var(--text);
-}
-.pub-diary-list{
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-}
+
 .pub-footer{
   border-top:1px solid var(--border);
   margin-top:48px;
@@ -9504,8 +9571,13 @@ function pubPosterCard(item, badgeText){
   // Reuse Logger's existing poster renderer and error fallback system
   const safeTitleParam = (title || '').replace(/"/g, '&quot;').replace(/'/g, "\'");
   const typeClass = type === 'tv' ? 'series' : type;
+
+  const posterBackdrop = (item.poster && type === 'game')
+    ? `<div class="pub-poster-backdrop" style="background-image:url('${item.poster}')"></div>`
+    : '';
+
   const posterHtml = item.poster
-    ? `<img src="${item.poster}" alt="${title}" loading="lazy" class="pub-poster-img" onerror="if(typeof onPosterError==='function'){onPosterError(this,'${type}','${safeTitleParam}','pub-poster-ph');}else{this.onerror=null;this.parentElement.innerHTML='<div class=\\\'pub-poster-ph\\\'>${icon}</div>';}">`
+    ? `${posterBackdrop}<img src="${item.poster}" alt="${title}" loading="lazy" class="pub-poster-img" onerror="if(typeof onPosterError==='function'){onPosterError(this,'${type}','${safeTitleParam}','pub-poster-ph');}else{this.onerror=null;this.parentElement.innerHTML='<div class=\\\'pub-poster-ph\\\'>${icon}</div>';}">`
     : `<div class="pub-poster-ph ph-${typeClass}" data-type="${type}" title="${safeTitleParam}">${icon}</div>`;
 
   const rKey = item.rating && RATINGS && RATINGS.includes(item.rating) ? item.rating : '';
@@ -9514,7 +9586,7 @@ function pubPosterCard(item, badgeText){
   const ratingBadge = rLabel ? `<span class="pub-rating-badge ${rClass}">★ ${rLabel}</span>` : '';
   const typeLabel = type === 'collection' ? 'Franchise' : type;
   const typeBadge = `<span class="pub-type-badge">${typeLabel}</span>`;
-  const customBadge = badgeText ? `<span class="pub-type-badge" style="background:rgba(255,255,255,0.22);color:var(--text)">${badgeText}</span>` : '';
+  const topTag = badgeText ? `<span class="pub-card-top-tag">${badgeText}</span>` : '';
 
   const dateOrParts = (type === 'collection' && item.partsCount)
     ? `${item.partsCount} ${item.partsCount === 1 ? 'film' : 'films'}`
@@ -9525,12 +9597,12 @@ function pubPosterCard(item, badgeText){
       ${posterHtml}
       <div class="pub-poster-overlay"></div>
       <div class="pub-poster-type-bar"></div>
+      ${topTag}
       <div class="pub-poster-content">
         <div class="pub-poster-title">${title}</div>
         <div class="pub-poster-badges">
           ${ratingBadge}
           ${typeBadge}
-          ${customBadge}
           ${dateOrParts ? `<span class="pub-date-badge">${dateOrParts}</span>` : ''}
         </div>
       </div>
