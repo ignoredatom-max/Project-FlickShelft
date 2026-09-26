@@ -5729,6 +5729,7 @@ async function fsWLSave(wl){
   if(!currentUser) return;
   await setDoc(docWL(),{items: wl});
 }
+const fsSaveWL = fsWLSave;
 // ── LOAD all data from Firestore ─────────────────────────
 // ── LOCAL CACHE ───────────────────────────────────────────
 const CACHE_KEY = 'lgr_cache';
@@ -5761,7 +5762,18 @@ async function fsLoad(){
     DATA = snap.docs.map(d => d.data());
     cacheWrite(DATA);
     const wlSnap = await getDoc(docWL());
-    if(wlSnap.exists()) saveWL(wlSnap.data().items || []);
+    if(wlSnap && wlSnap.exists()){
+      const remoteItems = wlSnap.data()?.items || wlSnap.data()?.watchlist || [];
+      if(Array.isArray(remoteItems) && remoteItems.length > 0){
+        saveWL(remoteItems);
+      } else {
+        const local = getWL();
+        if(local && local.length) await fsWLSave(local);
+      }
+    } else {
+      const local = getWL();
+      if(local && local.length) await fsWLSave(local);
+    }
     renderLog(); renderFavs(); renderWL();
     flashCloud();
     hydrateMissingMediaArtwork();
@@ -5867,23 +5879,43 @@ async function fsLoadPublic(uid){
     const [_, snapEntries, snapWL] = await Promise.all([
       loadPublicProfile(uid),
       getDocs(collection(db_fs, `users/${uid}/entries`)),
-      getDoc(doc(db_fs, `users/${uid}/meta/watchlist`)).catch(()=>null)
+      getDoc(doc(db_fs, `users/${uid}/meta/watchlist`)).catch(err => {
+        console.warn('Could not fetch public watchlist from Firestore:', err);
+        return null;
+      })
     ]);
     DATA = snapEntries ? snapEntries.docs.map(d => d.data()) : [];
     window.DATA = DATA;
-    if(snapWL && snapWL.exists() && Array.isArray(snapWL.data().items)){
-      PUBLIC_WL = snapWL.data().items;
-      window.PUBLIC_WL = PUBLIC_WL;
-    } else {
-      PUBLIC_WL = [];
-      window.PUBLIC_WL = [];
+    
+    let wlItems = [];
+    if(snapWL && typeof snapWL.exists === 'function' && snapWL.exists()){
+      const d = snapWL.data();
+      if(Array.isArray(d?.items)) wlItems = d.items;
+      else if(Array.isArray(d?.watchlist)) wlItems = d.watchlist;
+      else if(Array.isArray(d)) wlItems = d;
+      else if(Array.isArray(d?.list)) wlItems = d.list;
     }
+    
+    // If remote watchlist was empty but this is the current signed-in user, use and sync local
+    if(wlItems.length === 0 && currentUser && currentUser.uid === uid){
+      const local = getWL();
+      if(local && local.length){
+        wlItems = local;
+        fsWLSave(local).catch(()=>{});
+      }
+    }
+    
+    PUBLIC_WL = wlItems;
+    window.PUBLIC_WL = PUBLIC_WL;
+    try {
+      localStorage.setItem(`lgr_${uid}_wl`, JSON.stringify(PUBLIC_WL));
+    } catch(e){}
   } catch(e){
     console.error('Failed to load public data:', e);
     DATA = [];
     window.DATA = [];
-    PUBLIC_WL = [];
-    window.PUBLIC_WL = [];
+    PUBLIC_WL = getPubWatchlist(uid);
+    window.PUBLIC_WL = PUBLIC_WL;
   }
   renderPublicProfile(uid);
   showPublicProfilePage();
@@ -9191,6 +9223,22 @@ function getPubPicks(uid){
   }catch(e){ return []; }
 }
 
+function getPubWatchlist(uid){
+  const u = uid || _pubActiveUid || PUBLIC_UID || OWNER_UID;
+  if(typeof PUBLIC_WL !== 'undefined' && Array.isArray(PUBLIC_WL) && PUBLIC_WL.length > 0){
+    return PUBLIC_WL;
+  }
+  if((currentUser && currentUser.uid === u) || _pubPreviewActive || (!currentUser && u === OWNER_UID)){
+    const local = getWL();
+    if(local && local.length) return local;
+  }
+  try{
+    const cached = JSON.parse(localStorage.getItem(`lgr_${u}_wl`) || 'null');
+    if(Array.isArray(cached) && cached.length > 0) return cached;
+  }catch(e){}
+  return (typeof PUBLIC_WL !== 'undefined' && Array.isArray(PUBLIC_WL)) ? PUBLIC_WL : [];
+}
+
 function renderPublicProfile(explicitUid){
   const uid = explicitUid || _pubActiveUid || PUBLIC_UID || (currentUser ? currentUser.uid : OWNER_UID);
   _pubActiveUid = uid;
@@ -9199,7 +9247,7 @@ function renderPublicProfile(explicitUid){
   const pfp = getPubPfp(uid);
   const picks = getPubPicks(uid);
   const entries = (typeof DATA !== 'undefined' && Array.isArray(DATA)) ? DATA : [];
-  const wlEntries = (typeof PUBLIC_WL !== 'undefined' && Array.isArray(PUBLIC_WL)) ? PUBLIC_WL : (getWL() || []);
+  const wlEntries = getPubWatchlist(uid);
   const favs = entries.filter(x => x.fav);
 
   // Update Hero
@@ -9599,6 +9647,12 @@ function openMyPublicProfilePreview(){
   _pubPreviewActive = true;
   setReadOnly(true);
   document.documentElement?.classList?.add('is-public-profile');
+  const myWL = getWL() || [];
+  PUBLIC_WL = [...myWL];
+  window.PUBLIC_WL = PUBLIC_WL;
+  if(currentUser && myWL.length > 0){
+    fsWLSave(myWL).catch(() => {});
+  }
   renderPublicProfile(currentUser ? currentUser.uid : OWNER_UID);
   showPublicProfilePage();
 }
@@ -11654,7 +11708,7 @@ function renderDeepPersonalSection(item, deepData){
 
   const allData = (typeof DATA !== 'undefined' && DATA.length) ? DATA : (window.DATA || []);
   const readonly = document.body.classList.contains('readonly');
-  const allWL = (readonly && typeof PUBLIC_WL !== 'undefined' && PUBLIC_WL.length) ? PUBLIC_WL : (getWL() || []);
+  const allWL = readonly ? getPubWatchlist(_pubActiveUid || PUBLIC_UID) : (getWL() || []);
   const activeName = (readonly && typeof getPubDisplayName === 'function') ? getPubDisplayName() : getDisplayName();
 
   const itemTitle = (item.title || item.name || deepData?.title || deepData?.name || '').toLowerCase().trim();
@@ -12156,6 +12210,7 @@ window.toggleSearchSectionMore = toggleSearchSectionMore;
 window.quickAddDeepToWL = quickAddDeepToWL;
 window.showPublicProfilePage = showPublicProfilePage;
 window.renderPublicProfile = renderPublicProfile;
+window.getPubWatchlist = getPubWatchlist;
 window.switchPublicTab = switchPublicTab;
 window.setPubDiaryFilter = setPubDiaryFilter;
 window.handlePublicCardClick = handlePublicCardClick;
