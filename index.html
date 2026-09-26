@@ -6318,6 +6318,28 @@ async function delEntry(id,ev){
   toast('Removed from Diary', 'neutral');
 }
 
+function toggleDeepTopPick(id){
+  const entry = DATA.find(x => x.id === id) || (typeof currentDeepEntry !== 'undefined' ? currentDeepEntry : null);
+  if(!entry) return;
+  const picks = getPicks();
+  const existingIdx = picks.findIndex(x => x.id === id || (cleanTitle(x.title) === cleanTitle(entry.title) && x.type === entry.type));
+  if(existingIdx >= 0){
+    picks.splice(existingIdx, 1);
+    savePicks(picks);
+    toast('Removed from Top Picks', 'neutral');
+  } else {
+    if(picks.length >= 6){
+      toast('Maximum 6 picks allowed', 'neutral');
+      return;
+    }
+    picks.push(entry);
+    savePicks(picks);
+    toast('Added to Top Picks', 'success');
+  }
+  if(document.getElementById('page-profile')?.classList.contains('on')) renderTopPicks();
+  showInfoCard(entry, 'logged');
+}
+
 // ── RENDER FAVS ─────────────────────────────────────────
 let favFilter='all';
 function renderFavs(){
@@ -7672,18 +7694,60 @@ function profileKey(k){
   return `lgr_${uid}_${k}`;
 }
 function getPicks(){ 
-  // Returns array of full entry objects (new format) or IDs (legacy)
-  const raw = JSON.parse(localStorage.getItem(profileKey('picks'))||'[]');
-  // Detect if new format (objects) or old format (numbers/IDs)
-  if(raw.length && typeof raw[0] === 'object') return raw;
-  // Legacy: resolve IDs to entries
-  return raw.map(id=>DATA.find(x=>x.id===id)||getPickExtras().find(x=>x.id===id)).filter(Boolean);
+  // Returns array of full entry objects (new format) or IDs (legacy), strictly max 6
+  try{
+    const raw = JSON.parse(localStorage.getItem(profileKey('picks'))||'[]');
+    if(raw.length && typeof raw[0] === 'object') return raw.slice(0, 6);
+    return raw.map(id=>DATA.find(x=>x.id===id)||getPickExtras().find(x=>x.id===id)).filter(Boolean).slice(0, 6);
+  }catch(e){ return []; }
 }
 function savePicks(entries){
-  // Always save as full entry objects
-  const toSave = entries.map(e=> typeof e==='object' ? e : DATA.find(x=>x.id===e)||getPickExtras().find(x=>x.id===e)).filter(Boolean);
+  // Always save as full entry objects, strictly cap at 6
+  const toSave = (entries || []).slice(0, 6).map(e=> typeof e==='object' ? e : DATA.find(x=>x.id===e)||getPickExtras().find(x=>x.id===e)).filter(Boolean).slice(0, 6);
   localStorage.setItem(profileKey('picks'), JSON.stringify(toSave));
   if(currentUser) setDoc(doc(db_fs,`users/${currentUser.uid}/meta/profile`),{picks:toSave},{merge:true});
+}
+
+function addPick(entry){
+  try{
+    const picks = getPicks();
+    if(picks.length >= 6){
+      toast('Maximum 6 picks allowed', 'neutral');
+      return false;
+    }
+    const id = entry.id || Date.now();
+    const existing = picks.find(x => x.id === id || (x.title && entry.title && x.title.toLowerCase() === entry.title.toLowerCase() && x.type === entry.type));
+    if(existing){
+      toast('Already in Top Picks', 'neutral');
+      return false;
+    }
+    const pickEntry = {
+      id: entry.id || Date.now(),
+      title: entry.title || entry.name || 'Untitled',
+      poster: entry.poster || '',
+      year: entry.year || '',
+      genre: entry.genre || '',
+      type: entry.type || 'movie',
+      rating: entry.rating || 'decent',
+      fav: !!entry.fav,
+      notes: entry.notes || ''
+    };
+    picks.push(pickEntry);
+    savePicks(picks);
+    if(document.getElementById('page-profile')?.classList.contains('on')) renderTopPicks();
+    toast('Added to Top Picks', 'success');
+    return true;
+  }catch(e){
+    toast('Failed to add to Top Picks', 'error');
+    return false;
+  }
+}
+
+function removePickById(id){
+  const picks = getPicks().filter(x => x.id !== id);
+  savePicks(picks);
+  if(document.getElementById('page-profile')?.classList.contains('on')) renderTopPicks();
+  toast('Removed from Top Picks', 'neutral');
 }
 function getPfp(){ return localStorage.getItem(profileKey('pfp'))||''; }
 function savePfp(url){
@@ -7731,7 +7795,7 @@ async function loadUserProfile(){
     if(snap.exists()){
       const d = snap.data();
       if(d.pfp){ localStorage.setItem(profileKey('pfp'), d.pfp); }
-      if(d.picks){ localStorage.setItem(profileKey('picks'), JSON.stringify(d.picks)); }
+      if(d.picks){ localStorage.setItem(profileKey('picks'), JSON.stringify(Array.isArray(d.picks) ? d.picks.slice(0, 6) : [])); }
       if(d.displayName){ localStorage.setItem(profileKey('name'), d.displayName); }
       if(d.extras){ localStorage.setItem(profileKey('extras'), JSON.stringify(d.extras)); }
     }
@@ -7747,7 +7811,8 @@ async function loadPublicProfile(uid){
       const d = snap.data();
       const key = (k)=>`lgr_${uid}_${k}`;
       if(d.pfp)  localStorage.setItem(key('pfp'), d.pfp);
-      if(d.picks) localStorage.setItem(key('picks'), JSON.stringify(d.picks));
+      if(Array.isArray(d.picks)) localStorage.setItem(key('picks'), JSON.stringify(d.picks.slice(0, 6)));
+      else if(d.picks) localStorage.setItem(key('picks'), JSON.stringify(d.picks));
       if(d.displayName) localStorage.setItem(key('name'), d.displayName);
       if(d.extras) localStorage.setItem(key('extras'), JSON.stringify(d.extras));
     }
@@ -9215,11 +9280,14 @@ function getPubPfp(uid){
 
 function getPubPicks(uid){
   const u = uid || _pubActiveUid || PUBLIC_UID || OWNER_UID;
+  if(_pubPreviewActive || (currentUser && currentUser.uid === u) || (!currentUser && u === OWNER_UID && !PUBLIC_UID)){
+    return getPicks().slice(0, 6);
+  }
   try{
     const raw = JSON.parse(localStorage.getItem(`lgr_${u}_picks`) || '[]');
-    if(raw.length && typeof raw[0] === 'object') return raw;
+    if(raw.length && typeof raw[0] === 'object') return raw.slice(0, 6);
     const extras = JSON.parse(localStorage.getItem(`lgr_${u}_extras`) || '[]');
-    return raw.map(id => DATA.find(x => x.id === id) || extras.find(x => x.id === id)).filter(Boolean);
+    return raw.map(id => DATA.find(x => x.id === id) || extras.find(x => x.id === id)).filter(Boolean).slice(0, 6);
   }catch(e){ return []; }
 }
 
@@ -9302,7 +9370,7 @@ function renderPublicProfile(explicitUid){
   // Render tabs content
   renderPublicOverview(favs, entries, wlEntries, picks);
   renderPublicDiary(entries);
-  renderPublicFavs(favs.length ? favs : picks);
+  renderPublicFavs(favs);
   renderPublicWatchlist(wlEntries);
   renderPublicStats(entries);
 
@@ -9361,7 +9429,7 @@ function pubPosterCard(item, badgeText){
   const encoded = encodeItemForClick(item);
 
   const posterHtml = item.poster
-    ? `<img src="${item.poster}" alt="${title}" loading="lazy" class="pub-poster-img" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\\'pub-poster-ph\\'>${icon}</div>'">`
+    ? `<img src="${item.poster}" alt="${title}" loading="lazy" class="pub-poster-img" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\\\'pub-poster-ph\\\'>${icon}</div>'">`
     : `<div class="pub-poster-ph">${icon}</div>`;
 
   const rKey = item.rating && RATINGS && RATINGS.includes(item.rating) ? item.rating : '';
@@ -9369,6 +9437,7 @@ function pubPosterCard(item, badgeText){
   const rLabel = rKey && RATING_LABELS ? (RATING_LABELS[rKey] || '') : '';
   const ratingBadge = rLabel ? `<span class="pub-rating-badge ${rClass}">★ ${rLabel}</span>` : '';
   const typeBadge = `<span class="pub-type-badge">${type}</span>`;
+  const customBadge = badgeText ? `<span class="pub-type-badge" style="background:rgba(255,255,255,0.22);color:var(--text)">${badgeText}</span>` : '';
 
   const typeClass = type === 'tv' ? 'series' : type;
 
@@ -9382,6 +9451,7 @@ function pubPosterCard(item, badgeText){
         <div class="pub-poster-badges">
           ${ratingBadge}
           ${typeBadge}
+          ${customBadge}
           ${year ? `<span class="pub-date-badge">${year}</span>` : ''}
         </div>
       </div>
@@ -9434,25 +9504,45 @@ function renderPublicOverview(favs, entries, wlEntries, picks){
   const container = document.getElementById('pubTabOverview');
   if(!container) return;
 
-  const topPicksOrFavs = (favs && favs.length) ? favs.slice(0, 6) : (picks || []).slice(0, 6);
+  const topPicks = (picks || []).slice(0, 6);
+  const topFavs = (favs || []).slice(0, 6);
   const recentLogs = [...entries].sort((a,b) => (b.id||0) - (a.id||0)).slice(0, 6);
   const recentWL = [...wlEntries].slice(0, 6);
 
   let html = '';
 
-  // 1. Favourites / Top Picks — poster grid
+  // 1. Top 6 Picks Showcase (Letterboxd-style Top Picks)
   html += `
-    <section class="pub-sec">
+    <section class="pub-sec" id="pubSecTopPicks">
       <div class="pub-sec-header">
         <div class="pub-sec-title-group">
-          <div class="pub-sec-title">❤️ Favourites &amp; Top Picks</div>
-          ${topPicksOrFavs.length ? `<span class="pub-sec-subtitle">${topPicksOrFavs.length} shown</span>` : ''}
+          <div class="pub-sec-title">⭐ Top 6 Picks</div>
+          ${topPicks.length ? `<span class="pub-sec-subtitle">${topPicks.length} of 6</span>` : ''}
         </div>
-        <button class="pub-sec-more" onclick="switchPublicTab('favs')">See all ›</button>
       </div>
-      ${topPicksOrFavs.length ? `
+      ${topPicks.length ? `
         <div class="pub-favs-grid">
-          ${topPicksOrFavs.map(item => pubPosterCard(item)).join('')}
+          ${topPicks.map(item => pubPosterCard(item, '★ Top Pick')).join('')}
+        </div>
+      ` : `
+        <div class="pub-empty-card">No top picks selected yet.</div>
+      `}
+    </section>
+  `;
+
+  // 2. Favourites Showcase
+  html += `
+    <section class="pub-sec" id="pubSecFavs">
+      <div class="pub-sec-header">
+        <div class="pub-sec-title-group">
+          <div class="pub-sec-title">❤️ Favourites</div>
+          ${favs.length ? `<span class="pub-sec-subtitle">${favs.length} total</span>` : ''}
+        </div>
+        <button class="pub-sec-more" onclick="switchPublicTab('favs')">See all (${favs.length}) ›</button>
+      </div>
+      ${topFavs.length ? `
+        <div class="pub-cards-grid">
+          ${topFavs.map(item => pubPosterCard(item, '❤️ Fav')).join('')}
         </div>
       ` : `
         <div class="pub-empty-card">No favourites selected yet.</div>
@@ -9460,7 +9550,7 @@ function renderPublicOverview(favs, entries, wlEntries, picks){
     </section>
   `;
 
-  // 2. Recent Activity — compact diary rows
+  // 3. Recent Activity — compact diary rows
   html += `
     <section class="pub-sec">
       <div class="pub-sec-header">
@@ -9480,7 +9570,7 @@ function renderPublicOverview(favs, entries, wlEntries, picks){
     </section>
   `;
 
-  // 3. Watchlist preview
+  // 4. Watchlist preview
   html += `
     <section class="pub-sec">
       <div class="pub-sec-header">
@@ -9491,7 +9581,7 @@ function renderPublicOverview(favs, entries, wlEntries, picks){
       </div>
       ${recentWL.length ? `
         <div class="pub-cards-grid">
-          ${recentWL.map(item => pubPosterCard(item)).join('')}
+          ${recentWL.map(item => pubPosterCard(item, '+ Watchlist')).join('')}
         </div>
       ` : `
         <div class="pub-empty-card">Watchlist is currently empty.</div>
@@ -9554,7 +9644,7 @@ function renderPublicFavs(favs){
   }
 
   container.innerHTML = `
-    <div style="font-size:12px;color:var(--text3);margin-bottom:14px;font-weight:600">Saved Favourites & Top Recommendations (${favs.length})</div>
+    <div style="font-size:12px;color:var(--text3);margin-bottom:14px;font-weight:600">Saved Favourites (${favs.length})</div>
     <div class="pub-cards-grid">
       ${favs.map(item => pubPosterCard(item, '❤️ Fav')).join('')}
     </div>
@@ -11741,6 +11831,8 @@ function renderDeepPersonalSection(item, deepData){
     const sKey = loggedEntry.rewatched ? 'rewatched' : (loggedEntry.status || 'done');
     const sLabel = getPillLabel(sKey, loggedEntry.type, loggedEntry);
     const favBadge = loggedEntry.fav ? '<span style="font-size:12px;color:var(--text2);margin-left:6px">❤️ Favourite</span>' : '';
+    const isTopPick = getPicks().some(x => x.id === loggedEntry.id || (cleanTitle(x.title) === cleanTitle(loggedEntry.title) && x.type === loggedEntry.type));
+    const topPickBadge = isTopPick ? '<span style="font-size:12px;color:var(--accent);margin-left:6px">★ Top Pick</span>' : '';
 
     // Duration / dates for games & ongoing media
     let dateLine = formatLogDate(loggedEntry.id);
@@ -11760,6 +11852,7 @@ function renderDeepPersonalSection(item, deepData){
           <div class="info-rating-pill ${rClass}">★ ${rLabel}</div>
           <div class="pill ${pillCls[sKey] || 'pill-done'}">${sLabel}</div>
           ${favBadge}
+          ${topPickBadge}
         </div>
         <div style="font-size:11.5px;color:var(--text3);font-weight:600">${dateLine}</div>
       </div>
@@ -11778,6 +11871,9 @@ function renderDeepPersonalSection(item, deepData){
         <button class="deep-action-btn btn-share" onclick="closeDeepCard(); setTimeout(() => openShareCard(${loggedEntry.id}), 120)">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
           Share Card
+        </button>
+        <button class="deep-action-btn" onclick="toggleDeepTopPick(${loggedEntry.id})">
+          ${isTopPick ? '★ In Top Picks' : '☆ Add to Top Picks'}
         </button>
         ` : ''}
       </div>
@@ -12174,6 +12270,12 @@ window.closeInfoCard    = closeInfoCard;
 window.wlLog            = wlLog;
 window.wlDel            = wlDel;
 window.removePick       = removePick;
+window.addPick          = addPick;
+window.removePickById   = removePickById;
+window.getPicks         = getPicks;
+window.savePicks        = savePicks;
+window.getPubPicks      = getPubPicks;
+window.toggleDeepTopPick= toggleDeepTopPick;
 window.addPickFromSearch= addPickFromSearch;
 window.openPickSelector = openPickSelector;
 window.openInfo         = openInfo;
