@@ -4257,6 +4257,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
 .pub-poster-card.movie .pub-poster-type-bar{ background:var(--red); }
 .pub-poster-card.series .pub-poster-type-bar{ background:var(--teal); }
 .pub-poster-card.game .pub-poster-type-bar{ background:var(--green); }
+.pub-poster-card.collection .pub-poster-type-bar{ background:var(--accent); }
 
 .pub-poster-content{
   position:absolute;
@@ -5727,7 +5728,16 @@ async function fsDelete(id){
 // ── SAVE watchlist to Firestore ──────────────────────────
 async function fsWLSave(wl){
   if(!currentUser) return;
-  await setDoc(docWL(),{items: wl});
+  try {
+    await setDoc(docWL(),{items: wl});
+  } catch(e){}
+  try {
+    // Also mirror to meta/profile so public profiles can read watchlist without permission errors
+    await setDoc(doc(db_fs, `users/${currentUser.uid}/meta/profile`), {watchlist: wl}, {merge: true});
+  } catch(e){}
+  try {
+    localStorage.setItem(`lgr_${currentUser.uid}_wl`, JSON.stringify(wl));
+  } catch(e){}
 }
 const fsSaveWL = fsWLSave;
 // ── LOAD all data from Firestore ─────────────────────────
@@ -5876,24 +5886,39 @@ document.getElementById('authBtn').addEventListener('click', async()=>{
 // Load public entries and watchlist for a given UID
 async function fsLoadPublic(uid){
   try{
-    const [_, snapEntries, snapWL] = await Promise.all([
+    const [_, snapEntries, snapWL, snapProfile] = await Promise.all([
       loadPublicProfile(uid),
-      getDocs(collection(db_fs, `users/${uid}/entries`)),
+      getDocs(collection(db_fs, `users/${uid}/entries`)).catch(err => {
+        console.warn('Could not fetch public entries from Firestore:', err);
+        return null;
+      }),
       getDoc(doc(db_fs, `users/${uid}/meta/watchlist`)).catch(err => {
         console.warn('Could not fetch public watchlist from Firestore:', err);
         return null;
+      }),
+      getDoc(doc(db_fs, `users/${uid}/meta/profile`)).catch(err => {
+        return null;
       })
     ]);
-    DATA = snapEntries ? snapEntries.docs.map(d => d.data()) : [];
+    DATA = (snapEntries && snapEntries.docs) ? snapEntries.docs.map(d => d.data()) : [];
     window.DATA = DATA;
     
     let wlItems = [];
-    if(snapWL && typeof snapWL.exists === 'function' && snapWL.exists()){
+    const hasSnapWL = snapWL && (typeof snapWL.exists === 'function' ? snapWL.exists() : !!snapWL.exists);
+    if(hasSnapWL){
       const d = snapWL.data();
       if(Array.isArray(d?.items)) wlItems = d.items;
       else if(Array.isArray(d?.watchlist)) wlItems = d.watchlist;
       else if(Array.isArray(d)) wlItems = d;
       else if(Array.isArray(d?.list)) wlItems = d.list;
+      else if(Array.isArray(d?.entries)) wlItems = d.entries;
+    }
+
+    // If meta/watchlist returned no items, check meta/profile
+    if(!wlItems.length && snapProfile && (typeof snapProfile.exists === 'function' ? snapProfile.exists() : !!snapProfile.exists)){
+      const pd = snapProfile.data();
+      if(Array.isArray(pd?.watchlist)) wlItems = pd.watchlist;
+      else if(Array.isArray(pd?.items)) wlItems = pd.items;
     }
     
     // If remote watchlist was empty but this is the current signed-in user, use and sync local
@@ -5905,11 +5930,28 @@ async function fsLoadPublic(uid){
       }
     }
     
-    PUBLIC_WL = wlItems;
-    window.PUBLIC_WL = PUBLIC_WL;
-    try {
-      localStorage.setItem(`lgr_${uid}_wl`, JSON.stringify(PUBLIC_WL));
-    } catch(e){}
+    if(wlItems.length > 0){
+      PUBLIC_WL = wlItems;
+      window.PUBLIC_WL = PUBLIC_WL;
+      try {
+        localStorage.setItem(`lgr_${uid}_wl`, JSON.stringify(PUBLIC_WL));
+      } catch(e){}
+    } else {
+      // If remote returned nothing, try existing cached watchlist before wiping
+      try {
+        const cachedWL = JSON.parse(localStorage.getItem(`lgr_${uid}_wl`) || '[]');
+        if(Array.isArray(cachedWL) && cachedWL.length > 0){
+          PUBLIC_WL = cachedWL;
+          window.PUBLIC_WL = PUBLIC_WL;
+        } else {
+          PUBLIC_WL = [];
+          window.PUBLIC_WL = [];
+        }
+      } catch(e){
+        PUBLIC_WL = [];
+        window.PUBLIC_WL = [];
+      }
+    }
   } catch(e){
     console.error('Failed to load public data:', e);
     DATA = [];
@@ -7815,6 +7857,10 @@ async function loadPublicProfile(uid){
       else if(d.picks) localStorage.setItem(key('picks'), JSON.stringify(d.picks));
       if(d.displayName) localStorage.setItem(key('name'), d.displayName);
       if(d.extras) localStorage.setItem(key('extras'), JSON.stringify(d.extras));
+      const profileWL = d.watchlist || d.items;
+      if(Array.isArray(profileWL) && profileWL.length > 0){
+        localStorage.setItem(key('wl'), JSON.stringify(profileWL));
+      }
     }
   }catch(e){}
 }
@@ -9296,7 +9342,8 @@ function getPubWatchlist(uid){
   if(typeof PUBLIC_WL !== 'undefined' && Array.isArray(PUBLIC_WL) && PUBLIC_WL.length > 0){
     return PUBLIC_WL;
   }
-  if((currentUser && currentUser.uid === u) || _pubPreviewActive || (!currentUser && u === OWNER_UID)){
+  // When previewing or viewing own profile as signed-in user, use local private watchlist
+  if(_pubPreviewActive || (currentUser && currentUser.uid === u)){
     const local = getWL();
     if(local && local.length) return local;
   }
@@ -9390,7 +9437,7 @@ function switchPublicTab(tabId){
 
 function encodeItemForClick(item){
   const clean = {
-    id: item.id || item.tmdbId || item.igdbId,
+    id: item.id || item.tmdbId || item.igdbId || item.collectionId,
     title: item.title || item.name || '',
     type: item.type || item.mediaType || 'movie',
     year: item.year || '',
@@ -9404,7 +9451,10 @@ function encodeItemForClick(item){
     finishDate: item.finishDate || '',
     hours: item.hours || '',
     tmdbId: item.tmdbId || (item.type !== 'game' ? item.id : null),
-    igdbId: item.igdbId || (item.type === 'game' ? item.id : null)
+    igdbId: item.igdbId || (item.type === 'game' ? item.id : null),
+    collectionId: item.collectionId || (item.type === 'collection' ? (item.id || item.tmdbId) : null),
+    partsCount: item.partsCount || 0,
+    parts: item.parts || []
   };
   return encodeURIComponent(JSON.stringify(clean));
 }
@@ -9412,6 +9462,12 @@ function encodeItemForClick(item){
 function handlePublicCardClick(encodedItem){
   try {
     const item = JSON.parse(decodeURIComponent(encodedItem));
+    if(item && item.type === 'collection'){
+      if(typeof openCollectionOverlay === 'function'){
+        openCollectionOverlay(item.collectionId || item.id || item.tmdbId, item.title, null);
+        return;
+      }
+    }
     if(typeof openDeepCard === 'function'){
       openDeepCard(item);
     }
@@ -9424,22 +9480,28 @@ function pubPosterCard(item, badgeText){
   const title = item.title || item.name || 'Untitled';
   const year = item.year || '';
   const type = item.type || item.mediaType || 'movie';
-  const typeIcons = { movie: '🎬', series: '📺', tv: '📺', game: '🎮' };
+  const typeIcons = { movie: '🎬', series: '📺', tv: '📺', game: '🎮', collection: '🎞️' };
   const icon = typeIcons[type] || '🎬';
   const encoded = encodeItemForClick(item);
 
+  // Reuse Logger's existing poster renderer and error fallback system
+  const safeTitleParam = (title || '').replace(/"/g, '&quot;').replace(/'/g, "\'");
+  const typeClass = type === 'tv' ? 'series' : type;
   const posterHtml = item.poster
-    ? `<img src="${item.poster}" alt="${title}" loading="lazy" class="pub-poster-img" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\\\'pub-poster-ph\\\'>${icon}</div>'">`
-    : `<div class="pub-poster-ph">${icon}</div>`;
+    ? `<img src="${item.poster}" alt="${title}" loading="lazy" class="pub-poster-img" onerror="if(typeof onPosterError==='function'){onPosterError(this,'${type}','${safeTitleParam}','pub-poster-ph');}else{this.onerror=null;this.parentElement.innerHTML='<div class=\\\'pub-poster-ph\\\'>${icon}</div>';}">`
+    : `<div class="pub-poster-ph ph-${typeClass}" data-type="${type}" title="${safeTitleParam}">${icon}</div>`;
 
   const rKey = item.rating && RATINGS && RATINGS.includes(item.rating) ? item.rating : '';
   const rClass = rKey && RATING_CLASS ? (RATING_CLASS[rKey] || '') : '';
   const rLabel = rKey && RATING_LABELS ? (RATING_LABELS[rKey] || '') : '';
   const ratingBadge = rLabel ? `<span class="pub-rating-badge ${rClass}">★ ${rLabel}</span>` : '';
-  const typeBadge = `<span class="pub-type-badge">${type}</span>`;
+  const typeLabel = type === 'collection' ? 'Franchise' : type;
+  const typeBadge = `<span class="pub-type-badge">${typeLabel}</span>`;
   const customBadge = badgeText ? `<span class="pub-type-badge" style="background:rgba(255,255,255,0.22);color:var(--text)">${badgeText}</span>` : '';
 
-  const typeClass = type === 'tv' ? 'series' : type;
+  const dateOrParts = (type === 'collection' && item.partsCount)
+    ? `${item.partsCount} ${item.partsCount === 1 ? 'film' : 'films'}`
+    : year;
 
   return `
     <div class="pub-poster-card ${typeClass}" onclick="handlePublicCardClick('${encoded}')" role="button" tabindex="0" title="${title} (${year || type})">
@@ -9452,7 +9514,7 @@ function pubPosterCard(item, badgeText){
           ${ratingBadge}
           ${typeBadge}
           ${customBadge}
-          ${year ? `<span class="pub-date-badge">${year}</span>` : ''}
+          ${dateOrParts ? `<span class="pub-date-badge">${dateOrParts}</span>` : ''}
         </div>
       </div>
     </div>
