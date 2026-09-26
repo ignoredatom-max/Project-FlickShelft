@@ -4079,7 +4079,6 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   overflow-x:auto;
   scrollbar-width:none;
   padding-bottom:4px;
-  justify-content:center;
   margin-bottom:6px;
 }
 .pub-stat-strip::-webkit-scrollbar{ display:none; }
@@ -4990,33 +4989,34 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
             <span class="pub-hero-dot"></span>
             <span>Games</span>
           </div>
-          <div class="pub-hero-tagline" id="pubBio" style="margin-bottom:14px"></div>
-        </div>
-      </div>
-      <!-- Stat pills — centered inside hero -->
-      <div class="pub-stat-strip" id="pubStatStrip">
-        <div class="pub-stat-pill" onclick="switchPublicTab('overview')">
-          <span class="pub-stat-pill-num" id="pubStatTotal">0</span>
-          <span class="pub-stat-pill-lbl">Logged</span>
-        </div>
-        <div class="pub-stat-pill film" onclick="switchPublicTab('overview')">
-          <span class="pub-stat-pill-num" id="pubStatMovies">0</span>
-          <span class="pub-stat-pill-lbl">Movies</span>
-        </div>
-        <div class="pub-stat-pill series" onclick="switchPublicTab('overview')">
-          <span class="pub-stat-pill-num" id="pubStatTV">0</span>
-          <span class="pub-stat-pill-lbl">Series</span>
-        </div>
-        <div class="pub-stat-pill game" onclick="switchPublicTab('overview')">
-          <span class="pub-stat-pill-num" id="pubStatGames">0</span>
-          <span class="pub-stat-pill-lbl">Games</span>
-        </div>
-        <div class="pub-stat-pill wl" onclick="switchPublicTab('watchlist')">
-          <span class="pub-stat-pill-num" id="pubStatWL">0</span>
-          <span class="pub-stat-pill-lbl">Watchlist</span>
+          <div class="pub-hero-tagline" id="pubBio" style="margin-bottom:0"></div>
         </div>
       </div>
     </section>
+
+    <!-- STAT SUMMARY STRIP -->
+    <div class="pub-stat-strip" id="pubStatStrip">
+      <div class="pub-stat-pill" onclick="switchPublicTab('overview')">
+        <span class="pub-stat-pill-num" id="pubStatTotal">0</span>
+        <span class="pub-stat-pill-lbl">Logged</span>
+      </div>
+      <div class="pub-stat-pill film" onclick="switchPublicTab('overview')">
+        <span class="pub-stat-pill-num" id="pubStatMovies">0</span>
+        <span class="pub-stat-pill-lbl">Movies</span>
+      </div>
+      <div class="pub-stat-pill series" onclick="switchPublicTab('overview')">
+        <span class="pub-stat-pill-num" id="pubStatTV">0</span>
+        <span class="pub-stat-pill-lbl">Series</span>
+      </div>
+      <div class="pub-stat-pill game" onclick="switchPublicTab('overview')">
+        <span class="pub-stat-pill-num" id="pubStatGames">0</span>
+        <span class="pub-stat-pill-lbl">Games</span>
+      </div>
+      <div class="pub-stat-pill wl" onclick="switchPublicTab('watchlist')">
+        <span class="pub-stat-pill-num" id="pubStatWL">0</span>
+        <span class="pub-stat-pill-lbl">Watchlist</span>
+      </div>
+    </div>
 
     <!-- TABS BAR -->
     <nav class="pub-tabs-bar" id="pubTabsBar">
