@@ -2406,12 +2406,13 @@ body.readonly .row{cursor:default}
 
 /* ── PROFILE SHARE BTN ───────────────────────── */
 .profile-share-btn{
-  position:absolute;top:16px;right:16px;
   padding:6px 12px;
   background:var(--bg3);border:1px solid var(--border2);
   border-radius:20px;color:var(--text2);font-size:11px;font-weight:600;
   cursor:pointer;font-family:Inter,sans-serif;
   transition:background 0.15s;
+  white-space:nowrap;
+  flex-shrink:0;
 }
 .profile-share-btn:active{background:var(--bg4);}
 
@@ -3937,42 +3938,40 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   background:linear-gradient(180deg, var(--bg2) 0%, rgba(21, 21, 24, 0.4) 100%);
   border:1px solid var(--border);
   border-radius:20px;
-  padding:22px 18px 20px;
-  margin-bottom:22px;
+  padding:32px 18px 28px;
+  margin-bottom:16px;
   position:relative;
   overflow:hidden;
   box-shadow:0 8px 30px rgba(0,0,0,0.3);
+  text-align:center;
 }
 @media (min-width: 640px){
   .pub-hero{
-    padding:28px 28px 24px;
+    padding:40px 28px 32px;
   }
 }
 .pub-hero-inner{
   display:flex;
-  align-items:flex-start;
-  gap:16px;
-}
-@media (min-width: 640px){
-  .pub-hero-inner{
-    gap:22px;
-  }
+  flex-direction:column;
+  align-items:center;
+  gap:0;
 }
 .pub-avatar-wrap{
-  width:68px;
-  height:68px;
+  width:80px;
+  height:80px;
   border-radius:50%;
   overflow:hidden;
   flex-shrink:0;
   border:2px solid var(--border2);
   background:var(--bg3);
   position:relative;
-  box-shadow:0 4px 16px rgba(0,0,0,0.4);
+  box-shadow:0 4px 20px rgba(0,0,0,0.5);
+  margin-bottom:14px;
 }
 @media (min-width: 640px){
   .pub-avatar-wrap{
-    width:82px;
-    height:82px;
+    width:96px;
+    height:96px;
   }
 }
 .pub-avatar-img{
@@ -3993,32 +3992,76 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   background:linear-gradient(135deg, var(--bg3), var(--bg4));
 }
 .pub-hero-meta{
-  flex:1;
-  min-width:0;
+  width:100%;
+  text-align:center;
 }
 .pub-hero-name{
-  font-size:22px;
+  font-size:24px;
   font-weight:800;
   letter-spacing:-0.5px;
   color:var(--text);
   line-height:1.2;
-  margin-bottom:4px;
+  margin-bottom:6px;
   word-break:break-word;
 }
 @media (min-width: 640px){
   .pub-hero-name{
-    font-size:26px;
+    font-size:28px;
   }
 }
 .pub-hero-tagline{
   font-size:12px;
   color:var(--text3);
   line-height:1.4;
+  margin-bottom:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  flex-wrap:wrap;
+}
+.pub-hero-media-types{
+  font-size:12px;
+  color:var(--text3);
+  letter-spacing:0.04em;
   margin-bottom:12px;
   display:flex;
   align-items:center;
-  gap:6px;
+  justify-content:center;
+  gap:4px;
+}
+.pub-hero-dot{
+  width:3px;
+  height:3px;
+  border-radius:50%;
+  background:var(--text3);
+  opacity:0.5;
+  display:inline-block;
+}
+.pub-hero-stat-line{
+  font-size:12px;
+  color:var(--text3);
+  margin-top:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
   flex-wrap:wrap;
+}
+.pub-hero-stat-item{
+  display:flex;
+  align-items:baseline;
+  gap:4px;
+}
+.pub-hero-stat-num{
+  font-size:14px;
+  font-weight:800;
+  color:var(--text);
+}
+.pub-hero-stat-lbl{
+  font-size:11px;
+  font-weight:500;
+  color:var(--text3);
 }
 .pub-badge-media{
   color:var(--text2);
@@ -4036,6 +4079,8 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   overflow-x:auto;
   scrollbar-width:none;
   padding-bottom:4px;
+  justify-content:center;
+  margin-bottom:6px;
 }
 .pub-stat-strip::-webkit-scrollbar{ display:none; }
 .pub-stat-pill{
@@ -4848,7 +4893,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
     <div class="profile-info">
       <div class="profile-name" id="profileName" onclick="editProfileName()">Aditya</div>
       <div class="profile-sub" id="profileSub">—</div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:2px">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;justify-content:center">
         <button class="profile-share-btn" id="profileShareBtn" style="display:none">
           <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right:5px;vertical-align:-1px">
             <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
@@ -4938,37 +4983,40 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
         </div>
         <div class="pub-hero-meta">
           <div class="pub-hero-name" id="pubName">Member Profile</div>
-          <div class="pub-hero-tagline" id="pubMetaLine">
-            <span class="pub-badge-media">Tracking on loGGer</span>
+          <div class="pub-hero-media-types" id="pubMetaLine">
+            <span>Movies</span>
+            <span class="pub-hero-dot"></span>
+            <span>TV</span>
+            <span class="pub-hero-dot"></span>
+            <span>Games</span>
           </div>
-          <div class="pub-hero-tagline" id="pubBio" style="margin-top:4px">A personal media diary tracking movies, series, and video games.</div>
+          <div class="pub-hero-tagline" id="pubBio" style="margin-bottom:14px"></div>
+        </div>
+      </div>
+      <!-- Stat pills — centered inside hero -->
+      <div class="pub-stat-strip" id="pubStatStrip">
+        <div class="pub-stat-pill" onclick="switchPublicTab('overview')">
+          <span class="pub-stat-pill-num" id="pubStatTotal">0</span>
+          <span class="pub-stat-pill-lbl">Logged</span>
+        </div>
+        <div class="pub-stat-pill film" onclick="switchPublicTab('overview')">
+          <span class="pub-stat-pill-num" id="pubStatMovies">0</span>
+          <span class="pub-stat-pill-lbl">Movies</span>
+        </div>
+        <div class="pub-stat-pill series" onclick="switchPublicTab('overview')">
+          <span class="pub-stat-pill-num" id="pubStatTV">0</span>
+          <span class="pub-stat-pill-lbl">Series</span>
+        </div>
+        <div class="pub-stat-pill game" onclick="switchPublicTab('overview')">
+          <span class="pub-stat-pill-num" id="pubStatGames">0</span>
+          <span class="pub-stat-pill-lbl">Games</span>
+        </div>
+        <div class="pub-stat-pill wl" onclick="switchPublicTab('watchlist')">
+          <span class="pub-stat-pill-num" id="pubStatWL">0</span>
+          <span class="pub-stat-pill-lbl">Watchlist</span>
         </div>
       </div>
     </section>
-
-    <!-- STAT SUMMARY STRIP -->
-    <div class="pub-stat-strip" id="pubStatStrip">
-      <div class="pub-stat-pill" onclick="switchPublicTab('overview')">
-        <span class="pub-stat-pill-num" id="pubStatTotal">0</span>
-        <span class="pub-stat-pill-lbl">Logged</span>
-      </div>
-      <div class="pub-stat-pill film" onclick="switchPublicTab('overview')">
-        <span class="pub-stat-pill-num" id="pubStatMovies">0</span>
-        <span class="pub-stat-pill-lbl">Movies</span>
-      </div>
-      <div class="pub-stat-pill series" onclick="switchPublicTab('overview')">
-        <span class="pub-stat-pill-num" id="pubStatTV">0</span>
-        <span class="pub-stat-pill-lbl">Series</span>
-      </div>
-      <div class="pub-stat-pill game" onclick="switchPublicTab('overview')">
-        <span class="pub-stat-pill-num" id="pubStatGames">0</span>
-        <span class="pub-stat-pill-lbl">Games</span>
-      </div>
-      <div class="pub-stat-pill wl" onclick="switchPublicTab('watchlist')">
-        <span class="pub-stat-pill-num" id="pubStatWL">0</span>
-        <span class="pub-stat-pill-lbl">Watchlist</span>
-      </div>
-    </div>
 
     <!-- TABS BAR -->
     <nav class="pub-tabs-bar" id="pubTabsBar">
@@ -9395,13 +9443,15 @@ function renderPublicProfile(explicitUid){
   if(wlEl) wlEl.textContent = wlEntries.length;
 
   const metaEl = document.getElementById('pubMetaLine');
-  if(metaEl){
-    metaEl.innerHTML = `<span class="pub-badge-media">${entries.length} logged</span> <span class="pub-badge-media">${peaks} peaks</span> <span class="pub-badge-media">${favs.length} favs</span>`;
-  }
+  // pubMetaLine now shows static "Movies · TV · Games" — no dynamic update needed
 
   const bioEl = document.getElementById('pubBio');
   if(bioEl){
-    bioEl.textContent = `${name}'s personal tracking archive across films, series, and video games on loGGer.`;
+    // Only show bio text if there's meaningful content; keep it short and clean
+    const hasPeaks = peaks > 0;
+    bioEl.textContent = hasPeaks
+      ? `${name}'s media diary — ${peaks} peak ${peaks === 1 ? 'pick' : 'picks'}.`
+      : `${name}'s personal media diary on loGGer.`;
   }
 
   // Preview banner & CTA button handling
