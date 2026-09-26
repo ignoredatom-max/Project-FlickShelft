@@ -3893,8 +3893,9 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   user-select:none;
 }
 .pub-brand-logo{
-  height:24px;
+  height:32px;
   width:auto;
+  object-fit:contain;
   display:block;
 }
 .pub-brand-badge{
@@ -4945,7 +4946,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   <div class="pub-container">
     <header class="pub-topbar">
       <div class="pub-brand" onclick="handlePubBrandClick()">
-        <span class="pub-brand-logo">loGGer</span>
+        <img src="logo.png" class="pub-brand-logo" alt="Logger">
         <span class="pub-brand-badge">Public Profile</span>
       </div>
       <div class="pub-topbar-actions">
@@ -5002,7 +5003,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
     <div id="pubTabStats" class="pub-tab-content"></div>
 
     <footer class="pub-footer">
-      <div class="pub-footer-brand">loGGer</div>
+      <img src="logo.png" alt="Logger" style="height:30px;object-fit:contain;margin:0 auto 12px;display:block">
       <div class="pub-footer-tagline">Track what you watch, what you play, and what you want to experience next.</div>
       <button class="pub-footer-btn" onclick="openPublicGetStarted()">Start Your Own loGGer — It's Free</button>
       <div class="atomyn-signature" style="margin-top:24px;opacity:0.5">ATOMYN</div>
