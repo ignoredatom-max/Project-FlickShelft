@@ -4433,6 +4433,208 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   flex-shrink:0;
   font-weight:600;
 }
+
+/* ── ADDITIONAL: Footer, Banner, Empty State, Stats ── */
+.pub-banner{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  background:rgba(90,90,255,0.12);
+  border:1px solid rgba(90,90,255,0.25);
+  border-radius:12px;
+  padding:10px 14px;
+  margin-bottom:18px;
+  font-size:12.5px;
+  color:var(--text2);
+}
+.pub-banner-close{
+  background:none;
+  border:none;
+  color:var(--blue);
+  font-size:12px;
+  font-weight:700;
+  cursor:pointer;
+  white-space:nowrap;
+  flex-shrink:0;
+}
+.pub-exit-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  background:var(--bg3);
+  color:var(--text2);
+  font-family:'Inter',sans-serif;
+  font-size:12px;
+  font-weight:700;
+  padding:7px 14px;
+  border-radius:999px;
+  border:1px solid var(--border2);
+  cursor:pointer;
+}
+.pub-tab-content{ display:none; }
+.pub-tab-content.active{ display:block; }
+.pub-sec{ margin-bottom:30px; }
+.pub-sec-hdr{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:12px;
+}
+.pub-sec-title{
+  font-size:11.5px;
+  font-weight:800;
+  letter-spacing:0.09em;
+  text-transform:uppercase;
+  color:var(--text2);
+}
+.pub-sec-link{
+  font-size:12px;
+  font-weight:600;
+  color:var(--blue);
+  background:none;
+  border:none;
+  cursor:pointer;
+}
+.pub-empty-card{
+  padding:28px 16px;
+  text-align:center;
+  font-size:13px;
+  color:var(--text3);
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:12px;
+}
+.pub-stats-container{ padding:0 2px; }
+.pub-stats-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin-bottom:24px;
+}
+@media (min-width:500px){
+  .pub-stats-grid{ grid-template-columns:repeat(6,1fr); }
+}
+.pub-stat-box{
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:12px 8px;
+  text-align:center;
+}
+.pub-stat-box-num{
+  font-size:18px;
+  font-weight:800;
+  color:var(--text);
+  line-height:1;
+  margin-bottom:4px;
+}
+.pub-stat-box-lbl{
+  font-size:10px;
+  color:var(--text3);
+  font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:0.3px;
+}
+.pub-rating-dist{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.pub-dist-row{
+  display:grid;
+  grid-template-columns:90px 1fr 56px;
+  align-items:center;
+  gap:10px;
+}
+.pub-dist-label{
+  font-size:11.5px;
+  font-weight:700;
+}
+.pub-dist-bar-track{
+  height:6px;
+  background:var(--bg3);
+  border-radius:99px;
+  overflow:hidden;
+}
+.pub-dist-bar-fill{
+  height:100%;
+  border-radius:99px;
+  background:var(--text3);
+  transition:width 0.5s cubic-bezier(0.2,0,0,1);
+}
+.pub-dist-bar-fill.r-peak{ background:#f5c842; }
+.pub-dist-bar-fill.r-excellent{ background:var(--green); }
+.pub-dist-bar-fill.r-decent{ background:var(--blue); }
+.pub-dist-bar-fill.r-mediocre{ background:var(--text3); }
+.pub-dist-bar-fill.r-skip{ background:var(--red); }
+.pub-dist-count{
+  font-size:10.5px;
+  color:var(--text3);
+  text-align:right;
+}
+.pub-filter-bar{
+  display:flex;
+  gap:6px;
+  overflow-x:auto;
+  scrollbar-width:none;
+  margin-bottom:14px;
+}
+.pub-filter-bar::-webkit-scrollbar{ display:none; }
+.pub-filter-btn{
+  background:var(--bg3);
+  border:1px solid var(--border);
+  color:var(--text3);
+  font-family:'Inter',sans-serif;
+  font-size:11.5px;
+  font-weight:600;
+  padding:5px 13px;
+  border-radius:20px;
+  cursor:pointer;
+  white-space:nowrap;
+  flex-shrink:0;
+  transition:all 0.15s;
+}
+.pub-filter-btn.active{
+  background:var(--text);
+  color:var(--bg);
+  border-color:var(--text);
+}
+.pub-diary-list{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.pub-footer{
+  border-top:1px solid var(--border);
+  margin-top:48px;
+  padding-top:32px;
+  text-align:center;
+}
+.pub-footer-brand{
+  font-size:20px;
+  font-weight:900;
+  letter-spacing:-0.5px;
+  color:var(--text);
+  margin-bottom:6px;
+}
+.pub-footer-tagline{
+  font-size:12px;
+  color:var(--text3);
+  line-height:1.5;
+  margin-bottom:16px;
+}
+.pub-footer-btn{
+  background:var(--text);
+  color:var(--bg);
+  font-family:'Inter',sans-serif;
+  font-size:12.5px;
+  font-weight:700;
+  padding:10px 22px;
+  border-radius:999px;
+  border:none;
+  cursor:pointer;
+}
 </style>
 </head>
 <body>
@@ -4695,7 +4897,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
     <header class="pub-topbar">
       <div class="pub-brand" onclick="handlePubBrandClick()">
         <span class="pub-brand-logo">loGGer</span>
-        <span class="pub-brand-tagline">Film • Series • Games</span>
+        <span class="pub-brand-badge">Public Profile</span>
       </div>
       <div class="pub-topbar-actions">
         <button class="pub-cta-btn" id="pubCtaBtn" onclick="openPublicGetStarted()">Get loGGer</button>
@@ -4709,46 +4911,47 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
     </div>
 
     <section class="pub-hero" id="pubHero">
-      <div class="pub-avatar-wrap">
-        <div class="pub-avatar" id="pubAvatar">?</div>
-      </div>
-      <div class="pub-hero-info">
-        <div class="pub-name-row">
-          <h1 class="pub-name" id="pubName">Member Profile</h1>
-          <span class="pub-badge">Public Profile</span>
+      <div class="pub-hero-inner">
+        <div class="pub-avatar-wrap">
+          <div class="pub-avatar-ph" id="pubAvatar">?</div>
         </div>
-        <div class="pub-meta-line" id="pubMetaLine">Tracking on loGGer</div>
-        <div class="pub-bio" id="pubBio">A personal media diary tracking movies, series, and video games.</div>
+        <div class="pub-hero-meta">
+          <div class="pub-hero-name" id="pubName">Member Profile</div>
+          <div class="pub-hero-tagline" id="pubMetaLine">
+            <span class="pub-badge-media">Tracking on loGGer</span>
+          </div>
+          <div class="pub-hero-tagline" id="pubBio" style="margin-top:4px">A personal media diary tracking movies, series, and video games.</div>
+        </div>
       </div>
     </section>
 
     <!-- STAT SUMMARY STRIP -->
-    <section class="pub-stat-strip" id="pubStatStrip">
-      <div class="pub-stat-cell" onclick="switchPublicTab('overview')">
-        <div class="pub-stat-num" id="pubStatTotal">0</div>
-        <div class="pub-stat-lbl">Logged</div>
+    <div class="pub-stat-strip" id="pubStatStrip">
+      <div class="pub-stat-pill" onclick="switchPublicTab('overview')">
+        <span class="pub-stat-pill-num" id="pubStatTotal">0</span>
+        <span class="pub-stat-pill-lbl">Logged</span>
       </div>
-      <div class="pub-stat-cell" onclick="switchPublicTab('overview')">
-        <div class="pub-stat-num" id="pubStatMovies">0</div>
-        <div class="pub-stat-lbl">Movies</div>
+      <div class="pub-stat-pill film" onclick="switchPublicTab('overview')">
+        <span class="pub-stat-pill-num" id="pubStatMovies">0</span>
+        <span class="pub-stat-pill-lbl">Movies</span>
       </div>
-      <div class="pub-stat-cell" onclick="switchPublicTab('overview')">
-        <div class="pub-stat-num" id="pubStatTV">0</div>
-        <div class="pub-stat-lbl">Series</div>
+      <div class="pub-stat-pill series" onclick="switchPublicTab('overview')">
+        <span class="pub-stat-pill-num" id="pubStatTV">0</span>
+        <span class="pub-stat-pill-lbl">Series</span>
       </div>
-      <div class="pub-stat-cell" onclick="switchPublicTab('overview')">
-        <div class="pub-stat-num" id="pubStatGames">0</div>
-        <div class="pub-stat-lbl">Games</div>
+      <div class="pub-stat-pill game" onclick="switchPublicTab('overview')">
+        <span class="pub-stat-pill-num" id="pubStatGames">0</span>
+        <span class="pub-stat-pill-lbl">Games</span>
       </div>
-      <div class="pub-stat-cell" onclick="switchPublicTab('watchlist')">
-        <div class="pub-stat-num" id="pubStatWL">0</div>
-        <div class="pub-stat-lbl">Watchlist</div>
+      <div class="pub-stat-pill wl" onclick="switchPublicTab('watchlist')">
+        <span class="pub-stat-pill-num" id="pubStatWL">0</span>
+        <span class="pub-stat-pill-lbl">Watchlist</span>
       </div>
-    </section>
+    </div>
 
     <!-- TABS BAR -->
     <nav class="pub-tabs-bar" id="pubTabsBar">
-      <button class="pub-tab-btn active" data-pubtab="overview" onclick="switchPublicTab('overview')">Overview</button>
+      <button class="pub-tab-btn on" data-pubtab="overview" onclick="switchPublicTab('overview')">Overview</button>
       <button class="pub-tab-btn" data-pubtab="diary" onclick="switchPublicTab('diary')">Diary / Log</button>
       <button class="pub-tab-btn" data-pubtab="favs" onclick="switchPublicTab('favs')">Favourites</button>
       <button class="pub-tab-btn" data-pubtab="watchlist" onclick="switchPublicTab('watchlist')">Watchlist</button>
@@ -4763,12 +4966,10 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
     <div id="pubTabStats" class="pub-tab-content"></div>
 
     <footer class="pub-footer">
-      <div class="pub-footer-cta">
-        <div class="pub-footer-brand">loGGer</div>
-        <div class="pub-footer-tagline">Track what you watch, what you play, and what you want to experience next.</div>
-        <button class="pub-footer-btn" onclick="openPublicGetStarted()">Start Your Own loGGer — It's Free</button>
-      </div>
-      <div class="atomyn-signature" style="margin-top:24px">ATOMYN</div>
+      <div class="pub-footer-brand">loGGer</div>
+      <div class="pub-footer-tagline">Track what you watch, what you play, and what you want to experience next.</div>
+      <button class="pub-footer-btn" onclick="openPublicGetStarted()">Start Your Own loGGer — It's Free</button>
+      <div class="atomyn-signature" style="margin-top:24px;opacity:0.5">ATOMYN</div>
     </footer>
   </div>
 </div>
@@ -8995,7 +9196,7 @@ function renderPublicProfile(explicitUid){
 
   const metaEl = document.getElementById('pubMetaLine');
   if(metaEl){
-    metaEl.textContent = `${entries.length} logged · ${peaks} peaks · ${favs.length} favourites · ${wlEntries.length} on watchlist`;
+    metaEl.innerHTML = `<span class="pub-badge-media">${entries.length} logged</span> <span class="pub-badge-media">${peaks} peaks</span> <span class="pub-badge-media">${favs.length} favs</span>`;
   }
 
   const bioEl = document.getElementById('pubBio');
@@ -9028,7 +9229,7 @@ function switchPublicTab(tabId){
   const tabs = ['overview', 'diary', 'favs', 'watchlist', 'stats'];
   tabs.forEach(t => {
     const btn = document.querySelector(`.pub-tab-btn[data-pubtab="${t}"]`);
-    if(btn) btn.classList.toggle('active', t === tabId);
+    if(btn) btn.classList.toggle('on', t === tabId);
     const content = document.getElementById(`pubTab${t.charAt(0).toUpperCase() + t.slice(1)}`);
     if(content) content.classList.toggle('active', t === tabId);
   });
@@ -9078,19 +9279,31 @@ function pubPosterCard(item, badgeText){
     ? `<img src="${item.poster}" alt="${title}" loading="lazy" class="pub-poster-img" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\\'pub-poster-ph\\'>${icon}</div>'">`
     : `<div class="pub-poster-ph">${icon}</div>`;
 
-  const badgeHtml = badgeText ? `<div class="pub-poster-badge">${badgeText}</div>` : '';
+  const rKey = item.rating && RATINGS && RATINGS.includes(item.rating) ? item.rating : '';
+  const rClass = rKey && RATING_CLASS ? (RATING_CLASS[rKey] || '') : '';
+  const rLabel = rKey && RATING_LABELS ? (RATING_LABELS[rKey] || '') : '';
+  const ratingBadge = rLabel ? `<span class="pub-rating-badge ${rClass}">★ ${rLabel}</span>` : '';
+  const typeBadge = `<span class="pub-type-badge">${type}</span>`;
+
+  const typeClass = type === 'tv' ? 'series' : type;
 
   return `
-    <div class="pub-poster-card" onclick="handlePublicCardClick('${encoded}')" role="button" tabindex="0" title="${title} (${year || type})">
-      <div class="pub-poster-box">
-        ${posterHtml}
-        ${badgeHtml}
+    <div class="pub-poster-card ${typeClass}" onclick="handlePublicCardClick('${encoded}')" role="button" tabindex="0" title="${title} (${year || type})">
+      ${posterHtml}
+      <div class="pub-poster-overlay"></div>
+      <div class="pub-poster-type-bar"></div>
+      <div class="pub-poster-content">
+        <div class="pub-poster-title">${title}</div>
+        <div class="pub-poster-badges">
+          ${ratingBadge}
+          ${typeBadge}
+          ${year ? `<span class="pub-date-badge">${year}</span>` : ''}
+        </div>
       </div>
-      <div class="pub-card-title">${title}</div>
-      <div class="pub-card-sub">${year ? year : type}</div>
     </div>
   `;
 }
+
 
 function pubDiaryRow(entry){
   const title = entry.title || entry.name || 'Untitled';
@@ -9105,53 +9318,56 @@ function pubDiaryRow(entry){
   const dateStr = formatLogDate(entry.id);
 
   const posterHtml = entry.poster
-    ? `<img src="${entry.poster}" alt="${title}" loading="lazy" class="pub-row-thumb" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\\'pub-row-ph\\'>${icon}</div>'">`
-    : `<div class="pub-row-ph">${icon}</div>`;
+    ? `<img src="${entry.poster}" alt="${title}" loading="lazy" class="pub-diary-thumb" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\\'pub-diary-ph\\'>${icon}</div>'">`
+    : `<div class="pub-diary-ph">${icon}</div>`;
+
+  const typeClass = type === 'tv' ? 'series' : type;
 
   return `
-    <div class="pub-diary-row" onclick="handlePublicCardClick('${encoded}')" role="button" tabindex="0">
-      <div class="pub-row-thumb-wrap">
-        ${posterHtml}
-      </div>
-      <div class="pub-row-info">
-        <div class="pub-row-top">
-          <span class="pub-row-title">${title}</span>
-          ${year ? `<span class="pub-row-year">(${year})</span>` : ''}
-          <span class="pub-row-type">${icon}</span>
+    <div class="pub-diary-row ${typeClass}" onclick="handlePublicCardClick('${encoded}')" role="button" tabindex="0">
+      ${posterHtml}
+      <div class="pub-diary-info">
+        <div class="pub-diary-title-wrap">
+          <span class="pub-diary-title">${title}</span>
+          ${year ? `<span class="pub-diary-year">(${year})</span>` : ''}
         </div>
-        <div class="pub-row-meta">
-          <span class="pub-row-rating ${rClass}">★ ${rLabel}</span>
-          ${entry.fav ? '<span class="pub-row-fav">❤️ Favourite</span>' : ''}
-          <span class="pub-row-date">${dateStr}</span>
+        <div class="pub-diary-meta">
+          <span class="pub-rating-badge ${rClass}">★ ${rLabel}</span>
+          ${entry.fav ? '<span style="font-size:11px;color:var(--pink)">❤️</span>' : ''}
+          <span class="pub-diary-date">${dateStr}</span>
         </div>
         ${entry.notes && entry.notes.trim() ? `
-          <div class="pub-row-notes">${entry.notes.trim()}</div>
+          <div class="pub-diary-notes">${entry.notes.trim()}</div>
         ` : ''}
       </div>
     </div>
   `;
 }
 
+
 function renderPublicOverview(favs, entries, wlEntries, picks){
   const container = document.getElementById('pubTabOverview');
   if(!container) return;
 
-  const topPicksOrFavs = (favs && favs.length) ? favs.slice(0, 5) : (picks || []).slice(0, 5);
-  const recentLogs = [...entries].sort((a,b) => (b.id||0) - (a.id||0)).slice(0, 10);
-  const recentWL = [...wlEntries].slice(0, 10);
+  const topPicksOrFavs = (favs && favs.length) ? favs.slice(0, 6) : (picks || []).slice(0, 6);
+  const recentLogs = [...entries].sort((a,b) => (b.id||0) - (a.id||0)).slice(0, 6);
+  const recentWL = [...wlEntries].slice(0, 6);
 
   let html = '';
 
-  // 1. Favourites / Top Picks
+  // 1. Favourites / Top Picks — poster grid
   html += `
     <section class="pub-sec">
-      <div class="pub-sec-hdr">
-        <div class="pub-sec-title">❤️ Favourites & Top Picks</div>
-        <button class="pub-sec-link" onclick="switchPublicTab('favs')">See all ›</button>
+      <div class="pub-sec-header">
+        <div class="pub-sec-title-group">
+          <div class="pub-sec-title">❤️ Favourites &amp; Top Picks</div>
+          ${topPicksOrFavs.length ? `<span class="pub-sec-subtitle">${topPicksOrFavs.length} shown</span>` : ''}
+        </div>
+        <button class="pub-sec-more" onclick="switchPublicTab('favs')">See all ›</button>
       </div>
       ${topPicksOrFavs.length ? `
         <div class="pub-favs-grid">
-          ${topPicksOrFavs.map(item => pubPosterCard(item, '★ Top Pick')).join('')}
+          ${topPicksOrFavs.map(item => pubPosterCard(item)).join('')}
         </div>
       ` : `
         <div class="pub-empty-card">No favourites selected yet.</div>
@@ -9159,19 +9375,19 @@ function renderPublicOverview(favs, entries, wlEntries, picks){
     </section>
   `;
 
-  // 2. Recent Activity / Log
+  // 2. Recent Activity — compact diary rows
   html += `
     <section class="pub-sec">
-      <div class="pub-sec-hdr">
-        <div class="pub-sec-title">📋 Recent Activity</div>
-        <button class="pub-sec-link" onclick="switchPublicTab('diary')">View diary ›</button>
+      <div class="pub-sec-header">
+        <div class="pub-sec-title-group">
+          <div class="pub-sec-title">📋 Recent Activity</div>
+          ${entries.length ? `<span class="pub-sec-subtitle">${entries.length} total logged</span>` : ''}
+        </div>
+        <button class="pub-sec-more" onclick="switchPublicTab('diary')">View diary ›</button>
       </div>
       ${recentLogs.length ? `
-        <div class="pub-cards-grid">
-          ${recentLogs.map(item => {
-            const rLabel = RATING_LABELS[item.rating] || 'Decent';
-            return pubPosterCard(item, `★ ${rLabel}`);
-          }).join('')}
+        <div class="pub-diary-list">
+          ${recentLogs.map(pubDiaryRow).join('')}
         </div>
       ` : `
         <div class="pub-empty-card">No media logged yet.</div>
@@ -9179,16 +9395,18 @@ function renderPublicOverview(favs, entries, wlEntries, picks){
     </section>
   `;
 
-  // 3. Watchlist
+  // 3. Watchlist preview
   html += `
     <section class="pub-sec">
-      <div class="pub-sec-hdr">
-        <div class="pub-sec-title">📌 Watchlist & Up Next</div>
-        <button class="pub-sec-link" onclick="switchPublicTab('watchlist')">View all (${wlEntries.length}) ›</button>
+      <div class="pub-sec-header">
+        <div class="pub-sec-title-group">
+          <div class="pub-sec-title">📌 Watchlist &amp; Up Next</div>
+        </div>
+        <button class="pub-sec-more" onclick="switchPublicTab('watchlist')">View all (${wlEntries.length}) ›</button>
       </div>
       ${recentWL.length ? `
         <div class="pub-cards-grid">
-          ${recentWL.map(item => pubPosterCard(item, '+ Watchlist')).join('')}
+          ${recentWL.map(item => pubPosterCard(item)).join('')}
         </div>
       ` : `
         <div class="pub-empty-card">Watchlist is currently empty.</div>
