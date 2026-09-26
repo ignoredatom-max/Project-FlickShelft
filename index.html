@@ -13,7 +13,27 @@
 <link rel="manifest" href="manifest.json">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,400;1,700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+(function(){
+  try {
+    var u = new URLSearchParams(window.location.search).get('u');
+    if (u) {
+      document.documentElement.classList.add('is-public-profile');
+    }
+  } catch(e){}
+})();
+</script>
 <style>
+/* Early gate for public profile to prevent flash of normal app page */
+html.is-public-profile #page-log,
+html.is-public-profile .nav,
+html.is-public-profile #tutorialOverlay,
+html.is-public-profile .readonly-banner {
+  display: none !important;
+}
+html.is-public-profile #page-public-profile.on {
+  display: block !important;
+}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
   --bg:#0d0d0f;
@@ -5785,24 +5805,37 @@ const OWNER_UID = 'kFMRmHi4hzakOaQFx7ccanUsIbl1';
 // Check URL for ?u= param
 const _urlUID = new URLSearchParams(window.location.search).get('u');
 const PUBLIC_UID = _urlUID || null; // null = no public view, show tutorial
+window.PUBLIC_UID = PUBLIC_UID;
 let PUBLIC_WL = [];
 window.PUBLIC_WL = PUBLIC_WL;
 
 function setReadOnly(isReadOnly){
-  document.body.classList.toggle('readonly', isReadOnly);
-  const isPubOn = document.getElementById('page-public-profile')?.classList.contains('on');
-  document.getElementById('readonlyBanner').style.display = (isReadOnly && !isPubOn) ? 'flex' : 'none';
+  document.body?.classList?.toggle('readonly', isReadOnly);
+  const isPubOn = document.getElementById('page-public-profile')?.classList?.contains('on');
+  const roBanner = document.getElementById('readonlyBanner');
+  if(roBanner) roBanner.style.display = (isReadOnly && !isPubOn && !PUBLIC_UID) ? 'flex' : 'none';
+}
+
+// Early start for public profile data loading without waiting for auth
+if(PUBLIC_UID){
+  document.documentElement?.classList?.add('is-public-profile');
+  document.getElementById('page-log')?.classList?.remove('on');
+  setReadOnly(true);
+  hideTutorial();
+  fsLoadPublic(PUBLIC_UID);
 }
 
 onAuthStateChanged(auth, async user=>{
   currentUser = user;
   updateAuthUI();
-  if(PUBLIC_UID && (!user || user.uid !== PUBLIC_UID)){
-    // Visiting someone else's shared profile
-    hideTutorial();
-    setReadOnly(true);
-    await fsLoadPublic(PUBLIC_UID);
-  } else if(user){
+  if(PUBLIC_UID){
+    // If viewing public profile and logged in user is the owner, update preview state
+    if(user && user.uid === PUBLIC_UID){
+      renderPublicProfile(PUBLIC_UID);
+    }
+    return;
+  }
+  if(user){
     hideTutorial();
     setReadOnly(false);
     await loadUserProfile();
@@ -5830,15 +5863,13 @@ document.getElementById('authBtn').addEventListener('click', async()=>{
 
 // Load public entries and watchlist for a given UID
 async function fsLoadPublic(uid){
-  showPublicProfilePage();
-  renderPublicSkeleton();
-  await loadPublicProfile(uid);
   try{
-    const [snapEntries, snapWL] = await Promise.all([
+    const [_, snapEntries, snapWL] = await Promise.all([
+      loadPublicProfile(uid),
       getDocs(collection(db_fs, `users/${uid}/entries`)),
       getDoc(doc(db_fs, `users/${uid}/meta/watchlist`)).catch(()=>null)
     ]);
-    DATA = snapEntries.docs.map(d => d.data());
+    DATA = snapEntries ? snapEntries.docs.map(d => d.data()) : [];
     window.DATA = DATA;
     if(snapWL && snapWL.exists() && Array.isArray(snapWL.data().items)){
       PUBLIC_WL = snapWL.data().items;
@@ -5847,11 +5878,15 @@ async function fsLoadPublic(uid){
       PUBLIC_WL = [];
       window.PUBLIC_WL = [];
     }
-    renderPublicProfile(uid);
   } catch(e){
     console.error('Failed to load public data:', e);
-    renderPublicProfile(uid);
+    DATA = [];
+    window.DATA = [];
+    PUBLIC_WL = [];
+    window.PUBLIC_WL = [];
   }
+  renderPublicProfile(uid);
+  showPublicProfilePage();
 }
 
 // ── CONSTANTS ────────────────────────────────────────────
@@ -7568,12 +7603,14 @@ function bootCacheRead(){
     return generic ? JSON.parse(generic) : null;
   }catch(e){ return null; }
 }
-const _bootCache = bootCacheRead();
-DATA = _bootCache || [];
-setStatusOpts();
-renderLog();
-updateStickyTop();
-renderUpcoming();
+if(!PUBLIC_UID){
+  const _bootCache = bootCacheRead();
+  DATA = _bootCache || [];
+  setStatusOpts();
+  renderLog();
+  updateStickyTop();
+  renderUpcoming();
+}
 updateAuthUI();
 
 // ── STATS IN HEADER ──────────────────────────────────────
@@ -9561,12 +9598,14 @@ function renderPublicStats(entries){
 function openMyPublicProfilePreview(){
   _pubPreviewActive = true;
   setReadOnly(true);
-  showPublicProfilePage();
+  document.documentElement?.classList?.add('is-public-profile');
   renderPublicProfile(currentUser ? currentUser.uid : OWNER_UID);
+  showPublicProfilePage();
 }
 
 function exitPublicPreview(){
   _pubPreviewActive = false;
+  document.documentElement?.classList?.remove('is-public-profile');
   if(currentUser){
     setReadOnly(false);
     document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
@@ -9577,6 +9616,7 @@ function exitPublicPreview(){
     // If visitor, reset to public profile or tutorial
     if(PUBLIC_UID){
       renderPublicProfile(PUBLIC_UID);
+      showPublicProfilePage();
     } else {
       setReadOnly(false);
       document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
@@ -9593,8 +9633,11 @@ function openPublicGetStarted(){
 
 function handlePubBrandClick(){
   if(currentUser && !_pubPreviewActive){
+    document.documentElement?.classList?.remove('is-public-profile');
+    setReadOnly(false);
     document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
     document.getElementById('page-log').classList.add('on');
+    fsLoad();
   } else if(_pubPreviewActive){
     exitPublicPreview();
   } else {
