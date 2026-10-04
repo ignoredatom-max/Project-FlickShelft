@@ -7227,6 +7227,9 @@ if(navAddBtn){
   navAddBtn.addEventListener('click',()=>{
     if(document.body.classList.contains('readonly')) return;
     openModal(null);
+    if(searchInp){
+      searchInp.focus({ preventScroll: true });
+    }
   });
 }
 
@@ -7786,6 +7789,11 @@ function openModal(entry,prefill){
   // Show Add to Watchlist button for new/prefill entries, hide when editing an already logged entry
   const modalWlBtn = document.getElementById('modalWlBtn');
   if(modalWlBtn) modalWlBtn.style.display = entry && !prefill ? 'none' : 'flex';
+
+  // Auto-focus search input for new entries so keyboard immediately appears without extra tap
+  if(!entry && !prefill && searchInp){
+    searchInp.focus({ preventScroll: true });
+  }
 }
 
 function closeModal(){
@@ -7794,6 +7802,7 @@ function closeModal(){
   document.body.style.overflow = '';
   closeDD();
   closeTypeDropdown();
+  if(searchInp) searchInp.blur();
 }
 
 function dateToMidnightTs(yyyyMmDd){
