@@ -1173,16 +1173,15 @@ body::before{
   transition:background 0.3s ease;
   overflow:hidden;
   box-sizing:border-box;
-  padding-bottom:var(--keyboard-inset, 0px);
 }
 .overlay.show{display:flex;background:rgba(0,0,0,0.75);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);}
 .modal{
   background:var(--bg2);
   border-radius:24px 24px 0 0;
-  padding:0 0 calc(16px + env(safe-area-inset-bottom, 0px));
+  padding:0;
   width:100%;max-width:540px;
-  max-height:calc(100% - 10px);
-  max-height:calc(var(--visual-vh, 100dvh) - 10px);
+  max-height:88vh;
+  max-height:88dvh;
   overflow-y:auto;
   -webkit-overflow-scrolling:touch;
   animation:slideUp 0.32s cubic-bezier(.32,1,.23,1);
@@ -1193,7 +1192,7 @@ body::before{
 }
 @keyframes slideUp{from{transform:translateY(100%);opacity:0.5}to{transform:none;opacity:1}}
 .modal-handle{width:36px;height:4px;background:var(--bg4);border-radius:2px;margin:14px auto 18px;flex-shrink:0;}
-.modal-inner{padding:0 18px 20px}
+.modal-inner{padding:0 18px calc(48px + env(safe-area-inset-bottom, 0px))}
 .modal-title-row{display:flex;align-items:center;margin-bottom:16px}
 .modal-title{font-size:20px;font-weight:800;letter-spacing:-0.5px;flex:1}
 .modal-fav-btn{
@@ -7763,11 +7762,9 @@ function openModal(entry,prefill){
   if(mPoster||mTitle){showPreview(mPoster,mTitle,[mYear,mGenre].filter(Boolean).join(' · '));}
   else{hidePreview();if(mTitle&&mTitle.length>=2)runSearch(mTitle);}
   overlay.classList.add('show');
-  updateVisualViewport();
   document.body.style.overflow = 'hidden';
   const modalEl = overlay.querySelector('.modal');
   if(modalEl) modalEl.scrollTop = 0;
-  setTimeout(()=>searchInp.focus(),120);
   // Show share and remove buttons only for existing logged entries
   document.getElementById('shareBtn').style.display = entry && !prefill ? 'block' : 'none';
   const delWrap = document.getElementById('deleteEntryWrap');
@@ -7780,78 +7777,10 @@ function openModal(entry,prefill){
 function closeModal(){
   wlLogIdx = -1;
   overlay.classList.remove('show');
-  overlay.style.paddingBottom = '';
   document.body.style.overflow = '';
   closeDD();
   closeTypeDropdown();
 }
-
-function updateVisualViewport(){
-  let vh = window.innerHeight;
-  let kbInset = 0;
-  let vTop = 0;
-  
-  if(window.visualViewport){
-    const vv = window.visualViewport;
-    vh = Math.round(vv.height);
-    vTop = Math.round(vv.offsetTop);
-    const diff = window.innerHeight - vv.height;
-    if(diff > 80){
-      kbInset = Math.round(diff);
-    }
-  }
-  
-  document.documentElement.style.setProperty('--visual-vh', `${vh}px`);
-  document.documentElement.style.setProperty('--keyboard-inset', `${kbInset}px`);
-  
-  if(overlay && overlay.classList.contains('show')){
-    overlay.style.paddingBottom = `${kbInset}px`;
-    if(window.scrollY > 0 && vTop === 0){
-      window.scrollTo(0, 0);
-    }
-  }
-}
-
-if(window.visualViewport){
-  window.visualViewport.addEventListener('resize', updateVisualViewport);
-  window.visualViewport.addEventListener('scroll', updateVisualViewport);
-}
-window.addEventListener('resize', updateVisualViewport);
-window.addEventListener('orientationchange', updateVisualViewport);
-
-function scrollInputIntoModal(el){
-  const modalEl = overlay.querySelector('.modal');
-  if(!modalEl || !el) return;
-  [80, 200, 380, 500].forEach(delay => {
-    setTimeout(()=>{
-      if(overlay.classList.contains('show') && (document.activeElement === el || el.contains(document.activeElement))){
-        updateVisualViewport();
-        const elRect = el.getBoundingClientRect();
-        const modalRect = modalEl.getBoundingClientRect();
-        if(elRect.top < modalRect.top + 20 || elRect.bottom > modalRect.bottom - 20){
-          el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-      }
-    }, delay);
-  });
-}
-
-['searchInp', 'fNotes', 'fStatus', 'dateInp'].forEach(id => {
-  const el = document.getElementById(id);
-  if(el){
-    el.addEventListener('focus', () => {
-      updateVisualViewport();
-      scrollInputIntoModal(el);
-    });
-    el.addEventListener('blur', () => {
-      setTimeout(updateVisualViewport, 150);
-      setTimeout(updateVisualViewport, 350);
-    });
-    el.addEventListener('input', () => {
-      updateVisualViewport();
-    });
-  }
-});
 
 function dateToMidnightTs(yyyyMmDd){
   // Always store as local midnight so month/day grouping matches user’s expectation.
