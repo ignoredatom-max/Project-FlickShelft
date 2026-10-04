@@ -1166,19 +1166,21 @@ body::before{
 
 /* ── MODAL ───────────────────────────────────── */
 .overlay{
-  display:none;position:fixed;top:0;left:0;right:0;bottom:0;
+  display:flex;position:fixed;top:0;left:0;right:0;bottom:0;
   width:100%;height:100%;height:100lvh;
   background:rgba(0,0,0,0);
   z-index:999;
   align-items:flex-start;
   justify-content:center;
   padding:0 12px calc(32px + env(safe-area-inset-bottom, 0px));
-  transition:background 0.25s ease;
+  transition:background 0.25s ease, opacity 0.2s ease;
   overflow-y:auto;
   -webkit-overflow-scrolling:touch;
   box-sizing:border-box;
+  opacity:0;
+  pointer-events:none;
 }
-.overlay.show{display:flex;background:rgba(0,0,0,0.75);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);}
+.overlay.show{display:flex;opacity:1;pointer-events:auto;background:rgba(0,0,0,0.75);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);}
 .modal{
   background:var(--bg2);
   border:1px solid rgba(255,255,255,0.12);
@@ -1441,7 +1443,7 @@ body::before{
 .search-inp{
   width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);
   padding:12px 38px 12px 14px;border-radius:14px;
-  font-family:var(--font-sans);font-size:14px;outline:none;
+  font-family:var(--font-sans);font-size:16px;outline:none;
   transition:border-color 0.2s;height:44px;box-sizing:border-box;
 }
 .search-inp:focus{border-color:var(--border2)}
@@ -5932,7 +5934,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
 </div>
 
 <!-- ADD/EDIT MODAL -->
-<div class="overlay" id="overlay">
+<div class="overlay" id="overlay" inert>
   <div class="modal">
     <button class="modal-close-btn" id="modalCloseBtn" type="button" aria-label="Close modal" title="Close">✕</button>
     <div class="modal-handle"></div>
@@ -7226,10 +7228,13 @@ const navAddBtn = document.getElementById('navAddBtn');
 if(navAddBtn){
   navAddBtn.addEventListener('click',()=>{
     if(document.body.classList.contains('readonly')) return;
-    openModal(null);
+    overlay.removeAttribute('inert');
+    overlay.classList.add('show');
     if(searchInp){
-      searchInp.focus({ preventScroll: true });
+      searchInp.value = '';
+      searchInp.focus();
     }
+    openModal(null);
   });
 }
 
@@ -7735,6 +7740,12 @@ document.getElementById('favBtn').addEventListener('click',()=>{
 // Modal
 const overlay=document.getElementById('overlay');
 function openModal(entry,prefill){
+  overlay.removeAttribute('inert');
+  overlay.classList.add('show');
+  if(!entry && !prefill && searchInp){
+    searchInp.value = '';
+    searchInp.focus();
+  }
   editId=entry?entry.id:null;
   mType=entry?entry.type:(prefill?prefill.type:'movie');
   mRating=entry?RATINGS.indexOf(entry.rating):2;if(mRating<0)mRating=2;
@@ -7763,7 +7774,7 @@ function openModal(entry,prefill){
   }
   document.getElementById('modalTitle').textContent=entry?'Edit Entry':'New Entry';
   setMediaType(mType, false);
-  searchInp.value=mTitle;
+  if(mTitle) searchInp.value=mTitle;
   document.getElementById('fNotes').value=entry?entry.notes:'';
   setStatusOpts(entry?entry.status:null);
   // Season picker
@@ -7778,7 +7789,6 @@ function openModal(entry,prefill){
   closeDD();
   if(mPoster||mTitle){showPreview(mPoster,mTitle,[mYear,mGenre].filter(Boolean).join(' · '));}
   else{hidePreview();if(mTitle&&mTitle.length>=2)runSearch(mTitle);}
-  overlay.classList.add('show');
   document.body.style.overflow = 'hidden';
   const modalEl = overlay.querySelector('.modal');
   if(modalEl) modalEl.scrollTop = 0;
@@ -7789,16 +7799,12 @@ function openModal(entry,prefill){
   // Show Add to Watchlist button for new/prefill entries, hide when editing an already logged entry
   const modalWlBtn = document.getElementById('modalWlBtn');
   if(modalWlBtn) modalWlBtn.style.display = entry && !prefill ? 'none' : 'flex';
-
-  // Auto-focus search input for new entries so keyboard immediately appears without extra tap
-  if(!entry && !prefill && searchInp){
-    searchInp.focus({ preventScroll: true });
-  }
 }
 
 function closeModal(){
   wlLogIdx = -1;
   overlay.classList.remove('show');
+  overlay.setAttribute('inert', '');
   document.body.style.overflow = '';
   closeDD();
   closeTypeDropdown();
