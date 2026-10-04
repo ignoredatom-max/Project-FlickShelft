@@ -11,6 +11,7 @@
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-512.png">
 <link rel="manifest" href="manifest.json">
+<link href="https://fonts.cdnfonts.com/css/sf-pro-display" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,400;1,700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
@@ -63,9 +64,11 @@ html.is-public-profile #page-public-profile.on {
   --radius-md:16px;
   --radius-lg:22px;
   --radius-pill:999px;
+  --font-sans:-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "SF Pro", "Inter", -apple-system-body, system-ui, sans-serif;
 }
 html{background:var(--bg)}
-body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--text);font-family:var(--font-sans);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+button, input, select, textarea{font-family:var(--font-sans)}
 
 /* ── BG ───────────────────────────────────────── */
 body::before{
@@ -192,7 +195,7 @@ body::before{
 }
 .nav-lbl{
   display:block;
-  font-family:'Inter',sans-serif;
+  font-family:var(--font-sans);
   font-size:10px;
   font-weight:500;
   line-height:1;
@@ -487,7 +490,7 @@ body::before{
 .logo-wrap{display:flex;align-items:center;gap:10px;line-height:1}
 .logo-img{height:38px;object-fit:contain;display:block;}
 .page-header-title{
-  font-family:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family:var(--font-sans);
   font-size:26px;
   font-weight:700;
   letter-spacing:-0.5px;
@@ -496,7 +499,7 @@ body::before{
   display:inline-block;
 }
 .logo-page-title{
-  font-family:'Inter',sans-serif;font-weight:200;font-size:14px;
+  font-family:var(--font-sans);font-weight:200;font-size:14px;
   letter-spacing:5px;text-transform:uppercase;color:var(--text3);
 }
 .page-header-pill{
@@ -518,7 +521,7 @@ body::before{
   font-size:38px;color:var(--text);letter-spacing:-2px;line-height:1;
 }
 .logo-ogger{
-  font-family:'Inter',sans-serif;font-weight:200;font-size:16px;
+  font-family:var(--font-sans);font-weight:200;font-size:16px;
   letter-spacing:7px;text-transform:uppercase;color:var(--text3);
   margin-left:3px;align-self:center;margin-top:6px;
 }
@@ -598,7 +601,7 @@ body::before{
   display:inline-flex;
   align-items:center;
   justify-content:center;
-  font-family:'Inter',sans-serif;
+  font-family:var(--font-sans);
   font-size:11.5px;
   font-weight:500;
   border:none;
@@ -734,7 +737,7 @@ body::before{
   border-radius:12px;
   padding:6px 12px 6px 8px;
   cursor:pointer;
-  font-family:'Inter',sans-serif;
+  font-family:var(--font-sans);
   font-size:11.5px;
   font-weight:600;
   display:flex;
@@ -750,7 +753,7 @@ body::before{
 }
 .add-btn{
   background:var(--blue);color:#fff;border:none;padding:8px 18px;border-radius:14px;
-  font-family:'Inter',sans-serif;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;
+  font-family:var(--font-sans);font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;
   box-shadow:0 4px 14px rgba(0,0,0,0.35);
   transition:transform 0.15s,box-shadow 0.15s;
   letter-spacing:0.2px;
@@ -961,7 +964,7 @@ body::before{
   border:1px solid rgba(255,69,58,0.22);
   padding:11px 16px;
   border-radius:12px;
-  font-family:'Inter',sans-serif;
+  font-family:var(--font-sans);
   font-size:13px;
   font-weight:700;
   cursor:pointer;
@@ -1037,7 +1040,7 @@ body::before{
   border:1px solid var(--border2);
   padding:11px 14px;
   border-radius:12px;
-  font-family:'Inter',sans-serif;
+  font-family:var(--font-sans);
   font-size:13px;
   font-weight:700;
   cursor:pointer;
@@ -1054,7 +1057,7 @@ body::before{
   border:none;
   padding:11px 14px;
   border-radius:12px;
-  font-family:'Inter',sans-serif;
+  font-family:var(--font-sans);
   font-size:13px;
   font-weight:700;
   cursor:pointer;
@@ -1083,7 +1086,7 @@ body::before{
 }
 .atomyn-signature{
   display:inline-block;
-  font-family:'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family:var(--font-sans);
   font-size:10px;
   font-weight:700;
   letter-spacing:0.22em;
@@ -1251,7 +1254,7 @@ body::before{
   color:var(--text2);
   padding:9px 10px;
   border-radius:12px;
-  font-family:'Inter',sans-serif;
+  font-family:var(--font-sans);
   font-size:12px;
   outline:none;
 }
@@ -1282,7 +1285,7 @@ body::before{
   border:1px solid var(--border);
   border-radius:14px;
   color:var(--text);
-  font-family:'Inter',sans-serif;
+  font-family:var(--font-sans);
   cursor:pointer;
   outline:none;
   box-shadow:0 1px 3px rgba(0,0,0,0.25);
@@ -1370,7 +1373,7 @@ body::before{
   border:none;
   background:transparent;
   color:var(--text2);
-  font-family:'Inter',sans-serif;
+  font-family:var(--font-sans);
   font-size:12px;
   font-weight:500;
   cursor:pointer;
@@ -1417,7 +1420,7 @@ body::before{
 .search-inp{
   width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);
   padding:12px 38px 12px 14px;border-radius:14px;
-  font-family:'Inter',sans-serif;font-size:14px;outline:none;
+  font-family:var(--font-sans);font-size:14px;outline:none;
   transition:border-color 0.2s;height:44px;box-sizing:border-box;
 }
 .search-inp:focus{border-color:var(--border2)}
@@ -1478,7 +1481,7 @@ body::before{
 }
 .inp{
   width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);
-  padding:11px 13px;border-radius:14px;font-family:'Inter',sans-serif;font-size:13.5px;outline:none;
+  padding:11px 13px;border-radius:14px;font-family:var(--font-sans);font-size:13.5px;outline:none;
   transition:border-color 0.2s;height:44px;box-sizing:border-box;
 }
 .inp:focus{border-color:var(--border2)}
@@ -1620,7 +1623,7 @@ input[type=range].r-slider::-moz-range-thumb{
 .actions{display:flex;gap:10px;margin-top:22px;width:100%}
 .btn-save{
   flex:1;background:var(--green);color:#000;border:none;padding:14px 16px;border-radius:14px;
-  font-family:'Inter',sans-serif;font-size:14px;font-weight:800;cursor:pointer;
+  font-family:var(--font-sans);font-size:14px;font-weight:800;cursor:pointer;
   box-shadow:0 4px 14px rgba(0,0,0,0.35);
   transition:transform 0.15s,box-shadow 0.15s,background 0.15s;
   display:flex;align-items:center;justify-content:center;gap:6px;
@@ -1629,7 +1632,7 @@ input[type=range].r-slider::-moz-range-thumb{
 .btn-save:active{transform:scale(0.97);box-shadow:0 2px 6px rgba(0,0,0,0.3)}
 .btn-modal-wl{
   flex:1;background:rgba(45,127,249,0.12);color:var(--blue);border:1px solid rgba(45,127,249,0.32);
-  padding:14px 14px;border-radius:14px;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;
+  padding:14px 14px;border-radius:14px;font-family:var(--font-sans);font-size:14px;font-weight:700;
   cursor:pointer;transition:transform 0.15s,background 0.15s,border-color 0.15s;
   display:flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap;
 }
@@ -1637,7 +1640,7 @@ input[type=range].r-slider::-moz-range-thumb{
 .btn-modal-wl:active{transform:scale(0.97);}
 .btn-cancel{
   padding:15px 20px;background:var(--bg3);border:1px solid var(--border);color:var(--text2);
-  border-radius:14px;font-family:'Inter',sans-serif;font-size:15px;font-weight:500;cursor:pointer;
+  border-radius:14px;font-family:var(--font-sans);font-size:15px;font-weight:500;cursor:pointer;
   transition:background 0.15s;
 }
 .btn-cancel:active{background:var(--bg4)}
@@ -1671,7 +1674,7 @@ input[type=range].r-slider::-moz-range-thumb{
 .wl-log-btn{
   background:var(--green);color:#000;border:none;
   padding:0 15px;height:32px;border-radius:9999px;
-  font-family:'Inter',sans-serif;font-size:12px;font-weight:800;
+  font-family:var(--font-sans);font-size:12px;font-weight:800;
   cursor:pointer;white-space:nowrap;letter-spacing:0.2px;
   box-shadow:0 3px 10px rgba(0,0,0,0.35);
   transition:transform 0.15s,box-shadow 0.15s;
@@ -1681,7 +1684,7 @@ input[type=range].r-slider::-moz-range-thumb{
 .wl-view-btn{
   background:var(--bg3);color:var(--text);border:1px solid var(--border2);
   padding:0 14px;height:32px;border-radius:9999px;
-  font-family:'Inter',sans-serif;font-size:12px;font-weight:700;
+  font-family:var(--font-sans);font-size:12px;font-weight:700;
   cursor:pointer;white-space:nowrap;letter-spacing:0.2px;
   box-shadow:0 3px 10px rgba(0,0,0,0.25);
   transition:transform 0.15s,box-shadow 0.15s,background 0.15s;
@@ -1761,7 +1764,7 @@ input[type=range].r-slider::-moz-range-thumb{
   width:100%;margin-top:8px;padding:13px;
   background:transparent;border:1px solid var(--border2);
   color:var(--text2);border-radius:14px;font-size:14px;font-weight:600;
-  cursor:pointer;font-family:Inter,sans-serif;
+  cursor:pointer;font-family:var(--font-sans);
   transition:background 0.2s,color 0.2s;
 }
 .btn-share:active{background:var(--bg3);color:var(--text);}
@@ -1781,7 +1784,7 @@ input[type=range].r-slider::-moz-range-thumb{
   width:100%;border-radius:24px;overflow:hidden;
   background:transparent;
   box-shadow:0 24px 80px rgba(0,0,0,0.8);
-  font-family:'Inter',sans-serif;
+  font-family:var(--font-sans);
   position:relative;
 }
 /* blurred background poster */
@@ -1852,12 +1855,12 @@ input[type=range].r-slider::-moz-range-thumb{
 .share-dl-btn{
   flex:1;padding:13px;background:var(--blue);color:#fff;
   border:none;border-radius:14px;font-size:14px;font-weight:700;
-  cursor:pointer;font-family:Inter,sans-serif;
+  cursor:pointer;font-family:var(--font-sans);
 }
 .share-close-btn{
   padding:13px 20px;background:var(--bg3);color:var(--text2);
   border:none;border-radius:14px;font-size:14px;font-weight:600;
-  cursor:pointer;font-family:Inter,sans-serif;
+  cursor:pointer;font-family:var(--font-sans);
 }
 
 body.readonly .add-btn,
@@ -1878,7 +1881,7 @@ body.readonly .row{cursor:default}
 }
 .readonly-banner button{
   background:var(--blue);color:#fff;border:none;padding:5px 12px;
-  border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;
+  border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--font-sans);
   white-space:nowrap;
 }
 
@@ -2095,7 +2098,7 @@ body.readonly .row{cursor:default}
 }
 .info-btn-edit{
   flex:2;background:var(--blue);color:#fff;border:none;
-  padding:12px 16px;border-radius:14px;font-family:'Inter',sans-serif;
+  padding:12px 16px;border-radius:14px;font-family:var(--font-sans);
   font-size:13px;font-weight:700;cursor:pointer;
   box-shadow:0 4px 14px rgba(0,0,0,0.35);transition:all 0.15s;
   display:flex;align-items:center;justify-content:center;gap:6px;
@@ -2103,7 +2106,7 @@ body.readonly .row{cursor:default}
 .info-btn-edit:active{transform:scale(0.97);opacity:0.9;}
 .info-btn-share{
   flex:1;background:var(--bg4);color:var(--text2);border:1px solid var(--border2);
-  padding:12px 14px;border-radius:14px;font-family:'Inter',sans-serif;
+  padding:12px 14px;border-radius:14px;font-family:var(--font-sans);
   font-size:13px;font-weight:600;cursor:pointer;transition:all 0.15s;
   display:flex;align-items:center;justify-content:center;gap:6px;
 }
@@ -2116,7 +2119,7 @@ body.readonly .row{cursor:default}
   border:1px solid rgba(255,69,58,0.22);
   padding:11px 16px;
   border-radius:12px;
-  font-family:'Inter',sans-serif;
+  font-family:var(--font-sans);
   font-size:13px;
   font-weight:700;
   cursor:pointer;
@@ -2320,7 +2323,7 @@ body.readonly .row{cursor:default}
   border:1px solid var(--border2);
   border-radius:14px;
   padding:11px 36px 11px 38px;
-  font-family:'Inter',sans-serif;
+  font-family:var(--font-sans);
   font-size:14px;
   font-weight:500;
   color:var(--text);
@@ -2351,7 +2354,7 @@ body.readonly .row{cursor:default}
   background:none;
   border:none;
   color:var(--blue);
-  font-family:'Inter',sans-serif;
+  font-family:var(--font-sans);
   font-size:14px;
   font-weight:600;
   cursor:pointer;
@@ -2517,7 +2520,7 @@ body.readonly .row{cursor:default}
   color:var(--blue);
   font-size:11px;
   font-weight:700;
-  font-family:'Inter',sans-serif;
+  font-family:var(--font-sans);
   cursor:pointer;
   transition:all 0.15s ease;
 }
@@ -2745,7 +2748,7 @@ body.readonly .row{cursor:default}
   width:100%;padding:15px;
   background:var(--blue);color:#fff;border:none;
   border-radius:16px;font-size:15px;font-weight:700;
-  cursor:pointer;font-family:Inter,sans-serif;
+  cursor:pointer;font-family:var(--font-sans);
 }
 
 /* ── PROFILE SHARE BTN ───────────────────────── */
@@ -2753,7 +2756,7 @@ body.readonly .row{cursor:default}
   padding:6px 12px;
   background:var(--bg3);border:1px solid var(--border2);
   border-radius:20px;color:var(--text2);font-size:11px;font-weight:600;
-  cursor:pointer;font-family:Inter,sans-serif;
+  cursor:pointer;font-family:var(--font-sans);
   transition:background 0.15s;
   white-space:nowrap;
   flex-shrink:0;
@@ -2765,7 +2768,7 @@ body.readonly .row{cursor:default}
 .season-btn{
   padding:5px 11px;border-radius:20px;font-size:12px;font-weight:600;
   border:1px solid var(--border2);background:var(--bg3);color:var(--text2);
-  cursor:pointer;font-family:Inter,sans-serif;transition:all 0.15s;
+  cursor:pointer;font-family:var(--font-sans);transition:all 0.15s;
 }
 .season-btn.on{background:var(--teal);color:#000;border-color:var(--teal);}
 
@@ -2848,7 +2851,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
 }
 .profile-edit-btn{
   font-size:11px;color:var(--blue);background:none;border:none;
-  cursor:pointer;font-family:Inter,sans-serif;font-weight:600;
+  cursor:pointer;font-family:var(--font-sans);font-weight:600;
 }
 .profile-grid{
   display:flex;gap:6px;
@@ -3210,7 +3213,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   border:1px solid rgba(45,127,249,0.32);
   padding:12px 16px;
   border-radius:14px;
-  font-family:'Inter',sans-serif;
+  font-family:var(--font-sans);
   font-size:13px;
   font-weight:700;
   cursor:pointer;
@@ -3753,7 +3756,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   gap:5px;
   padding:5px 12px;
   border-radius:var(--radius-pill);
-  font-family:'Inter',sans-serif;
+  font-family:var(--font-sans);
   font-size:11.5px;
   font-weight:700;
   cursor:pointer;
@@ -3853,7 +3856,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   color:var(--blue);
   font-size:11px;
   font-weight:800;
-  font-family:'Inter',sans-serif;
+  font-family:var(--font-sans);
   display:flex;
   align-items:center;
   justify-content:center;
@@ -3946,13 +3949,13 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
 .coll-film-actions{ display:flex; gap:8px; align-items:center; margin-top:8px; flex-wrap:wrap; }
 .coll-action-log-btn{
   background:var(--green); color:#000; border:none; padding:5px 13px; border-radius:8px;
-  font-family:'Inter',sans-serif; font-size:11.5px; font-weight:800; cursor:pointer;
+  font-family:var(--font-sans); font-size:11.5px; font-weight:800; cursor:pointer;
   letter-spacing:0.2px; box-shadow:0 2px 8px rgba(0,0,0,0.3); transition:transform 0.15s, background 0.15s;
 }
 .coll-action-log-btn:active{ transform:scale(0.94); }
 .coll-action-wl-btn{
   background:var(--bg3); color:var(--text2); border:1px solid var(--border2); padding:5px 11px;
-  border-radius:8px; font-family:'Inter',sans-serif; font-size:11px; font-weight:700;
+  border-radius:8px; font-family:var(--font-sans); font-size:11px; font-weight:700;
   cursor:pointer; transition:all 0.15s;
 }
 .coll-action-wl-btn:hover{ background:var(--bg4); color:var(--text); }
@@ -4116,7 +4119,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   border-radius:12px;
   border:none;
   cursor:pointer;
-  font-family:'Inter',sans-serif;
+  font-family:var(--font-sans);
   font-size:12.5px;
   font-weight:700;
   display:flex;
@@ -4261,7 +4264,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   gap:6px;
   background:var(--text);
   color:var(--bg);
-  font-family:'Inter', sans-serif;
+  font-family:var(--font-sans);
   font-size:12px;
   font-weight:700;
   padding:7px 14px;
@@ -4460,7 +4463,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   background:none;
   border:none;
   color:var(--text3);
-  font-family:'Inter', sans-serif;
+  font-family:var(--font-sans);
   font-size:13px;
   font-weight:600;
   padding:10px 14px;
@@ -4573,7 +4576,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   background:none;
   border:none;
   color:var(--blue);
-  font-family:'Inter', sans-serif;
+  font-family:var(--font-sans);
   font-size:12px;
   font-weight:600;
   cursor:pointer;
@@ -4800,7 +4803,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   background:var(--bg3);
   border:1px solid var(--border);
   color:var(--text3);
-  font-family:'Inter',sans-serif;
+  font-family:var(--font-sans);
   font-size:11.5px;
   font-weight:600;
   padding:5px 13px;
@@ -4957,7 +4960,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   gap:6px;
   background:var(--bg3);
   color:var(--text2);
-  font-family:'Inter',sans-serif;
+  font-family:var(--font-sans);
   font-size:12px;
   font-weight:700;
   padding:7px 14px;
@@ -5089,7 +5092,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
 .pub-footer-btn{
   background:var(--text);
   color:var(--bg);
-  font-family:'Inter',sans-serif;
+  font-family:var(--font-sans);
   font-size:12.5px;
   font-weight:700;
   padding:10px 22px;
@@ -5769,7 +5772,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
     <div class="tutorial-footer">
       <span class="atomyn-signature" onclick="openAbout()" role="button" tabindex="0" aria-label="ATOMYN">ATOMYN</span>
     </div>
-    <button id="guestBtn" style="position:absolute;bottom:14px;right:14px;background:none;border:none;color:var(--text3);font-size:10px;cursor:pointer;font-family:Inter,sans-serif;opacity:0.4;padding:4px;">dev</button>
+    <button id="guestBtn" style="position:absolute;bottom:14px;right:14px;background:none;border:none;color:var(--text3);font-size:10px;cursor:pointer;font-family:var(--font-sans);opacity:0.4;padding:4px;">dev</button>
   </div>
 </div>
 
@@ -5779,8 +5782,8 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
     <div style="font-size:22px;margin-bottom:12px;text-align:center">⚠️</div>
     <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px;text-align:center">Developer mode only</div>
     <div style="font-size:13px;color:var(--text2);line-height:1.6;text-align:center;margin-bottom:20px">Guest mode is for troubleshooting only. Nothing you log will be saved. Sign in with Google to use Logger properly.</div>
-    <button id="guestSignInInstead" style="width:100%;padding:13px;background:var(--blue);color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;margin-bottom:10px">Sign in with Google</button>
-    <button id="guestContinueAnyway" style="width:100%;padding:11px;background:none;border:1px solid var(--border2);border-radius:12px;font-size:13px;color:var(--text3);cursor:pointer;font-family:Inter,sans-serif">Continue anyway (data won't save)</button>
+    <button id="guestSignInInstead" style="width:100%;padding:13px;background:var(--blue);color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--font-sans);margin-bottom:10px">Sign in with Google</button>
+    <button id="guestContinueAnyway" style="width:100%;padding:11px;background:none;border:1px solid var(--border2);border-radius:12px;font-size:13px;color:var(--text3);cursor:pointer;font-family:var(--font-sans)">Continue anyway (data won't save)</button>
   </div>
 </div>
 
@@ -6119,7 +6122,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
         </a>
       </div>
     </div>
-    <button onclick="closeAbout()" style="width:100%;padding:13px;background:var(--bg3);border:1px solid var(--border2);border-radius:14px;color:var(--text2);font-size:14px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">Close</button>
+    <button onclick="closeAbout()" style="width:100%;padding:13px;background:var(--bg3);border:1px solid var(--border2);border-radius:14px;color:var(--text2);font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font-sans)">Close</button>
   </div>
 </div>
 
@@ -8705,17 +8708,17 @@ function openPickSelector(){
     <div style="background:var(--bg2);width:100%;border-radius:20px 20px 0 0;padding:16px;max-height:75vh;display:flex;flex-direction:column;">
       <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px;">Add to Top Picks</div>
       <div style="display:flex;gap:8px;margin-bottom:12px;">
-        <input id="pickSearchInp" placeholder="Search any film, series or game…" style="flex:1;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:9px 12px;font-size:13px;color:var(--text);font-family:Inter,sans-serif;outline:none;">
+        <input id="pickSearchInp" placeholder="Search any film, series or game…" style="flex:1;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:9px 12px;font-size:13px;color:var(--text);font-family:var(--font-sans);outline:none;">
         <div style="display:flex;gap:4px;">
-          <button class="pick-type-btn on" data-pt="movie" style="background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:6px 10px;font-size:11px;color:var(--text2);cursor:pointer;font-family:Inter,sans-serif;">🎬</button>
-          <button class="pick-type-btn" data-pt="series" style="background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:6px 10px;font-size:11px;color:var(--text2);cursor:pointer;font-family:Inter,sans-serif;">📺</button>
-          <button class="pick-type-btn" data-pt="game" style="background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:6px 10px;font-size:11px;color:var(--text2);cursor:pointer;font-family:Inter,sans-serif;">🎮</button>
+          <button class="pick-type-btn on" data-pt="movie" style="background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:6px 10px;font-size:11px;color:var(--text2);cursor:pointer;font-family:var(--font-sans);">🎬</button>
+          <button class="pick-type-btn" data-pt="series" style="background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:6px 10px;font-size:11px;color:var(--text2);cursor:pointer;font-family:var(--font-sans);">📺</button>
+          <button class="pick-type-btn" data-pt="game" style="background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:6px 10px;font-size:11px;color:var(--text2);cursor:pointer;font-family:var(--font-sans);">🎮</button>
         </div>
       </div>
       <div id="pickResults" style="overflow-y:auto;flex:1;">
         <div style="color:var(--text3);font-size:12px;text-align:center;padding:20px;">Search to find something to add</div>
       </div>
-      <button onclick="document.getElementById('pickSheet').remove()" style="margin-top:12px;width:100%;padding:12px;background:var(--bg3);border:none;border-radius:12px;color:var(--text2);font-size:13px;cursor:pointer;font-family:Inter,sans-serif;">Cancel</button>
+      <button onclick="document.getElementById('pickSheet').remove()" style="margin-top:12px;width:100%;padding:12px;background:var(--bg3);border:none;border-radius:12px;color:var(--text2);font-size:13px;cursor:pointer;font-family:var(--font-sans);">Cancel</button>
     </div>
   `;
   document.body.appendChild(sheet);
@@ -9432,7 +9435,7 @@ function editProfileName(){
   const nameEl = document.getElementById('profileName');
   const input = document.createElement('input');
   input.value = current;
-  input.style.cssText='font-size:20px;font-weight:800;color:var(--text);background:var(--bg3);border:1px solid var(--blue);border-radius:10px;padding:4px 10px;text-align:center;font-family:Inter,sans-serif;outline:none;width:200px;max-width:80vw;';
+  input.style.cssText='font-size:20px;font-weight:800;color:var(--text);background:var(--bg3);border:1px solid var(--blue);border-radius:10px;padding:4px 10px;text-align:center;font-family:var(--font-sans);outline:none;width:200px;max-width:80vw;';
   nameEl.replaceWith(input);
   input.focus(); input.select();
   const done = ()=>{
@@ -9469,7 +9472,7 @@ document.getElementById('guestContinueAnyway').addEventListener('click',()=>{
   banner.id = 'guestBanner';
   banner.style.cssText = 'position:fixed;bottom:80px;left:12px;right:12px;z-index:400;background:var(--bg3);border:1px solid var(--border2);border-radius:12px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12px;color:var(--text2);';
   banner.innerHTML = '⚠️ Guest mode — data won\'t be saved'
-    + '<button onclick="document.getElementById(\'tutorialOverlay\').style.display=\'flex\';document.getElementById(\'guestBanner\').remove()" style="background:var(--blue);color:#fff;border:none;padding:5px 12px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;white-space:nowrap">Sign in</button>';
+    + '<button onclick="document.getElementById(\'tutorialOverlay\').style.display=\'flex\';document.getElementById(\'guestBanner\').remove()" style="background:var(--blue);color:#fff;border:none;padding:5px 12px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--font-sans);white-space:nowrap">Sign in</button>';
   document.body.appendChild(banner);
 });
 
@@ -9541,7 +9544,7 @@ function showInstallBanner(){
         <div style="font-size:11px;color:var(--text3);margin-top:1px">Install Logger for quick access</div>
       </div>
     </div>
-    <button id="installBtn" style="background:var(--blue);color:#fff;border:none;padding:8px 16px;border-radius:12px;font-size:12px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;white-space:nowrap;flex-shrink:0">Install</button>
+    <button id="installBtn" style="background:var(--blue);color:#fff;border:none;padding:8px 16px;border-radius:12px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font-sans);white-space:nowrap;flex-shrink:0">Install</button>
     <button id="installDismiss" style="background:none;border:none;color:var(--text3);font-size:18px;cursor:pointer;padding:0 4px;flex-shrink:0;line-height:1">×</button>
   `;
   banner.style.cssText = `
