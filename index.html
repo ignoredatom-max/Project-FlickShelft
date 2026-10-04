@@ -5998,7 +5998,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
             </div>
           </div>
           <div class="search-box" id="searchBox">
-            <input class="search-inp" id="searchInp" type="text" placeholder="Start typing…" autocomplete="off">
+            <input class="search-inp" id="searchInp" type="text" inputmode="search" placeholder="Start typing…" autocomplete="off" virtualkeyboardpolicy="manual">
             <div class="spin" id="spin"></div>
             <div class="dropdown" id="dropdown"></div>
           </div>
@@ -7232,7 +7232,8 @@ if(navAddBtn){
     overlay.classList.add('show');
     if(searchInp){
       searchInp.value = '';
-      searchInp.focus();
+      triggerSearchFocus();
+      setTimeout(triggerSearchFocus, 50);
     }
     openModal(null);
   });
@@ -7645,10 +7646,20 @@ document.addEventListener('click', (e) => {
       if(id === 'searchInp') closeTypeDropdown();
       const ov = document.getElementById('overlay');
       if(ov) ov.scrollTop = 0;
-      window.scrollTo(0, 0);
     });
   }
 });
+
+function triggerSearchFocus(){
+  if(!searchInp) return;
+  try {
+    searchInp.focus();
+    searchInp.click();
+    if('virtualKeyboard' in navigator){
+      navigator.virtualKeyboard.show();
+    }
+  } catch(e){}
+}
 
 function setStatusOpts(val){
   const sel=document.getElementById('fStatus');
@@ -7744,7 +7755,8 @@ function openModal(entry,prefill){
   overlay.classList.add('show');
   if(!entry && !prefill && searchInp){
     searchInp.value = '';
-    searchInp.focus();
+    triggerSearchFocus();
+    setTimeout(triggerSearchFocus, 50);
   }
   editId=entry?entry.id:null;
   mType=entry?entry.type:(prefill?prefill.type:'movie');
