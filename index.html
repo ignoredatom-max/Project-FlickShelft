@@ -1154,7 +1154,7 @@ body::before{
 
 /* ── TOAST ───────────────────────────────────── */
 .toast{
-  position:fixed;bottom:84px;left:50%;transform:translateX(-50%) translateY(20px) scale(0.96);
+  position:fixed;bottom:calc(86px + env(safe-area-inset-bottom, 0px));left:50%;transform:translateX(-50%) translateY(20px) scale(0.96);
   background:rgba(22,22,28,0.94);color:var(--text);
   padding:7px 16px 7px 10px;border-radius:9999px;
   font-size:12.5px;font-weight:550;letter-spacing:-0.1px;
@@ -1166,6 +1166,38 @@ body::before{
   box-shadow:0 10px 36px rgba(0,0,0,0.55),0 0 0 1px rgba(255,255,255,0.04);
 }
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}
+.toast.has-action{
+  pointer-events:auto;
+  padding-right:6px;
+}
+.toast-action-btn{
+  background:rgba(10,132,255,0.18);
+  border:1px solid rgba(10,132,255,0.38);
+  color:#3da9ff;
+  font-family:var(--font-sans);
+  font-size:12px;
+  font-weight:700;
+  padding:4px 12px;
+  border-radius:999px;
+  cursor:pointer;
+  margin-left:4px;
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  letter-spacing:0.1px;
+  transition:background 0.15s ease, border-color 0.15s ease, transform 0.12s ease;
+  user-select:none;
+  -webkit-tap-highlight-color:transparent;
+}
+.toast-action-btn:hover{
+  background:rgba(10,132,255,0.3);
+  border-color:rgba(10,132,255,0.6);
+  color:#6cb5ff;
+}
+.toast-action-btn:active{
+  transform:scale(0.92);
+  background:rgba(10,132,255,0.45);
+}
 .toast-icon{
   display:flex;align-items:center;justify-content:center;
   width:20px;height:20px;border-radius:50%;flex-shrink:0;
@@ -1704,12 +1736,16 @@ input[type=range].r-slider::-moz-range-thumb{
   background:var(--bg2);
   position:relative;z-index:2;
   border-radius:15px;
+  overflow:hidden;
+  -webkit-mask-image:-webkit-radial-gradient(white, black);
   transform:translateX(0);
   will-change:transform;
+  box-shadow:2px 0 10px rgba(0,0,0,0.22);
 }
 .wl-card-content::before{
-  content:'';position:absolute;right:0;top:0;bottom:0;width:3px;
+  content:'';position:absolute;right:0;top:0;bottom:0;width:3.5px;
   border-top-right-radius:15px;border-bottom-right-radius:15px;
+  pointer-events:none;
 }
 .wl-card.movie .wl-card-content::before {background:var(--red);}
 .wl-card.series .wl-card-content::before{background:var(--teal);}
@@ -6748,7 +6784,7 @@ const TOAST_ICONS = {
   link: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>`
 };
 
-function toast(msg, type = 'success', dur = 2200){
+function toast(msg, type = 'success', dur = 2200, action = null){
   const t=document.getElementById('toast');
   if(!t) return;
   
@@ -6770,16 +6806,37 @@ function toast(msg, type = 'success', dur = 2200){
 
   const iconSvg = TOAST_ICONS[finalType] || TOAST_ICONS.success;
   
+  let actionHtml = '';
+  if(action && action.label){
+    actionHtml = `<button type="button" class="toast-action-btn" id="toastActionBtn">${action.label}</button>`;
+  }
+
   t.innerHTML = `
     <div class="toast-icon toast-${finalType}">${iconSvg}</div>
     <div class="toast-msg">${cleanMsg}</div>
+    ${actionHtml}
   `;
   
+  if(action && action.label){
+    t.classList.add('has-action');
+    const actBtn = t.querySelector('#toastActionBtn');
+    if(actBtn){
+      actBtn.onclick = (e) => {
+        e.stopPropagation();
+        t.classList.remove('show', 'has-action');
+        if(_toastTimer) clearTimeout(_toastTimer);
+        if(typeof action.onClick === 'function') action.onClick();
+      };
+    }
+  } else {
+    t.classList.remove('has-action');
+  }
+
   t.classList.add('show');
   
   if(_toastTimer) clearTimeout(_toastTimer);
   _toastTimer = setTimeout(() => {
-    t.classList.remove('show');
+    t.classList.remove('show', 'has-action');
   }, dur);
 }
 
@@ -7046,6 +7103,56 @@ function openWatchlistItem(indexOrId, e){
 }
 window.openWatchlistItem = openWatchlistItem;
 
+function renderWatchlistCardHtml(item, targetIdx, relIdx = 0){
+  const isColl = item.type === 'collection';
+  const thumb = renderPosterHtml(item.poster, item.title, item.type, 'wl-thumb', 'wl-ph');
+  const itemId = item.id ? String(item.id) : `${item.title}__${item.type||''}`;
+  
+  let sub = '';
+  if(isColl){
+    const partsText = item.partsCount ? `${item.partsCount} ${item.partsCount === 1 ? 'Film' : 'Films'}` : '';
+    sub = ['Franchise', partsText, item.year].filter(Boolean).join(' · ');
+  } else {
+    sub = [item.year, item.genre].filter(Boolean).join(' · ');
+  }
+
+  return `<div class="wl-card ${item.type}" data-id="${encodeURIComponent(itemId)}" data-wl-idx="${targetIdx}" style="animation-delay:${relIdx*0.04}s;cursor:pointer" onclick="openWatchlistItem('${encodeURIComponent(itemId)}', event)">
+    <div class="wl-swipe-action wl-swipe-action-left" aria-hidden="true">
+      <div class="wl-swipe-pill wl-swipe-log">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        <span>Log It</span>
+      </div>
+    </div>
+    <div class="wl-swipe-action wl-swipe-action-right" aria-hidden="true">
+      <div class="wl-swipe-pill wl-swipe-del">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="3 6 5 6 21 6"></polyline>
+          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+        </svg>
+        <span>Remove</span>
+      </div>
+    </div>
+    <div class="wl-card-content">
+      ${thumb}
+      <div class="wl-info">
+        <div class="wl-title">${item.title}</div>
+        ${sub?`<div class="wl-sub">${sub}</div>`:''}
+      </div>
+      <div class="wl-actions">
+        <button class="wl-drag-handle" type="button" aria-label="Hold and drag to reorder priority" title="Hold and drag to reorder" onpointerdown="initWatchlistDrag(event, this)">
+          <svg class="wl-drag-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+            <line x1="4" y1="7" x2="20" y2="7"></line>
+            <line x1="4" y1="12" x2="20" y2="12"></line>
+            <line x1="4" y1="17" x2="20" y2="17"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>`;
+}
+
 function renderWL(){
   const wl=getWL();
   const el=document.getElementById('wl-list');
@@ -7062,53 +7169,7 @@ function renderWL(){
   el.innerHTML=released.map((item, relIdx)=>{
     const i=wl.findIndex(x=>(x.id && item.id && x.id===item.id) || (x.title===item.title && x.type===item.type));
     const targetIdx = i >= 0 ? i : relIdx;
-    const isColl = item.type === 'collection';
-    const thumb=renderPosterHtml(item.poster, item.title, item.type, 'wl-thumb', 'wl-ph');
-    const itemId = item.id ? String(item.id) : `${item.title}__${item.type||''}`;
-    
-    let sub = '';
-    if(isColl){
-      const partsText = item.partsCount ? `${item.partsCount} ${item.partsCount === 1 ? 'Film' : 'Films'}` : '';
-      sub = ['Franchise', partsText, item.year].filter(Boolean).join(' · ');
-    } else {
-      sub = [item.year, item.genre].filter(Boolean).join(' · ');
-    }
-
-    return `<div class="wl-card ${item.type}" data-id="${encodeURIComponent(itemId)}" data-wl-idx="${targetIdx}" style="animation-delay:${relIdx*0.04}s;cursor:pointer" onclick="openWatchlistItem('${encodeURIComponent(itemId)}', event)">
-      <div class="wl-swipe-action wl-swipe-action-left" aria-hidden="true">
-        <div class="wl-swipe-pill wl-swipe-log">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="20 6 9 17 4 12"></polyline>
-          </svg>
-          <span>Log It</span>
-        </div>
-      </div>
-      <div class="wl-swipe-action wl-swipe-action-right" aria-hidden="true">
-        <div class="wl-swipe-pill wl-swipe-del">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="3 6 5 6 21 6"></polyline>
-            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-          </svg>
-          <span>Remove</span>
-        </div>
-      </div>
-      <div class="wl-card-content">
-        ${thumb}
-        <div class="wl-info">
-          <div class="wl-title">${item.title}</div>
-          ${sub?`<div class="wl-sub">${sub}</div>`:''}
-        </div>
-        <div class="wl-actions">
-          <button class="wl-drag-handle" type="button" aria-label="Hold and drag to reorder priority" title="Hold and drag to reorder" onpointerdown="initWatchlistDrag(event, this)">
-            <svg class="wl-drag-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
-              <line x1="4" y1="7" x2="20" y2="7"></line>
-              <line x1="4" y1="12" x2="20" y2="12"></line>
-              <line x1="4" y1="17" x2="20" y2="17"></line>
-            </svg>
-          </button>
-        </div>
-      </div>
-    </div>`;
+    return renderWatchlistCardHtml(item, targetIdx, relIdx);
   }).join('');
 }
 
@@ -7324,6 +7385,8 @@ function wlDel(indexOrId){
   if(i < 0 || i >= wl.length) return;
   const item = wl[i];
   const itemId = item.id ? String(item.id) : `${item.title}__${item.type||''}`;
+  const removedItem = Object.assign({}, item);
+  const removedIdx = i;
   
   wl.splice(i, 1);
   saveWL(wl);
@@ -7362,8 +7425,85 @@ function wlDel(indexOrId){
     renderUpcoming();
   }
 
-  toast('Removed from Watchlist', 'neutral');
+  toast('Removed from Watchlist', 'neutral', 4800, {
+    label: 'Undo',
+    onClick: () => {
+      undoWatchlistRemoval(removedItem, removedIdx);
+    }
+  });
 }
+
+function undoWatchlistRemoval(item, originalIdx){
+  if(!item) return;
+  const wl = getWL();
+  
+  // Guard against duplicate insertion
+  const exists = wl.some(x => (x.id && item.id && x.id === item.id) || (cleanTitle(x.title) === cleanTitle(item.title) && x.type === item.type));
+  if(exists) return;
+
+  const targetIdx = Math.min(Math.max(0, originalIdx !== undefined ? originalIdx : wl.length), wl.length);
+  wl.splice(targetIdx, 0, item);
+  saveWL(wl);
+  if(currentUser && typeof fsWLSave === 'function'){
+    fsWLSave(wl);
+  }
+
+  const today = new Date(); today.setHours(0,0,0,0);
+  const isUpcoming = item.releaseDate && new Date(item.releaseDate) > today;
+  if(isUpcoming){
+    renderUpcoming();
+  }
+
+  // Restore into DOM smoothly if on watchlist view and item is released
+  const container = document.getElementById('wl-list');
+  if(container && !isUpcoming){
+    const emptyEl = container.querySelector('.empty');
+    if(emptyEl) emptyEl.remove();
+
+    const cardHtml = renderWatchlistCardHtml(item, targetIdx, 0);
+    const temp = document.createElement('div');
+    temp.innerHTML = cardHtml.trim();
+    const newCard = temp.firstElementChild;
+    if(newCard){
+      newCard.style.maxHeight = '0px';
+      newCard.style.marginBottom = '0px';
+      newCard.style.opacity = '0';
+      newCard.style.transform = 'scale(0.96)';
+      newCard.style.overflow = 'hidden';
+
+      const existingCards = container.querySelectorAll('.wl-card');
+      if(existingCards.length > 0 && targetIdx < existingCards.length){
+        container.insertBefore(newCard, existingCards[targetIdx]);
+      } else {
+        container.appendChild(newCard);
+      }
+
+      newCard.offsetHeight; // Force reflow
+
+      newCard.style.transition = 'max-height 0.28s cubic-bezier(0.16,1,0.3,1), margin-bottom 0.28s ease, opacity 0.24s ease, transform 0.28s cubic-bezier(0.16,1,0.3,1)';
+      newCard.style.maxHeight = '140px';
+      newCard.style.marginBottom = '8px';
+      newCard.style.opacity = '1';
+      newCard.style.transform = 'scale(1)';
+
+      setTimeout(() => {
+        newCard.style.maxHeight = '';
+        newCard.style.marginBottom = '';
+        newCard.style.opacity = '';
+        newCard.style.transform = '';
+        newCard.style.overflow = '';
+      }, 300);
+
+      container.querySelectorAll('.wl-card').forEach((c, idx) => {
+        c.dataset.wlIdx = idx;
+      });
+    }
+  }
+
+  if(navigator.vibrate){ try { navigator.vibrate(12); } catch(err){} }
+  toast('Restored to Watchlist', 'watchlist', 2200);
+}
+window.undoWatchlistRemoval = undoWatchlistRemoval;
 
 let wlLogIdx = -1;
 
