@@ -130,6 +130,20 @@ body::before{
   pointer-events:auto;
   gap:3px;
   box-sizing:border-box;
+  position:relative;
+}
+.nav-indicator{
+  position:absolute;
+  top:0;
+  left:0;
+  border-radius:9999px;
+  background:rgba(255,255,255,0.13);
+  pointer-events:none;
+  z-index:0;
+  box-sizing:border-box;
+  will-change:transform, width;
+  opacity:0;
+  transition:transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), width 0.32s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s ease;
 }
 .nav-btn{
   flex:1;
@@ -141,17 +155,18 @@ body::before{
   justify-content:center;
   gap:3px;
   border:none;
-  background:transparent;
+  background:transparent!important;
   color:rgba(255,255,255,0.45);
   cursor:pointer;
   position:relative;
+  z-index:1;
   border-radius:9999px;
   padding:4px 2px;
   outline:none;
   user-select:none;
   -webkit-user-select:none;
   -webkit-tap-highlight-color:transparent;
-  transition:background 0.2s cubic-bezier(.32,1,.23,1), color 0.18s ease, transform 0.12s ease;
+  transition:color 0.18s ease, transform 0.12s ease;
   box-sizing:border-box;
 }
 .nav-btn:hover{
@@ -162,7 +177,7 @@ body::before{
 }
 /* Active Tab Pill Highlight */
 .nav-btn.on{
-  background:rgba(255,255,255,0.13);
+  background:transparent!important;
   color:#ffffff;
 }
 .nav-btn.on .nav-svg{
@@ -1673,22 +1688,64 @@ input[type=range].r-slider::-moz-range-thumb{
 /* Watchlist rows — movie-card style */
 .wl-list-inner{padding:8px 16px}
 .wl-card{
-  display:flex;align-items:center;gap:12px;
-  padding:12px;margin-bottom:8px;
+  display:block;
+  padding:0;margin-bottom:8px;
   background:var(--bg2);border-radius:16px;
   border:1px solid var(--border);
   animation:fadeUp 0.25s ease both;
   position:relative;overflow:hidden;
   transition:transform 0.18s cubic-bezier(.32,1,.23,1), box-shadow 0.18s ease, border-color 0.18s ease;
   user-select:none;-webkit-user-select:none;
+  touch-action:pan-y;
 }
-.wl-card::before{
+.wl-card-content{
+  display:flex;align-items:center;gap:12px;
+  padding:12px;width:100%;box-sizing:border-box;
+  background:var(--bg2);
+  position:relative;z-index:2;
+  border-radius:15px;
+  transform:translateX(0);
+  will-change:transform;
+}
+.wl-card-content::before{
   content:'';position:absolute;right:0;top:0;bottom:0;width:3px;
+  border-top-right-radius:15px;border-bottom-right-radius:15px;
 }
-.wl-card.movie::before {background:var(--red);}
-.wl-card.series::before{background:var(--teal);}
-.wl-card.game::before  {background:var(--green);}
-.wl-card.collection::before {background:var(--orange);}
+.wl-card.movie .wl-card-content::before {background:var(--red);}
+.wl-card.series .wl-card-content::before{background:var(--teal);}
+.wl-card.game .wl-card-content::before  {background:var(--green);}
+.wl-card.collection .wl-card-content::before {background:var(--orange);}
+
+.wl-swipe-action{
+  position:absolute;top:0;bottom:0;
+  display:flex;align-items:center;
+  z-index:1;pointer-events:none;
+  box-sizing:border-box;
+  width:100%;
+}
+.wl-swipe-action-left{
+  left:0;justify-content:flex-start;
+  padding-left:18px;
+  background:linear-gradient(90deg, #10b981 0%, rgba(16,185,129,0.85) 60%, rgba(16,185,129,0.4) 100%);
+}
+.wl-swipe-action-right{
+  right:0;justify-content:flex-end;
+  padding-right:18px;
+  background:linear-gradient(270deg, #ef4444 0%, rgba(239,68,68,0.85) 60%, rgba(239,68,68,0.4) 100%);
+}
+.wl-swipe-pill{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:12px;font-weight:700;color:#ffffff;
+  letter-spacing:0.3px;text-transform:uppercase;
+  opacity:0.4;transform:scale(0.85);
+  transition:opacity 0.14s ease, transform 0.14s cubic-bezier(.34,1.56,.64,1);
+}
+.wl-swipe-pill svg{
+  width:18px;height:18px;display:block;
+}
+.wl-swipe-pill.is-active{
+  opacity:1!important;transform:scale(1.08)!important;
+}
 .wl-card.is-dragging{
   animation:none!important;
   opacity:0.96;
@@ -2295,171 +2352,175 @@ body.readonly .row{cursor:default}
   color:var(--text);
 }
 
-/* ── UNIVERSAL DIARY SEARCH ──────────────────── */
+/* ── UNIVERSAL DIARY SEARCH (FULL-SCREEN iOS SEARCH) ── */
 .diary-search-overlay{
   position:fixed;
   inset:0;
-  z-index:850;
-  background:rgba(0,0,0,0.72);
+  width:100vw;
+  height:100dvh;
+  z-index:950;
+  background:var(--bg);
   display:none;
-  align-items:flex-start;
-  backdrop-filter:blur(14px);
-  -webkit-backdrop-filter:blur(14px);
-  padding:0 12px 24px;
+  flex-direction:column;
   overflow:hidden;
+  box-sizing:border-box;
+  opacity:0;
+  transform:scale(0.97) translateY(8px);
+  transition:opacity 0.24s cubic-bezier(0.16, 1, 0.3, 1), transform 0.26s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .diary-search-overlay.show{
-  display:flex;
-}
-.diary-search-sheet{
-  width:100%;
-  max-width:540px;
-  max-height:calc(100dvh - var(--sticky-header-height, 112px) - 34px);
-  margin:calc(var(--sticky-header-height, 112px) + 14px) auto 0;
-  background:var(--bg);
-  border-radius:20px;
-  border:1px solid var(--border2);
-  display:flex;
-  flex-direction:column;
-  animation:fadeUp 0.22s cubic-bezier(.32,1,.23,1);
-  box-sizing:border-box;
-  overflow:hidden;
-  box-shadow:0 18px 60px rgba(0,0,0,0.85);
-}
-@media (min-width: 560px){
-  .diary-search-sheet{
-    max-height:calc(85vh - var(--sticky-header-height, 112px));
-    margin:calc(var(--sticky-header-height, 112px) + 16px) auto 0;
-    border-radius:24px;
-    border:1px solid var(--border2);
-    box-shadow:0 24px 70px rgba(0,0,0,0.85);
-    overflow:hidden;
-  }
+  opacity:1;
+  transform:scale(1) translateY(0);
 }
 .diary-search-header{
   display:flex;
   align-items:center;
-  gap:10px;
-  padding:14px 16px 12px;
-  border-bottom:1px solid var(--border);
-  background:rgba(15,15,15,0.95);
-  border-top-left-radius:inherit;
-  border-top-right-radius:inherit;
+  gap:12px;
+  padding:calc(12px + env(safe-area-inset-top, 0px)) 16px 12px;
+  background:rgba(20,20,23,0.94);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  backdrop-filter:blur(24px) saturate(180%);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  box-sizing:border-box;
+  transform:translateY(-8px);
+  opacity:0.7;
+  transition:transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.24s ease;
+}
+.diary-search-overlay.show .diary-search-header{
+  transform:translateY(0);
+  opacity:1;
 }
 .diary-search-input-wrap{
   flex:1;
   position:relative;
   display:flex;
   align-items:center;
+  transform-origin:right center;
+  transition:transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .diary-search-icon{
   position:absolute;
-  left:14px;
-  color:var(--text3);
+  left:13px;
+  color:rgba(255,255,255,0.42);
   pointer-events:none;
 }
 .diary-search-input{
   width:100%;
-  background:var(--bg2);
-  border:1px solid var(--border2);
-  border-radius:14px;
-  padding:11px 36px 11px 38px;
+  height:42px;
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:12px;
+  padding:0 36px 0 38px;
   font-family:var(--font-sans);
-  font-size:14px;
-  font-weight:500;
-  color:var(--text);
+  font-size:16px;
+  font-weight:400;
+  color:#ffffff;
   outline:none;
-  transition:border-color 0.2s, box-shadow 0.2s;
+  transition:background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
   box-sizing:border-box;
+  -webkit-appearance:none;
+}
+.diary-search-input::placeholder{
+  color:rgba(255,255,255,0.38);
+  font-weight:400;
 }
 .diary-search-input:focus{
-  border-color:var(--blue);
-  box-shadow:0 0 0 3px rgba(45,127,249,0.2);
+  background:rgba(255,255,255,0.12);
+  border-color:rgba(255,255,255,0.22);
+  box-shadow:0 0 0 3px rgba(10,132,255,0.2);
 }
 .diary-search-clear{
   position:absolute;
   right:10px;
-  background:rgba(255,255,255,0.08);
+  background:rgba(255,255,255,0.18);
   border:none;
-  color:var(--text2);
-  width:22px;
-  height:22px;
+  color:rgba(255,255,255,0.85);
+  width:20px;
+  height:20px;
   border-radius:50%;
-  font-size:11px;
+  font-size:10px;
+  font-weight:700;
   cursor:pointer;
   display:flex;
   align-items:center;
   justify-content:center;
+  padding:0;
+  transition:background 0.15s ease, transform 0.1s ease;
+}
+.diary-search-clear:active{
+  transform:scale(0.9);
+  background:rgba(255,255,255,0.3);
 }
 .diary-search-cancel{
   background:none;
   border:none;
-  color:var(--blue);
+  color:#0a84ff;
   font-family:var(--font-sans);
-  font-size:14px;
-  font-weight:600;
+  font-size:16px;
+  font-weight:500;
   cursor:pointer;
-  padding:6px 4px;
+  padding:6px 2px;
   white-space:nowrap;
+  transition:opacity 0.15s ease;
 }
 .diary-search-cancel:active{
-  opacity:0.7;
+  opacity:0.6;
 }
 
-.diary-search-filter-row{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:10px 16px;
-  border-bottom:1px solid var(--border);
-  background:rgba(20,20,20,0.6);
-}
-.diary-search-count{
-  font-size:11px;
-  color:var(--text3);
-  font-weight:600;
-}
 .diary-search-results{
   flex:1;
   overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
   scrollbar-width:none;
-  padding:10px 14px 40px;
+  padding:14px 16px 40px;
+  max-width:720px;
+  margin:0 auto;
+  width:100%;
+  box-sizing:border-box;
+  opacity:0;
+  transform:translateY(14px);
+  transition:opacity 0.24s ease 0.05s, transform 0.28s cubic-bezier(0.16, 1, 0.3, 1) 0.05s;
+}
+.diary-search-overlay.show .diary-search-results{
+  opacity:1;
+  transform:translateY(0);
 }
 .diary-search-results::-webkit-scrollbar{
   display:none;
 }
 
-/* Compact Result Card */
+/* iOS Result Card */
 .diary-search-card{
   display:flex;
   align-items:center;
-  gap:11px;
-  padding:7px 11px;
-  background:var(--bg2);
-  border:1px solid var(--border);
-  border-radius:11px;
-  margin-bottom:6px;
+  gap:12px;
+  padding:9px 12px;
+  background:rgba(255,255,255,0.035);
+  border:1px solid rgba(255,255,255,0.07);
+  border-radius:14px;
+  margin-bottom:7px;
   cursor:pointer;
   position:relative;
-  transition:background 0.15s, transform 0.15s, border-color 0.15s;
+  transition:background 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
   overflow:hidden;
+  box-shadow:0 2px 10px rgba(0,0,0,0.3);
 }
 .diary-search-card:hover{
-  background:var(--bg3);
-  border-color:var(--border2);
+  background:rgba(255,255,255,0.065);
+  border-color:rgba(255,255,255,0.14);
 }
 .diary-search-card:active{
-  background:var(--bg3);
-  transform:scale(0.98);
+  background:rgba(255,255,255,0.08);
+  transform:scale(0.985);
 }
 .diary-search-thumb-wrap{
-  width:36px;
-  height:52px;
-  border-radius:6px;
+  width:42px;
+  height:60px;
+  border-radius:8px;
   overflow:hidden;
   background:var(--bg3);
   flex-shrink:0;
-  box-shadow:0 2px 6px rgba(0,0,0,0.4);
+  box-shadow:0 3px 8px rgba(0,0,0,0.45);
 }
 .diary-search-thumb{
   width:100%;
@@ -2516,6 +2577,31 @@ body.readonly .row{cursor:default}
   padding:1.5px 6px;
   border-radius:5px;
 }
+.search-type-pill{
+  font-size:10px;
+  font-weight:700;
+  padding:2px 7px;
+  border-radius:6px;
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  letter-spacing:-0.1px;
+}
+.search-type-pill.movie{
+  background:rgba(255,69,58,0.14);
+  color:#ff453a;
+  border:1px solid rgba(255,69,58,0.25);
+}
+.search-type-pill.series{
+  background:rgba(100,210,255,0.14);
+  color:#64d2ff;
+  border:1px solid rgba(100,210,255,0.25);
+}
+.search-type-pill.game{
+  background:rgba(48,209,88,0.14);
+  color:#30d158;
+  border:1px solid rgba(48,209,88,0.25);
+}
 .diary-search-notes-preview{
   font-size:10.5px;
   color:var(--text2);
@@ -2540,7 +2626,7 @@ body.readonly .row{cursor:default}
   top:0;
   right:0;
   bottom:0;
-  width:2.5px;
+  width:3px;
 }
 .diary-search-card.movie::after{background:var(--red);}
 .diary-search-card.series::after{background:var(--teal);}
@@ -2551,65 +2637,66 @@ body.readonly .row{cursor:default}
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:5px;
+  gap:6px;
   width:100%;
-  padding:7px 12px;
-  margin:2px 0 10px;
-  background:rgba(255,255,255,0.03);
-  border:1px dashed var(--border2);
-  border-radius:9px;
-  color:var(--blue);
-  font-size:11px;
-  font-weight:700;
+  height:38px;
+  padding:0 14px;
+  margin:4px 0 14px;
+  background:rgba(255,255,255,0.045);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:12px;
+  color:#0a84ff;
+  font-size:12px;
+  font-weight:600;
   font-family:var(--font-sans);
   cursor:pointer;
   transition:all 0.15s ease;
 }
 .diary-search-more-btn:hover{
-  background:rgba(45,127,249,0.08);
-  border-color:rgba(45,127,249,0.35);
+  background:rgba(10,132,255,0.1);
+  border-color:rgba(10,132,255,0.28);
 }
 .diary-search-more-btn:active{
-  transform:scale(0.98);
+  transform:scale(0.985);
 }
 
 /* ── UNIVERSAL SEARCH COLLECTION & SECTION HEADERS ────── */
 .diary-search-sec-title{
-  font-size:10px;
-  font-weight:800;
+  font-size:11.5px;
+  font-weight:700;
   text-transform:uppercase;
-  letter-spacing:0.8px;
-  color:var(--text3);
-  margin:16px 4px 8px;
+  letter-spacing:0.7px;
+  color:rgba(255,255,255,0.44);
+  margin:18px 4px 8px;
   padding-left:2px;
   display:flex;
   align-items:center;
   gap:6px;
 }
 .diary-search-sec-title:first-child{
-  margin-top:2px;
+  margin-top:4px;
 }
 .diary-search-coll-card{
   display:flex;
   gap:14px;
-  padding:12px;
+  padding:12px 14px;
   margin-bottom:12px;
-  background:linear-gradient(135deg, rgba(45,127,249,0.12) 0%, rgba(24,24,28,0.85) 100%);
-  border:1px solid rgba(45,127,249,0.3);
-  border-radius:14px;
+  background:linear-gradient(135deg, rgba(10,132,255,0.12) 0%, rgba(26,26,30,0.88) 100%);
+  border:1px solid rgba(10,132,255,0.25);
+  border-radius:16px;
   position:relative;
   overflow:hidden;
   cursor:pointer;
   transition:transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
-  box-shadow:0 4px 16px rgba(0,0,0,0.4);
+  box-shadow:0 4px 18px rgba(0,0,0,0.45);
 }
 .diary-search-coll-card:hover{
-  border-color:rgba(45,127,249,0.5);
-  background:linear-gradient(135deg, rgba(45,127,249,0.18) 0%, rgba(28,28,34,0.9) 100%);
+  border-color:rgba(10,132,255,0.45);
+  background:linear-gradient(135deg, rgba(10,132,255,0.18) 0%, rgba(30,30,36,0.92) 100%);
   transform:translateY(-1px);
 }
 .diary-search-coll-card:active{
-  transform:scale(0.98);
+  transform:scale(0.985);
 }
 .diary-search-coll-card::after{
   content:'';
@@ -5539,36 +5626,24 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   </div>
 </div>
 
-<!-- UNIVERSAL DIARY SEARCH OVERLAY -->
+<!-- UNIVERSAL DIARY SEARCH (FULL SCREEN iOS VIEW) -->
 <div class="diary-search-overlay" id="diarySearchOverlay" style="display:none">
-  <div class="diary-search-sheet" id="diarySearchSheet">
-    <!-- Header with Search Input -->
-    <div class="diary-search-header">
-      <div class="diary-search-input-wrap">
-        <svg class="diary-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8"></circle>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-        </svg>
-        <input class="diary-search-input" id="diarySearchInput" type="text" placeholder="Search movies, series, games, or diary..." autocomplete="off" spellcheck="false">
-        <button class="diary-search-clear" id="diarySearchClearBtn" style="display:none">✕</button>
-      </div>
-      <button class="diary-search-cancel" id="diarySearchCancelBtn">Cancel</button>
+  <!-- Header with Search Input & Cancel -->
+  <div class="diary-search-header">
+    <div class="diary-search-input-wrap">
+      <svg class="diary-search-icon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input class="diary-search-input" id="diarySearchInput" type="text" placeholder="Search movies, series, games, or diary..." autocomplete="off" spellcheck="false">
+      <button class="diary-search-clear" id="diarySearchClearBtn" type="button" aria-label="Clear search" style="display:none">✕</button>
     </div>
-
-    <!-- Filter Segment Bar -->
-    <div class="diary-search-filter-row">
-      <div class="seg diary-search-seg">
-        <button class="seg-btn on" data-sf="all">All</button>
-        <button class="seg-btn" data-sf="movie">🎬</button>
-        <button class="seg-btn" data-sf="series">📺</button>
-        <button class="seg-btn" data-sf="game">🎮</button>
-      </div>
-      <div class="diary-search-count" id="diarySearchCount"></div>
-    </div>
-
-    <!-- Results List -->
-    <div class="diary-search-results" id="diarySearchResults"></div>
+    <button class="diary-search-cancel" id="diarySearchCancelBtn" type="button">Cancel</button>
   </div>
+  <div class="diary-search-count" id="diarySearchCount" style="display:none"></div>
+
+  <!-- Results List -->
+  <div class="diary-search-results" id="diarySearchResults"></div>
 </div>
 
 <!-- COMPLETE DEEP MEDIA INFO CARD (ENCYCLOPEDIA MODE) -->
@@ -5835,6 +5910,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   <div class="nav-scrim" aria-hidden="true"></div>
   <div class="nav-inner">
     <div class="nav-dock">
+      <div class="nav-indicator" id="navIndicator" aria-hidden="true"></div>
       <button class="nav-btn on" data-page="log" aria-label="Diary" title="Diary">
         <div class="nav-ico-wrap">
           <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.95" stroke-linecap="round" stroke-linejoin="round">
@@ -6945,17 +7021,28 @@ document.querySelectorAll('[data-ff]').forEach(btn=>{
   });
 });
 
-function openWatchlistItem(index, e){
+let _wlSuppressClickUntil = 0;
+
+function openWatchlistItem(indexOrId, e){
+  if(_wlSuppressClickUntil && Date.now() < _wlSuppressClickUntil) return;
   if(e && e.target && (e.target.closest('.wl-drag-handle') || e.target.closest('.wl-actions button.wl-del'))) return;
   const wl = getWL();
+  let index = -1;
+  if(typeof indexOrId === 'number'){
+    index = indexOrId;
+  } else {
+    const rawId = decodeURIComponent(String(indexOrId));
+    index = wl.findIndex(x => String(x.id || `${x.title}__${x.type||''}`) === rawId);
+  }
+  if(index < 0 || index >= wl.length) return;
   const item = wl[index];
   if(item){
     if(item.type === 'collection'){
       openCollectionOverlay(item.collectionId || item.id || item.tmdbId, item.title, null);
     } else {
-    openDeepCard(Object.assign({}, item, { _wlIdx: index }));
+      openDeepCard(Object.assign({}, item, { _wlIdx: index }));
+    }
   }
-}
 }
 window.openWatchlistItem = openWatchlistItem;
 
@@ -6987,20 +7074,39 @@ function renderWL(){
       sub = [item.year, item.genre].filter(Boolean).join(' · ');
     }
 
-    return `<div class="wl-card ${item.type}" data-id="${encodeURIComponent(itemId)}" data-wl-idx="${targetIdx}" style="animation-delay:${relIdx*0.04}s;cursor:pointer" onclick="openWatchlistItem(${targetIdx}, event)">
-      ${thumb}
-      <div class="wl-info">
-        <div class="wl-title">${item.title}</div>
-        ${sub?`<div class="wl-sub">${sub}</div>`:''}
-      </div>
-      <div class="wl-actions">
-        <button class="wl-drag-handle" type="button" aria-label="Hold and drag to reorder priority" title="Hold and drag to reorder" onpointerdown="initWatchlistDrag(event, this)">
-          <svg class="wl-drag-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
-            <line x1="4" y1="7" x2="20" y2="7"></line>
-            <line x1="4" y1="12" x2="20" y2="12"></line>
-            <line x1="4" y1="17" x2="20" y2="17"></line>
+    return `<div class="wl-card ${item.type}" data-id="${encodeURIComponent(itemId)}" data-wl-idx="${targetIdx}" style="animation-delay:${relIdx*0.04}s;cursor:pointer" onclick="openWatchlistItem('${encodeURIComponent(itemId)}', event)">
+      <div class="wl-swipe-action wl-swipe-action-left" aria-hidden="true">
+        <div class="wl-swipe-pill wl-swipe-log">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
           </svg>
-        </button>
+          <span>Log It</span>
+        </div>
+      </div>
+      <div class="wl-swipe-action wl-swipe-action-right" aria-hidden="true">
+        <div class="wl-swipe-pill wl-swipe-del">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+          </svg>
+          <span>Remove</span>
+        </div>
+      </div>
+      <div class="wl-card-content">
+        ${thumb}
+        <div class="wl-info">
+          <div class="wl-title">${item.title}</div>
+          ${sub?`<div class="wl-sub">${sub}</div>`:''}
+        </div>
+        <div class="wl-actions">
+          <button class="wl-drag-handle" type="button" aria-label="Hold and drag to reorder priority" title="Hold and drag to reorder" onpointerdown="initWatchlistDrag(event, this)">
+            <svg class="wl-drag-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+              <line x1="4" y1="7" x2="20" y2="7"></line>
+              <line x1="4" y1="12" x2="20" y2="12"></line>
+              <line x1="4" y1="17" x2="20" y2="17"></line>
+            </svg>
+          </button>
+        </div>
       </div>
     </div>`;
   }).join('');
@@ -7152,8 +7258,9 @@ function initWatchlistDrag(e, handle){
 
       if(changed){
         saveReorderedWL(newOrderedIds);
-        renderWL();
-        renderUpcoming();
+        newOrderedCards.forEach((c, idx) => {
+          c.dataset.wlIdx = idx;
+        });
         toast('Watchlist priority updated', 'watchlist');
       }
     }, 160);
@@ -7196,15 +7303,307 @@ function saveReorderedWL(newReleasedIds){
 
   saveWL(full);
 }
-function wlDel(i){const wl=getWL();wl.splice(i,1);saveWL(wl);renderWL();renderUpcoming();toast('Removed from Watchlist', 'neutral');}
+function checkEmptyWl(){
+  const container = document.getElementById('wl-list');
+  if(!container) return;
+  const cards = container.querySelectorAll('.wl-card');
+  if(cards.length === 0){
+    container.innerHTML = '<div class="empty"><div class="empty-ico-svg"><svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></div><div class="empty-title">Your watchlist is empty</div><div class="empty-sub">Search above and add something</div></div>';
+  }
+}
 
-let wlLogIdx=-1;
+function wlDel(indexOrId){
+  const wl = getWL();
+  let i = -1;
+  if(typeof indexOrId === 'number'){
+    i = indexOrId;
+  } else {
+    const rawId = decodeURIComponent(String(indexOrId));
+    i = wl.findIndex(x => String(x.id || `${x.title}__${x.type||''}`) === rawId);
+  }
+  if(i < 0 || i >= wl.length) return;
+  const item = wl[i];
+  const itemId = item.id ? String(item.id) : `${item.title}__${item.type||''}`;
+  
+  wl.splice(i, 1);
+  saveWL(wl);
 
-function wlLog(i){
-  const wl=getWL();
-  const item=wl[i];
-  wlLogIdx=i;
-  openModal(null,item);
+  const container = document.getElementById('wl-list');
+  if(container){
+    const cardEl = container.querySelector(`.wl-card[data-id="${encodeURIComponent(itemId)}"]`);
+    if(cardEl){
+      const isAlreadyCollapsed = cardEl.classList.contains('wl-collapsed') || cardEl.style.maxHeight === '0px';
+      if(isAlreadyCollapsed){
+        cardEl.remove();
+        checkEmptyWl();
+      } else {
+        cardEl.style.transition = 'max-height 0.22s cubic-bezier(.4,0,.2,1), margin-bottom 0.22s cubic-bezier(.4,0,.2,1), opacity 0.2s ease, transform 0.2s ease';
+        cardEl.style.maxHeight = `${cardEl.offsetHeight}px`;
+        cardEl.offsetHeight; // force reflow
+        cardEl.style.maxHeight = '0px';
+        cardEl.style.marginBottom = '0px';
+        cardEl.style.opacity = '0';
+        cardEl.style.transform = 'scale(0.96)';
+        setTimeout(() => {
+          cardEl.remove();
+          checkEmptyWl();
+        }, 220);
+      }
+    } else {
+      checkEmptyWl();
+    }
+    container.querySelectorAll('.wl-card').forEach((c, idx) => {
+      c.dataset.wlIdx = idx;
+    });
+  }
+
+  const today = new Date(); today.setHours(0,0,0,0);
+  if(item.releaseDate && new Date(item.releaseDate) > today){
+    renderUpcoming();
+  }
+
+  toast('Removed from Watchlist', 'neutral');
+}
+
+let wlLogIdx = -1;
+
+function wlLog(indexOrId){
+  const wl = getWL();
+  let i = -1;
+  if(typeof indexOrId === 'number'){
+    i = indexOrId;
+  } else {
+    const rawId = decodeURIComponent(String(indexOrId));
+    i = wl.findIndex(x => String(x.id || `${x.title}__${x.type||''}`) === rawId);
+  }
+  if(i < 0 || i >= wl.length) return;
+  const item = wl[i];
+  if(item && item.type === 'collection'){
+    openCollectionOverlay(item.collectionId || item.id || item.tmdbId, item.title, null);
+    return;
+  }
+  wlLogIdx = i;
+  openModal(null, item);
+}
+
+// ── WATCHLIST SWIPE ACTIONS ─────────────────────────────
+// Swiping right reveals green "Log it" action and opens log modal.
+// Swiping left reveals red "Remove" action and deletes item.
+let _wlSwipeCard = null;
+let _wlSwipeContent = null;
+let _wlSwipeStartX = 0;
+let _wlSwipeStartY = 0;
+let _wlSwipeCurrentX = 0;
+let _wlSwipeCurrentY = 0;
+let _wlSwipeLockedDirection = null; // null | 'horizontal' | 'vertical'
+let _wlSwipeThreshold = 75; // px to trigger
+let _wlDidSwipe = false;
+let _wlSwipeActionLeftPill = null;
+let _wlSwipeActionRightPill = null;
+
+function resetAllWlCardTransforms(exceptContent = null){
+  document.querySelectorAll('#wl-list .wl-card-content').forEach(c => {
+    if(c !== exceptContent && c.style.transform && c.style.transform !== 'translateX(0px)' && c.style.transform !== 'translateX(0)'){
+      c.style.transition = 'transform 0.22s cubic-bezier(.32,1,.23,1)';
+      c.style.transform = 'translateX(0)';
+    }
+  });
+}
+
+function cleanupWlSwipeListeners(){
+  window.removeEventListener('pointermove', onWlSwipePointerMove);
+  window.removeEventListener('pointerup', onWlSwipePointerUp);
+  window.removeEventListener('pointercancel', onWlSwipePointerUp);
+}
+
+function onWlSwipePointerDown(e){
+  if(e.button !== undefined && e.button !== 0 && e.pointerType === 'mouse') return;
+  if(document.body.classList.contains('readonly') || _wlIsDragging) return;
+  if(e.target.closest('.wl-drag-handle') || e.target.closest('button')) return;
+
+  const card = e.target.closest('.wl-card');
+  if(!card) return;
+  const content = card.querySelector('.wl-card-content');
+  if(!content) return;
+
+  resetAllWlCardTransforms(content);
+
+  _wlSwipeCard = card;
+  _wlSwipeContent = content;
+  _wlSwipeStartX = e.clientX;
+  _wlSwipeStartY = e.clientY;
+  _wlSwipeCurrentX = e.clientX;
+  _wlSwipeCurrentY = e.clientY;
+  _wlSwipeLockedDirection = null;
+  _wlDidSwipe = false;
+
+  _wlSwipeActionLeftPill = card.querySelector('.wl-swipe-action-left .wl-swipe-pill');
+  _wlSwipeActionRightPill = card.querySelector('.wl-swipe-action-right .wl-swipe-pill');
+
+  _wlSwipeContent.style.transition = 'none';
+
+  window.addEventListener('pointermove', onWlSwipePointerMove, { passive: false });
+  window.addEventListener('pointerup', onWlSwipePointerUp);
+  window.addEventListener('pointercancel', onWlSwipePointerUp);
+}
+
+function onWlSwipePointerMove(e){
+  if(!_wlSwipeCard || !_wlSwipeContent) return;
+
+  _wlSwipeCurrentX = e.clientX;
+  _wlSwipeCurrentY = e.clientY;
+
+  const dx = _wlSwipeCurrentX - _wlSwipeStartX;
+  const dy = _wlSwipeCurrentY - _wlSwipeStartY;
+
+  if(_wlSwipeLockedDirection === null){
+    const dist = Math.hypot(dx, dy);
+    if(dist > 7){
+      if(Math.abs(dy) >= Math.abs(dx)){
+        _wlSwipeLockedDirection = 'vertical';
+        cleanupWlSwipeListeners();
+        _wlSwipeCard = null;
+        _wlSwipeContent = null;
+        return;
+      } else {
+        _wlSwipeLockedDirection = 'horizontal';
+        _wlDidSwipe = true;
+      }
+    }
+  }
+
+  if(_wlSwipeLockedDirection === 'horizontal'){
+    if(e.cancelable) e.preventDefault();
+
+    let tx = dx;
+    const threshold = _wlSwipeThreshold;
+    const maxPull = 160;
+    if(Math.abs(tx) > threshold){
+      const over = Math.abs(tx) - threshold;
+      const resisted = threshold + over * 0.35;
+      tx = tx > 0 ? Math.min(resisted, maxPull) : Math.max(-resisted, -maxPull);
+    }
+
+    _wlSwipeContent.style.transform = `translateX(${tx}px)`;
+
+    if(tx > 0){
+      const ratio = Math.min(tx / threshold, 1.25);
+      if(_wlSwipeActionLeftPill){
+        _wlSwipeActionLeftPill.style.opacity = String(0.4 + 0.6 * Math.min(ratio, 1));
+        _wlSwipeActionLeftPill.style.transform = `scale(${0.85 + 0.2 * Math.min(ratio, 1)})`;
+        if(ratio >= 1){
+          if(!_wlSwipeActionLeftPill.classList.contains('is-active')){
+            _wlSwipeActionLeftPill.classList.add('is-active');
+            if(navigator.vibrate){ try { navigator.vibrate(10); } catch(err){} }
+          }
+        } else {
+          _wlSwipeActionLeftPill.classList.remove('is-active');
+        }
+      }
+      if(_wlSwipeActionRightPill){
+        _wlSwipeActionRightPill.classList.remove('is-active');
+        _wlSwipeActionRightPill.style.opacity = '0';
+      }
+    } else {
+      const ratio = Math.min(-tx / threshold, 1.25);
+      if(_wlSwipeActionRightPill){
+        _wlSwipeActionRightPill.style.opacity = String(0.4 + 0.6 * Math.min(ratio, 1));
+        _wlSwipeActionRightPill.style.transform = `scale(${0.85 + 0.2 * Math.min(ratio, 1)})`;
+        if(ratio >= 1){
+          if(!_wlSwipeActionRightPill.classList.contains('is-active')){
+            _wlSwipeActionRightPill.classList.add('is-active');
+            if(navigator.vibrate){ try { navigator.vibrate(10); } catch(err){} }
+          }
+        } else {
+          _wlSwipeActionRightPill.classList.remove('is-active');
+        }
+      }
+      if(_wlSwipeActionLeftPill){
+        _wlSwipeActionLeftPill.classList.remove('is-active');
+        _wlSwipeActionLeftPill.style.opacity = '0';
+      }
+    }
+  }
+}
+
+function onWlSwipePointerUp(e){
+  cleanupWlSwipeListeners();
+
+  if(!_wlSwipeCard || !_wlSwipeContent){
+    return;
+  }
+
+  const card = _wlSwipeCard;
+  const content = _wlSwipeContent;
+  const dx = _wlSwipeCurrentX - _wlSwipeStartX;
+  const isHorizontal = (_wlSwipeLockedDirection === 'horizontal');
+  const cardId = card.dataset.id ? decodeURIComponent(card.dataset.id) : null;
+  const cardIdx = card.dataset.wlIdx !== undefined ? parseInt(card.dataset.wlIdx, 10) : -1;
+
+  _wlSwipeCard = null;
+  _wlSwipeContent = null;
+  _wlSwipeLockedDirection = null;
+
+  if(_wlDidSwipe){
+    _wlSuppressClickUntil = Date.now() + 350;
+  }
+
+  if(!isHorizontal){
+    content.style.transition = 'transform 0.22s cubic-bezier(.32,1,.23,1)';
+    content.style.transform = 'translateX(0)';
+    return;
+  }
+
+  if(dx >= _wlSwipeThreshold){
+    // Swiped RIGHT past threshold -> Log It!
+    if(navigator.vibrate){ try { navigator.vibrate(16); } catch(err){} }
+    content.style.transition = 'transform 0.25s cubic-bezier(.32,1,.23,1)';
+    content.style.transform = 'translateX(0)';
+    if(_wlSwipeActionLeftPill) _wlSwipeActionLeftPill.classList.remove('is-active');
+    setTimeout(() => {
+      if(cardId) wlLog(cardId);
+      else if(cardIdx >= 0) wlLog(cardIdx);
+    }, 130);
+  } else if(dx <= -_wlSwipeThreshold){
+    // Swiped LEFT past threshold -> Remove!
+    if(navigator.vibrate){ try { navigator.vibrate([14, 40, 18]); } catch(err){} }
+    content.style.transition = 'transform 0.2s ease-out';
+    content.style.transform = 'translateX(-105%)';
+
+    setTimeout(() => {
+      card.classList.add('wl-collapsed');
+      card.style.transition = 'max-height 0.22s cubic-bezier(.4,0,.2,1), margin-bottom 0.22s cubic-bezier(.4,0,.2,1), opacity 0.2s ease';
+      card.style.maxHeight = `${card.offsetHeight}px`;
+      card.offsetHeight; // reflow
+      card.style.maxHeight = '0px';
+      card.style.marginBottom = '0px';
+      card.style.opacity = '0';
+
+      setTimeout(() => {
+        if(cardId) wlDel(cardId);
+        else if(cardIdx >= 0) wlDel(cardIdx);
+      }, 220);
+    }, 180);
+  } else {
+    // Threshold not reached -> snap back
+    content.style.transition = 'transform 0.24s cubic-bezier(.32,1,.23,1)';
+    content.style.transform = 'translateX(0)';
+    if(_wlSwipeActionLeftPill) _wlSwipeActionLeftPill.classList.remove('is-active');
+    if(_wlSwipeActionRightPill) _wlSwipeActionRightPill.classList.remove('is-active');
+  }
+}
+
+function initWatchlistSwipe(){
+  const wlEl = document.getElementById('wl-list');
+  if(wlEl && !wlEl._swipeAttached){
+    wlEl._swipeAttached = true;
+    wlEl.addEventListener('pointerdown', onWlSwipePointerDown);
+  }
+}
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', initWatchlistSwipe);
+} else {
+  initWatchlistSwipe();
 }
 
 // ── CALENDAR LOGIC ──────────────────────────────────────
@@ -7374,6 +7773,7 @@ function renderCalendarSelectedEntries(dateMap){
 
 function openFavsFromProfile(){
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('on'));
+  updateNavIndicator();
   document.querySelectorAll('.page').forEach(pg => pg.classList.remove('on'));
   const page = document.getElementById('page-favs');
   if(page){
@@ -7384,6 +7784,64 @@ function openFavsFromProfile(){
     renderFavs();
   }
 }
+
+// ── NAV SLIDING PILL INDICATOR ──────────────────────────
+function updateNavIndicator(targetBtn = null, immediate = false){
+  const dock = document.querySelector('.nav-dock');
+  const indicator = document.getElementById('navIndicator');
+  if(!dock || !indicator) return;
+
+  const activeBtn = targetBtn || dock.querySelector('.nav-btn.on');
+  if(!activeBtn){
+    indicator.style.opacity = '0';
+    return;
+  }
+
+  const left = activeBtn.offsetLeft;
+  const top = activeBtn.offsetTop;
+  const width = activeBtn.offsetWidth;
+  const height = activeBtn.offsetHeight;
+
+  if(width === 0 || height === 0){
+    return;
+  }
+
+  if(immediate){
+    indicator.style.transition = 'none';
+  } else {
+    indicator.style.transition = 'transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), width 0.32s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s ease';
+  }
+
+  indicator.style.opacity = '1';
+  indicator.style.width = `${width}px`;
+  indicator.style.height = `${height}px`;
+  indicator.style.transform = `translate3d(${left}px, ${top}px, 0)`;
+
+  if(immediate){
+    indicator.offsetHeight; // reflow
+    requestAnimationFrame(() => {
+      indicator.style.transition = 'transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), width 0.32s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s ease';
+    });
+  }
+}
+window.updateNavIndicator = updateNavIndicator;
+
+window.addEventListener('resize', () => {
+  updateNavIndicator(null, true);
+}, { passive: true });
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', () => {
+    updateNavIndicator(null, true);
+    setTimeout(() => updateNavIndicator(null, true), 80);
+  });
+} else {
+  updateNavIndicator(null, true);
+  setTimeout(() => updateNavIndicator(null, true), 80);
+}
+window.addEventListener('load', () => {
+  updateNavIndicator(null, true);
+});
 
 // ── FILTER/SORT ─────────────────────────────────────────
 document.querySelectorAll('.seg-btn').forEach(btn=>{
@@ -7399,6 +7857,7 @@ document.querySelectorAll('.nav-btn').forEach(btn=>{
   btn.addEventListener('click',()=>{
     document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('on'));
     btn.classList.add('on');
+    updateNavIndicator(btn);
     const p=btn.dataset.page;
     document.querySelectorAll('.page').forEach(pg=>pg.classList.remove('on'));
     const page = document.getElementById('page-'+p);
@@ -10601,19 +11060,26 @@ function openDiarySearch(){
   const overlay = document.getElementById('diarySearchOverlay');
   const input = document.getElementById('diarySearchInput');
   if(!overlay || !input) return;
+  _diarySearchFilter = 'all';
   overlay.style.display = 'flex';
+  overlay.offsetHeight; // force reflow for smooth expansion animation
   overlay.classList.add('show');
   input.value = '';
-  document.getElementById('diarySearchClearBtn').style.display = 'none';
+  const clearBtn = document.getElementById('diarySearchClearBtn');
+  if(clearBtn) clearBtn.style.display = 'none';
   renderUniversalSearchResults('');
-  setTimeout(() => input.focus(), 80);
+  setTimeout(() => input.focus(), 60);
 }
 
 function closeDiarySearch(){
   const overlay = document.getElementById('diarySearchOverlay');
+  const input = document.getElementById('diarySearchInput');
+  if(input) input.blur();
   if(overlay){
     overlay.classList.remove('show');
-    overlay.style.display = 'none';
+    setTimeout(() => {
+      overlay.style.display = 'none';
+    }, 240);
   }
 }
 
@@ -10665,38 +11131,45 @@ function computeRelevanceScore(title, rawQ, type, popScore, isLogged, isWatchlis
   const q = (rawQ || '').toLowerCase().trim();
   if(!t || !q) return 0;
 
+  // Normalized versions stripping leading articles ("the", "a", "an")
+  const normT = t.replace(/^(the|a|an)\s+/i, '').trim();
+  const normQ = q.replace(/^(the|a|an)\s+/i, '').trim();
+
   const cleanT = t.replace(/[^a-z0-9]/g, '');
   const cleanQ = q.replace(/[^a-z0-9]/g, '');
+  const cleanNormT = normT.replace(/[^a-z0-9]/g, '');
+  const cleanNormQ = normQ.replace(/[^a-z0-9]/g, '');
 
   let score = 0;
   let hasMatch = false;
 
-  // 1. Exact title match (absolute highest priority)
-  if(t === q){
+  // 1. Exact title match (absolute highest priority, with or without leading article)
+  if(t === q || (normT && normQ && normT === normQ)){
     score += 1200;
     hasMatch = true;
-  } else if(cleanT === cleanQ && cleanQ.length > 0){
-    score += 1000;
+  } else if((cleanT === cleanQ || (cleanNormT && cleanNormQ && cleanNormT === cleanNormQ)) && cleanQ.length > 0){
+    score += 1100;
     hasMatch = true;
   }
   // 2. Starts with query
-  else if(t.startsWith(q)){
-    score += 700;
+  else if(t.startsWith(q) || (normT && normQ && normT.startsWith(normQ))){
+    score += 750;
     hasMatch = true;
-  } else if(cleanT.startsWith(cleanQ) && cleanQ.length > 0){
-    score += 600;
+  } else if((cleanT.startsWith(cleanQ) || (cleanNormT && cleanNormQ && cleanNormT.startsWith(cleanNormQ))) && cleanQ.length > 0){
+    score += 650;
     hasMatch = true;
   }
-  // 3. Word boundary exact match (e.g. "The Minecraft Movie" vs query "Minecraft")
-  else if(new RegExp('(^|[\\s:—-])' + cleanQ.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\$&') + '([\\s:—-]|$)', 'i').test(t)){
-    score += 450;
+  // 3. Word boundary exact match (e.g. query "Minecraft" in "A Minecraft Movie")
+  else if(new RegExp('(^|[\\s:—-])' + cleanQ.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\$&') + '([\\s:—-]|$)', 'i').test(t) ||
+          (cleanNormQ && new RegExp('(^|[\\s:—-])' + cleanNormQ.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\$&') + '([\\s:—-]|$)', 'i').test(cleanNormT))){
+    score += 480;
     hasMatch = true;
   }
   // 4. Substring contains
-  else if(t.includes(q)){
+  else if(t.includes(q) || (normT && normQ && normT.includes(normQ))){
     score += 300;
     hasMatch = true;
-  } else if(cleanT.includes(cleanQ) && cleanQ.length > 0){
+  } else if((cleanT.includes(cleanQ) || (cleanNormT && cleanNormQ && cleanNormT.includes(cleanNormQ))) && cleanQ.length > 0){
     score += 250;
     hasMatch = true;
   } else {
@@ -10715,7 +11188,7 @@ function computeRelevanceScore(title, rawQ, type, popScore, isLogged, isWatchlis
   if(!hasMatch) return 0;
 
   // Length penalty: concise exact titles beat verbose subtitle entries
-  const lenDiff = Math.abs(cleanT.length - cleanQ.length);
+  const lenDiff = Math.abs((cleanNormT || cleanT).length - (cleanNormQ || cleanQ).length);
   score -= Math.min(80, lenDiff * 2);
 
   // Popularity / Rating count bonus (tasteful boost for known titles)
@@ -10726,11 +11199,6 @@ function computeRelevanceScore(title, rawQ, type, popScore, isLogged, isWatchlis
   // Personal Logger Boost
   if(isLogged) score += 180;
   else if(isWatchlist) score += 90;
-
-  // Media filter match boost
-  if(_diarySearchFilter !== 'all' && type === _diarySearchFilter){
-    score += 120;
-  }
 
   return Math.max(1, Math.round(score));
 }
@@ -10764,7 +11232,18 @@ function renderUniversalSearchResults(query){
   if(q.length < 2){
     _currentSearchResults = [];
     if(countEl) countEl.textContent = '';
-    resultsContainer.innerHTML = '';
+    resultsContainer.innerHTML = `
+      <div class="diary-search-empty">
+        <div class="diary-search-empty-icon">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="opacity:0.35">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </div>
+        <div class="diary-search-empty-title">Search Everything</div>
+        <div class="diary-search-empty-sub">Movies, TV shows, games, franchises & your diary</div>
+      </div>
+    `;
     return;
   }
 
@@ -11001,45 +11480,25 @@ function renderUniversalSearchResults(query){
 
       let html = '';
 
-      // 1. Featured Top Result Collection (Broad Intent)
-      if(isBroadFranchiseIntent && topCollection && (filter === 'all' || filter === 'movie')){
+      // 1. Featured Top Franchise Collection (if high-confidence match)
+      if(topCollection && (isBroadFranchiseIntent || topCollectionScore >= 700)){
         html += `
-          <div class="diary-search-sec-title"><span>🌟 Top Result · Franchise</span></div>
+          <div class="diary-search-sec-title"><span>🌟 Franchise Collection</span></div>
           ${renderSearchCollectionCard(topCollection)}
         `;
       }
 
-      if(filter === 'all'){
-        const movies = combined.filter(m => m.item.type === 'movie');
-        const series = combined.filter(m => m.item.type === 'series');
-        const games = combined.filter(m => m.item.type === 'game');
+      // 2. All Unified Search Results ranked purely by match relevance!
+      html += _currentSearchResults.map((item, idx) => {
+        return renderSearchItemCard(item, idx, q);
+      }).join('');
 
-        html += renderSearchCategoryGroup('Movies', '🎬', movies, 'movies', q, false);
-        html += renderSearchCategoryGroup('TV & Series', '📺', series, 'series', q, false);
-        html += renderSearchCategoryGroup('Games', '🎮', games, 'games', q, false);
-
-        // Secondary related collection if not broad intent
-        if(!isBroadFranchiseIntent && topCollection && topCollectionScore >= 300){
-          html += `
-            <div class="diary-search-sec-title"><span>🎬 Related Collection</span></div>
-            ${renderSearchCollectionCard(topCollection)}
-          `;
-        }
-      } else if(filter === 'movie'){
-        if(!isBroadFranchiseIntent && topCollection && topCollectionScore >= 300){
-          html += `
-            <div class="diary-search-sec-title"><span>🎬 Related Collection</span></div>
-            ${renderSearchCollectionCard(topCollection)}
-          `;
-        }
-        const movies = combined.filter(m => m.item.type === 'movie');
-        html += renderSearchCategoryGroup('Movies', '🎬', movies, 'movies', q, true);
-      } else if(filter === 'series'){
-        const series = combined.filter(m => m.item.type === 'series');
-        html += renderSearchCategoryGroup('TV & Series', '📺', series, 'series', q, true);
-      } else if(filter === 'game'){
-        const games = combined.filter(m => m.item.type === 'game');
-        html += renderSearchCategoryGroup('Games', '🎮', games, 'games', q, true);
+      // 3. Secondary related collection at bottom if not already shown at top
+      if(!isBroadFranchiseIntent && topCollection && topCollectionScore >= 300 && topCollectionScore < 700){
+        html += `
+          <div class="diary-search-sec-title"><span>🎬 Related Collection</span></div>
+          ${renderSearchCollectionCard(topCollection)}
+        `;
       }
 
       resultsContainer.innerHTML = html;
@@ -11193,6 +11652,7 @@ function renderSearchItemCard(e, index, q){
         </div>
         <div class="diary-search-meta">${metaText}</div>
         <div class="diary-search-badges">
+          <span class="search-type-pill ${e.type}">${icon} ${typeName}</span>
           ${statusBadgeHtml}
         </div>
         ${notesSnippet}
@@ -13022,14 +13482,7 @@ document.getElementById('diarySearchOverlay')?.addEventListener('click', (e) => 
     closeDiarySearch();
   }
 });
-document.querySelectorAll('.diary-search-seg .seg-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.diary-search-seg .seg-btn').forEach(b => b.classList.remove('on'));
-    btn.classList.add('on');
-    _diarySearchFilter = btn.dataset.sf || 'all';
-    renderUniversalSearchResults(document.getElementById('diarySearchInput')?.value || '');
-  });
-});
+
 
 document.getElementById('collClose')?.addEventListener('click', (e) => {
   e.stopPropagation();
