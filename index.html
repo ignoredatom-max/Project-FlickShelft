@@ -1679,6 +1679,8 @@ input[type=range].r-slider::-moz-range-thumb{
   border:1px solid var(--border);
   animation:fadeUp 0.25s ease both;
   position:relative;overflow:hidden;
+  transition:transform 0.18s cubic-bezier(.32,1,.23,1), box-shadow 0.18s ease, border-color 0.18s ease;
+  user-select:none;-webkit-user-select:none;
 }
 .wl-card::before{
   content:'';position:absolute;right:0;top:0;bottom:0;width:3px;
@@ -1687,43 +1689,59 @@ input[type=range].r-slider::-moz-range-thumb{
 .wl-card.series::before{background:var(--teal);}
 .wl-card.game::before  {background:var(--green);}
 .wl-card.collection::before {background:var(--orange);}
+.wl-card.is-dragging{
+  animation:none!important;
+  opacity:0.96;
+  border-color:rgba(255,255,255,0.24);
+  box-shadow:0 24px 60px rgba(0,0,0,0.85), 0 0 0 1px rgba(255,255,255,0.18);
+  transform:scale(1.025);
+  cursor:grabbing;
+}
+.wl-card-placeholder{
+  border-radius:16px;
+  border:2px dashed rgba(255,255,255,0.16);
+  background:rgba(255,255,255,0.02);
+  margin-bottom:8px;
+  box-sizing:border-box;
+}
 .wl-thumb{width:44px;height:64px;object-fit:cover;border-radius:10px;background:var(--bg3);flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,0.4)}
 .wl-ph{width:44px;height:64px;background:var(--bg3);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
 .wl-info{flex:1;min-width:0}
 .wl-title{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-0.2px;cursor:pointer;}
 .wl-title:hover{color:var(--text);}
 .wl-sub{font-size:11px;color:var(--text3);margin-top:3px}
-.wl-actions{display:flex;flex-direction:row;align-items:center;gap:8px;flex-shrink:0}
-.wl-log-btn{
-  background:var(--green);color:#000;border:none;
-  padding:0 15px;height:32px;border-radius:9999px;
-  font-family:var(--font-sans);font-size:12px;font-weight:800;
-  cursor:pointer;white-space:nowrap;letter-spacing:0.2px;
-  box-shadow:0 3px 10px rgba(0,0,0,0.35);
-  transition:transform 0.15s,box-shadow 0.15s;
-  display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;
-}
-.wl-log-btn:active{transform:scale(0.94);box-shadow:none}
-.wl-view-btn{
-  background:var(--bg3);color:var(--text);border:1px solid var(--border2);
-  padding:0 14px;height:32px;border-radius:9999px;
-  font-family:var(--font-sans);font-size:12px;font-weight:700;
-  cursor:pointer;white-space:nowrap;letter-spacing:0.2px;
-  box-shadow:0 3px 10px rgba(0,0,0,0.25);
-  transition:transform 0.15s,box-shadow 0.15s,background 0.15s;
-  display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;
-}
-.wl-view-btn:hover{background:var(--bg4);}
-.wl-view-btn:active{transform:scale(0.94);box-shadow:none}
-.wl-del{
-  width:32px;height:32px;border-radius:50%;
-  background:var(--bg4);border:1px solid rgba(255,255,255,0.06);
-  color:var(--text3);font-size:12px;cursor:pointer;
+.wl-actions{display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.wl-drag-handle{
+  width:40px;height:40px;border-radius:12px;
+  background:transparent;border:none;
+  color:rgba(255,255,255,0.34);
   display:inline-flex;align-items:center;justify-content:center;
-  padding:0;transition:all 0.15s ease;line-height:1;flex-shrink:0;box-sizing:border-box;
+  cursor:grab;touch-action:none;-webkit-touch-callout:none;
+  user-select:none;-webkit-user-select:none;
+  padding:0;flex-shrink:0;box-sizing:border-box;
+  transition:color 0.15s ease, background 0.15s ease, transform 0.15s ease;
 }
-.wl-del:hover{background:rgba(255,255,255,0.12);color:var(--text)}
-.wl-del:active{transform:scale(0.92);color:var(--pink)}
+.wl-drag-handle:hover{
+  color:rgba(255,255,255,0.85);
+  background:rgba(255,255,255,0.06);
+}
+.wl-drag-handle:active,
+.wl-card.is-dragging .wl-drag-handle{
+  cursor:grabbing;
+  color:#ffffff;
+  background:rgba(255,255,255,0.12);
+  transform:scale(1.06);
+}
+.wl-drag-svg{
+  width:20px;height:20px;
+  display:block;
+  stroke:currentColor;
+  pointer-events:none;
+}
+body.wl-dragging-active{
+  user-select:none!important;
+  -webkit-user-select:none!important;
+}
 
 /* ── FAVOURITES ──────────────────────────────── */
 .fav-list-inner{padding:8px 16px}
@@ -6928,7 +6946,7 @@ document.querySelectorAll('[data-ff]').forEach(btn=>{
 });
 
 function openWatchlistItem(index, e){
-  if(e && e.target && e.target.closest('.wl-actions button.wl-del')) return;
+  if(e && e.target && (e.target.closest('.wl-drag-handle') || e.target.closest('.wl-actions button.wl-del'))) return;
   const wl = getWL();
   const item = wl[index];
   if(item){
@@ -6958,8 +6976,8 @@ function renderWL(){
     const i=wl.findIndex(x=>(x.id && item.id && x.id===item.id) || (x.title===item.title && x.type===item.type));
     const targetIdx = i >= 0 ? i : relIdx;
     const isColl = item.type === 'collection';
-    const icon = isColl ? '🎞️' : (item.type==='game'?'🎮':item.type==='movie'?'🎬':'📺');
     const thumb=renderPosterHtml(item.poster, item.title, item.type, 'wl-thumb', 'wl-ph');
+    const itemId = item.id ? String(item.id) : `${item.title}__${item.type||''}`;
     
     let sub = '';
     if(isColl){
@@ -6969,22 +6987,214 @@ function renderWL(){
       sub = [item.year, item.genre].filter(Boolean).join(' · ');
     }
 
-    const actionBtn = isColl
-      ? `<button class="wl-view-btn" onclick="event.stopPropagation();openWatchlistItem(${targetIdx}, event)">View →</button>`
-      : `<button class="wl-log-btn" onclick="event.stopPropagation();wlLog(${targetIdx})">Log it ✓</button>`;
-
-    return `<div class="wl-card ${item.type}" style="animation-delay:${relIdx*0.05}s;cursor:pointer" onclick="openWatchlistItem(${targetIdx}, event)">
+    return `<div class="wl-card ${item.type}" data-id="${encodeURIComponent(itemId)}" data-wl-idx="${targetIdx}" style="animation-delay:${relIdx*0.04}s;cursor:pointer" onclick="openWatchlistItem(${targetIdx}, event)">
       ${thumb}
       <div class="wl-info">
         <div class="wl-title">${item.title}</div>
         ${sub?`<div class="wl-sub">${sub}</div>`:''}
       </div>
       <div class="wl-actions">
-        ${actionBtn}
-        <button class="wl-del" onclick="event.stopPropagation();wlDel(${targetIdx})">✕</button>
+        <button class="wl-drag-handle" type="button" aria-label="Hold and drag to reorder priority" title="Hold and drag to reorder" onpointerdown="initWatchlistDrag(event, this)">
+          <svg class="wl-drag-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+            <line x1="4" y1="7" x2="20" y2="7"></line>
+            <line x1="4" y1="12" x2="20" y2="12"></line>
+            <line x1="4" y1="17" x2="20" y2="17"></line>
+          </svg>
+        </button>
       </div>
     </div>`;
   }).join('');
+}
+
+let _wlIsDragging = false;
+
+function initWatchlistDrag(e, handle){
+  if(e.button !== undefined && e.button !== 0 && e.pointerType === 'mouse') return;
+  if(document.body.classList.contains('readonly')) return;
+  e.preventDefault();
+  e.stopPropagation();
+
+  const card = handle.closest('.wl-card');
+  const container = document.getElementById('wl-list');
+  if(!card || !container) return;
+
+  const allCards = Array.from(container.querySelectorAll('.wl-card'));
+  if(allCards.length <= 1) return;
+
+  _wlIsDragging = true;
+  document.body.classList.add('wl-dragging-active');
+
+  if(navigator.vibrate){
+    try { navigator.vibrate(14); } catch(err){}
+  }
+
+  const cardRect = card.getBoundingClientRect();
+  const grabOffsetY = e.clientY - cardRect.top;
+  let currentY = e.clientY;
+
+  const placeholder = document.createElement('div');
+  placeholder.className = 'wl-card-placeholder';
+  placeholder.style.height = `${cardRect.height}px`;
+
+  container.insertBefore(placeholder, card);
+
+  card.classList.add('is-dragging');
+  card.style.position = 'fixed';
+  card.style.top = `${cardRect.top}px`;
+  card.style.left = `${cardRect.left}px`;
+  card.style.width = `${cardRect.width}px`;
+  card.style.margin = '0';
+  card.style.zIndex = '9999';
+  card.style.pointerEvents = 'none';
+
+  try {
+    handle.setPointerCapture(e.pointerId);
+  } catch(err){}
+
+  let autoScrollRaf = null;
+  function autoScroll(){
+    if(!_wlIsDragging) return;
+    const edgeMargin = 85;
+    const maxSpeed = 10;
+    if(currentY < edgeMargin){
+      const speed = -Math.round((1 - currentY / edgeMargin) * maxSpeed) - 2;
+      window.scrollBy(0, speed);
+    } else if(currentY > window.innerHeight - edgeMargin){
+      const speed = Math.round((currentY - (window.innerHeight - edgeMargin)) / edgeMargin * maxSpeed) + 2;
+      window.scrollBy(0, speed);
+    }
+    autoScrollRaf = requestAnimationFrame(autoScroll);
+  }
+  autoScrollRaf = requestAnimationFrame(autoScroll);
+
+  function onPointerMove(moveEvent){
+    if(!_wlIsDragging) return;
+    moveEvent.preventDefault();
+    currentY = moveEvent.clientY;
+
+    const newTop = currentY - grabOffsetY;
+    card.style.top = `${newTop}px`;
+
+    const siblings = Array.from(container.querySelectorAll('.wl-card')).filter(c => c !== card);
+    let targetSibling = null;
+    let insertAfter = false;
+
+    for(const sib of siblings){
+      const sRect = sib.getBoundingClientRect();
+      const sMid = sRect.top + sRect.height / 2;
+      if(currentY < sMid){
+        targetSibling = sib;
+        insertAfter = false;
+        break;
+      }
+      targetSibling = sib;
+      insertAfter = true;
+    }
+
+    if(targetSibling){
+      if(insertAfter){
+        if(placeholder.previousElementSibling !== targetSibling){
+          container.insertBefore(placeholder, targetSibling.nextSibling);
+          if(navigator.vibrate){ try { navigator.vibrate(6); } catch(err){} }
+        }
+      } else {
+        if(placeholder.nextElementSibling !== targetSibling){
+          container.insertBefore(placeholder, targetSibling);
+          if(navigator.vibrate){ try { navigator.vibrate(6); } catch(err){} }
+        }
+      }
+    }
+  }
+
+  function onPointerUp(upEvent){
+    if(!_wlIsDragging) return;
+    _wlIsDragging = false;
+    document.body.classList.remove('wl-dragging-active');
+
+    if(autoScrollRaf){
+      cancelAnimationFrame(autoScrollRaf);
+      autoScrollRaf = null;
+    }
+
+    try {
+      handle.releasePointerCapture(upEvent.pointerId);
+    } catch(err){}
+
+    handle.removeEventListener('pointermove', onPointerMove);
+    handle.removeEventListener('pointerup', onPointerUp);
+    handle.removeEventListener('pointercancel', onPointerUp);
+
+    const pRect = placeholder.getBoundingClientRect();
+    card.style.transition = 'top 0.16s cubic-bezier(.32,1,.23,1), left 0.16s ease, transform 0.16s ease, box-shadow 0.16s ease';
+    card.style.top = `${pRect.top}px`;
+    card.style.left = `${pRect.left}px`;
+    card.style.transform = 'scale(1)';
+    card.style.boxShadow = '';
+
+    setTimeout(() => {
+      container.insertBefore(card, placeholder);
+      placeholder.remove();
+
+      card.style.position = '';
+      card.style.top = '';
+      card.style.left = '';
+      card.style.width = '';
+      card.style.margin = '';
+      card.style.zIndex = '';
+      card.style.pointerEvents = '';
+      card.style.transition = '';
+      card.classList.remove('is-dragging');
+
+      const newOrderedCards = Array.from(container.querySelectorAll('.wl-card'));
+      const newOrderedIds = newOrderedCards.map(c => decodeURIComponent(c.dataset.id || ''));
+      const originalIds = allCards.map(c => decodeURIComponent(c.dataset.id || ''));
+      const changed = newOrderedIds.some((id, idx) => id !== originalIds[idx]);
+
+      if(changed){
+        saveReorderedWL(newOrderedIds);
+        renderWL();
+        renderUpcoming();
+        toast('Watchlist priority updated', 'watchlist');
+      }
+    }, 160);
+  }
+
+  handle.addEventListener('pointermove', onPointerMove);
+  handle.addEventListener('pointerup', onPointerUp);
+  handle.addEventListener('pointercancel', onPointerUp);
+}
+
+function saveReorderedWL(newReleasedIds){
+  const wl = getWL();
+  const getItemId = x => String(x.id || (x.title + '__' + (x.type||'')));
+  const orderMap = new Map();
+  newReleasedIds.forEach((id, idx) => orderMap.set(id, idx));
+
+  const released = [];
+  const unreleased = [];
+  wl.forEach(item => {
+    const id = getItemId(item);
+    if(orderMap.has(id)){
+      released.push(item);
+    } else {
+      unreleased.push(item);
+    }
+  });
+
+  released.sort((a, b) => (orderMap.get(getItemId(a)) ?? 0) - (orderMap.get(getItemId(b)) ?? 0));
+
+  const full = [];
+  let relIdx = 0;
+  wl.forEach(item => {
+    const id = getItemId(item);
+    if(orderMap.has(id)){
+      full.push(released[relIdx++]);
+    } else {
+      full.push(item);
+    }
+  });
+
+  saveWL(full);
 }
 function wlDel(i){const wl=getWL();wl.splice(i,1);saveWL(wl);renderWL();renderUpcoming();toast('Removed from Watchlist', 'neutral');}
 
@@ -12849,6 +13059,8 @@ window.openEdit         = openEdit;
 window.closeInfoCard    = closeInfoCard;
 window.wlLog            = wlLog;
 window.wlDel            = wlDel;
+window.initWatchlistDrag= initWatchlistDrag;
+window.saveReorderedWL  = saveReorderedWL;
 window.removePick       = removePick;
 window.addPick          = addPick;
 window.removePickById   = removePickById;
