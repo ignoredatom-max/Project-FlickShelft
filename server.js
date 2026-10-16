@@ -170,6 +170,41 @@ const server = http.createServer(async (req, res) => {
       }
     }
 
+    // Universal image proxy with CORS headers & caching (for Universe posters & snapshots)
+    if (pathname === '/api/proxy-image') {
+      const targetUrl = parsedUrl.query.url;
+      if (!targetUrl || !targetUrl.startsWith('http')) {
+        res.writeHead(400);
+        res.end(JSON.stringify({ error: 'Invalid url' }));
+        return;
+      }
+      try {
+        const imgResp = await fetch(targetUrl, {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            'Accept': 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8'
+          }
+        });
+        if (!imgResp.ok) {
+          res.writeHead(imgResp.status);
+          res.end(JSON.stringify({ error: 'Failed to fetch image' }));
+          return;
+        }
+        const imgBuf = await imgResp.arrayBuffer();
+        res.writeHead(200, {
+          'Content-Type': imgResp.headers.get('content-type') || 'image/jpeg',
+          'Access-Control-Allow-Origin': '*',
+          'Cache-Control': 'public, max-age=604800'
+        });
+        res.end(Buffer.from(imgBuf));
+        return;
+      } catch (err) {
+        res.writeHead(500);
+        res.end(JSON.stringify({ error: err.message }));
+        return;
+      }
+    }
+
     // Handle collection route — try hardcoded fallback, then real TMDB, then upstream proxy
     const collMatch = pathname.match(/^\/api\/movie\/collection\/(\d+)$/);
     if (collMatch) {
