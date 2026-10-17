@@ -64,6 +64,8 @@ html.is-public-profile #page-public-profile.on {
   --radius-md:16px;
   --radius-lg:22px;
   --radius-pill:999px;
+  --sticky-top:96px;
+  --sticky-header-height:96px;
   --font-sans:-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "SF Pro", "Inter", -apple-system-body, system-ui, sans-serif;
 }
 html{background:var(--bg)}
@@ -511,10 +513,10 @@ body::before{
 
 /* ── PAGES ───────────────────────────────────── */
 .page{display:none;padding-bottom:110px;min-height:100vh}
-.page.on{display:block;animation:pageFadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;}
+.page.on{display:block;animation:pageFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;}
 @keyframes pageFadeIn{
-  from{opacity:0;transform:translateY(6px);}
-  to{opacity:1;transform:translateY(0);}
+  from{opacity:0;}
+  to{opacity:1;}
 }
 
 /* ── STICKY HEADERS (DYNAMIC GLASS BLUR) ─────── */
@@ -923,9 +925,11 @@ body::before{
   padding:7px 16px;
   font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;
   color:var(--text2);
-  background:var(--bg3);
+  background:rgba(21,21,24,0.92);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
   border-bottom:1px solid var(--border2);
-  position:sticky;top:var(--sticky-top, 0px);z-index:10;
+  position:sticky;top:var(--sticky-top, 96px);z-index:50;
 }
 
 /* ── ROW — Letterboxd exact layout ───────────── */
@@ -5860,7 +5864,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
 
 <!-- LOG PAGE -->
 <div class="page on" id="page-log">
-  <div id="logStickyHeader" class="sticky-header">
+  <div id="logStickyHeader" class="sticky-header" style="position:sticky;top:0;z-index:860">
     <div class="header" style="position:relative">
       <div>
         <div class="logo-wrap">
@@ -9736,8 +9740,14 @@ function roundRect(ctx, x, y, w, h, r){
 // Boot — show cache instantly, Firebase syncs in background
 function updateStickyTop(){
   requestAnimationFrame(()=>{
-    const wrapper = document.querySelector('#page-log > div[style*="sticky"]');
-    if(wrapper) document.documentElement.style.setProperty('--sticky-top', wrapper.offsetHeight+'px');
+    const wrapper = document.getElementById('logStickyHeader') 
+      || document.querySelector('#page-log .sticky-header') 
+      || document.querySelector('#page-log > div[style*="sticky"]');
+    if(wrapper && wrapper.offsetHeight > 0){
+      const h = wrapper.offsetHeight;
+      document.documentElement.style.setProperty('--sticky-top', h + 'px');
+      document.documentElement.style.setProperty('--sticky-header-height', h + 'px');
+    }
   });
 }
 // Try to find any cached data (uid-specific keys) before Firebase fires
@@ -11917,15 +11927,9 @@ let _searchSequenceId = 0;
 const DEEP_CACHE = new Map();
 
 function updateStickyHeaderHeight(){
-  const header = document.getElementById('logStickyHeader');
-  if(header){
-    const h = header.offsetHeight;
-    if(h > 0){
-      document.documentElement.style.setProperty('--sticky-header-height', `${h}px`);
-    }
-  }
+  updateStickyTop();
 }
-window.addEventListener('resize', updateStickyHeaderHeight);
+window.addEventListener('resize', updateStickyTop);
 
 function openDiarySearch(){
   updateStickyHeaderHeight();
