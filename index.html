@@ -511,7 +511,138 @@ body::before{
 
 /* ── PAGES ───────────────────────────────────── */
 .page{display:none;padding-bottom:110px;min-height:100vh}
-.page.on{display:block}
+.page.on{display:block;animation:pageFadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;}
+@keyframes pageFadeIn{
+  from{opacity:0;transform:translateY(6px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+/* ── STICKY HEADERS (DYNAMIC GLASS BLUR) ─────── */
+.sticky-header{
+  position:sticky;
+  top:0;
+  z-index:860;
+  background:rgba(13,13,15,0.72);
+  backdrop-filter:blur(22px) saturate(190%);
+  -webkit-backdrop-filter:blur(22px) saturate(190%);
+  border-bottom:1px solid var(--border);
+  transition:background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.sticky-header.is-scrolled{
+  background:rgba(16,16,20,0.92);
+  border-bottom-color:var(--border2);
+  box-shadow:0 4px 20px rgba(0,0,0,0.45);
+}
+
+/* ── ULTRATHIN MODERN SCROLLBARS ─────────────── */
+::-webkit-scrollbar{
+  width:5px;
+  height:5px;
+}
+::-webkit-scrollbar-track{
+  background:transparent;
+}
+::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,0.16);
+  border-radius:999px;
+}
+::-webkit-scrollbar-thumb:hover{
+  background:rgba(255,255,255,0.3);
+}
+* {
+  scrollbar-width:thin;
+  scrollbar-color:rgba(255,255,255,0.16) transparent;
+}
+
+/* ── POSTER SMOOTH FADE-IN & PLACEHOLDER SHIMMER ─ */
+.row-thumb img,
+.wl-poster img,
+.diary-search-thumb img,
+.deep-poster,
+.profile-card img,
+.fav-card img,
+.upcoming-poster,
+.info-poster,
+.coll-thumb img {
+  animation:posterFadeIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes posterFadeIn{
+  from{opacity:0;transform:scale(0.965);}
+  to{opacity:1;transform:scale(1);}
+}
+
+@keyframes shimmerPlaceholder{
+  0%{background-position:-200% 0;}
+  100%{background-position:200% 0;}
+}
+.row-thumb-ph,
+.wl-poster-ph,
+.diary-search-thumb-ph,
+.deep-poster-ph,
+.deep-backdrop-ph,
+.profile-card-ph,
+.upcoming-poster-ph,
+.info-poster-ph {
+  background:linear-gradient(90deg, var(--bg3) 0%, rgba(255, 255, 255, 0.08) 50%, var(--bg3) 100%) !important;
+  background-size:200% 100% !important;
+  animation:shimmerPlaceholder 2.4s infinite ease-in-out !important;
+}
+
+/* ── HEART MICRO-POP BOUNCE ───────────────────── */
+@keyframes heartPop{
+  0%{transform:scale(1);}
+  35%{transform:scale(1.45);}
+  70%{transform:scale(0.9);}
+  100%{transform:scale(1);}
+}
+.row-fav-inline.on,
+.fav-btn.on,
+.coll-fav-btn.on{
+  animation:heartPop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* ── TACTILE CARD SPRING PRESS & HOVER ───────── */
+.row,
+.wl-card,
+.diary-search-card,
+.profile-card,
+.upcoming-card,
+.fav-card {
+  transition:transform 0.16s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.15s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+}
+.row:active,
+.wl-card:active:not(.swiping),
+.diary-search-card:active,
+.profile-card:active,
+.upcoming-card:active,
+.fav-card:active {
+  transform:scale(0.982);
+}
+@media (hover: hover) and (pointer: fine) {
+  .row:hover {
+    background:rgba(255,255,255,0.025);
+  }
+  .wl-card:hover {
+    border-color:rgba(255,255,255,0.15);
+    box-shadow:0 6px 20px rgba(0,0,0,0.35);
+  }
+  .diary-search-card:hover {
+    background:rgba(255,255,255,0.055);
+    border-color:rgba(255,255,255,0.14);
+    transform:translateY(-1px);
+  }
+  .profile-card:hover {
+    transform:translateY(-2px);
+    box-shadow:0 8px 24px rgba(0,0,0,0.5);
+  }
+}
+
+/* ── SEARCH INPUT FOCUS AMBIENT GLOW ─────────── */
+.search-inp:focus,
+.diary-search-input:focus {
+  border-color:rgba(45, 127, 249, 0.65) !important;
+  box-shadow:0 0 0 3.5px rgba(45, 127, 249, 0.22), 0 4px 18px rgba(0,0,0,0.45) !important;
+}
 
 /* ── LOGO ────────────────────────────────────── */
 .logo-wrap{display:flex;align-items:center;gap:10px;line-height:1}
@@ -3427,9 +3558,27 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   position:relative;
   box-shadow:0 -16px 50px rgba(0,0,0,0.85);
   transform:translateY(100%);
-  transition:transform 0.3s cubic-bezier(0.32,1,0.23,1);
+  transition:transform 0.36s cubic-bezier(0.19, 1, 0.22, 1);
   overflow:hidden;
 }
+.deep-sheet::before{
+  content:'';
+  position:absolute;
+  top:-90px;
+  left:50%;
+  transform:translateX(-50%);
+  width:360px;
+  height:240px;
+  border-radius:50%;
+  filter:blur(65px);
+  opacity:0.32;
+  pointer-events:none;
+  z-index:0;
+  transition:background 0.4s ease;
+}
+.deep-sheet.movie::before{ background:radial-gradient(circle, var(--red) 0%, transparent 70%); }
+.deep-sheet.series::before{ background:radial-gradient(circle, var(--teal) 0%, transparent 70%); }
+.deep-sheet.game::before{ background:radial-gradient(circle, var(--green) 0%, transparent 70%); }
 .deep-overlay.show .deep-sheet{
   transform:translateY(0);
 }
@@ -5711,7 +5860,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
 
 <!-- LOG PAGE -->
 <div class="page on" id="page-log">
-  <div id="logStickyHeader" style="position:sticky;top:0;z-index:860;background:rgba(15,15,15,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border2)">
+  <div id="logStickyHeader" class="sticky-header">
     <div class="header" style="position:relative">
       <div>
         <div class="logo-wrap">
@@ -5793,7 +5942,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
 
 <!-- WATCHLIST PAGE -->
 <div class="page" id="page-watchlist">
-  <div style="position:sticky;top:0;z-index:91;background:rgba(15,15,15,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border2)">
+  <div class="sticky-header" style="z-index:91">
     <div class="header" style="padding-top:14px;padding-bottom:12px;position:relative">
       <div>
         <div class="logo-wrap">
@@ -5817,7 +5966,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
 
 <!-- FAVOURITES PAGE -->
 <div class="page" id="page-favs">
-  <div style="position:sticky;top:0;z-index:91;background:rgba(15,15,15,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border2)">
+  <div class="sticky-header" style="z-index:91">
     <div class="header" style="position:relative;padding:16px 16px 8px;display:flex;align-items:flex-end;justify-content:space-between">
       <div>
         <div class="logo-wrap">
@@ -5844,7 +5993,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
 
 <!-- CALENDAR PAGE -->
 <div class="page" id="page-calendar">
-  <div style="position:sticky;top:0;z-index:91;background:rgba(15,15,15,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border2)">
+  <div class="sticky-header" style="z-index:91">
     <div class="header" style="padding-top:14px;padding-bottom:8px;position:relative">
       <div>
         <div class="logo-wrap">
@@ -7539,9 +7688,10 @@ function renderRow(e,i){
 function openEdit(id){ if(document.body.classList.contains('readonly')) return; const e=DATA.find(x=>x.id===id);if(e)openModal(e); }
 
 async function toggleFav(id,ev){
-  ev.stopPropagation();
+  if(ev && typeof ev.stopPropagation === 'function') ev.stopPropagation();
   const e=DATA.find(x=>x.id===id);if(!e)return;
   e.fav=!e.fav;
+  if(navigator.vibrate){ try { navigator.vibrate(e.fav ? [8, 25, 12] : 8); } catch(err){} }
   await fsSave(e);
   renderLog();renderFavs();
   if(document.getElementById('page-profile')?.classList.contains('on')) renderProfile();
@@ -7619,6 +7769,7 @@ function renderFavs(){
 // Wire fav filter tabs
 document.querySelectorAll('[data-ff]').forEach(btn=>{
   btn.addEventListener('click',()=>{
+    if(navigator.vibrate){ try { navigator.vibrate(6); } catch(err){} }
     document.querySelectorAll('[data-ff]').forEach(b=>b.classList.remove('on'));
     btn.classList.add('on');favFilter=btn.dataset.ff;renderFavs();
   });
@@ -8532,15 +8683,25 @@ window.addEventListener('load', () => {
 // ── FILTER/SORT ─────────────────────────────────────────
 document.querySelectorAll('.seg-btn').forEach(btn=>{
   btn.addEventListener('click',()=>{
+    if(navigator.vibrate){ try { navigator.vibrate(6); } catch(err){} }
     document.querySelectorAll('.seg-btn').forEach(b=>b.classList.remove('on'));
     btn.classList.add('on');filter=btn.dataset.f;_initialRenderDone=false;renderLog();
   });
 });
 document.getElementById('sortSel').addEventListener('change',e=>{sortBy=e.target.value;_initialRenderDone=false;renderLog();});
 
+// Dynamic Glassmorphism Blur on Scroll for Sticky Headers
+window.addEventListener('scroll', () => {
+  const scrolled = (window.scrollY || document.documentElement.scrollTop) > 10;
+  document.querySelectorAll('.sticky-header').forEach(h => {
+    h.classList.toggle('is-scrolled', scrolled);
+  });
+}, { passive: true });
+
 // ── NAV ─────────────────────────────────────────────────
 document.querySelectorAll('.nav-btn').forEach(btn=>{
   btn.addEventListener('click',()=>{
+    if(navigator.vibrate){ try { navigator.vibrate(8); } catch(err){} }
     document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('on'));
     btn.classList.add('on');
     updateNavIndicator(btn);
@@ -9985,6 +10146,31 @@ function renderProfile(){
   }
 
   document.getElementById('profileStats').innerHTML = html;
+
+  // Smooth number count-up ticker animation
+  document.querySelectorAll('#profileStats .pstat-val').forEach(el => {
+    const target = parseInt(el.textContent, 10);
+    if(!isNaN(target) && target > 0){
+      animateStatCountUp(el, target, 450);
+    }
+  });
+}
+
+function animateStatCountUp(el, targetVal, duration = 420){
+  if(!el || isNaN(targetVal) || targetVal <= 0) return;
+  const startTime = performance.now();
+  function tick(now){
+    const elapsed = now - startTime;
+    const progress = Math.min(1, elapsed / duration);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.round(targetVal * ease);
+    if(progress < 1){
+      requestAnimationFrame(tick);
+    } else {
+      el.textContent = targetVal;
+    }
+  }
+  requestAnimationFrame(tick);
 }
 
 function profileCard(e, removable){
@@ -12374,7 +12560,11 @@ function closeDeepCard(){
   const overlay = document.getElementById('deepOverlay');
   if(overlay){
     overlay.classList.remove('show');
-    overlay.style.display = 'none';
+    setTimeout(() => {
+      if(!overlay.classList.contains('show')){
+        overlay.style.display = 'none';
+      }
+    }, 280);
   }
   _activeDeepItem = null;
 }
@@ -12386,6 +12576,7 @@ async function openDeepCard(mediaItem){
   _activeDeepItem = mediaItem;
 
   const overlay = document.getElementById('deepOverlay');
+  const sheet = document.getElementById('deepSheet');
   const scrollBody = document.getElementById('deepScrollBody');
   const skeletonContainer = document.getElementById('deepSkeletonContainer');
   const contentContainer = document.getElementById('deepContentContainer');
@@ -12400,6 +12591,23 @@ async function openDeepCard(mediaItem){
   const typeIcons = { movie: '🎬', series: '📺', game: '🎮' };
   const typeNames = { movie: 'Film', series: 'Series', game: 'Game' };
   const mediaType = mediaItem.type || mediaItem.mediaType || 'movie';
+
+  if(sheet) sheet.className = 'deep-sheet ' + mediaType;
+
+  // Parallax scroll on hero backdrop
+  if(scrollBody && !scrollBody._hasParallax){
+    scrollBody._hasParallax = true;
+    scrollBody.addEventListener('scroll', () => {
+      const st = scrollBody.scrollTop;
+      const bd = document.getElementById('deepBackdrop');
+      if(bd && st >= 0 && st < 300){
+        bd.style.transform = `translateY(${st * 0.36}px) scale(${1 + st * 0.0003})`;
+        bd.style.opacity = String(Math.max(0.15, 1 - st / 280));
+      }
+    }, { passive: true });
+  }
+  const heroBd = document.getElementById('deepBackdrop');
+  if(heroBd){ heroBd.style.transform = ''; heroBd.style.opacity = ''; }
 
   document.getElementById('deepTitle').textContent = mediaItem.title || 'Loading…';
   document.getElementById('deepOriginalTitle').style.display = 'none';
