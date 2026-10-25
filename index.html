@@ -930,6 +930,18 @@ body::before{
   -webkit-backdrop-filter:blur(16px);
   border-bottom:1px solid var(--border2);
   position:sticky;top:var(--sticky-top, 96px);z-index:50;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.month-count{
+  font-size:10.5px;
+  font-weight:500;
+  letter-spacing:0.4px;
+  color:var(--text3);
+  opacity:0.6;
+  font-variant-numeric:tabular-nums;
+  text-transform:none;
 }
 
 /* ── ROW — Letterboxd exact layout ───────────── */
@@ -5414,448 +5426,300 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   cursor:pointer;
 }
 
-/* ── UNIVERSE / GRAPH VIEW (OBSIDIAN STYLE) ── */
-.graph-overlay{
+/* ── MOVIE WALL / POSTER COLLECTION OVERLAY ── */
+.wall-overlay{
   position:fixed;
   inset:0;
   width:100vw;
   height:100dvh;
   z-index:960;
-  background:#090a0f;
+  background:var(--bg, #0d0d0f);
   display:none;
   flex-direction:column;
   overflow:hidden;
   box-sizing:border-box;
   opacity:0;
-  transform:scale(0.97);
-  transition:opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1), transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  user-select:none;
-  -webkit-user-select:none;
-  touch-action:none;
+  transform:scale(0.985);
+  transition:opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1), transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.graph-overlay.show{
+.wall-overlay.show{
   opacity:1;
   transform:scale(1);
 }
 
-/* Floating HUD Top Bar */
-.graph-hud-bar{
-  position:absolute;
-  top:0;
-  left:0;
-  right:0;
-  z-index:10;
+/* Header */
+.wall-header{
+  flex-shrink:0;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:10px;
+  gap:12px;
   padding:calc(12px + env(safe-area-inset-top, 0px)) 16px 12px;
-  background:linear-gradient(to bottom, rgba(9,10,15,0.92) 0%, rgba(9,10,15,0.65) 65%, transparent 100%);
-  pointer-events:none;
+  background:rgba(13,13,15,0.85);
+  backdrop-filter:blur(24px) saturate(180%);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  border-bottom:1px solid var(--border);
+  z-index:10;
 }
-.graph-hud-bar > *{
-  pointer-events:auto;
-}
-
-.graph-hud-left{
+.wall-header-left{
   display:flex;
   align-items:center;
   gap:12px;
+  min-width:0;
 }
-
-.graph-btn{
+.wall-btn{
   background:rgba(255,255,255,0.08);
   border:1px solid rgba(255,255,255,0.12);
-  color:var(--text);
-  border-radius:12px;
-  cursor:pointer;
-  display:inline-flex;
+  color:#fff;
+  border-radius:50%;
+  width:36px;
+  height:36px;
+  display:flex;
   align-items:center;
   justify-content:center;
-  gap:6px;
-  font-family:var(--font-sans);
-  font-size:13px;
-  font-weight:600;
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
-  transition:all 0.18s ease;
-  user-select:none;
-  -webkit-tap-highlight-color:transparent;
+  cursor:pointer;
+  transition:all 0.16s ease;
+  flex-shrink:0;
 }
-.graph-btn:hover{
-  background:rgba(255,255,255,0.14);
-  border-color:rgba(255,255,255,0.22);
+.wall-btn:hover{
+  background:rgba(255,255,255,0.16);
+  transform:scale(1.05);
 }
-.graph-btn:active{
+.wall-btn:active{
   transform:scale(0.94);
 }
-
-.graph-btn-close{
-  width:38px;
-  height:38px;
-  border-radius:50%;
-  color:rgba(255,255,255,0.85);
-}
-.graph-icon-btn{
-  width:38px;
-  height:38px;
-  border-radius:50%;
-  padding:0;
-}
-.graph-action-btn{
-  padding:0 14px;
-  height:38px;
-  border-radius:999px;
-  background:linear-gradient(135deg, rgba(10,132,255,0.24) 0%, rgba(94,92,230,0.24) 100%);
-  border:1px solid rgba(10,132,255,0.45);
-  color:#64b5f6;
-  font-weight:700;
-  letter-spacing:0.2px;
-}
-.graph-action-btn:hover{
-  background:linear-gradient(135deg, rgba(10,132,255,0.36) 0%, rgba(94,92,230,0.36) 100%);
-  border-color:rgba(10,132,255,0.7);
-  color:#90caf9;
-}
-.graph-action-btn.is-active{
-  background:linear-gradient(135deg, rgba(255,69,58,0.28) 0%, rgba(255,159,10,0.28) 100%);
-  border-color:rgba(255,69,58,0.55);
-  color:#ff7b72;
-}
-
-.graph-meta{
+.wall-meta{
   display:flex;
   flex-direction:column;
+  min-width:0;
 }
-.graph-title{
-  font-size:15px;
-  font-weight:750;
+.wall-title{
+  font-size:16px;
+  font-weight:700;
+  color:var(--text, #f5f5f7);
   letter-spacing:-0.2px;
-  color:#fff;
   line-height:1.2;
+  margin:0;
+  white-space:nowrap;
 }
-.graph-sub{
+.wall-sub{
   font-size:11px;
   font-weight:500;
-  color:rgba(255,255,255,0.5);
+  color:var(--text3, #71717a);
   letter-spacing:0.2px;
+  white-space:nowrap;
 }
 
 /* Category Filter Pills */
-.graph-filter-wrap{
+.wall-filter-wrap{
   display:flex;
   align-items:center;
-  gap:4px;
   background:rgba(255,255,255,0.06);
   padding:3px;
   border-radius:999px;
-  border:1px solid rgba(255,255,255,0.09);
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
+  border:1px solid var(--border);
 }
-.graph-pill{
+.wall-pill{
   background:transparent;
   border:none;
-  color:rgba(255,255,255,0.55);
+  color:var(--text3, #71717a);
   font-family:var(--font-sans);
   font-size:12px;
   font-weight:600;
   padding:5px 12px;
   border-radius:999px;
   cursor:pointer;
-  transition:all 0.16s ease;
+  transition:all 0.15s ease;
+  white-space:nowrap;
 }
-.graph-pill:hover{
-  color:rgba(255,255,255,0.85);
+.wall-pill:hover{
+  color:var(--text, #f5f5f7);
 }
-.graph-pill.on{
-  background:rgba(255,255,255,0.18);
-  color:#fff;
+.wall-pill.on{
+  background:rgba(255,255,255,0.16);
+  color:#ffffff;
   box-shadow:0 2px 8px rgba(0,0,0,0.3);
 }
 
-/* Mobile-Friendly Floating Bottom Controls Dock */
-.graph-bottom-dock{
-  position:absolute;
-  bottom:calc(18px + env(safe-area-inset-bottom, 0px));
-  left:50%;
-  transform:translateX(-50%);
-  z-index:20;
+/* Share Button */
+.wall-header-right{
   display:flex;
   align-items:center;
   gap:8px;
-  background:rgba(18, 20, 29, 0.85);
-  border:1px solid rgba(255,255,255,0.14);
-  border-radius:999px;
-  padding:5px 8px;
-  backdrop-filter:blur(30px) saturate(190%);
-  -webkit-backdrop-filter:blur(30px) saturate(190%);
-  box-shadow:0 12px 36px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.06);
-  user-select:none;
-  -webkit-user-select:none;
+  flex-shrink:0;
 }
-.graph-bottom-dock .graph-icon-btn{
-  width:42px;
-  height:42px;
-}
-.graph-hero-animate-btn{
-  height:42px;
-  padding:0 18px;
-  font-size:13.5px;
-  border-radius:999px;
-  gap:7px;
-}
-@media (max-width: 480px){
-  .graph-pill{ padding: 4px 9px; font-size: 11px; }
-  .graph-bottom-dock{ gap: 6px; padding: 4px 6px; }
-  .graph-hero-animate-btn{ padding: 0 13px; font-size: 12.5px; height: 38px; }
-  .graph-bottom-dock .graph-icon-btn{ width: 38px; height: 38px; }
-}
-
-/* Camera Flash FX */
-.graph-flash-fx{
-  position:absolute;
-  inset:0;
-  background:#ffffff;
-  opacity:0;
-  pointer-events:none;
-  z-index:99;
-  transition:opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.graph-flash-fx.flash{
-  opacity:0.85;
-  transition:none;
-}
-
-/* Timeline scrubber for Animate mode */
-.graph-timeline-bar{
-  position:absolute;
-  top:calc(66px + env(safe-area-inset-top, 0px));
-  left:50%;
-  transform:translateX(-50%);
-  z-index:11;
-  display:flex;
+.wall-share-btn{
+  display:inline-flex;
   align-items:center;
-  gap:12px;
-  padding:6px 16px;
-  background:rgba(18,19,26,0.92);
-  border:1px solid rgba(10,132,255,0.35);
-  border-radius:999px;
-  backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
-  box-shadow:0 8px 30px rgba(0,0,0,0.5), 0 0 16px rgba(10,132,255,0.25);
-  pointer-events:none;
-  animation:fadeUp 0.25s ease both;
-}
-.graph-timeline-date{
-  font-size:12px;
-  font-weight:700;
-  color:#64b5f6;
-  white-space:nowrap;
-}
-.graph-timeline-progress-track{
-  width:140px;
-  height:4px;
-  background:rgba(255,255,255,0.14);
-  border-radius:999px;
-  overflow:hidden;
-}
-.graph-timeline-progress-fill{
-  width:0%;
-  height:100%;
-  background:linear-gradient(90deg, #0a84ff, #5e5ce6);
-  border-radius:999px;
-  transition:width 0.15s ease;
-}
-.graph-timeline-count{
-  font-size:11px;
-  font-weight:600;
-  color:rgba(255,255,255,0.6);
-  white-space:nowrap;
-}
-.graph-timeline-skip-btn{
-  background:rgba(255,255,255,0.12);
-  border:1px solid rgba(255,255,255,0.22);
-  color:#fff;
+  gap:6px;
+  background:rgba(255,255,255,0.1);
+  color:#ffffff;
+  border:1px solid rgba(255,255,255,0.18);
   font-family:var(--font-sans);
-  font-size:11px;
-  font-weight:700;
-  padding:3px 10px;
+  font-size:12.5px;
+  font-weight:650;
+  padding:7px 14px;
   border-radius:999px;
   cursor:pointer;
-  margin-left:4px;
-  pointer-events:auto;
-  transition:all 0.15s ease;
-  white-space:nowrap;
-  user-select:none;
-  -webkit-user-select:none;
+  transition:all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.graph-timeline-skip-btn:hover{
-  background:rgba(255,255,255,0.24);
-  border-color:rgba(255,255,255,0.4);
+.wall-share-btn:hover{
+  background:rgba(255,255,255,0.18);
+  border-color:rgba(255,255,255,0.3);
+  transform:translateY(-1px);
 }
-.graph-timeline-skip-btn:active{
-  transform:scale(0.93);
+.wall-share-btn:active{
+  transform:scale(0.95);
 }
 
-/* Canvas */
-.graph-canvas{
-  position:absolute;
-  inset:0;
+/* Scroll Body */
+.wall-scroll-body{
+  flex:1;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior-y:contain;
+  padding:0;
+  position:relative;
+}
+.wall-grid-container{
+  max-width:1440px;
+  margin:0 auto;
+  padding:16px 16px calc(60px + env(safe-area-inset-bottom, 0px));
+}
+
+/* Poster Grid */
+.wall-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(115px, 1fr));
+  gap:10px;
+  align-items:stretch;
+}
+
+/* Poster Item: Pure edge-to-edge poster, NO labels! */
+.wall-item{
+  position:relative;
+  aspect-ratio:2 / 3;
+  border-radius:8px;
+  overflow:hidden;
+  background:var(--bg3, #1e1e23);
+  box-shadow:0 3px 10px rgba(0,0,0,0.35);
+  border:1px solid rgba(255,255,255,0.06);
+  cursor:pointer;
+  user-select:none;
+  -webkit-user-select:none;
+  transition:transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.18s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.18s ease;
+  will-change:transform;
+}
+.wall-item:hover{
+  transform:translateY(-3px) scale(1.03);
+  box-shadow:0 12px 28px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.2);
+  z-index:2;
+}
+.wall-item:active{
+  transform:scale(0.96);
+}
+.wall-item-img{
   width:100%;
   height:100%;
-  display:block;
-  cursor:grab;
-}
-.graph-canvas:active{
-  cursor:grabbing;
-}
-
-/* Floating Quick Peek Card */
-.graph-quick-card{
-  position:absolute;
-  bottom:calc(76px + env(safe-area-inset-bottom, 0px));
-  left:50%;
-  transform:translateX(-50%);
-  z-index:15;
-  width:calc(100% - 32px);
-  max-width:390px;
-  background:rgba(22,23,30,0.92);
-  border:1px solid rgba(255,255,255,0.14);
-  border-radius:20px;
-  padding:12px 14px;
-  display:flex;
-  align-items:center;
-  gap:13px;
-  backdrop-filter:blur(32px) saturate(180%);
-  -webkit-backdrop-filter:blur(32px) saturate(180%);
-  box-shadow:0 16px 48px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.06);
-  animation:fadeUp 0.24s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-.graph-quick-close{
-  position:absolute;
-  top:8px;
-  right:10px;
-  background:none;
-  border:none;
-  color:rgba(255,255,255,0.45);
-  font-size:14px;
-  font-weight:700;
-  cursor:pointer;
-  padding:4px;
-  transition:color 0.15s ease;
-}
-.graph-quick-close:hover{
-  color:#fff;
-}
-.graph-quick-thumb{
-  width:50px;
-  height:75px;
   object-fit:cover;
-  border-radius:10px;
-  background:#1a1b22;
-  flex-shrink:0;
-  box-shadow:0 4px 14px rgba(0,0,0,0.5);
+  display:block;
+  background:var(--bg2, #151518);
+  transition:opacity 0.25s ease;
 }
-.graph-quick-ph{
-  width:50px;
-  height:75px;
-  border-radius:10px;
-  background:#1a1b22;
+.wall-item-ph{
+  width:100%;
+  height:100%;
   display:flex;
+  flex-direction:column;
   align-items:center;
   justify-content:center;
-  font-size:24px;
-  flex-shrink:0;
+  background:linear-gradient(135deg, #1e1e24 0%, #121318 100%);
+  color:var(--text3);
+  padding:8px;
+  text-align:center;
 }
-.graph-quick-info{
-  flex:1;
-  min-width:0;
+.wall-item-ph-icon{
+  font-size:20px;
+  opacity:0.6;
 }
-.graph-quick-title{
-  font-size:14px;
-  font-weight:750;
-  color:#fff;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  letter-spacing:-0.2px;
-  margin-right:18px;
-}
-.graph-quick-meta{
-  font-size:11.5px;
-  font-weight:600;
-  color:rgba(255,255,255,0.55);
-  margin-top:2px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-.graph-quick-review{
-  font-size:11.5px;
-  color:rgba(255,255,255,0.75);
-  margin-top:4px;
-  line-height:1.3;
-  display:-webkit-box;
-  -webkit-line-clamp:2;
-  -webkit-box-orient:vertical;
-  overflow:hidden;
-  font-style:italic;
-}
-.graph-quick-actions{
-  margin-top:6px;
-}
-.graph-quick-open-btn{
-  background:rgba(10,132,255,0.18);
-  border:1px solid rgba(10,132,255,0.4);
-  color:#409cff;
-  font-family:var(--font-sans);
-  font-size:11.5px;
+.wall-item-ph-initials{
+  font-size:12px;
   font-weight:700;
-  padding:4px 12px;
-  border-radius:999px;
-  cursor:pointer;
-  transition:all 0.15s ease;
-}
-.graph-quick-open-btn:hover{
-  background:rgba(10,132,255,0.32);
-  color:#6cb5ff;
+  letter-spacing:0.5px;
+  color:var(--text2);
+  margin-top:4px;
+  opacity:0.8;
+  text-transform:uppercase;
+  max-width:90%;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
 }
 
-/* Empty state */
-.graph-empty{
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%, -50%);
+/* Empty State */
+.wall-empty{
+  padding:60px 20px;
   text-align:center;
-  pointer-events:none;
 }
-.graph-empty-icon{
+.wall-empty-icon{
   font-size:48px;
   margin-bottom:12px;
 }
-.graph-empty-title{
+.wall-empty-title{
   font-size:18px;
   font-weight:700;
-  color:#fff;
+  color:var(--text);
   margin-bottom:6px;
 }
-.graph-empty-sub{
+.wall-empty-sub{
   font-size:13px;
-  color:rgba(255,255,255,0.5);
-  max-width:280px;
+  color:var(--text3);
+  max-width:320px;
+  margin:0 auto;
 }
 
-@media(max-width: 600px){
-  .graph-hud-bar{
+/* Mobile & Tablet Responsive Optimizations */
+@media (max-width: 768px){
+  .wall-grid{
+    grid-template-columns:repeat(auto-fill, minmax(90px, 1fr));
+    gap:8px;
+  }
+}
+@media (max-width: 600px){
+  .wall-header{
+    padding:calc(10px + env(safe-area-inset-top, 0px)) 12px 10px;
+    gap:8px;
     flex-wrap:wrap;
   }
-  .graph-filter-wrap{
+  .wall-title{
+    font-size:15px;
+  }
+  .wall-filter-wrap{
     order:3;
     width:100%;
     justify-content:center;
-    margin-top:4px;
+    margin-top:2px;
+  }
+  .wall-grid-container{
+    padding:8px 8px calc(70px + env(safe-area-inset-bottom, 0px));
+  }
+  /* On mobile phones, exactly 4 edge-to-edge compact columns for maximum poster showcase! */
+  .wall-grid{
+    grid-template-columns:repeat(4, 1fr);
+    gap:6px;
+  }
+  .wall-item{
+    border-radius:6px;
+  }
+  .wall-share-btn{
+    padding:6px 12px;
+    font-size:12px;
+  }
+}
+@media (max-width: 360px){
+  .wall-grid{
+    grid-template-columns:repeat(3, 1fr);
+    gap:5px;
   }
 }
 </style>
@@ -5910,13 +5774,12 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
         </button>
-        <button class="tool-btn" id="graphViewBtn" type="button" aria-label="Poster Universe" title="Poster Universe (Graph View)">
+        <button class="tool-btn" id="movieWallBtn" type="button" aria-label="Movie Wall" title="Movie Wall (Collection Posters)">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="18" cy="5" r="3"></circle>
-            <circle cx="6" cy="12" r="3"></circle>
-            <circle cx="18" cy="19" r="3"></circle>
-            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+            <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+            <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+            <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+            <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
           </svg>
         </button>
         <button class="tool-btn" id="settingsBtn" type="button" aria-label="Settings" title="Settings">
@@ -6289,98 +6152,58 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   <div class="diary-search-results" id="diarySearchResults"></div>
 </div>
 
-<!-- UNIVERSE / GRAPH VIEW OVERLAY (OBSIDIAN STYLE) -->
-<div class="graph-overlay" id="graphOverlay" style="display:none">
-  <!-- Top Floating HUD Bar: Close & Filter Pills -->
-  <div class="graph-hud-bar">
-    <div class="graph-hud-left">
-      <button class="graph-btn graph-btn-close" id="graphCloseBtn" type="button" aria-label="Close Universe View" title="Close">
+<!-- MOVIE WALL / POSTER COLLECTION OVERLAY -->
+<div class="wall-overlay" id="movieWallOverlay" style="display:none" role="dialog" aria-modal="true" aria-label="Movie Wall">
+  <!-- Top Navigation & Controls Bar -->
+  <header class="wall-header">
+    <div class="wall-header-left">
+      <button class="wall-btn wall-btn-close" id="wallCloseBtn" type="button" aria-label="Close Movie Wall" title="Close (Esc)">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
           <line x1="18" y1="6" x2="6" y2="18"></line>
           <line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>
       </button>
-      <div class="graph-meta">
-        <div class="graph-title">Universe</div>
-        <div class="graph-sub" id="graphCountSub">0 in orbit</div>
+      <div class="wall-meta">
+        <h2 class="wall-title">Movie Wall</h2>
+        <span class="wall-sub" id="wallCountSub">0 in collection</span>
       </div>
     </div>
 
-    <!-- Category Filter Pills -->
-    <div class="graph-filter-wrap">
-      <button class="graph-pill on" data-gf="all">All</button>
-      <button class="graph-pill" data-gf="movie">Films</button>
-      <button class="graph-pill" data-gf="series">Series</button>
-      <button class="graph-pill" data-gf="game">Games</button>
+    <!-- Category Filter Tabs -->
+    <div class="wall-filter-wrap" role="tablist" aria-label="Filter media">
+      <button class="wall-pill on" data-wf="all" role="tab" aria-selected="true">All</button>
+      <button class="wall-pill" data-wf="movie" role="tab" aria-selected="false">Films</button>
+      <button class="wall-pill" data-wf="series" role="tab" aria-selected="false">Series</button>
+      <button class="wall-pill" data-wf="game" role="tab" aria-selected="false">Games</button>
     </div>
-  </div>
 
-  <!-- Timeline Scrubber Bar (Visible while Animate is active) -->
-  <div class="graph-timeline-bar" id="graphTimelineBar" style="display:none">
-    <div class="graph-timeline-date" id="graphTimelineDate">—</div>
-    <div class="graph-timeline-progress-track">
-      <div class="graph-timeline-progress-fill" id="graphTimelineProgress"></div>
+    <!-- Action Buttons: Share Collection -->
+    <div class="wall-header-right">
+      <button class="wall-share-btn" id="wallShareBtn" type="button" aria-label="Share Collection Picture" title="Share Collection Picture">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+          <polyline points="16 6 12 2 8 6"></polyline>
+          <line x1="12" y1="2" x2="12" y2="15"></line>
+        </svg>
+        <span class="wall-share-btn-text">Share</span>
+      </button>
     </div>
-    <div class="graph-timeline-count" id="graphTimelineCount">0 / 0</div>
-    <button class="graph-timeline-skip-btn" id="graphTimelineSkipBtn" type="button" aria-label="Skip animation">Skip ›</button>
-  </div>
+  </header>
 
-  <!-- Main HTML5 Canvas -->
-  <canvas id="graphCanvas" class="graph-canvas"></canvas>
+  <!-- Scrollable Posters Container -->
+  <main class="wall-scroll-body" id="wallScrollBody">
+    <div class="wall-grid-container">
+      <div class="wall-grid" id="wallGrid"></div>
 
-  <!-- Camera Flash Overlay for Snapshot -->
-  <div class="graph-flash-fx" id="graphFlashFx"></div>
-
-  <!-- Mobile-Friendly Bottom Controls Dock: Recenter, Pulse, Animate (Hero Center), Snapshot -->
-  <div class="graph-bottom-dock" id="graphBottomDock">
-    <button class="graph-btn graph-icon-btn" id="graphResetBtn" type="button" aria-label="Center Universe" title="Center Universe">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="9"></circle>
-        <circle cx="12" cy="12" r="3"></circle>
-      </svg>
-    </button>
-    <button class="graph-btn graph-icon-btn" id="graphPulseBtn" type="button" aria-label="Gravitational Pulse" title="Gravitational Pulse / Shuffle">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="3"></circle>
-        <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.93 4.93l2.12 2.12M16.95 16.95l2.12 2.12M4.93 19.07l2.12-2.12M16.95 7.05l2.12-2.12"></path>
-      </svg>
-    </button>
-    <button class="graph-btn graph-action-btn graph-hero-animate-btn" id="graphAnimateBtn" type="button" aria-label="Animate timeline growth" title="Animate timeline growth">
-      <svg class="graph-btn-svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-        <polygon points="5 3 19 12 5 21 5 3"></polygon>
-      </svg>
-      <span id="graphAnimateBtnText">Animate</span>
-    </button>
-    <button class="graph-btn graph-icon-btn" id="graphSnapshotBtn" type="button" aria-label="Take picture and share" title="Take Picture / Share Universe">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-        <circle cx="12" cy="13" r="4"></circle>
-      </svg>
-    </button>
-  </div>
-
-  <!-- Floating Quick Peek Card (When a poster node is tapped) -->
-  <div class="graph-quick-card" id="graphQuickCard" style="display:none">
-    <button class="graph-quick-close" id="graphQuickCloseBtn" type="button" aria-label="Close card">✕</button>
-    <div class="graph-quick-poster-wrap" id="graphQuickPosterWrap"></div>
-    <div class="graph-quick-info">
-      <div class="graph-quick-title" id="graphQuickTitle">Title</div>
-      <div class="graph-quick-meta" id="graphQuickMeta">Film · 2024 · ★ 9/10</div>
-      <div class="graph-quick-review" id="graphQuickReview">"Review..."</div>
-      <div class="graph-quick-actions">
-        <button class="graph-quick-open-btn" id="graphQuickOpenBtn" type="button">Open Card ›</button>
+      <!-- Empty State -->
+      <div class="wall-empty" id="wallEmpty" style="display:none">
+        <div class="wall-empty-icon">🎬</div>
+        <div class="wall-empty-title">Your Movie Wall is empty</div>
+        <div class="wall-empty-sub">Log films, series, or games in your diary to show off your collection!</div>
       </div>
     </div>
-  </div>
-
-  <!-- Empty State (if no logged items yet) -->
-  <div class="graph-empty" id="graphEmpty" style="display:none">
-    <div class="graph-empty-icon">🌌</div>
-    <div class="graph-empty-title">Your universe is empty</div>
-    <div class="graph-empty-sub">Log movies, series, or games to start filling your galaxy!</div>
-  </div>
+  </main>
 </div>
-
 <!-- COMPLETE DEEP MEDIA INFO CARD (ENCYCLOPEDIA MODE) -->
 <div class="deep-overlay" id="deepOverlay" style="display:none">
   <div class="deep-sheet" id="deepSheet">
@@ -7657,7 +7480,7 @@ function renderLog(){
     });
     let html='',idx=0;
     Object.entries(groups).forEach(([month,entries])=>{
-      html+=`<div class="month-header">${month}</div>`;
+      html+=`<div class="month-header"><span>${month}</span><span class="month-count">${entries.length}</span></div>`;
       entries.forEach(e=>{html+=renderRow(e,idx++);});
     });
     container.innerHTML=html+FOOTER;
@@ -14475,58 +14298,14 @@ window.isStartedGameActive = isStartedGameActive;
 window.shouldDisplayInLog = shouldDisplayInLog;
 
 // ═════════════════════════════════════════════════════════════
-// 🌌 POSTER UNIVERSE / OBSIDIAN-STYLE GRAPH VIEW ENGINE (OPTIMIZED)
+// 🎬 MOVIE WALL / POSTER COLLECTION ENGINE (FAST & LAG-FREE)
 // ═════════════════════════════════════════════════════════════
-let _graphIsOpen = false;
-let _graphCanvas = null;
-let _graphCtx = null;
-let _graphAnimFrame = null;
-let _graphNodes = [];
-let _graphLinks = [];
-let _graphFilter = 'all';
-let _graphDpr = window.devicePixelRatio || 1;
-let _graphDraggingNode = null;
-let _graphIsPanning = false;
-let _graphPointerStart = { x: 0, y: 0 };
-let _graphLastPointer = { x: 0, y: 0 };
-let _graphPointerMoved = false;
-let _graphPinchStartDist = 0;
-let _graphSelectedNode = null;
-let _graphIsAnimating = false;
-let _graphAnimTimer = null;
-let _graphAnimIndex = 0;
-let _graphShockwaves = [];
-let _graphStars = [];
-let _graphPhysicsAwake = true;
-let _graphSleepCountdown = 120;
-let _graphIsPointerDown = false;
-let _graphLastInteractionTime = 0;
-let _graphOrbitSpeed = 0;
+let _wallIsOpen = false;
+let _wallFilter = 'all';
 
-// Persistent Global Thumbnail & Poster Cache
-const _graphPosterCache = new Map(); // url -> { url, img, cachedThumb, loaded }
-
-// Preload Logger Logo for snapshot watermark
-const _loggerLogoImg = new Image();
-_loggerLogoImg.crossOrigin = 'anonymous';
-_loggerLogoImg.src = 'logo.png';
-
-const _graphSpatialGrid = new Map();
-const GRAPH_CELL_SIZE = 85;
-
-const _graphCamera = {
-  x: 0,
-  y: 0,
-  zoom: 1.0,
-  targetX: 0,
-  targetY: 0,
-  targetZoom: 1.0
-};
-
-// ── OPTIMIZED POSTER PRELOADER & THUMBNAIL CACHE ────────────
 function getOptimizedPosterUrl(rawUrl){
   if(!rawUrl || typeof rawUrl !== 'string') return '';
-  // Convert heavy TMDB images (w500/original/w300) to fast retina thumbnails (w185)
+  // Convert heavy TMDB images to fast retina thumbnails (w185)
   if(rawUrl.includes('image.tmdb.org/t/p/')){
     return rawUrl.replace(/\/t\/p\/(original|w500|w300|w200)\//, '/t/p/w185/');
   }
@@ -14537,1559 +14316,349 @@ function getOptimizedPosterUrl(rawUrl){
   return rawUrl;
 }
 
-function getGraphPosterData(rawUrl, type){
-  if(!rawUrl) return null;
-  const url = getOptimizedPosterUrl(rawUrl);
-  if(!url) return null;
-
-  if(_graphPosterCache.has(url)){
-    return _graphPosterCache.get(url);
-  }
-
-  const isLocalServer = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
-  // Route through local proxy to eliminate all third-party CORS blocks & prevent canvas tainting
-  const finalSrc = isLocalServer ? `/api/proxy-image?url=${encodeURIComponent(url)}` : url;
-
-  const record = {
-    url: url,
-    img: new Image(),
-    cachedThumb: null,
-    loaded: false
-  };
-  _graphPosterCache.set(url, record);
-
-  if(isLocalServer){
-    record.img.crossOrigin = 'anonymous';
-  }
-
-  record.img.onload = () => {
-    record.loaded = true;
-    createRoundedThumbnail(record);
-    if(_graphIsOpen){
-      _graphPhysicsAwake = true;
-      _graphSleepCountdown = 45;
-    }
-  };
-  record.img.onerror = () => {
-    // If proxy failed, fallback to direct load without crossOrigin
-    if(record.img.src !== url){
-      const fallback = new Image();
-      fallback.onload = () => {
-        record.loaded = true;
-        record.img = fallback;
-        createRoundedThumbnail(record);
-        if(_graphIsOpen){
-          _graphPhysicsAwake = true;
-          _graphSleepCountdown = 45;
-        }
-      };
-      fallback.src = url;
-    }
-  };
-  record.img.src = finalSrc;
-
-  return record;
-}
-
-// Pre-render a rounded 2x retina thumbnail onto an offscreen canvas
-function createRoundedThumbnail(record){
-  try {
-    const w = 76; // 38 * 2 for retina
-    const h = 108; // 54 * 2
-    const cr = 14;
-    const offCanvas = document.createElement('canvas');
-    offCanvas.width = w;
-    offCanvas.height = h;
-    const octx = offCanvas.getContext('2d');
-    octx.beginPath();
-    octx.roundRect(0, 0, w, h, cr);
-    octx.clip();
-    octx.drawImage(record.img, 0, 0, w, h);
-    record.cachedThumb = offCanvas;
-  } catch(err){
-    // Fallback: draw directly
-  }
-}
-
-// Gentle idle background preloader for universe posters
-function preloadUniversePosters(){
-  const entries = Array.isArray(DATA) ? DATA : [];
-  if(!entries.length) return;
-  let idx = 0;
-  function processChunk(){
-    const limit = Math.min(entries.length, idx + 18);
-    for(; idx < limit; idx++){
-      const item = entries[idx];
-      if(item && item.poster){
-        getGraphPosterData(item.poster, item.type);
-      }
-    }
-    if(idx < entries.length){
-      if(window.requestIdleCallback){
-        window.requestIdleCallback(processChunk, { timeout: 2500 });
-      } else {
-        setTimeout(processChunk, 100);
-      }
+function getWallItems(filterType = 'all'){
+  const raw = Array.isArray(DATA) ? DATA : [];
+  const filtered = filterType === 'all' ? raw : raw.filter(x => (x.type || 'movie') === filterType);
+  
+  // Deduplicate unique titles so rewatches don't crowd the wall
+  const seen = new Set();
+  const items = [];
+  for(const item of filtered){
+    if(!item) continue;
+    const key = typeof getUniqueMediaKey === 'function' 
+      ? getUniqueMediaKey(item) 
+      : (item.tmdbId ? `${item.type}:${item.tmdbId}` : `${item.type}:${(item.title||'').toLowerCase()}`);
+    if(!seen.has(key)){
+      seen.add(key);
+      items.push(item);
     }
   }
-  if(window.requestIdleCallback){
-    window.requestIdleCallback(processChunk, { timeout: 2500 });
-  } else {
-    setTimeout(processChunk, 350);
-  }
+  // Sort newest logged first
+  items.sort((a, b) => (b.id || 0) - (a.id || 0));
+  return items;
 }
 
-// Initialize background cosmic starfield
-function initGraphStars(){
-  _graphStars = [];
-  const count = 160;
-  for(let i = 0; i < count; i++){
-    _graphStars.push({
-      x: (Math.random() - 0.5) * 3800,
-      y: (Math.random() - 0.5) * 3800,
-      size: Math.random() * 1.8 + 0.6,
-      baseAlpha: Math.random() * 0.45 + 0.25,
-      pulseSpeed: Math.random() * 0.03 + 0.01,
-      phase: Math.random() * Math.PI * 2
-    });
-  }
+function openMovieWall(){
+  const overlay = document.getElementById('movieWallOverlay');
+  if(!overlay) return;
+  _wallIsOpen = true;
+  overlay.style.display = 'flex';
+  overlay.offsetHeight; // force reflow for smooth animation
+  overlay.classList.add('show');
+  document.body.style.overflow = 'hidden';
+  
+  renderMovieWall();
 }
 
-// Build node graph from FlickShelf DATA array
-function buildGraphNodes(){
-  _graphNodes = [];
-  _graphLinks = [];
+function closeMovieWall(){
+  const overlay = document.getElementById('movieWallOverlay');
+  if(!overlay) return;
+  _wallIsOpen = false;
+  overlay.classList.remove('show');
+  document.body.style.overflow = '';
+  setTimeout(() => {
+    if(!_wallIsOpen) overlay.style.display = 'none';
+  }, 230);
+}
 
-  const rawEntries = Array.isArray(DATA) ? DATA : [];
-  if(!rawEntries.length){
-    const emptyEl = document.getElementById('graphEmpty');
+function renderMovieWall(){
+  const grid = document.getElementById('wallGrid');
+  const emptyEl = document.getElementById('wallEmpty');
+  const countSub = document.getElementById('wallCountSub');
+  if(!grid) return;
+
+  const items = getWallItems(_wallFilter);
+
+  if(countSub){
+    const label = _wallFilter === 'movie' ? 'films' : (_wallFilter === 'series' ? 'series' : (_wallFilter === 'game' ? 'games' : 'titles'));
+    countSub.textContent = `${items.length} ${label} in collection`;
+  }
+
+  if(!items.length){
+    grid.innerHTML = '';
     if(emptyEl) emptyEl.style.display = 'block';
-    const sub = document.getElementById('graphCountSub');
-    if(sub) sub.textContent = '0 in orbit';
     return;
   }
 
-  const emptyEl = document.getElementById('graphEmpty');
   if(emptyEl) emptyEl.style.display = 'none';
 
-  // Sort chronologically for timeline replay
-  const sorted = rawEntries.slice().sort((a, b) => {
-    const da = a.date ? new Date(a.date).getTime() : (a.id || 0);
-    const db = b.date ? new Date(b.date).getTime() : (b.id || 0);
-    return da - db;
-  });
-
-  const goldenAngle = 2.3999632;
-  const franchiseGroups = new Map();
-
-  _graphNodes = sorted.map((entry, idx) => {
-    const angle = idx * goldenAngle;
-    const dist = Math.sqrt(idx + 1) * 44;
-    const x = Math.cos(angle) * dist;
-    const y = Math.sin(angle) * dist;
-
-    const type = (entry.type || 'movie').toLowerCase();
-    const franchise = (entry.franchise || entry.collection || '').trim();
-    const posterData = getGraphPosterData(entry.poster, type);
-
-    const node = {
-      id: entry.id,
-      entry: entry,
-      x: x,
-      y: y,
-      vx: (Math.random() - 0.5) * 0.35,
-      vy: (Math.random() - 0.5) * 0.35,
-      radius: 26,
-      pw: 38,
-      ph: 54,
-      type: type,
-      title: entry.title || 'Untitled',
-      year: entry.year || '',
-      rating: entry.rating || '',
-      review: entry.review || entry.notes || '',
-      isFav: !!entry.fav,
-      franchise: franchise,
-      posterData: posterData,
-      scale: 1.0,
-      targetScale: 1.0,
-      alpha: 1.0,
-      targetAlpha: 1.0,
-      isDragging: false,
-      isHovered: false,
-      dateObj: entry.date ? new Date(entry.date) : new Date(entry.id || Date.now())
-    };
-
-    if(franchise){
-      const key = cleanTitle(franchise);
-      if(!franchiseGroups.has(key)) franchiseGroups.set(key, []);
-      franchiseGroups.get(key).push(node);
+  // Render purely posters with NO labels
+  const html = items.map(item => {
+    const optPoster = getOptimizedPosterUrl(item.poster);
+    const safeTitle = (item.title || '').replace(/"/g, '&quot;');
+    if(optPoster){
+      return `<div class="wall-item" data-id="${item.id}" title="${safeTitle}" role="button" tabindex="0">
+        <img class="wall-item-img" src="${optPoster}" alt="${safeTitle}" loading="lazy" decoding="async">
+      </div>`;
+    } else {
+      const typeIcon = typeof getTypeIcon === 'function' ? getTypeIcon(item.type) : '🎬';
+      const initials = (item.title || '').split(' ').slice(0, 2).map(w=>w[0]).join('');
+      return `<div class="wall-item" data-id="${item.id}" title="${safeTitle}" role="button" tabindex="0">
+        <div class="wall-item-ph">
+          <div class="wall-item-ph-icon">${typeIcon}</div>
+          <div class="wall-item-ph-initials">${initials || '•'}</div>
+        </div>
+      </div>`;
     }
+  }).join('');
 
-    return node;
-  });
+  grid.innerHTML = html;
 
-  // Connect franchise constellations
-  franchiseGroups.forEach((group) => {
-    if(group.length >= 2){
-      for(let i = 0; i < group.length - 1; i++){
-        _graphLinks.push({ a: group[i], b: group[i + 1] });
+  // Add click handlers to open deep media card
+  grid.querySelectorAll('.wall-item').forEach(el => {
+    el.addEventListener('click', () => {
+      const id = Number(el.dataset.id);
+      const entry = (DATA || []).find(x => x.id === id);
+      if(entry && typeof openDeepCard === 'function'){
+        openDeepCard(entry);
       }
-    }
+    });
   });
-
-  const sub = document.getElementById('graphCountSub');
-  if(sub) sub.textContent = `${_graphNodes.length} ${(_graphNodes.length === 1 ? 'item' : 'items')} in orbit`;
 }
 
-function resizeGraphCanvas(){
-  if(!_graphCanvas) return;
-  _graphDpr = window.devicePixelRatio || 1;
-  const w = window.innerWidth;
-  const h = window.innerHeight;
-  _graphCanvas.width = w * _graphDpr;
-  _graphCanvas.height = h * _graphDpr;
-}
+// ── SNAPSHOT / SHARE COLLECTION PICTURE ──────────────────────
+async function shareMovieWall(){
+  const shareBtn = document.getElementById('wallShareBtn');
+  if(shareBtn) shareBtn.disabled = true;
 
-// ── OPEN GRAPH VIEW & AUTOMATIC EXPANSION ANIMATION ──────────
-function openGraphView(){
-  const overlay = document.getElementById('graphOverlay');
-  if(!overlay) return;
+  if(typeof toast === 'function') toast('Generating collection picture...', 'watchlist', 2200);
 
-  _graphCanvas = document.getElementById('graphCanvas');
-  if(!_graphCanvas) return;
-  _graphCtx = _graphCanvas.getContext('2d');
-
-  resizeGraphCanvas();
-  window.addEventListener('resize', resizeGraphCanvas);
-
-  initGraphStars();
-  buildGraphNodes();
-
-  // Auto-fit zoom based on library size (so 500-700 items fit comfortably centered)
-  const maxGalaxyRadius = Math.max(160, Math.sqrt(_graphNodes.length + 1) * 44);
-  const fitZoom = Math.min(1.0, Math.max(0.32, Math.min(window.innerWidth, window.innerHeight) * 0.42 / maxGalaxyRadius));
-
-  _graphCamera.targetX = window.innerWidth / 2;
-  _graphCamera.targetY = window.innerHeight / 2;
-  _graphCamera.x = _graphCamera.targetX;
-  _graphCamera.y = _graphCamera.targetY;
-  _graphCamera.targetZoom = fitZoom;
-  _graphCamera.zoom = fitZoom;
-  _graphFilter = 'all';
-
-  document.querySelectorAll('.graph-pill').forEach(b => {
-    b.classList.toggle('on', b.dataset.gf === 'all');
-  });
-
-  hideGraphQuickCard();
-  stopGraphAnimation();
-
-  overlay.style.display = 'flex';
-  overlay.offsetHeight; // force reflow
-  overlay.classList.add('show');
-  _graphIsOpen = true;
-  _graphPhysicsAwake = true;
-  _graphSleepCountdown = 120;
-  _graphIsPointerDown = false;
-  _graphLastInteractionTime = performance.now();
-  _graphOrbitSpeed = 0;
-
-  attachGraphPointerListeners();
-
-  if(_graphAnimFrame) cancelAnimationFrame(_graphAnimFrame);
-  _graphAnimFrame = requestAnimationFrame(graphRenderLoop);
-
-  // AUTOMATIC FULL TIMELINE EXPANSION ON OPENING (Same rich animation as Animate button)
-  setTimeout(() => {
-    if(_graphIsOpen){
-      startGraphAnimation();
+  try {
+    const items = getWallItems(_wallFilter);
+    if(!items.length){
+      if(typeof toast === 'function') toast('No items in collection to share!', 'error', 2000);
+      if(shareBtn) shareBtn.disabled = false;
+      return;
     }
-  }, 120);
-}
 
-function closeGraphView(){
-  const overlay = document.getElementById('graphOverlay');
-  if(!overlay) return;
+    // High-resolution canvas layout
+    const canvasWidth = 1080;
+    // 5 columns on desktop snapshot, or 4 if <= 16 items
+    const cols = items.length <= 16 ? 4 : (items.length >= 40 ? 6 : 5);
+    const pad = 36;
+    const gap = 12;
+    const itemW = Math.floor((canvasWidth - (pad * 2) - ((cols - 1) * gap)) / cols);
+    const itemH = Math.floor(itemW * 1.48); // 2:3 ratio
+    const rows = Math.ceil(items.length / cols);
 
-  overlay.classList.remove('show');
-  _graphIsOpen = false;
+    const headerH = 170;
+    const footerH = 80;
+    const totalH = headerH + (rows * (itemH + gap)) + footerH;
 
-  stopGraphAnimation();
-  hideGraphQuickCard();
-  detachGraphPointerListeners();
+    const canvas = document.createElement('canvas');
+    canvas.width = canvasWidth;
+    canvas.height = totalH;
+    const ctx = canvas.getContext('2d');
 
-  const activeToast = document.getElementById('toast');
-  if(activeToast && activeToast.classList.contains('has-action')){
-    activeToast.classList.remove('show', 'has-action');
-    if(_toastTimer) clearTimeout(_toastTimer);
-  }
+    // Background gradient
+    const bgGrad = ctx.createLinearGradient(0, 0, 0, totalH);
+    bgGrad.addColorStop(0, '#0c0d12');
+    bgGrad.addColorStop(0.5, '#121319');
+    bgGrad.addColorStop(1, '#09090d');
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(0, 0, canvasWidth, totalH);
 
-  window.removeEventListener('resize', resizeGraphCanvas);
+    // Ambient glow top
+    const glowGrad = ctx.createRadialGradient(canvasWidth / 2, 0, 20, canvasWidth / 2, 0, 480);
+    glowGrad.addColorStop(0, 'rgba(45, 127, 249, 0.16)');
+    glowGrad.addColorStop(1, 'transparent');
+    ctx.fillStyle = glowGrad;
+    ctx.fillRect(0, 0, canvasWidth, 380);
 
-  if(_graphAnimFrame){
-    cancelAnimationFrame(_graphAnimFrame);
-    _graphAnimFrame = null;
-  }
+    // ── Header: Logo + Brand + User + Count ──
+    const displayName = typeof getDisplayName === 'function' ? getDisplayName() : 'My';
 
-  setTimeout(() => {
-    if(!_graphIsOpen) overlay.style.display = 'none';
-  }, 290);
-}
+    // Logo
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '800 32px -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif';
+    ctx.fillText('LOGGER', pad, 72);
 
-// ── HIGH-PERFORMANCE PHYSICS WITH SLEEP ENGINE ──────────────
-function updateGraphPhysics(){
-  if(!_graphNodes.length) return;
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.55)';
+    ctx.font = '500 18px -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif';
+    ctx.fillText(`${displayName}'s Media Collection`, pad, 106);
 
-  // Camera lerp always updates smoothly
-  _graphCamera.x += (_graphCamera.targetX - _graphCamera.x) * 0.16;
-  _graphCamera.y += (_graphCamera.targetY - _graphCamera.y) * 0.16;
-  _graphCamera.zoom += (_graphCamera.targetZoom - _graphCamera.zoom) * 0.18;
+    // Pill on right side
+    const countText = `${items.length} TITLES`;
+    ctx.font = '700 15px -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif';
+    const pillMetrics = ctx.measureText(countText);
+    const pillW = pillMetrics.width + 28;
+    const pillH = 36;
+    const pillX = canvasWidth - pad - pillW;
+    const pillY = 60;
 
-  // Shockwaves
-  for(let i = _graphShockwaves.length - 1; i >= 0; i--){
-    const s = _graphShockwaves[i];
-    s.radius += s.speed;
-    s.alpha -= 0.024;
-    if(s.alpha <= 0){
-      _graphShockwaves.splice(i, 1);
+    // Draw pill background
+    ctx.beginPath();
+    ctx.roundRect(pillX, pillY, pillW, pillH, 18);
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.16)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText(countText, pillX + 14, pillY + 23);
+
+    // Separator line
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+    ctx.beginPath();
+    ctx.moveTo(pad, headerH - 22);
+    ctx.lineTo(canvasWidth - pad, headerH - 22);
+    ctx.stroke();
+
+    // ── Draw Posters in Grid ──
+    function loadImg(src){
+      return new Promise((resolve) => {
+        if(!src) return resolve(null);
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => resolve(img);
+        img.onerror = () => resolve(null);
+        img.src = src;
+        setTimeout(() => resolve(null), 3500);
+      });
     }
-  }
 
-  // ── PLANETARY IDLE ORBIT REVOLUTION ────────────────────────
-  // When idle ("doing nothing"), the universe slowly revolves like planets orbiting a star
-  const now = performance.now();
-  const isInteracting = _graphIsPointerDown || _graphIsPanning || !!_graphDraggingNode ||
-                        _graphIsAnimating || (_graphSelectedNode !== null) ||
-                        (now - _graphLastInteractionTime < 900);
+    const loadedImages = await Promise.all(
+      items.map(it => loadImg(getOptimizedPosterUrl(it.poster)))
+    );
 
-  const targetOrbitSpeed = isInteracting ? 0 : 0.00085;
-  _graphOrbitSpeed += (targetOrbitSpeed - _graphOrbitSpeed) * 0.05;
+    // Render each item
+    items.forEach((item, idx) => {
+      const col = idx % cols;
+      const row = Math.floor(idx / cols);
+      const x = pad + (col * (itemW + gap));
+      const y = headerH + (row * (itemH + gap));
+      const cr = 10; // corner radius
 
-  if(Math.abs(_graphOrbitSpeed) > 0.000005 && _graphNodes.length > 0){
-    const cos = Math.cos(_graphOrbitSpeed);
-    const sin = Math.sin(_graphOrbitSpeed);
-    const count = _graphNodes.length;
-    for(let i = 0; i < count; i++){
-      const n = _graphNodes[i];
-      if(n.isDragging) continue;
-      const rx = n.x * cos - n.y * sin;
-      const ry = n.x * sin + n.y * cos;
-      n.x = rx;
-      n.y = ry;
-      const rvx = n.vx * cos - n.vy * sin;
-      const rvy = n.vx * sin + n.vy * cos;
-      n.vx = rvx;
-      n.vy = rvy;
-    }
-  }
+      ctx.save();
+      ctx.beginPath();
+      ctx.roundRect(x, y, itemW, itemH, cr);
+      ctx.clip();
 
-  // Sleep check: skip heavy collision math once nodes settle
-  if(_graphIsAnimating || _graphDraggingNode || _graphIsPanning || _graphShockwaves.length > 0){
-    _graphPhysicsAwake = true;
-    _graphSleepCountdown = 90;
-  } else if(_graphSleepCountdown > 0){
-    _graphSleepCountdown--;
-  } else {
-    _graphPhysicsAwake = false;
-  }
+      const img = loadedImages[idx];
+      if(img){
+        ctx.drawImage(img, x, y, itemW, itemH);
+      } else {
+        // Fallback stylish tile
+        ctx.fillStyle = '#1c1d25';
+        ctx.fillRect(x, y, itemW, itemH);
+        ctx.fillStyle = 'rgba(255,255,255,0.7)';
+        ctx.font = '600 13px -apple-system, sans-serif';
+        ctx.textAlign = 'center';
+        const titleStr = (item.title || '').slice(0, 18);
+        ctx.fillText(titleStr, x + (itemW / 2), y + (itemH / 2));
+        ctx.textAlign = 'start';
+      }
 
-  if(!_graphPhysicsAwake) return;
+      ctx.restore();
 
-  const count = _graphNodes.length;
-  const centerGravity = 0.0022;
-  const damping = 0.88;
-  let totalMotion = 0;
+      // Subtle border around poster
+      ctx.beginPath();
+      ctx.roundRect(x, y, itemW, itemH, cr);
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.09)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    });
 
-  // 1. Center gravity
-  for(let i = 0; i < count; i++){
-    const n = _graphNodes[i];
-    if(n.isDragging) continue;
+    // ── Footer ──
+    const footerY = headerH + (rows * (itemH + gap)) + 36;
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+    ctx.font = '500 14px -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif';
+    ctx.fillText('flickshelft • logger', pad, footerY);
 
-    const d = Math.hypot(n.x, n.y) || 1;
-    n.vx -= (n.x / d) * Math.min(d * centerGravity, 4.5);
-    n.vy -= (n.y / d) * Math.min(d * centerGravity, 4.5);
-  }
+    const nowStr = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    ctx.textAlign = 'right';
+    ctx.fillText(nowStr, canvasWidth - pad, footerY);
+    ctx.textAlign = 'start';
 
-  // 2. Spatial hashing into numeric grid buckets (O(N), Zero string allocations!)
-  _graphSpatialGrid.forEach(bucket => { bucket.length = 0; });
-  for(let i = 0; i < count; i++){
-    const n = _graphNodes[i];
-    if(n.scale <= 0.05) continue;
-    const cx = Math.floor(n.x / GRAPH_CELL_SIZE);
-    const cy = Math.floor(n.y / GRAPH_CELL_SIZE);
-    const key = (cx + 32768) * 65536 + (cy + 32768);
-    let bucket = _graphSpatialGrid.get(key);
-    if(!bucket){
-      bucket = [];
-      _graphSpatialGrid.set(key, bucket);
-    }
-    bucket.push(n);
-  }
+    // ── Export Blob & Share / Download ──
+    canvas.toBlob(async (blob) => {
+      if(!blob){
+        if(typeof toast === 'function') toast('Could not generate picture', 'error');
+        if(shareBtn) shareBtn.disabled = false;
+        return;
+      }
 
-  // 3. Collision repulsion only against 9 neighbor cells (O(N))
-  for(let i = 0; i < count; i++){
-    const a = _graphNodes[i];
-    if(a.scale <= 0.05) continue;
-    const cx = Math.floor(a.x / GRAPH_CELL_SIZE);
-    const cy = Math.floor(a.y / GRAPH_CELL_SIZE);
+      const filename = `logger-collection-${Date.now()}.png`;
+      const file = new File([blob], filename, { type: 'image/png' });
 
-    for(let ox = -1; ox <= 1; ox++){
-      for(let oy = -1; oy <= 1; oy++){
-        const key = (cx + ox + 32768) * 65536 + (cy + oy + 32768);
-        const bucket = _graphSpatialGrid.get(key);
-        if(!bucket) continue;
-
-        for(let j = 0; j < bucket.length; j++){
-          const b = bucket[j];
-          if(a.id >= b.id) continue;
-
-          const dx = b.x - a.x;
-          const dy = b.y - a.y;
-          const minDist = (a.radius + b.radius) * Math.max(a.scale, b.scale) + 12;
-          const minDistSq = minDist * minDist;
-          const distSq = dx * dx + dy * dy;
-
-          if(distSq < minDistSq && distSq > 0.01){
-            const dist = Math.sqrt(distSq);
-            const overlap = (minDist - dist) / dist;
-            const push = overlap * 0.35;
-            if(!a.isDragging){ a.vx -= dx * push * 0.5; a.vy -= dy * push * 0.5; }
-            if(!b.isDragging){ b.vx += dx * push * 0.5; b.vy += dy * push * 0.5; }
-          }
+      let shared = false;
+      if(navigator.canShare && navigator.canShare({ files: [file] })){
+        try {
+          await navigator.share({
+            title: `${displayName}'s Collection`,
+            text: `Look at my media collection on Logger! ${items.length} titles 🎬🍿`,
+            files: [file]
+          });
+          shared = true;
+          if(typeof toast === 'function') toast('Collection shared! 🖼️', 'watchlist', 2500);
+        } catch(e){
+          // User closed share sheet
         }
       }
-    }
-  }
 
-  // 4. Constellation link springs
-  for(let i = 0; i < _graphLinks.length; i++){
-    const link = _graphLinks[i];
-    const dx = link.b.x - link.a.x;
-    const dy = link.b.y - link.a.y;
-    const dist = Math.hypot(dx, dy) || 1;
-    const targetDist = 95;
-    const diff = (dist - targetDist) / dist;
-    const springForce = diff * 0.024;
-    if(!link.a.isDragging){ link.a.vx += dx * springForce; link.a.vy += dy * springForce; }
-    if(!link.b.isDragging){ link.b.vx -= dx * springForce; link.b.vy -= dy * springForce; }
-  }
-
-  // 5. Position integration & damping
-  for(let i = 0; i < count; i++){
-    const n = _graphNodes[i];
-    if(!n.isDragging){
-      n.vx *= damping;
-      n.vy *= damping;
-      n.x += n.vx;
-      n.y += n.vy;
-      totalMotion += Math.abs(n.vx) + Math.abs(n.vy);
-    }
-    n.scale += (n.targetScale - n.scale) * 0.16;
-    n.alpha += (n.targetAlpha - n.alpha) * 0.16;
-  }
-
-  if(totalMotion < 0.05 && _graphSleepCountdown > 20){
-    _graphSleepCountdown = 20;
-  }
-}
-
-// ── FAST GPU-OPTIMIZED CANVAS RENDERING ──────────────────────
-function graphRenderLoop(){
-  if(!_graphIsOpen || !_graphCanvas || !_graphCtx) return;
-
-  updateGraphPhysics();
-
-  const ctx = _graphCtx;
-  const dpr = _graphDpr;
-  const w = _graphCanvas.width / dpr;
-  const h = _graphCanvas.height / dpr;
-
-  ctx.save();
-  ctx.scale(dpr, dpr);
-  ctx.clearRect(0, 0, w, h);
-
-  // Background deep space fill
-  ctx.fillStyle = '#090a0f';
-  ctx.fillRect(0, 0, w, h);
-
-  ctx.save();
-  ctx.translate(_graphCamera.x, _graphCamera.y);
-  ctx.scale(_graphCamera.zoom, _graphCamera.zoom);
-
-  // 1. Cosmic Nebula Core Gradient
-  const coreGrad = ctx.createRadialGradient(0, 0, 10, 0, 0, 520);
-  coreGrad.addColorStop(0, 'rgba(40, 48, 85, 0.45)');
-  coreGrad.addColorStop(0.35, 'rgba(24, 18, 48, 0.22)');
-  coreGrad.addColorStop(1, 'rgba(9, 10, 15, 0)');
-  ctx.fillStyle = coreGrad;
-  ctx.beginPath();
-  ctx.arc(0, 0, 520, 0, Math.PI * 2);
-  ctx.fill();
-
-  // Subtle gravity rings
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.035)';
-  ctx.lineWidth = 1;
-  for(let r = 120; r <= 480; r += 120){
-    ctx.beginPath();
-    ctx.arc(0, 0, r, 0, Math.PI * 2);
-    ctx.stroke();
-  }
-
-  // 2. Starfield (single batched path)
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
-  ctx.beginPath();
-  for(let i = 0; i < _graphStars.length; i++){
-    const st = _graphStars[i];
-    ctx.moveTo(st.x + st.size, st.y);
-    ctx.arc(st.x, st.y, st.size, 0, Math.PI * 2);
-  }
-  ctx.fill();
-
-  // 3. Batched Constellation Links
-  if(_graphLinks.length > 0){
-    ctx.lineWidth = 1.2;
-    ctx.setLineDash([4, 4]);
-    ctx.strokeStyle = 'rgba(100, 181, 246, 0.28)';
-    ctx.beginPath();
-    for(let i = 0; i < _graphLinks.length; i++){
-      const link = _graphLinks[i];
-      if(link.a.scale < 0.2 || link.b.scale < 0.2) continue;
-      if(_graphFilter !== 'all' && (link.a.type !== _graphFilter || link.b.type !== _graphFilter)) continue;
-      ctx.moveTo(link.a.x, link.a.y);
-      ctx.lineTo(link.b.x, link.b.y);
-    }
-    ctx.stroke();
-    ctx.setLineDash([]);
-  }
-
-  // 4. Shockwaves
-  for(let i = 0; i < _graphShockwaves.length; i++){
-    const s = _graphShockwaves[i];
-    ctx.strokeStyle = s.color ? `${s.color}${Math.floor(Math.max(0, s.alpha) * 255).toString(16).padStart(2,'0')}` : `rgba(100, 181, 246, ${s.alpha})`;
-    ctx.lineWidth = 2.5;
-    ctx.beginPath();
-    ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
-    ctx.stroke();
-  }
-
-  // 5. Frustum Culling calculation
-  const pad = 65;
-  const viewLeft = -_graphCamera.x / _graphCamera.zoom - pad;
-  const viewRight = (w - _graphCamera.x) / _graphCamera.zoom + pad;
-  const viewTop = -_graphCamera.y / _graphCamera.zoom - pad;
-  const viewBottom = (h - _graphCamera.y) / _graphCamera.zoom + pad;
-
-  const TYPE_COLORS = {
-    movie: '#ff3b5c',
-    series: '#00f2fe',
-    game: '#10b981'
-  };
-
-  const isFarZoom = _graphCamera.zoom < 0.44;
-
-  ctx.shadowBlur = 0;
-  ctx.shadowColor = 'transparent';
-
-  for(let i = 0; i < _graphNodes.length; i++){
-    const n = _graphNodes[i];
-    if(n.scale <= 0.02) continue;
-
-    // View Frustum Culling: skip drawing offscreen nodes!
-    if(n.x < viewLeft || n.x > viewRight || n.y < viewTop || n.y > viewBottom) continue;
-
-    const matchesFilter = (_graphFilter === 'all' || n.type === _graphFilter);
-    const finalAlpha = (matchesFilter ? 1.0 : 0.15) * n.alpha;
-    const nodeColor = TYPE_COLORS[n.type] || '#ff3b5c';
-    const isSpecial = (n.isHovered || _graphSelectedNode === n);
-
-    ctx.save();
-    ctx.translate(n.x, n.y);
-    ctx.scale(n.scale, n.scale);
-    ctx.globalAlpha = finalAlpha;
-
-    // Only apply blur halo to the single hovered/selected node!
-    if(isSpecial){
-      ctx.shadowColor = n.isFav ? 'rgba(255, 215, 0, 0.75)' : nodeColor;
-      ctx.shadowBlur = 24;
-    }
-
-    if(isFarZoom && !isSpecial){
-      // Far LOD: Sleek planetary badge (zero texture overhead)
-      ctx.fillStyle = nodeColor;
-      ctx.beginPath();
-      ctx.arc(0, 0, 14, 0, Math.PI * 2);
-      ctx.fill();
-
-      if(n.isFav){
-        ctx.strokeStyle = '#ffd700';
-        ctx.lineWidth = 2.5;
-        ctx.stroke();
-      }
-    } else {
-      // Normal / Near LOD: Full rounded poster
-      const pw = n.pw;
-      const ph = n.ph;
-      const cr = 8;
-
-      // Ultra-fast blit with pre-clipped offscreen canvas! Zero ctx.clip() overhead!
-      if(n.posterData && n.posterData.cachedThumb){
-        ctx.drawImage(n.posterData.cachedThumb, -pw/2, -ph/2, pw, ph);
-      } else if(n.posterData && n.posterData.img && n.posterData.loaded){
-        ctx.drawImage(n.posterData.img, -pw/2, -ph/2, pw, ph);
-      } else {
-        ctx.fillStyle = '#181922';
-        ctx.beginPath();
-        ctx.roundRect(-pw/2, -ph/2, pw, ph, cr);
-        ctx.fill();
-
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
-        ctx.font = 'bold 15px -apple-system, sans-serif';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        const ico = n.type === 'game' ? '🎮' : n.type === 'series' ? '📺' : '🎬';
-        ctx.fillText(ico, 0, -2);
+      if(!shared){
+        // Download directly
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(a.href);
+        if(typeof toast === 'function') toast('Collection picture saved! 📸', 'watchlist', 2800);
       }
 
-      // Border ring
-      ctx.strokeStyle = n.isFav ? '#ffd700' : nodeColor;
-      ctx.lineWidth = isSpecial ? 2.8 : 1.8;
-      ctx.beginPath();
-      ctx.roundRect(-pw/2, -ph/2, pw, ph, cr);
-      ctx.stroke();
+      if(shareBtn) shareBtn.disabled = false;
+    }, 'image/png');
 
-      // Favorite heart badge top-right
-      if(n.isFav){
-        ctx.fillStyle = '#ff3b5c';
-        ctx.font = '10px -apple-system, sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText('❤️', pw/2 - 4, -ph/2 + 8);
-      }
-
-      // Rating star badge bottom-left
-      if(n.rating){
-        const rateLabel = n.rating === 'masterpiece' ? '10' : n.rating === 'loved' ? '9' : n.rating === 'great' ? '8' : n.rating === 'good' ? '7' : n.rating === 'decent' ? '6' : '5';
-        ctx.fillStyle = 'rgba(12, 13, 18, 0.88)';
-        ctx.beginPath();
-        ctx.roundRect(-pw/2 + 2, ph/2 - 14, 22, 12, 4);
-        ctx.fill();
-
-        ctx.fillStyle = '#ffb300';
-        ctx.font = 'bold 8.5px -apple-system, sans-serif';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(`★${rateLabel}`, -pw/2 + 13, ph/2 - 8);
-      }
-      // Floating title labels removed per user request (clean posters only!)
-    }
-
-    ctx.restore();
-  }
-
-  ctx.restore();
-  ctx.restore();
-
-  _graphAnimFrame = requestAnimationFrame(graphRenderLoop);
-}
-
-// ── INTERACTIVE POINTER & GESTURES ───────────────────────────
-function findGraphNodeAtScreen(screenX, screenY){
-  const worldX = (screenX - _graphCamera.x) / _graphCamera.zoom;
-  const worldY = (screenY - _graphCamera.y) / _graphCamera.zoom;
-
-  for(let i = _graphNodes.length - 1; i >= 0; i--){
-    const n = _graphNodes[i];
-    if(n.scale <= 0.1) continue;
-    if(_graphFilter !== 'all' && n.type !== _graphFilter) continue;
-    const dx = worldX - n.x;
-    const dy = worldY - n.y;
-    if(Math.abs(dx) <= n.pw/2 + 5 && Math.abs(dy) <= n.ph/2 + 5){
-      return n;
-    }
-  }
-  return null;
-}
-
-function onGraphPointerDown(e){
-  if(e.button !== undefined && e.button !== 0 && e.pointerType === 'mouse') return;
-
-  _graphIsPointerDown = true;
-  _graphLastInteractionTime = performance.now();
-
-  _graphPointerStart = { x: e.clientX, y: e.clientY };
-  _graphLastPointer = { x: e.clientX, y: e.clientY };
-  _graphPointerMoved = false;
-
-  const hitNode = findGraphNodeAtScreen(e.clientX, e.clientY);
-  if(hitNode){
-    _graphDraggingNode = hitNode;
-    hitNode.isDragging = true;
-    hitNode.vx = 0;
-    hitNode.vy = 0;
-  } else {
-    _graphIsPanning = true;
-  }
-}
-
-function onGraphPointerMove(e){
-  const dx = e.clientX - _graphLastPointer.x;
-  const dy = e.clientY - _graphLastPointer.y;
-
-  if(Math.hypot(e.clientX - _graphPointerStart.x, e.clientY - _graphPointerStart.y) > 5){
-    _graphPointerMoved = true;
-  }
-
-  _graphLastPointer = { x: e.clientX, y: e.clientY };
-
-  if(_graphDraggingNode){
-    _graphLastInteractionTime = performance.now();
-    const worldX = (e.clientX - _graphCamera.x) / _graphCamera.zoom;
-    const worldY = (e.clientY - _graphCamera.y) / _graphCamera.zoom;
-    _graphDraggingNode.x = worldX;
-    _graphDraggingNode.y = worldY;
-    _graphDraggingNode.vx = dx / _graphCamera.zoom;
-    _graphDraggingNode.vy = dy / _graphCamera.zoom;
-  } else if(_graphIsPanning){
-    _graphLastInteractionTime = performance.now();
-    _graphCamera.x += dx;
-    _graphCamera.y += dy;
-    _graphCamera.targetX = _graphCamera.x;
-    _graphCamera.targetY = _graphCamera.y;
-  } else {
-    const hovered = findGraphNodeAtScreen(e.clientX, e.clientY);
-    _graphNodes.forEach(n => { n.isHovered = (n === hovered); });
-    if(_graphCanvas) _graphCanvas.style.cursor = hovered ? 'pointer' : 'grab';
-    if(hovered){
-      _graphLastInteractionTime = performance.now();
-    }
-  }
-}
-
-function onGraphPointerUp(e){
-  _graphIsPointerDown = false;
-  _graphLastInteractionTime = performance.now();
-
-  if(!_graphPointerMoved){
-    const clickedNode = findGraphNodeAtScreen(e.clientX, e.clientY);
-    if(clickedNode){
-      showGraphQuickCard(clickedNode);
-      if(navigator.vibrate){ try { navigator.vibrate(10); } catch(err){} }
-    } else {
-      hideGraphQuickCard();
-    }
-  }
-
-  if(_graphDraggingNode){
-    _graphDraggingNode.isDragging = false;
-    _graphDraggingNode = null;
-  }
-
-  _graphIsPanning = false;
-}
-
-function onGraphWheel(e){
-  e.preventDefault();
-  _graphLastInteractionTime = performance.now();
-  const zoomFactor = e.deltaY < 0 ? 1.14 : 0.88;
-  const newZoom = Math.min(Math.max(_graphCamera.targetZoom * zoomFactor, 0.28), 3.4);
-
-  const worldX = (e.clientX - _graphCamera.x) / _graphCamera.zoom;
-  const worldY = (e.clientY - _graphCamera.y) / _graphCamera.zoom;
-
-  _graphCamera.targetZoom = newZoom;
-  _graphCamera.targetX = e.clientX - worldX * newZoom;
-  _graphCamera.targetY = e.clientY - worldY * newZoom;
-}
-
-// Touch pinch-to-zoom
-function onGraphTouchStart(e){
-  _graphIsPointerDown = true;
-  _graphLastInteractionTime = performance.now();
-  if(e.touches.length === 2){
-    _graphPinchStartDist = Math.hypot(
-      e.touches[0].clientX - e.touches[1].clientX,
-      e.touches[0].clientY - e.touches[1].clientY
-    );
-  }
-}
-
-function onGraphTouchMove(e){
-  _graphLastInteractionTime = performance.now();
-  if(e.touches.length === 2 && _graphPinchStartDist > 0){
-    e.preventDefault();
-    const dist = Math.hypot(
-      e.touches[0].clientX - e.touches[1].clientX,
-      e.touches[0].clientY - e.touches[1].clientY
-    );
-    const ratio = dist / _graphPinchStartDist;
-    _graphPinchStartDist = dist;
-
-    const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
-    const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
-
-    const newZoom = Math.min(Math.max(_graphCamera.targetZoom * ratio, 0.28), 3.4);
-    const worldX = (midX - _graphCamera.x) / _graphCamera.zoom;
-    const worldY = (midY - _graphCamera.y) / _graphCamera.zoom;
-
-    _graphCamera.targetZoom = newZoom;
-    _graphCamera.targetX = midX - worldX * newZoom;
-    _graphCamera.targetY = midY - worldY * newZoom;
-  }
-}
-
-function attachGraphPointerListeners(){
-  if(!_graphCanvas) return;
-  _graphCanvas.addEventListener('pointerdown', onGraphPointerDown);
-  window.addEventListener('pointermove', onGraphPointerMove);
-  window.addEventListener('pointerup', onGraphPointerUp);
-  window.addEventListener('pointercancel', onGraphPointerUp);
-  _graphCanvas.addEventListener('wheel', onGraphWheel, { passive: false });
-  _graphCanvas.addEventListener('touchstart', onGraphTouchStart, { passive: true });
-  _graphCanvas.addEventListener('touchmove', onGraphTouchMove, { passive: false });
-}
-
-function detachGraphPointerListeners(){
-  if(!_graphCanvas) return;
-  _graphCanvas.removeEventListener('pointerdown', onGraphPointerDown);
-  window.removeEventListener('pointermove', onGraphPointerMove);
-  window.removeEventListener('pointerup', onGraphPointerUp);
-  window.removeEventListener('pointercancel', onGraphPointerUp);
-  _graphCanvas.removeEventListener('wheel', onGraphWheel);
-  _graphCanvas.removeEventListener('touchstart', onGraphTouchStart);
-  _graphCanvas.removeEventListener('touchmove', onGraphTouchMove);
-}
-
-// ── FLOATING QUICK PEEK CARD ────────────────────────────────
-function showGraphQuickCard(node){
-  _graphSelectedNode = node;
-  const card = document.getElementById('graphQuickCard');
-  if(!card) return;
-
-  const posterWrap = document.getElementById('graphQuickPosterWrap');
-  if(posterWrap){
-    if(node.posterData && node.posterData.url){
-      posterWrap.innerHTML = `<img class="graph-quick-thumb" src="${node.posterData.url}" alt="${node.title}">`;
-    } else {
-      const ico = node.type === 'game' ? '🎮' : node.type === 'series' ? '📺' : '🎬';
-      posterWrap.innerHTML = `<div class="graph-quick-ph">${ico}</div>`;
-    }
-  }
-
-  const titleEl = document.getElementById('graphQuickTitle');
-  if(titleEl) titleEl.textContent = node.title;
-
-  const metaEl = document.getElementById('graphQuickMeta');
-  if(metaEl){
-    const typeLabel = node.type === 'game' ? 'Game' : node.type === 'series' ? 'Series' : 'Film';
-    const rateLabel = node.rating ? `★ ${RATING_LABELS[node.rating] || node.rating}` : '';
-    metaEl.textContent = [typeLabel, node.year, rateLabel].filter(Boolean).join(' · ');
-  }
-
-  const revEl = document.getElementById('graphQuickReview');
-  if(revEl){
-    if(node.review){
-      revEl.textContent = `“${node.review}”`;
-      revEl.style.display = '-webkit-box';
-    } else {
-      revEl.style.display = 'none';
-    }
-  }
-
-  const openBtn = document.getElementById('graphQuickOpenBtn');
-  if(openBtn){
-    openBtn.onclick = () => {
-      closeGraphView();
-      if(typeof openDeepCard === 'function'){
-        openDeepCard(node.entry);
-      }
-    };
-  }
-
-  card.style.display = 'flex';
-}
-
-function hideGraphQuickCard(){
-  _graphSelectedNode = null;
-  const card = document.getElementById('graphQuickCard');
-  if(card) card.style.display = 'none';
-}
-
-// ── "ANIMATE" BUTTON: ADAPTIVE TIMELINE CHRONOLOGICAL REPLAY 
-function toggleGraphAnimation(){
-  if(_graphIsAnimating){
-    stopGraphAnimation();
-  } else {
-    startGraphAnimation();
-  }
-}
-
-function startGraphAnimation(){
-  if(!_graphNodes.length) return;
-
-  _graphIsAnimating = true;
-  _graphAnimIndex = 0;
-  _graphPhysicsAwake = true;
-  _graphSleepCountdown = 120;
-
-  const btnText = document.getElementById('graphAnimateBtnText');
-  const btn = document.getElementById('graphAnimateBtn');
-  if(btnText) btnText.textContent = 'Stop';
-  if(btn) btn.classList.add('is-active');
-
-  const timelineBar = document.getElementById('graphTimelineBar');
-  if(timelineBar) timelineBar.style.display = 'flex';
-
-  // Interactive Skip Toast during animation
-  if(typeof toast === 'function'){
-    toast('Expanding universe timeline...', 'watchlist', 15000, {
-      label: 'Skip',
-      onClick: finishGraphAnimation
-    });
-  }
-
-  hideGraphQuickCard();
-
-  // Reset all nodes to singularity at center (scale = 0)
-  _graphNodes.forEach(n => {
-    n.targetScale = 0;
-    n.scale = 0;
-    n.targetAlpha = 0;
-    n.alpha = 0;
-    n.x = 0;
-    n.y = 0;
-  });
-
-  // Center camera
-  _graphCamera.targetX = window.innerWidth / 2;
-  _graphCamera.targetY = window.innerHeight / 2;
-
-  // Initial cosmic big bang shockwave
-  _graphShockwaves.push({
-    x: 0,
-    y: 0,
-    radius: 10,
-    speed: 10,
-    alpha: 1.0,
-    color: '#64b5f6'
-  });
-
-  if(navigator.vibrate){ try { navigator.vibrate([16, 40, 20]); } catch(err){} }
-
-  const total = _graphNodes.length;
-  // Adaptive batching so 700 items finish in ~7.5s smoothly
-  const batchSize = Math.max(1, Math.ceil(total / 65));
-  const spawnInterval = 105;
-
-  if(_graphAnimTimer) clearInterval(_graphAnimTimer);
-  _graphAnimTimer = setInterval(() => {
-    if(!_graphIsAnimating || _graphAnimIndex >= total){
-      finishGraphAnimation();
-      return;
-    }
-
-    _graphPhysicsAwake = true;
-    _graphSleepCountdown = 90;
-
-    const endBatch = Math.min(total, _graphAnimIndex + batchSize);
-    let latestNode = null;
-
-    for(let i = _graphAnimIndex; i < endBatch; i++){
-      const node = _graphNodes[i];
-      latestNode = node;
-      const angle = Math.random() * Math.PI * 2;
-      const speed = 7 + Math.random() * 8;
-
-      node.x = 0;
-      node.y = 0;
-      node.vx = Math.cos(angle) * speed;
-      node.vy = Math.sin(angle) * speed;
-      node.targetScale = 1.0;
-      node.targetAlpha = 1.0;
-    }
-
-    if(latestNode){
-      _graphShockwaves.push({
-        x: 0,
-        y: 0,
-        radius: 6,
-        speed: 7,
-        alpha: 0.8,
-        color: latestNode.type === 'game' ? '#10b981' : latestNode.type === 'series' ? '#00f2fe' : '#ff3b5c'
-      });
-
-      if(navigator.vibrate){ try { navigator.vibrate(6); } catch(err){} }
-
-      const dateEl = document.getElementById('graphTimelineDate');
-      if(dateEl && latestNode.dateObj){
-        const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-        dateEl.textContent = `${months[latestNode.dateObj.getMonth()]} ${latestNode.dateObj.getFullYear()}`;
-      }
-    }
-
-    const progEl = document.getElementById('graphTimelineProgress');
-    if(progEl){
-      const pct = Math.round((endBatch / total) * 100);
-      progEl.style.width = `${pct}%`;
-    }
-
-    const countEl = document.getElementById('graphTimelineCount');
-    if(countEl){
-      countEl.textContent = `${endBatch} / ${total}`;
-    }
-
-    _graphAnimIndex = endBatch;
-  }, spawnInterval);
-}
-
-function finishGraphAnimation(){
-  clearInterval(_graphAnimTimer);
-  _graphAnimTimer = null;
-  _graphIsAnimating = false;
-
-  const btnText = document.getElementById('graphAnimateBtnText');
-  const btn = document.getElementById('graphAnimateBtn');
-  if(btnText) btnText.textContent = 'Animate';
-  if(btn) btn.classList.remove('is-active');
-
-  setTimeout(() => {
-    const timelineBar = document.getElementById('graphTimelineBar');
-    if(timelineBar) timelineBar.style.display = 'none';
-  }, 600);
-
-  _graphNodes.forEach(n => {
-    n.targetScale = 1.0;
-    n.targetAlpha = 1.0;
-  });
-
-  // Dismiss active skip toast
-  const activeToast = document.getElementById('toast');
-  if(activeToast && activeToast.classList.contains('has-action')){
-    activeToast.classList.remove('show', 'has-action');
-    if(_toastTimer) clearTimeout(_toastTimer);
-  }
-
-  if(typeof toast === 'function'){
-    toast(`Universe expansion complete! ${_graphNodes.length} titles in orbit ✨`, 'watchlist', 2800);
-  }
-}
-
-function stopGraphAnimation(){
-  if(_graphAnimTimer){
-    clearInterval(_graphAnimTimer);
-    _graphAnimTimer = null;
-  }
-  _graphIsAnimating = false;
-
-  const btnText = document.getElementById('graphAnimateBtnText');
-  const btn = document.getElementById('graphAnimateBtn');
-  if(btnText) btnText.textContent = 'Animate';
-  if(btn) btn.classList.remove('is-active');
-
-  const timelineBar = document.getElementById('graphTimelineBar');
-  if(timelineBar) timelineBar.style.display = 'none';
-
-  // Dismiss active skip toast
-  const activeToast = document.getElementById('toast');
-  if(activeToast && activeToast.classList.contains('has-action')){
-    activeToast.classList.remove('show', 'has-action');
-    if(_toastTimer) clearTimeout(_toastTimer);
-  }
-
-  _graphNodes.forEach(n => {
-    n.targetScale = 1.0;
-    n.scale = 1.0;
-    n.targetAlpha = 1.0;
-    n.alpha = 1.0;
-  });
-}
-
-// ── "PULSE" GRAVITATIONAL SHOCKWAVE ─────────────────────────
-function pulseGraphGravity(){
-  if(!_graphNodes.length) return;
-
-  _graphLastInteractionTime = performance.now();
-  _graphPhysicsAwake = true;
-  _graphSleepCountdown = 90;
-
-  _graphShockwaves.push({
-    x: 0,
-    y: 0,
-    radius: 12,
-    speed: 13,
-    alpha: 1.0,
-    color: '#00f2fe'
-  });
-
-  for(let i = 0; i < _graphNodes.length; i++){
-    const n = _graphNodes[i];
-    const d = Math.hypot(n.x, n.y) || 1;
-    const force = 11 + Math.random() * 5;
-    n.vx += (n.x / d) * force;
-    n.vy += (n.y / d) * force;
-  }
-
-  if(navigator.vibrate){ try { navigator.vibrate([12, 35, 15]); } catch(err){} }
-}
-
-// ── "RESET / CENTER" VIEW ───────────────────────────────────
-function resetGraphView(){
-  _graphLastInteractionTime = performance.now();
-  const maxGalaxyRadius = Math.max(160, Math.sqrt(_graphNodes.length + 1) * 44);
-  const fitZoom = Math.min(1.0, Math.max(0.32, Math.min(window.innerWidth, window.innerHeight) * 0.42 / maxGalaxyRadius));
-
-  _graphCamera.targetX = window.innerWidth / 2;
-  _graphCamera.targetY = window.innerHeight / 2;
-  _graphCamera.targetZoom = fitZoom;
-  _graphPhysicsAwake = true;
-  _graphSleepCountdown = 45;
-  hideGraphQuickCard();
-}
-
-// ── 📸 SNAPSHOT / SHARE UNIVERSE ────────────────────────────
-function drawPosterPlaceholderTile(ctx, n, pw, ph, cr){
-  ctx.fillStyle = '#181922';
-  ctx.beginPath();
-  ctx.roundRect(-pw/2, -ph/2, pw, ph, cr);
-  ctx.fill();
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
-  ctx.font = 'bold 15px -apple-system, sans-serif';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  const ico = n.type === 'game' ? '🎮' : n.type === 'series' ? '📺' : '🎬';
-  ctx.fillText(ico, 0, -2);
-}
-
-async function takeGraphSnapshot(){
-  if(!_graphIsOpen || !_graphNodes.length) return;
-
-  _graphLastInteractionTime = performance.now();
-
-  // 1. Camera Flash FX & Haptic
-  const flash = document.getElementById('graphFlashFx');
-  if(flash){
-    flash.classList.add('flash');
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        flash.classList.remove('flash');
-      });
-    });
-  }
-  if(navigator.vibrate){ try { navigator.vibrate([18, 45, 20]); } catch(err){} }
-
-  // 2. High-Res Export Canvas (1920x1080 Wallpaper)
-  const exportW = 1920;
-  const exportH = 1080;
-  const exportCanvas = document.createElement('canvas');
-  exportCanvas.width = exportW;
-  exportCanvas.height = exportH;
-  const ectx = exportCanvas.getContext('2d');
-
-  // Background deep space fill
-  ectx.fillStyle = '#090a0f';
-  ectx.fillRect(0, 0, exportW, exportH);
-
-  // Deep space nebula glow
-  const coreGrad = ectx.createRadialGradient(exportW/2, exportH/2 - 25, 20, exportW/2, exportH/2 - 25, exportW * 0.45);
-  coreGrad.addColorStop(0, 'rgba(40, 50, 95, 0.55)');
-  coreGrad.addColorStop(0.35, 'rgba(25, 20, 55, 0.3)');
-  coreGrad.addColorStop(1, 'rgba(9, 10, 15, 0)');
-  ectx.fillStyle = coreGrad;
-  ectx.fillRect(0, 0, exportW, exportH);
-
-  // Starfield
-  for(let i = 0; i < 220; i++){
-    const sx = Math.random() * exportW;
-    const sy = Math.random() * exportH;
-    const sz = Math.random() * 2.2 + 0.6;
-    ectx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.6 + 0.2})`;
-    ectx.beginPath();
-    ectx.arc(sx, sy, sz, 0, Math.PI * 2);
-    ectx.fill();
-  }
-
-  // Calculate universe bounding box
-  let minX = 0, maxX = 0, minY = 0, maxY = 0;
-  for(let i = 0; i < _graphNodes.length; i++){
-    const n = _graphNodes[i];
-    if(n.x < minX) minX = n.x;
-    if(n.x > maxX) maxX = n.x;
-    if(n.y < minY) minY = n.y;
-    if(n.y > maxY) maxY = n.y;
-  }
-  const spanX = Math.max(200, (maxX - minX) + 120);
-  const spanY = Math.max(200, (maxY - minY) + 120);
-  const scale = Math.min((exportW - 160) / spanX, (exportH - 240) / spanY);
-
-  ectx.save();
-  ectx.translate(exportW / 2, exportH / 2 - 25);
-  ectx.scale(scale, scale);
-
-  // Constellation links
-  if(_graphLinks.length > 0){
-    ectx.lineWidth = 1.2 / scale;
-    ectx.setLineDash([4, 4]);
-    ectx.strokeStyle = 'rgba(100, 181, 246, 0.35)';
-    ectx.beginPath();
-    for(let i = 0; i < _graphLinks.length; i++){
-      const link = _graphLinks[i];
-      if(_graphFilter !== 'all' && (link.a.type !== _graphFilter || link.b.type !== _graphFilter)) continue;
-      ectx.moveTo(link.a.x, link.a.y);
-      ectx.lineTo(link.b.x, link.b.y);
-    }
-    ectx.stroke();
-    ectx.setLineDash([]);
-  }
-
-  // Render posters
-  const TYPE_COLORS = { movie: '#ff3b5c', series: '#00f2fe', game: '#10b981' };
-  for(let i = 0; i < _graphNodes.length; i++){
-    const n = _graphNodes[i];
-    if(_graphFilter !== 'all' && n.type !== _graphFilter) continue;
-
-    ectx.save();
-    ectx.translate(n.x, n.y);
-
-    const pw = n.pw;
-    const ph = n.ph;
-    const cr = 8;
-
-    if(n.posterData && n.posterData.cachedThumb){
-      try {
-        ectx.drawImage(n.posterData.cachedThumb, -pw/2, -ph/2, pw, ph);
-      } catch(e){
-        drawPosterPlaceholderTile(ectx, n, pw, ph, cr);
-      }
-    } else if(n.posterData && n.posterData.img && n.posterData.loaded){
-      try {
-        ectx.drawImage(n.posterData.img, -pw/2, -ph/2, pw, ph);
-      } catch(e){
-        drawPosterPlaceholderTile(ectx, n, pw, ph, cr);
-      }
-    } else {
-      drawPosterPlaceholderTile(ectx, n, pw, ph, cr);
-    }
-
-    ectx.strokeStyle = n.isFav ? '#ffd700' : (TYPE_COLORS[n.type] || '#ff3b5c');
-    ectx.lineWidth = 2.0;
-    ectx.beginPath();
-    ectx.roundRect(-pw/2, -ph/2, pw, ph, cr);
-    ectx.stroke();
-
-    if(n.isFav){
-      ectx.fillStyle = '#ff3b5c';
-      ectx.font = '10px sans-serif';
-      ectx.fillText('❤️', pw/2 - 5, -ph/2 + 8);
-    }
-
-    ectx.restore();
-  }
-  ectx.restore();
-
-  // 3. Bottom Watermark Branding Bar
-  drawGraphSnapshotWatermark(ectx, exportW, exportH);
-
-  // 4. Export & Share or Download (with auto-fallback if tainted)
-  function deliverSnapshotBlob(blob){
-    if(!blob){
-      if(typeof toast === 'function') toast('Unable to export snapshot', 'error');
-      return;
-    }
-    const filename = `logger-universe-${Date.now()}.png`;
-    const file = new File([blob], filename, { type: 'image/png' });
-
-    if(navigator.canShare && navigator.canShare({ files: [file] })){
-      try {
-        navigator.share({
-          title: 'My Logger Universe',
-          text: `Look at my Logger Universe! ${_graphNodes.length} titles in orbit 🌌`,
-          files: [file]
-        });
-        if(typeof toast === 'function') toast('Universe shared! 🌌', 'watchlist', 2500);
-        return;
-      } catch(err){
-        if(err.name === 'AbortError') return;
-      }
-    }
-
-    // Download fallback
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 120);
-    if(typeof toast === 'function') toast('Snapshot saved to Downloads! 📸', 'watchlist', 2800);
-  }
-
-  try {
-    exportCanvas.toBlob(deliverSnapshotBlob, 'image/png');
   } catch(err){
-    console.warn('Canvas tainted by external image, rendering clean vector snapshot fallback:', err);
-    renderCleanVectorSnapshot(deliverSnapshotBlob);
+    console.error('Error generating Movie Wall share picture:', err);
+    if(typeof toast === 'function') toast('Error creating picture', 'error');
+    if(shareBtn) shareBtn.disabled = false;
   }
 }
 
-// Reusable Snapshot Watermark with Logger Logo, User Info, and Stats
-function drawGraphSnapshotWatermark(ctx, exportW, exportH){
-  ctx.save();
-  const barH = 80;
-  const barY = exportH - barH;
+// ── Event Listeners ──────────────────────────────────────────
+function setupMovieWallListeners(){
+  const wallBtn = document.getElementById('movieWallBtn');
+  if(wallBtn) wallBtn.addEventListener('click', openMovieWall);
 
-  // Frosted dark branding bar
-  ctx.fillStyle = 'rgba(12, 14, 20, 0.92)';
-  ctx.fillRect(0, barY, exportW, barH);
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.moveTo(0, barY);
-  ctx.lineTo(exportW, barY);
-  ctx.stroke();
+  const closeBtn = document.getElementById('wallCloseBtn');
+  if(closeBtn) closeBtn.addEventListener('click', closeMovieWall);
 
-  let curX = 36;
-  const centerY = barY + barH / 2;
+  const shareBtn = document.getElementById('wallShareBtn');
+  if(shareBtn) shareBtn.addEventListener('click', shareMovieWall);
 
-  // 1. Logger Logo
-  let logoDrawn = false;
-  if(_loggerLogoImg && _loggerLogoImg.complete && _loggerLogoImg.naturalWidth > 0){
-    try {
-      const logoH = 34;
-      const logoW = Math.round(logoH * (_loggerLogoImg.naturalWidth / _loggerLogoImg.naturalHeight));
-      const logoY = barY + (barH - logoH) / 2;
-      ctx.drawImage(_loggerLogoImg, curX, logoY, logoW, logoH);
-      curX += logoW + 14;
-      logoDrawn = true;
-    } catch(err){
-      console.warn('Could not draw logo image on watermark:', err);
-    }
-  }
-
-  if(!logoDrawn){
-    ctx.font = '800 24px -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif';
-    ctx.fillStyle = '#ffffff';
-    ctx.textAlign = 'left';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('LOGGER', curX, centerY);
-    curX += ctx.measureText('LOGGER').width + 14;
-  }
-
-  // Thin separator divider
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
-  ctx.lineWidth = 1.5;
-  ctx.beginPath();
-  ctx.moveTo(curX, centerY - 12);
-  ctx.lineTo(curX, centerY + 12);
-  ctx.stroke();
-  curX += 14;
-
-  // "Universe" text badge
-  ctx.font = '700 20px -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif';
-  ctx.fillStyle = '#ffffff';
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'middle';
-  ctx.fillText('UNIVERSE', curX, centerY);
-  curX += ctx.measureText('UNIVERSE').width + 22;
-
-  // 2. User Info Pill ("Curated by <User>")
-  let userName = '';
-  if(typeof getDisplayName === 'function'){
-    try { userName = getDisplayName(); } catch(e){}
-  }
-  if(!userName || userName === 'Logger' || userName === 'You'){
-    const pNameEl = document.getElementById('profileName');
-    if(pNameEl && pNameEl.textContent){
-      userName = pNameEl.textContent.trim();
-    }
-  }
-  if(!userName || userName === 'Logger' || userName === 'You'){
-    userName = 'You';
-  }
-
-  const curatorText = `Curated by ${userName}`;
-  ctx.font = '600 15px -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif';
-  const pillTextW = ctx.measureText(curatorText).width;
-  const pillW = pillTextW + 32;
-  const pillH = 30;
-  const pillY = barY + (barH - pillH) / 2;
-
-  // Pill background & border
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
-  ctx.strokeStyle = 'rgba(255, 255, 255, 0.16)';
-  ctx.lineWidth = 1;
-  ctx.beginPath();
-  ctx.roundRect(curX, pillY, pillW, pillH, 15);
-  ctx.fill();
-  ctx.stroke();
-
-  // Cyan glowing accent dot in pill
-  ctx.fillStyle = '#00f2fe';
-  ctx.beginPath();
-  ctx.arc(curX + 14, centerY, 3.5, 0, Math.PI * 2);
-  ctx.fill();
-
-  // User name text
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'middle';
-  ctx.fillText(curatorText, curX + 24, centerY);
-  curX += pillW + 22;
-
-  // 3. Stats text
-  const filmsCount = _graphNodes.filter(n => n.type === 'movie').length;
-  const seriesCount = _graphNodes.filter(n => n.type === 'series').length;
-  const gamesCount = _graphNodes.filter(n => n.type === 'game').length;
-  const statsText = `${_graphNodes.length} Titles in Orbit  •  ${filmsCount} Films  •  ${seriesCount} Series  •  ${gamesCount} Games`;
-  ctx.font = '500 15px -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif';
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.65)';
-  ctx.fillText(statsText, curX, centerY);
-
-  // 4. Timestamp at right edge
-  const nowStr = new Date().toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
-  ctx.textAlign = 'right';
-  ctx.font = '500 15px -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif';
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
-  ctx.fillText(nowStr, exportW - 36, centerY);
-
-  ctx.restore();
-}
-
-// Fallback snapshot generator that uses 100% clean vector paths (guaranteed zero tainting)
-function renderCleanVectorSnapshot(callback){
-  const exportW = 1920;
-  const exportH = 1080;
-  const canvas = document.createElement('canvas');
-  canvas.width = exportW;
-  canvas.height = exportH;
-  const ctx = canvas.getContext('2d');
-
-  ctx.fillStyle = '#090a0f';
-  ctx.fillRect(0, 0, exportW, exportH);
-
-  const coreGrad = ctx.createRadialGradient(exportW/2, exportH/2 - 25, 20, exportW/2, exportH/2 - 25, exportW * 0.45);
-  coreGrad.addColorStop(0, 'rgba(40, 50, 95, 0.55)');
-  coreGrad.addColorStop(0.35, 'rgba(25, 20, 55, 0.3)');
-  coreGrad.addColorStop(1, 'rgba(9, 10, 15, 0)');
-  ctx.fillStyle = coreGrad;
-  ctx.fillRect(0, 0, exportW, exportH);
-
-  for(let i = 0; i < 220; i++){
-    ctx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.6 + 0.2})`;
-    ctx.beginPath();
-    ctx.arc(Math.random() * exportW, Math.random() * exportH, Math.random() * 2.2 + 0.6, 0, Math.PI * 2);
-    ctx.fill();
-  }
-
-  let minX = 0, maxX = 0, minY = 0, maxY = 0;
-  for(let i = 0; i < _graphNodes.length; i++){
-    const n = _graphNodes[i];
-    if(n.x < minX) minX = n.x;
-    if(n.x > maxX) maxX = n.x;
-    if(n.y < minY) minY = n.y;
-    if(n.y > maxY) maxY = n.y;
-  }
-  const spanX = Math.max(200, (maxX - minX) + 120);
-  const spanY = Math.max(200, (maxY - minY) + 120);
-  const scale = Math.min((exportW - 160) / spanX, (exportH - 240) / spanY);
-
-  ctx.save();
-  ctx.translate(exportW / 2, exportH / 2 - 25);
-  ctx.scale(scale, scale);
-
-  if(_graphLinks.length > 0){
-    ctx.lineWidth = 1.2 / scale;
-    ctx.setLineDash([4, 4]);
-    ctx.strokeStyle = 'rgba(100, 181, 246, 0.35)';
-    ctx.beginPath();
-    for(let i = 0; i < _graphLinks.length; i++){
-      const link = _graphLinks[i];
-      if(_graphFilter !== 'all' && (link.a.type !== _graphFilter || link.b.type !== _graphFilter)) continue;
-      ctx.moveTo(link.a.x, link.a.y);
-      ctx.lineTo(link.b.x, link.b.y);
-    }
-    ctx.stroke();
-    ctx.setLineDash([]);
-  }
-
-  const TYPE_COLORS = { movie: '#ff3b5c', series: '#00f2fe', game: '#10b981' };
-  for(let i = 0; i < _graphNodes.length; i++){
-    const n = _graphNodes[i];
-    if(_graphFilter !== 'all' && n.type !== _graphFilter) continue;
-
-    ctx.save();
-    ctx.translate(n.x, n.y);
-    const pw = n.pw;
-    const ph = n.ph;
-    const cr = 8;
-    drawPosterPlaceholderTile(ctx, n, pw, ph, cr);
-
-    ctx.strokeStyle = n.isFav ? '#ffd700' : (TYPE_COLORS[n.type] || '#ff3b5c');
-    ctx.lineWidth = 2.0;
-    ctx.beginPath();
-    ctx.roundRect(-pw/2, -ph/2, pw, ph, cr);
-    ctx.stroke();
-
-    if(n.isFav){
-      ctx.fillStyle = '#ff3b5c';
-      ctx.font = '10px sans-serif';
-      ctx.fillText('❤️', pw/2 - 5, -ph/2 + 8);
-    }
-    ctx.restore();
-  }
-  ctx.restore();
-
-  // Watermark
-  drawGraphSnapshotWatermark(ctx, exportW, exportH);
-
-  try {
-    canvas.toBlob(callback, 'image/png');
-  } catch(e){
-    console.error('Final fallback snapshot failed:', e);
-  }
-}
-
-// ── WIRE EVENT LISTENERS ────────────────────────────────────
-function setupGraphViewListeners(){
-  document.getElementById('graphViewBtn')?.addEventListener('click', openGraphView);
-  document.getElementById('graphCloseBtn')?.addEventListener('click', closeGraphView);
-  document.getElementById('graphAnimateBtn')?.addEventListener('click', toggleGraphAnimation);
-  document.getElementById('graphTimelineSkipBtn')?.addEventListener('click', finishGraphAnimation);
-  document.getElementById('graphPulseBtn')?.addEventListener('click', pulseGraphGravity);
-  document.getElementById('graphResetBtn')?.addEventListener('click', resetGraphView);
-  document.getElementById('graphSnapshotBtn')?.addEventListener('click', takeGraphSnapshot);
-  document.getElementById('graphQuickCloseBtn')?.addEventListener('click', hideGraphQuickCard);
-
-  document.querySelectorAll('.graph-pill').forEach(btn => {
+  // Filter pills
+  document.querySelectorAll('.wall-pill').forEach(btn => {
     btn.addEventListener('click', () => {
-      _graphLastInteractionTime = performance.now();
-      document.querySelectorAll('.graph-pill').forEach(b => b.classList.remove('on'));
+      document.querySelectorAll('.wall-pill').forEach(b => b.classList.remove('on'));
       btn.classList.add('on');
-      _graphFilter = btn.dataset.gf || 'all';
+      _wallFilter = btn.dataset.wf || 'all';
+      renderMovieWall();
     });
   });
 
+  // Escape key
   document.addEventListener('keydown', (e) => {
-    if(e.key === 'Escape' && _graphIsOpen){
-      closeGraphView();
+    if(e.key === 'Escape' && _wallIsOpen){
+      closeMovieWall();
       e.stopPropagation();
     }
   });
-
-  // Start background poster thumbnail preloading
-  preloadUniversePosters();
 }
 
 if(document.readyState === 'loading'){
-  document.addEventListener('DOMContentLoaded', setupGraphViewListeners);
+  document.addEventListener('DOMContentLoaded', setupMovieWallListeners);
 } else {
-  setupGraphViewListeners();
+  setupMovieWallListeners();
 }
 
-window.openGraphView = openGraphView;
-window.closeGraphView = closeGraphView;
-window.toggleGraphAnimation = toggleGraphAnimation;
-window.pulseGraphGravity = pulseGraphGravity;
-window.resetGraphView = resetGraphView;
-window.takeGraphSnapshot = takeGraphSnapshot;
-window.preloadUniversePosters = preloadUniversePosters;
+window.openMovieWall = openMovieWall;
+window.closeMovieWall = closeMovieWall;
+window.renderMovieWall = renderMovieWall;
+window.shareMovieWall = shareMovieWall;
 </script>
 </body>
 </html>
