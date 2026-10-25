@@ -1,0 +1,13 @@
+# Antigravity Rules for Logger
+
+Always refer to the project knowledge base in LOGGER-VAULT:
+- Start at: LOGGER-VAULT/AI-START-HERE.md
+- Context: LOGGER-VAULT/LOGGER-CONTEXT.md
+- File Map: LOGGER-VAULT/PROJECT-MAP.md
+- Current Task: LOGGER-VAULT/CURRENT-TASK.md
+
+Rules:
+1. Source code in `index.html` and `worker/src/index.js` is the ultimate authority.
+2. Maintain single-file frontend architecture (no React, no bundlers, no splitting index.html).
+3. Do not apply CSS `transform` to scroll container ancestors (breaks `position: sticky`).
+4. Update the corresponding notes in `LOGGER-VAULT/` when modifying components or features.

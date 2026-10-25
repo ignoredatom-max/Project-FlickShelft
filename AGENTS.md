@@ -1,7 +1,14 @@
-﻿# AGENTS.md — Logger (Project-FlickShelft)
+# AGENTS.md — Logger (Project-FlickShelft)
+
+> [!IMPORTANT]
+> **PERMANENT ARCHITECTURAL VAULT**:
+> The complete architectural map, component specifications, data models, and second brain for Logger reside in the Obsidian vault at:
+> 👉 **`LOGGER-VAULT/AI-START-HERE.md`**
+>
+> All AI coding assistants starting a fresh session must first consult `LOGGER-VAULT/AI-START-HERE.md`, `LOGGER-VAULT/LOGGER-CONTEXT.md`, and `LOGGER-VAULT/CURRENT-TASK.md` before modifying application code.
 
 > Technical reference for AI agents continuing work on this project.
-> Based on the actual codebase as of August 2026. Do not invent features.
+> Based on the actual codebase. Do not invent features.
 
 ---
 

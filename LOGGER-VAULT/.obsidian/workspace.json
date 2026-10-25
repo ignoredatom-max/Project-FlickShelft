@@ -1,0 +1,209 @@
+{
+  "main": {
+    "id": "c16c3a81a0cbb374",
+    "type": "split",
+    "children": [
+      {
+        "id": "0218cb6d506f8803",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "203db8aef4a3f993",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "00 - Project Overview/Glossary.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Glossary"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "01886dbd988ea296",
+    "type": "split",
+    "children": [
+      {
+        "id": "13ad0d10e2e77820",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "45ff19517a719c43",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "5b930c83e9ff126e",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "b75f92b471f752b5",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "d493135d9110eeb4",
+    "type": "split",
+    "children": [
+      {
+        "id": "eaf6cd8f4834a5c8",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "f6afaddbbaff511c",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "00 - Project Overview/Glossary.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks"
+            }
+          },
+          {
+            "id": "92905f0cec56b7d7",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "00 - Project Overview/Glossary.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links"
+            }
+          },
+          {
+            "id": "e2d30233655a2d5e",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "c22e2d87eec4f3be",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "b9205be82e8bfe0a",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "00 - Project Overview/Glossary.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "203db8aef4a3f993",
+  "lastOpenFiles": [
+    "DOCUMENTATION-INDEX.md",
+    "04 - Backend and Integrations/Cloudflare Worker Proxy.md",
+    "LOGGER-CONTEXT.md",
+    "06 - Infrastructure and Deployment/Deployment Workflows.md",
+    "HOME.md",
+    "CURRENT-TASK.md",
+    "CHANGELOG.md",
+    "01 - Architecture/Component Relationships.md",
+    "01 - Architecture/Architecture Decisions/ADR-005 Client-Side Multi-Tier Caching for Instant Boot.md",
+    "01 - Architecture/Architecture Decisions/ADR-003 Migration from RAWG to IGDB v4 via Twitch OAuth.md",
+    "01 - Architecture/Architecture Decisions/ADR-001 Single-File Frontend Architecture.md",
+    "08 - Development History/Lessons Learned.md",
+    "08 - Development History/Key Design Decisions.md",
+    "08 - Development History/Feature Evolution.md",
+    "08 - Development History/Bug Fix History.md"
+  ]
+}

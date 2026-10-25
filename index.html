@@ -5433,7 +5433,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   width:100vw;
   height:100dvh;
   z-index:960;
-  background:var(--bg, #0d0d0f);
+  background:radial-gradient(circle at center, #13141a 0%, #08080b 100%);
   display:none;
   flex-direction:column;
   overflow:hidden;
@@ -5454,17 +5454,17 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   align-items:center;
   justify-content:space-between;
   gap:12px;
-  padding:calc(12px + env(safe-area-inset-top, 0px)) 16px 12px;
-  background:rgba(13,13,15,0.85);
+  padding:calc(10px + env(safe-area-inset-top, 0px)) 16px 10px;
+  background:rgba(10,10,14,0.88);
   backdrop-filter:blur(24px) saturate(180%);
   -webkit-backdrop-filter:blur(24px) saturate(180%);
-  border-bottom:1px solid var(--border);
-  z-index:10;
+  border-bottom:1px solid rgba(255,255,255,0.07);
+  z-index:20;
 }
 .wall-header-left{
   display:flex;
   align-items:center;
-  gap:12px;
+  gap:10px;
   min-width:0;
 }
 .wall-btn{
@@ -5490,7 +5490,8 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
 }
 .wall-meta{
   display:flex;
-  flex-direction:column;
+  align-items:center;
+  gap:8px;
   min-width:0;
 }
 .wall-title{
@@ -5502,11 +5503,14 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   margin:0;
   white-space:nowrap;
 }
-.wall-sub{
+.wall-badge{
   font-size:11px;
-  font-weight:500;
-  color:var(--text3, #71717a);
-  letter-spacing:0.2px;
+  font-weight:600;
+  color:var(--accent, #3b82f6);
+  background:rgba(59,130,246,0.12);
+  border:1px solid rgba(59,130,246,0.22);
+  padding:2px 8px;
+  border-radius:999px;
   white-space:nowrap;
 }
 
@@ -5514,29 +5518,29 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
 .wall-filter-wrap{
   display:flex;
   align-items:center;
-  background:rgba(255,255,255,0.06);
+  background:rgba(255,255,255,0.05);
   padding:3px;
   border-radius:999px;
-  border:1px solid var(--border);
+  border:1px solid rgba(255,255,255,0.08);
 }
 .wall-pill{
   background:transparent;
   border:none;
-  color:var(--text3, #71717a);
+  color:var(--text3, #8a8a93);
   font-family:var(--font-sans);
   font-size:12px;
   font-weight:600;
-  padding:5px 12px;
+  padding:4px 11px;
   border-radius:999px;
   cursor:pointer;
   transition:all 0.15s ease;
   white-space:nowrap;
 }
 .wall-pill:hover{
-  color:var(--text, #f5f5f7);
+  color:#ffffff;
 }
 .wall-pill.on{
-  background:rgba(255,255,255,0.16);
+  background:rgba(255,255,255,0.18);
   color:#ffffff;
   box-shadow:0 2px 8px rgba(0,0,0,0.3);
 }
@@ -5558,7 +5562,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   font-family:var(--font-sans);
   font-size:12.5px;
   font-weight:650;
-  padding:7px 14px;
+  padding:6px 13px;
   border-radius:999px;
   cursor:pointer;
   transition:all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
@@ -5572,60 +5576,65 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   transform:scale(0.95);
 }
 
-/* Scroll Body */
-.wall-scroll-body{
+/* Wall Stage: Single page, one look viewport with ZERO scrollbars */
+.wall-stage{
   flex:1;
-  overflow-y:auto;
-  -webkit-overflow-scrolling:touch;
-  overscroll-behavior-y:contain;
-  padding:0;
+  min-height:0;
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   position:relative;
-}
-.wall-grid-container{
-  max-width:1440px;
-  margin:0 auto;
-  padding:16px 16px calc(60px + env(safe-area-inset-bottom, 0px));
+  overflow:hidden;
+  box-sizing:border-box;
+  padding:12px 14px calc(12px + env(safe-area-inset-bottom, 0px));
 }
 
-/* Poster Grid */
+/* Wall Grid: Perfectly scaled mosaic */
 .wall-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fill, minmax(115px, 1fr));
-  gap:10px;
-  align-items:stretch;
+  place-content:center;
+  justify-content:center;
+  align-content:center;
+  margin:auto;
+  position:relative;
+  user-select:none;
+  -webkit-user-select:none;
 }
 
-/* Poster Item: Pure edge-to-edge poster, NO labels! */
+/* Individual Poster Item */
 .wall-item{
   position:relative;
   aspect-ratio:2 / 3;
-  border-radius:8px;
+  border-radius:var(--wall-radius, 4px);
   overflow:hidden;
-  background:var(--bg3, #1e1e23);
-  box-shadow:0 3px 10px rgba(0,0,0,0.35);
-  border:1px solid rgba(255,255,255,0.06);
+  background:#121318;
+  box-shadow:0 2px 6px rgba(0,0,0,0.4);
+  border:1px solid rgba(255,255,255,0.08);
   cursor:pointer;
-  user-select:none;
-  -webkit-user-select:none;
-  transition:transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.18s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.18s ease;
+  transition:transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.16s ease, z-index 0.16s ease;
   will-change:transform;
 }
+
 .wall-item:hover{
-  transform:translateY(-3px) scale(1.03);
-  box-shadow:0 12px 28px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.2);
-  z-index:2;
+  transform:scale(var(--wall-hover-scale, 1.25)) translateZ(0);
+  z-index:60;
+  box-shadow:0 12px 28px rgba(0,0,0,0.85), 0 0 0 1.5px rgba(255,255,255,0.45);
 }
 .wall-item:active{
-  transform:scale(0.96);
+  transform:scale(0.96) translateZ(0);
 }
+
 .wall-item-img{
   width:100%;
   height:100%;
   object-fit:cover;
   display:block;
-  background:var(--bg2, #151518);
-  transition:opacity 0.25s ease;
+  background:#121318;
+  pointer-events:none;
 }
+
 .wall-item-ph{
   width:100%;
   height:100%;
@@ -5633,21 +5642,22 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   flex-direction:column;
   align-items:center;
   justify-content:center;
-  background:linear-gradient(135deg, #1e1e24 0%, #121318 100%);
+  background:linear-gradient(135deg, #1b1c24 0%, #0e0f14 100%);
   color:var(--text3);
-  padding:8px;
+  padding:4px;
   text-align:center;
+  pointer-events:none;
 }
 .wall-item-ph-icon{
-  font-size:20px;
+  font-size:clamp(10px, calc(var(--wall-item-w, 60px) * 0.3), 24px);
   opacity:0.6;
 }
 .wall-item-ph-initials{
-  font-size:12px;
+  font-size:clamp(8px, calc(var(--wall-item-w, 60px) * 0.18), 12px);
   font-weight:700;
   letter-spacing:0.5px;
   color:var(--text2);
-  margin-top:4px;
+  margin-top:2px;
   opacity:0.8;
   text-transform:uppercase;
   max-width:90%;
@@ -5656,70 +5666,112 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   white-space:nowrap;
 }
 
+/* Floating Cinematic Tooltip */
+.wall-tooltip{
+  position:fixed;
+  z-index:970;
+  pointer-events:none;
+  background:rgba(18,19,26,0.94);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,0.18);
+  box-shadow:0 10px 25px rgba(0,0,0,0.7);
+  border-radius:8px;
+  padding:7px 12px;
+  transform:translate(-50%, -100%);
+  transition:opacity 0.12s ease, transform 0.12s ease;
+  opacity:0;
+  white-space:nowrap;
+  max-width:280px;
+}
+.wall-tooltip.show{
+  opacity:1;
+}
+.wall-tooltip-title{
+  font-size:12.5px;
+  font-weight:700;
+  color:#ffffff;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.wall-tooltip-meta{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-size:11px;
+  font-weight:500;
+  color:var(--text3, #8a8a93);
+  margin-top:2px;
+}
+.wall-tooltip-rate{
+  color:#f5c518;
+  font-weight:700;
+  display:inline-flex;
+  align-items:center;
+  gap:3px;
+}
+
 /* Empty State */
 .wall-empty{
-  padding:60px 20px;
+  padding:40px 20px;
   text-align:center;
+  margin:auto;
 }
 .wall-empty-icon{
-  font-size:48px;
+  font-size:44px;
   margin-bottom:12px;
 }
 .wall-empty-title{
-  font-size:18px;
+  font-size:17px;
   font-weight:700;
   color:var(--text);
   margin-bottom:6px;
 }
 .wall-empty-sub{
-  font-size:13px;
+  font-size:12.5px;
   color:var(--text3);
-  max-width:320px;
+  max-width:300px;
   margin:0 auto;
 }
 
 /* Mobile & Tablet Responsive Optimizations */
-@media (max-width: 768px){
-  .wall-grid{
-    grid-template-columns:repeat(auto-fill, minmax(90px, 1fr));
-    gap:8px;
-  }
-}
 @media (max-width: 600px){
   .wall-header{
-    padding:calc(10px + env(safe-area-inset-top, 0px)) 12px 10px;
-    gap:8px;
-    flex-wrap:wrap;
+    padding:calc(8px + env(safe-area-inset-top, 0px)) 10px 8px;
+    gap:6px;
+    flex-wrap:nowrap;
   }
-  .wall-title{
-    font-size:15px;
-  }
-  .wall-filter-wrap{
-    order:3;
-    width:100%;
-    justify-content:center;
-    margin-top:2px;
-  }
-  .wall-grid-container{
-    padding:8px 8px calc(70px + env(safe-area-inset-bottom, 0px));
-  }
-  /* On mobile phones, exactly 4 edge-to-edge compact columns for maximum poster showcase! */
-  .wall-grid{
-    grid-template-columns:repeat(4, 1fr);
+  .wall-header-left{
     gap:6px;
   }
-  .wall-item{
-    border-radius:6px;
+  .wall-btn{
+    width:32px;
+    height:32px;
+  }
+  .wall-title{
+    display:none;
+  }
+  .wall-badge{
+    font-size:10.5px;
+    padding:2px 7px;
+  }
+  .wall-filter-wrap{
+    padding:2px;
+  }
+  .wall-pill{
+    font-size:11px;
+    padding:4px 8px;
   }
   .wall-share-btn{
-    padding:6px 12px;
-    font-size:12px;
+    padding:5px 8px;
+    font-size:11.5px;
   }
-}
-@media (max-width: 360px){
-  .wall-grid{
-    grid-template-columns:repeat(3, 1fr);
-    gap:5px;
+  .wall-share-btn-text{
+    display:none;
+  }
+  .wall-stage{
+    padding:6px 6px calc(6px + env(safe-area-inset-bottom, 0px));
   }
 }
 </style>
@@ -6165,7 +6217,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
       </button>
       <div class="wall-meta">
         <h2 class="wall-title">Movie Wall</h2>
-        <span class="wall-sub" id="wallCountSub">0 in collection</span>
+        <span class="wall-badge" id="wallCountSub">0</span>
       </div>
     </div>
 
@@ -6190,17 +6242,21 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
     </div>
   </header>
 
-  <!-- Scrollable Posters Container -->
-  <main class="wall-scroll-body" id="wallScrollBody">
-    <div class="wall-grid-container">
-      <div class="wall-grid" id="wallGrid"></div>
+  <!-- Wall Stage: One Page, One Look, Zero Scroll -->
+  <main class="wall-stage" id="wallStage">
+    <div class="wall-grid" id="wallGrid"></div>
 
-      <!-- Empty State -->
-      <div class="wall-empty" id="wallEmpty" style="display:none">
-        <div class="wall-empty-icon">🎬</div>
-        <div class="wall-empty-title">Your Movie Wall is empty</div>
-        <div class="wall-empty-sub">Log films, series, or games in your diary to show off your collection!</div>
-      </div>
+    <!-- Empty State -->
+    <div class="wall-empty" id="wallEmpty" style="display:none">
+      <div class="wall-empty-icon">🎬</div>
+      <div class="wall-empty-title">Your Movie Wall is empty</div>
+      <div class="wall-empty-sub">Log films, series, or games in your diary to show off your collection!</div>
+    </div>
+
+    <!-- Cinematic Tooltip -->
+    <div class="wall-tooltip" id="wallTooltip" style="display:none">
+      <div class="wall-tooltip-title" id="wallTooltipTitle"></div>
+      <div class="wall-tooltip-meta" id="wallTooltipMeta"></div>
     </div>
   </main>
 </div>
@@ -14347,13 +14403,18 @@ function openMovieWall(){
   overlay.classList.add('show');
   document.body.style.overflow = 'hidden';
   
+  // Two-phase render: immediate, then RAF after reflow to ensure stage dimensions are pixel-perfect
   renderMovieWall();
+  requestAnimationFrame(() => {
+    if(_wallIsOpen) renderMovieWall();
+  });
 }
 
 function closeMovieWall(){
   const overlay = document.getElementById('movieWallOverlay');
   if(!overlay) return;
   _wallIsOpen = false;
+  hideWallTooltip();
   overlay.classList.remove('show');
   document.body.style.overflow = '';
   setTimeout(() => {
@@ -14361,39 +14422,142 @@ function closeMovieWall(){
   }, 230);
 }
 
+function hideWallTooltip(){
+  const tooltip = document.getElementById('wallTooltip');
+  if(tooltip){
+    tooltip.classList.remove('show');
+    tooltip.style.display = 'none';
+  }
+}
+
+function showWallTooltip(el, item){
+  const tooltip = document.getElementById('wallTooltip');
+  const tipTitle = document.getElementById('wallTooltipTitle');
+  const tipMeta = document.getElementById('wallTooltipMeta');
+  if(!tooltip || !tipTitle || !tipMeta || !el || !item) return;
+
+  tipTitle.textContent = item.title || 'Untitled';
+  
+  const year = item.year || (item.releaseDate ? item.releaseDate.slice(0, 4) : '');
+  const rateVal = item.rating ? Number(item.rating).toFixed(1) : null;
+  const typeLabel = item.type === 'movie' ? 'Film' : (item.type === 'series' ? 'Series' : (item.type === 'game' ? 'Game' : 'Title'));
+  
+  let metaHtml = `<span>${typeLabel}</span>`;
+  if(year) metaHtml += `<span>•</span><span>${year}</span>`;
+  if(rateVal){
+    metaHtml += `<span>•</span><span class="wall-tooltip-rate"><svg width="11" height="11" viewBox="0 0 24 24" fill="#f5c518"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>${rateVal}</span>`;
+  }
+  tipMeta.innerHTML = metaHtml;
+
+  const rect = el.getBoundingClientRect();
+  const tipX = rect.left + rect.width / 2;
+  tooltip.style.display = 'block';
+
+  // Position above by default; if near the top, position below
+  if(rect.top < 70){
+    tooltip.style.transform = 'translate(-50%, 0)';
+    tooltip.style.left = `${Math.max(80, Math.min(window.innerWidth - 80, tipX))}px`;
+    tooltip.style.top = `${rect.bottom + 8}px`;
+  } else {
+    tooltip.style.transform = 'translate(-50%, -100%)';
+    tooltip.style.left = `${Math.max(80, Math.min(window.innerWidth - 80, tipX))}px`;
+    tooltip.style.top = `${rect.top - 8}px`;
+  }
+
+  tooltip.classList.add('show');
+}
+
 function renderMovieWall(){
+  const stage = document.getElementById('wallStage');
   const grid = document.getElementById('wallGrid');
   const emptyEl = document.getElementById('wallEmpty');
   const countSub = document.getElementById('wallCountSub');
-  if(!grid) return;
+  if(!grid || !stage) return;
+
+  hideWallTooltip();
 
   const items = getWallItems(_wallFilter);
 
   if(countSub){
     const label = _wallFilter === 'movie' ? 'films' : (_wallFilter === 'series' ? 'series' : (_wallFilter === 'game' ? 'games' : 'titles'));
-    countSub.textContent = `${items.length} ${label} in collection`;
+    countSub.textContent = `${items.length} ${label}`;
   }
 
   if(!items.length){
     grid.innerHTML = '';
+    grid.style.display = 'none';
     if(emptyEl) emptyEl.style.display = 'block';
     return;
   }
 
   if(emptyEl) emptyEl.style.display = 'none';
+  grid.style.display = 'grid';
 
-  // Render purely posters with NO labels
+  // Compute available space inside wallStage
+  const stageRect = stage.getBoundingClientRect();
+  const stageStyle = window.getComputedStyle(stage);
+  const padX = (parseFloat(stageStyle.paddingLeft) || 0) + (parseFloat(stageStyle.paddingRight) || 0);
+  const padY = (parseFloat(stageStyle.paddingTop) || 0) + (parseFloat(stageStyle.paddingBottom) || 0);
+  const availW = Math.max(120, (stageRect.width || stage.clientWidth || window.innerWidth) - padX);
+  const availH = Math.max(120, (stageRect.height || stage.clientHeight || (window.innerHeight - 60)) - padY);
+  const N = items.length;
+
+  // Determine dynamic gap based on collection size
+  let gap = 4;
+  if(N <= 15) gap = 8;
+  else if(N <= 40) gap = 6;
+  else if(N <= 90) gap = 4;
+  else if(N <= 200) gap = 3;
+  else gap = 2;
+
+  // Poster aspect ratio is standard 2:3 (height = width * 1.5)
+  const aspect = 1.5;
+  let best = { cols: 1, rows: N, w: 0, h: 0 };
+
+  for(let c = 1; c <= N; c++){
+    const r = Math.ceil(N / c);
+    const maxW = (availW - (c - 1) * gap) / c;
+    const maxH = (availH - (r - 1) * gap) / r;
+    if(maxW <= 0 || maxH <= 0) continue;
+    const w = Math.min(maxW, maxH / aspect);
+    if(w > best.w){
+      best = { cols: c, rows: r, w: w, h: w * aspect };
+    }
+  }
+
+  // Cap maximum size for small collections so a few posters don't look giant
+  const maxCapW = Math.min(220, availW * 0.42);
+  const posterW = Math.max(8, Math.floor(Math.min(best.w, maxCapW)));
+  const posterH = Math.max(12, Math.floor(posterW * aspect));
+
+  const totalGridW = best.cols * posterW + (best.cols - 1) * gap;
+  const totalGridH = best.rows * posterH + (best.rows - 1) * gap;
+
+  // Dynamic border radius & hover scale
+  const radius = Math.max(1, Math.min(7, Math.round(posterW * 0.08)));
+  const hoverScale = Math.max(1.15, Math.min(3.2, 95 / Math.max(20, posterW)));
+
+  grid.style.gridTemplateColumns = `repeat(${best.cols}, ${posterW}px)`;
+  grid.style.gridTemplateRows = `repeat(${best.rows}, ${posterH}px)`;
+  grid.style.gap = `${gap}px`;
+  grid.style.width = `${totalGridW}px`;
+  grid.style.height = `${totalGridH}px`;
+  grid.style.setProperty('--wall-radius', `${radius}px`);
+  grid.style.setProperty('--wall-hover-scale', hoverScale.toFixed(2));
+  grid.style.setProperty('--wall-item-w', `${posterW}px`);
+
+  // Render purely posters with optimized thumbnails
   const html = items.map(item => {
     const optPoster = getOptimizedPosterUrl(item.poster);
     const safeTitle = (item.title || '').replace(/"/g, '&quot;');
     if(optPoster){
-      return `<div class="wall-item" data-id="${item.id}" title="${safeTitle}" role="button" tabindex="0">
+      return `<div class="wall-item" data-id="${item.id}" role="button" tabindex="0">
         <img class="wall-item-img" src="${optPoster}" alt="${safeTitle}" loading="lazy" decoding="async">
       </div>`;
     } else {
       const typeIcon = typeof getTypeIcon === 'function' ? getTypeIcon(item.type) : '🎬';
       const initials = (item.title || '').split(' ').slice(0, 2).map(w=>w[0]).join('');
-      return `<div class="wall-item" data-id="${item.id}" title="${safeTitle}" role="button" tabindex="0">
+      return `<div class="wall-item" data-id="${item.id}" role="button" tabindex="0">
         <div class="wall-item-ph">
           <div class="wall-item-ph-icon">${typeIcon}</div>
           <div class="wall-item-ph-initials">${initials || '•'}</div>
@@ -14404,11 +14568,24 @@ function renderMovieWall(){
 
   grid.innerHTML = html;
 
-  // Add click handlers to open deep media card
+  // Attach hover and click handlers
   grid.querySelectorAll('.wall-item').forEach(el => {
+    const id = Number(el.dataset.id);
+    const entry = items.find(x => x.id === id) || (DATA || []).find(x => x.id === id);
+
+    el.addEventListener('mouseenter', () => {
+      if(entry) showWallTooltip(el, entry);
+    });
+
+    el.addEventListener('mouseleave', () => {
+      hideWallTooltip();
+    });
+
     el.addEventListener('click', () => {
-      const id = Number(el.dataset.id);
-      const entry = (DATA || []).find(x => x.id === id);
+      hideWallTooltip();
+      if(window.navigator && typeof navigator.vibrate === 'function'){
+        try { navigator.vibrate(8); } catch(e){}
+      }
       if(entry && typeof openDeepCard === 'function'){
         openDeepCard(entry);
       }
@@ -14620,6 +14797,7 @@ async function shareMovieWall(){
 }
 
 // ── Event Listeners ──────────────────────────────────────────
+let _wallResizeTimer = null;
 function setupMovieWallListeners(){
   const wallBtn = document.getElementById('movieWallBtn');
   if(wallBtn) wallBtn.addEventListener('click', openMovieWall);
@@ -14646,6 +14824,22 @@ function setupMovieWallListeners(){
       closeMovieWall();
       e.stopPropagation();
     }
+  });
+
+  // Responsive resize & orientation change listeners
+  window.addEventListener('resize', () => {
+    if(!_wallIsOpen) return;
+    clearTimeout(_wallResizeTimer);
+    _wallResizeTimer = setTimeout(() => {
+      if(_wallIsOpen) renderMovieWall();
+    }, 80);
+  });
+
+  window.addEventListener('orientationchange', () => {
+    if(!_wallIsOpen) return;
+    setTimeout(() => {
+      if(_wallIsOpen) renderMovieWall();
+    }, 120);
   });
 }
 
