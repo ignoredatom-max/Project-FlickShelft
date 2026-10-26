@@ -21,7 +21,7 @@ This document captures the **verified real-world state** of the Logger project. 
 | **User Profiles & Picks** | Custom display name editing, Top Picks (4 slots), segmented stats, animated count-up ticker, activity bar chart | `index.html` `renderProfile()` |
 | **Public Profiles (`?u=UID`)**| Read-only view for visitors via URL query string, personalizing subtitle and banners without edit controls | `index.html` `renderPublicProfile()` |
 | **Movie Wall** | Single-page, one-look edge-to-edge poster collection showcase with dynamic zero-scroll geometric packing, desktop hover tooltips, and mobile touch optimization | `index.html` `renderMovieWall()` |
-| **Collection Snapshots** | 1080px high-resolution canvas generator with Logger watermark, user name, and poster mosaic for native sharing / download | `index.html` `shareMovieWall()` |
+| **Collection Snapshots** | Single-page zero-scroll mosaic snapshot with Logger watermark, user name, and poster mosaic for native sharing / download | `index.html` `shareMovieWall()` |
 | **Deep Media Info Card** | Encyclopedia overlay fetching live TMDB/IGDB metadata, cast, director, release certification, and watch providers | `index.html` `openDeepCard()` |
 | **Universal Search** | Debounced search across TMDB movies, TMDB TV series, TMDB collections, IGDB games, and local diary titles | `index.html` `openDiarySearch()` |
 | **Cloudflare Worker Proxy** | Edge API proxy bypassing ISP DNS blocking for TMDB & IGDB, Twitch OAuth token handling, image proxying | `worker/src/index.js` |
@@ -55,7 +55,12 @@ This document captures the **verified real-world state** of the Logger project. 
 
 ## 2. Recent Bug Fixes (October 2026)
 
-1. **Broken Sticky Month Headers**:
+1. **Movie Wall Share Snapshot Format**:
+   - *Issue*: Clicking the "Share" button on the single-page zero-scroll Movie Wall exported an old-style, excessively long scrolling strip image rather than capturing the zero-scroll mosaic layout.
+   - *Root Cause*: `shareMovieWall()` used legacy static column counts (4/5/6) and unbounded vertical height stacking instead of the geometric mosaic packing algorithm.
+   - *Fix*: Rewrote `shareMovieWall()` to dynamically scale and center the poster collection into a single-frame, zero-scroll mosaic snapshot matching the device's screen orientation, active filter, and on-screen grid.
+
+2. **Broken Sticky Month Headers**:
    - *Issue*: Month separators failed to stick beneath the sticky header while scrolling.
    - *Root Cause*: Page fade-in animation had `transform: translateY(0)` with `animation-fill-mode: both`, creating a transformed containing block that broke `position: sticky`. Furthermore, `updateStickyTop()` had a selector mismatch looking for inline styles.
    - *Fix*: Simplified `pageFadeIn` to pure opacity fade and made header height calculation robust. (Commit `047adc0`).

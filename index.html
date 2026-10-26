@@ -14358,6 +14358,7 @@ window.shouldDisplayInLog = shouldDisplayInLog;
 // ═════════════════════════════════════════════════════════════
 let _wallIsOpen = false;
 let _wallFilter = 'all';
+let _lastWallLayout = null;
 
 function getOptimizedPosterUrl(rawUrl){
   if(!rawUrl || typeof rawUrl !== 'string') return '';
@@ -14546,13 +14547,22 @@ function renderMovieWall(){
   grid.style.setProperty('--wall-hover-scale', hoverScale.toFixed(2));
   grid.style.setProperty('--wall-item-w', `${posterW}px`);
 
+  // Track active layout so share snapshot matches on-screen mosaic exactly
+  _lastWallLayout = {
+    cols: best.cols,
+    rows: best.rows,
+    gap: gap,
+    filter: _wallFilter,
+    count: N
+  };
+
   // Render purely posters with optimized thumbnails
   const html = items.map(item => {
     const optPoster = getOptimizedPosterUrl(item.poster);
     const safeTitle = (item.title || '').replace(/"/g, '&quot;');
     if(optPoster){
       return `<div class="wall-item" data-id="${item.id}" role="button" tabindex="0">
-        <img class="wall-item-img" src="${optPoster}" alt="${safeTitle}" loading="lazy" decoding="async">
+        <img class="wall-item-img" crossorigin="anonymous" src="${optPoster}" alt="${safeTitle}" loading="lazy" decoding="async">
       </div>`;
     } else {
       const typeIcon = typeof getTypeIcon === 'function' ? getTypeIcon(item.type) : '🎬';
@@ -14598,7 +14608,7 @@ async function shareMovieWall(){
   const shareBtn = document.getElementById('wallShareBtn');
   if(shareBtn) shareBtn.disabled = true;
 
-  if(typeof toast === 'function') toast('Generating collection picture...', 'watchlist', 2200);
+  if(typeof toast === 'function') toast('Generating Movie Wall picture...', 'watchlist', 2200);
 
   try {
     const items = getWallItems(_wallFilter);
@@ -14608,81 +14618,143 @@ async function shareMovieWall(){
       return;
     }
 
-    // High-resolution canvas layout
-    const canvasWidth = 1080;
-    // 5 columns on desktop snapshot, or 4 if <= 16 items
-    const cols = items.length <= 16 ? 4 : (items.length >= 40 ? 6 : 5);
-    const pad = 36;
-    const gap = 12;
-    const itemW = Math.floor((canvasWidth - (pad * 2) - ((cols - 1) * gap)) / cols);
-    const itemH = Math.floor(itemW * 1.48); // 2:3 ratio
-    const rows = Math.ceil(items.length / cols);
+    // Determine canvas dimensions matching the current screen orientation and aspect ratio
+    const screenW = Math.max(320, window.innerWidth || 390);
+    const screenH = Math.max(480, window.innerHeight || 844);
+    const isPortrait = screenH >= screenW;
 
-    const headerH = 170;
-    const footerH = 80;
-    const totalH = headerH + (rows * (itemH + gap)) + footerH;
+    let canvasWidth, canvasHeight;
+    if(isPortrait){
+      canvasWidth = 1080;
+      const targetRatio = Math.max(1.25, Math.min(2.35, screenH / screenW));
+      canvasHeight = Math.round(canvasWidth * targetRatio);
+    } else {
+      canvasHeight = 1080;
+      const targetRatio = Math.max(1.25, Math.min(2.35, screenW / screenH));
+      canvasWidth = Math.round(canvasHeight * targetRatio);
+    }
+
+    const padX = isPortrait ? 36 : 48;
+    const padY = isPortrait ? 28 : 36;
+    const headerH = isPortrait ? 150 : 130;
+    const footerH = isPortrait ? 70 : 60;
+
+    const availW = canvasWidth - (padX * 2);
+    const availH = canvasHeight - headerH - footerH - (padY * 2);
+    const N = items.length;
+
+    // Use current on-screen mosaic columns and rows if available, or compute dynamic optimal mosaic
+    let cols = (_lastWallLayout && _lastWallLayout.count === N && _lastWallLayout.filter === _wallFilter)
+      ? _lastWallLayout.cols
+      : 0;
+    let rows = (_lastWallLayout && _lastWallLayout.count === N && _lastWallLayout.filter === _wallFilter)
+      ? _lastWallLayout.rows
+      : 0;
+
+    let gap = N <= 20 ? 12 : (N <= 60 ? 10 : (N <= 120 ? 8 : (N <= 200 ? 6 : 4)));
+
+    if(!cols || !rows){
+      const aspect = 1.5;
+      let best = { cols: 1, rows: N, w: 0, h: 0 };
+      for(let c = 1; c <= N; c++){
+        const r = Math.ceil(N / c);
+        const maxW = (availW - (c - 1) * gap) / c;
+        const maxH = (availH - (r - 1) * gap) / r;
+        if(maxW <= 0 || maxH <= 0) continue;
+        const w = Math.min(maxW, maxH / aspect);
+        if(w > best.w){
+          best = { cols: c, rows: r, w: w, h: w * aspect };
+        }
+      }
+      cols = best.cols;
+      rows = best.rows;
+    }
+
+    // Dynamic sizing strictly constrained to canvas viewport
+    const maxItemW = (availW - (cols - 1) * gap) / cols;
+    const maxItemH = (availH - (rows - 1) * gap) / rows;
+    const aspect = 1.5;
+    const maxCapW = Math.min(320, availW * 0.45);
+    const itemW = Math.max(10, Math.floor(Math.min(maxItemW, maxItemH / aspect, maxCapW)));
+    const itemH = Math.max(15, Math.floor(itemW * aspect));
+
+    const totalGridW = cols * itemW + (cols - 1) * gap;
+    const totalGridH = rows * itemH + (rows - 1) * gap;
+
+    // Dead-center the mosaic grid in the stage area
+    const gridStartX = padX + Math.floor((availW - totalGridW) / 2);
+    const gridStartY = headerH + padY + Math.floor((availH - totalGridH) / 2);
+    const cr = Math.max(2, Math.min(10, Math.round(itemW * 0.08)));
 
     const canvas = document.createElement('canvas');
     canvas.width = canvasWidth;
-    canvas.height = totalH;
+    canvas.height = canvasHeight;
     const ctx = canvas.getContext('2d');
 
-    // Background gradient
-    const bgGrad = ctx.createLinearGradient(0, 0, 0, totalH);
-    bgGrad.addColorStop(0, '#0c0d12');
-    bgGrad.addColorStop(0.5, '#121319');
-    bgGrad.addColorStop(1, '#09090d');
+    // ── Background: Radial gradient with vignette ──
+    const bgGrad = ctx.createRadialGradient(
+      canvasWidth / 2, canvasHeight / 2, 40,
+      canvasWidth / 2, canvasHeight / 2, Math.max(canvasWidth, canvasHeight) * 0.75
+    );
+    bgGrad.addColorStop(0, '#15161e');
+    bgGrad.addColorStop(0.65, '#0d0e13');
+    bgGrad.addColorStop(1, '#060608');
     ctx.fillStyle = bgGrad;
-    ctx.fillRect(0, 0, canvasWidth, totalH);
+    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
     // Ambient glow top
-    const glowGrad = ctx.createRadialGradient(canvasWidth / 2, 0, 20, canvasWidth / 2, 0, 480);
-    glowGrad.addColorStop(0, 'rgba(45, 127, 249, 0.16)');
+    const glowGrad = ctx.createRadialGradient(canvasWidth / 2, 0, 20, canvasWidth / 2, 0, canvasWidth * 0.6);
+    glowGrad.addColorStop(0, 'rgba(45, 127, 249, 0.18)');
     glowGrad.addColorStop(1, 'transparent');
     ctx.fillStyle = glowGrad;
-    ctx.fillRect(0, 0, canvasWidth, 380);
+    ctx.fillRect(0, 0, canvasWidth, Math.min(500, canvasHeight * 0.4));
 
-    // ── Header: Logo + Brand + User + Count ──
+    // ── Header: Logo + Brand + User + Filter & Count ──
     const displayName = typeof getDisplayName === 'function' ? getDisplayName() : 'My';
+    const filterLabel = _wallFilter === 'movie' ? 'FILMS' : (_wallFilter === 'series' ? 'SERIES' : (_wallFilter === 'game' ? 'GAMES' : 'TITLES'));
+    const wallCategoryTitle = _wallFilter === 'movie' ? 'Film' : (_wallFilter === 'series' ? 'TV' : (_wallFilter === 'game' ? 'Game' : 'Movie'));
 
-    // Logo
+    // Logo & Title
     ctx.fillStyle = '#ffffff';
     ctx.font = '800 32px -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", sans-serif';
-    ctx.fillText('LOGGER', pad, 72);
+    ctx.textBaseline = 'alphabetic';
+    ctx.textAlign = 'left';
+    ctx.fillText('LOGGER', padX, 64);
 
     ctx.fillStyle = 'rgba(255, 255, 255, 0.55)';
-    ctx.font = '500 18px -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif';
-    ctx.fillText(`${displayName}'s Media Collection`, pad, 106);
+    ctx.font = '500 17px -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif';
+    ctx.fillText(`${displayName}'s ${wallCategoryTitle} Wall`, padX, 96);
 
-    // Pill on right side
-    const countText = `${items.length} TITLES`;
-    ctx.font = '700 15px -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif';
+    // Pill on right side: count + filter badge
+    const countText = `${items.length} ${filterLabel}`;
+    ctx.font = '700 14px -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif';
     const pillMetrics = ctx.measureText(countText);
     const pillW = pillMetrics.width + 28;
-    const pillH = 36;
-    const pillX = canvasWidth - pad - pillW;
-    const pillY = 60;
+    const pillH = 34;
+    const pillX = canvasWidth - padX - pillW;
+    const pillY = 52;
 
-    // Draw pill background
     ctx.beginPath();
-    ctx.roundRect(pillX, pillY, pillW, pillH, 18);
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+    ctx.roundRect(pillX, pillY, pillW, pillH, 17);
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.09)';
     ctx.fill();
     ctx.strokeStyle = 'rgba(255, 255, 255, 0.16)';
     ctx.lineWidth = 1;
     ctx.stroke();
 
     ctx.fillStyle = '#ffffff';
-    ctx.fillText(countText, pillX + 14, pillY + 23);
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'center';
+    ctx.fillText(countText, pillX + (pillW / 2), pillY + (pillH / 2));
 
-    // Separator line
+    // Header divider line
     ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
     ctx.beginPath();
-    ctx.moveTo(pad, headerH - 22);
-    ctx.lineTo(canvasWidth - pad, headerH - 22);
+    ctx.moveTo(padX, headerH - 12);
+    ctx.lineTo(canvasWidth - padX, headerH - 12);
     ctx.stroke();
 
-    // ── Draw Posters in Grid ──
+    // ── Load Posters ──
     function loadImg(src){
       return new Promise((resolve) => {
         if(!src) return resolve(null);
@@ -14691,7 +14763,7 @@ async function shareMovieWall(){
         img.onload = () => resolve(img);
         img.onerror = () => resolve(null);
         img.src = src;
-        setTimeout(() => resolve(null), 3500);
+        setTimeout(() => resolve(null), 3000);
       });
     }
 
@@ -14699,13 +14771,12 @@ async function shareMovieWall(){
       items.map(it => loadImg(getOptimizedPosterUrl(it.poster)))
     );
 
-    // Render each item
+    // ── Draw Posters in Grid ──
     items.forEach((item, idx) => {
       const col = idx % cols;
       const row = Math.floor(idx / cols);
-      const x = pad + (col * (itemW + gap));
-      const y = headerH + (row * (itemH + gap));
-      const cr = 10; // corner radius
+      const x = gridStartX + (col * (itemW + gap));
+      const y = gridStartY + (row * (itemH + gap));
 
       ctx.save();
       ctx.beginPath();
@@ -14716,37 +14787,39 @@ async function shareMovieWall(){
       if(img){
         ctx.drawImage(img, x, y, itemW, itemH);
       } else {
-        // Fallback stylish tile
-        ctx.fillStyle = '#1c1d25';
+        ctx.fillStyle = '#181920';
         ctx.fillRect(x, y, itemW, itemH);
-        ctx.fillStyle = 'rgba(255,255,255,0.7)';
-        ctx.font = '600 13px -apple-system, sans-serif';
+        const typeIcon = typeof getTypeIcon === 'function' ? getTypeIcon(item.type) : '🎬';
+        const initials = (item.title || '').split(' ').slice(0, 2).map(w=>w[0]).join('');
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
         ctx.textAlign = 'center';
-        const titleStr = (item.title || '').slice(0, 18);
-        ctx.fillText(titleStr, x + (itemW / 2), y + (itemH / 2));
-        ctx.textAlign = 'start';
+        ctx.textBaseline = 'middle';
+        if(itemW >= 36){
+          ctx.font = `600 ${Math.max(10, Math.round(itemW * 0.22))}px -apple-system, sans-serif`;
+          ctx.fillText(initials || typeIcon, x + (itemW / 2), y + (itemH / 2));
+        }
       }
-
       ctx.restore();
 
       // Subtle border around poster
       ctx.beginPath();
       ctx.roundRect(x, y, itemW, itemH, cr);
       ctx.strokeStyle = 'rgba(255, 255, 255, 0.09)';
-      ctx.lineWidth = 1;
+      ctx.lineWidth = Math.max(1, Math.round(itemW * 0.015));
       ctx.stroke();
     });
 
     // ── Footer ──
-    const footerY = headerH + (rows * (itemH + gap)) + 36;
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-    ctx.font = '500 14px -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif';
-    ctx.fillText('flickshelft • logger', pad, footerY);
+    const footerY = canvasHeight - Math.floor(footerH / 2);
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.38)';
+    ctx.font = '500 14px -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif';
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'left';
+    ctx.fillText('flickshelft • logger', padX, footerY);
 
     const nowStr = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
     ctx.textAlign = 'right';
-    ctx.fillText(nowStr, canvasWidth - pad, footerY);
-    ctx.textAlign = 'start';
+    ctx.fillText(nowStr, canvasWidth - padX, footerY);
 
     // ── Export Blob & Share / Download ──
     canvas.toBlob(async (blob) => {
@@ -14756,26 +14829,25 @@ async function shareMovieWall(){
         return;
       }
 
-      const filename = `logger-collection-${Date.now()}.png`;
+      const filename = `logger-movie-wall-${Date.now()}.png`;
       const file = new File([blob], filename, { type: 'image/png' });
 
       let shared = false;
       if(navigator.canShare && navigator.canShare({ files: [file] })){
         try {
           await navigator.share({
-            title: `${displayName}'s Collection`,
-            text: `Look at my media collection on Logger! ${items.length} titles 🎬🍿`,
+            title: `${displayName}'s Movie Wall`,
+            text: `Check out my Movie Wall on Logger! ${items.length} titles 🎬🍿`,
             files: [file]
           });
           shared = true;
-          if(typeof toast === 'function') toast('Collection shared! 🖼️', 'watchlist', 2500);
+          if(typeof toast === 'function') toast('Movie Wall shared! 🖼️', 'watchlist', 2500);
         } catch(e){
           // User closed share sheet
         }
       }
 
       if(!shared){
-        // Download directly
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
         a.download = filename;
@@ -14783,7 +14855,7 @@ async function shareMovieWall(){
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(a.href);
-        if(typeof toast === 'function') toast('Collection picture saved! 📸', 'watchlist', 2800);
+        if(typeof toast === 'function') toast('Movie Wall saved! 📸', 'watchlist', 2800);
       }
 
       if(shareBtn) shareBtn.disabled = false;

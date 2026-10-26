@@ -19,3 +19,4 @@ A dedicated, edge-to-edge poster collection showcase displaying every logged mov
 - **Retina Thumbnail Optimization**: Converts TMDB image URLs to lightweight `/t/p/w185/` thumbnails to minimize memory footprint.
 - **Category Filter Tabs**: Pills for *All, Films, Series, Games*.
 - **Interactive**: Tapping any poster opens its full [[Deep Media Info Card]].
+- **Zero-Scroll Mosaic Share Snapshot**: Clicking the "Share" button renders a high-definition canvas snapshot that captures the exact zero-scroll mosaic seen on screen, matching orientation (portrait for mobile, landscape for desktop) and active category filter in a single frame.

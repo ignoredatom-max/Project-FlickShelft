@@ -15,4 +15,4 @@ Full-screen overlay presenting all logged media posters in an edge-to-edge mosai
   - **Cinematic Tooltip**: Floating popover showing title, year, and rating on desktop hover.
   - **Ultra-Compact Mobile Header**: Single-row compact bar preserving maximum screen area for posters.
   - **Lazy loading (`loading="lazy"`, `decoding="async"`)** using retina thumbnails (`/t/p/w185/`).
-  - **"Share" button** triggering high-resolution 1080px canvas collage generation.
+  - **"Share" button** triggering high-resolution canvas snapshot generation that formats the entire collection into a single-frame zero-scroll mosaic matching the on-screen view.
