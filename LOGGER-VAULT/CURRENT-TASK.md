@@ -36,14 +36,11 @@ Create a permanent, interconnected, highly accurate Obsidian vault inside `LOGGE
 
 ## 6. Completed Work
 - [x] Inspected repository, git history, `AGENTS.md`, `Patchnotes.txt`, `index.html`, and `worker/src/index.js`.
-- [x] Upgraded **Movie Wall** from a scrollable list to a true single-page, one-look mosaic:
-  - Dynamic geometric packing algorithm ($O(N)$ candidate search) that scales posters down as item count increases to strictly fit inside the viewport without page scrollbars.
-  - Scale-aware corner radii, borders, and hover zoom effects.
-  - Floating cinematic popover tooltip on desktop hover displaying title, year, and rating.
-  - Ultra-compact single-row mobile header preserving maximum vertical real estate for poster display.
-  - Debounced resize & orientation change handlers for responsive recalculation across phone/desktop.
+- [x] Upgraded **Movie Wall** from a scrollable list to a true single-page, one-look mosaic.
 - [x] Initialized `LOGGER-VAULT/` folder structure and orientation documentation.
 - [x] Configured project-level instructions directing AI agents to `LOGGER-VAULT/AI-START-HERE.md`.
+- [x] Implemented **Watchlist Media Type Filter** (`All`, `Film`, `Series`, `Game`) in the sticky header with synchronized upcoming carousel and live counters.
+- [x] Redesigned Watchlist into an **Ultra-Compact Ergonomic Layout** (56px card height, 32×46px posters, 32×32px drag handle, 62px calibrated swipe threshold) reducing row pitch by 37% and fitting 8–10 cards on screen without scrolling.
 
 ## 7. Remaining Work
 - [ ] Maintain vault documentation as future feature updates occur.

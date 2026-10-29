@@ -1,6 +1,21 @@
 LOGGER — Patch Notes
 Personal Media Diary by ATOMYN
 ————————————————————————————————————————
+2.1.2
+29 October 2026
+
+  - Added media type filter bar to Watchlist (All, Film, Series, Game)
+    matching Diary header styling with zero layout shift
+  - Synchronized Watchlist filter across both Upcoming Releases and
+    released titles with tailored empty states and icons
+  - Added live matching counter badge (e.g. 5 titles, 2 films, 2 games)
+  - Redesigned Watchlist cards into an ultra-compact layout (56px card height,
+    32x46px posters, 32x32px drag handle), reducing row height by 37%
+    and allowing 8–10 titles to fit on screen at once
+  - Streamlined Upcoming Releases cards (100px width, 44px blur header)
+  - Calibrated horizontal swipe gesture threshold (62px) and preserved
+    fluid touch drag-and-drop priority sorting
+
 2.1.1
 15 August 2026
 

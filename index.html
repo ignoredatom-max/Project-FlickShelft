@@ -1864,12 +1864,22 @@ input[type=range].r-slider::-moz-range-thumb{
 .tmdb-attr{font-size:10px;color:var(--text3);margin-top:6px;letter-spacing:0.2px}
 
 /* ── WATCHLIST ────────────────────────────────── */
+.wl-count-label{
+  font-size:11.5px;
+  color:var(--text3);
+  font-weight:500;
+  font-family:var(--font-sans);
+  letter-spacing:0.2px;
+  flex-shrink:0;
+  white-space:nowrap;
+  user-select:none;
+}
 /* Watchlist rows — movie-card style */
-.wl-list-inner{padding:8px 16px}
+.wl-list-inner{padding:4px 12px}
 .wl-card{
   display:block;
-  padding:0;margin-bottom:8px;
-  background:var(--bg2);border-radius:16px;
+  padding:0;margin-bottom:4px;
+  background:var(--bg2);border-radius:11px;
   border:1px solid var(--border);
   animation:fadeUp 0.25s ease both;
   position:relative;overflow:hidden;
@@ -1878,11 +1888,11 @@ input[type=range].r-slider::-moz-range-thumb{
   touch-action:pan-y;
 }
 .wl-card-content{
-  display:flex;align-items:center;gap:12px;
-  padding:12px;width:100%;box-sizing:border-box;
+  display:flex;align-items:center;gap:8px;
+  padding:5px 8px;width:100%;box-sizing:border-box;
   background:var(--bg2);
   position:relative;z-index:2;
-  border-radius:15px;
+  border-radius:10px;
   overflow:hidden;
   -webkit-mask-image:-webkit-radial-gradient(white, black);
   transform:translateX(0);
@@ -1890,8 +1900,8 @@ input[type=range].r-slider::-moz-range-thumb{
   box-shadow:2px 0 10px rgba(0,0,0,0.22);
 }
 .wl-card-content::before{
-  content:'';position:absolute;right:0;top:0;bottom:0;width:3.5px;
-  border-top-right-radius:15px;border-bottom-right-radius:15px;
+  content:'';position:absolute;right:0;top:0;bottom:0;width:2.5px;
+  border-top-right-radius:10px;border-bottom-right-radius:10px;
   pointer-events:none;
 }
 .wl-card.movie .wl-card-content::before {background:var(--red);}
@@ -1908,23 +1918,23 @@ input[type=range].r-slider::-moz-range-thumb{
 }
 .wl-swipe-action-left{
   left:0;justify-content:flex-start;
-  padding-left:18px;
+  padding-left:12px;
   background:linear-gradient(90deg, #10b981 0%, rgba(16,185,129,0.85) 60%, rgba(16,185,129,0.4) 100%);
 }
 .wl-swipe-action-right{
   right:0;justify-content:flex-end;
-  padding-right:18px;
+  padding-right:12px;
   background:linear-gradient(270deg, #ef4444 0%, rgba(239,68,68,0.85) 60%, rgba(239,68,68,0.4) 100%);
 }
 .wl-swipe-pill{
-  display:inline-flex;align-items:center;gap:7px;
-  font-size:12px;font-weight:700;color:#ffffff;
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:10.5px;font-weight:700;color:#ffffff;
   letter-spacing:0.3px;text-transform:uppercase;
   opacity:0.4;transform:scale(0.85);
   transition:opacity 0.14s ease, transform 0.14s cubic-bezier(.34,1.56,.64,1);
 }
 .wl-swipe-pill svg{
-  width:18px;height:18px;display:block;
+  width:14px;height:14px;display:block;
 }
 .wl-swipe-pill.is-active{
   opacity:1!important;transform:scale(1.08)!important;
@@ -1938,21 +1948,21 @@ input[type=range].r-slider::-moz-range-thumb{
   cursor:grabbing;
 }
 .wl-card-placeholder{
-  border-radius:16px;
+  border-radius:11px;
   border:2px dashed rgba(255,255,255,0.16);
   background:rgba(255,255,255,0.02);
-  margin-bottom:8px;
+  margin-bottom:4px;
   box-sizing:border-box;
 }
-.wl-thumb{width:44px;height:64px;object-fit:cover;border-radius:10px;background:var(--bg3);flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,0.4)}
-.wl-ph{width:44px;height:64px;background:var(--bg3);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.wl-thumb{width:32px;height:46px;object-fit:cover;border-radius:6px;background:var(--bg3);flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,0.35)}
+.wl-ph{width:32px;height:46px;background:var(--bg3);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
 .wl-info{flex:1;min-width:0}
-.wl-title{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-0.2px;cursor:pointer;}
+.wl-title{font-size:12.5px;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:-0.15px;cursor:pointer;line-height:1.2;}
 .wl-title:hover{color:var(--text);}
-.wl-sub{font-size:11px;color:var(--text3);margin-top:3px}
+.wl-sub{font-size:10px;color:var(--text3);margin-top:1.5px;line-height:1.15}
 .wl-actions{display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .wl-drag-handle{
-  width:40px;height:40px;border-radius:12px;
+  width:32px;height:32px;border-radius:8px;
   background:transparent;border:none;
   color:rgba(255,255,255,0.34);
   display:inline-flex;align-items:center;justify-content:center;
@@ -1973,7 +1983,7 @@ input[type=range].r-slider::-moz-range-thumb{
   transform:scale(1.06);
 }
 .wl-drag-svg{
-  width:20px;height:20px;
+  width:15px;height:15px;
   display:block;
   stroke:currentColor;
   pointer-events:none;
@@ -3416,27 +3426,27 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
 }
 
 /* ── UPCOMING GRID ───────────────────────────── */
-.upcoming-section{padding:0 0 4px;}
+.upcoming-section{padding:0 0 1px;}
 .upcoming-hdr{
-  font-size:10px;font-weight:700;color:var(--text2);
-  text-transform:uppercase;letter-spacing:1.2px;
-  padding:7px 16px;
+  font-size:9px;font-weight:700;color:var(--text2);
+  text-transform:uppercase;letter-spacing:1px;
+  padding:4px 12px;
   background:var(--bg3);
   border-top:1px solid var(--border2);
   border-bottom:1px solid var(--border2);
-  margin-bottom:12px;
+  margin-bottom:6px;
 }
 .upcoming-grid{
-  display:flex;gap:10px;
+  display:flex;gap:6px;
   overflow-x:auto;scrollbar-width:none;
-  padding:0 14px 14px;
+  padding:0 12px 6px;
 }
 .upcoming-grid::-webkit-scrollbar{display:none}
 .upcoming-card{
-  border-radius:16px;overflow:hidden;position:relative;
+  border-radius:10px;overflow:hidden;position:relative;
   border:1px solid var(--border);
   animation:fadeUp 0.3s ease both;
-  flex:0 0 130px;
+  flex:0 0 100px;
   background:var(--bg3);
 }
 .upcoming-poster-wrap{
@@ -3445,10 +3455,10 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
 .upcoming-poster{width:100%;height:100%;object-fit:cover;display:block;filter:brightness(0.45);}
 .upcoming-poster-ph{
   width:100%;height:100%;display:flex;align-items:center;
-  justify-content:center;font-size:22px;background:var(--bg4);
+  justify-content:center;font-size:18px;background:var(--bg4);
 }
 .upcoming-type-bar{
-  position:absolute;top:0;right:0;bottom:0;width:3px;z-index:2;
+  position:absolute;top:0;right:0;bottom:0;width:2.5px;z-index:2;
 }
 .upcoming-card.movie .upcoming-type-bar{background:var(--red);}
 .upcoming-card.series .upcoming-type-bar{background:var(--teal);}
@@ -3458,31 +3468,31 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
 .upcoming-card.game:hover .upcoming-type-bar,.upcoming-card.game:active .upcoming-type-bar{}
 .upcoming-body{
   position:relative;z-index:1;
-  padding:8px 10px 10px;
-  margin-top:72px;
+  padding:5px 6px 6px;
+  margin-top:44px;
   background:rgba(20,20,20,0.55);
   backdrop-filter:blur(12px);
   -webkit-backdrop-filter:blur(12px);
-  border-radius:0 0 16px 16px;
+  border-radius:0 0 10px 10px;
 }
 .upcoming-title{
-  font-size:11px;font-weight:600;color:var(--text);
-  margin-bottom:6px;
+  font-size:9.5px;font-weight:600;color:var(--text);
+  margin-bottom:3px;
   display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
-  line-height:1.3;
-  height:2.6em;
+  line-height:1.2;
+  height:2.4em;
 }
 .upcoming-countdown-num{
-  font-size:22px;font-weight:800;color:var(--text);line-height:1;
+  font-size:17px;font-weight:800;color:var(--text);line-height:1;
 }
 .upcoming-countdown-lbl{
-  font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;
-  margin-top:2px;
+  font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.4px;
+  margin-top:1px;
 }
 .upcoming-card.movie .upcoming-countdown-lbl{color:var(--red);}
 .upcoming-card.series .upcoming-countdown-lbl{color:var(--teal);}
 .upcoming-card.game .upcoming-countdown-lbl{color:var(--green);}
-.upcoming-genre{font-size:9px;color:var(--text3);margin-top:4px;}
+.upcoming-genre{font-size:8px;color:var(--text3);margin-top:1px;}
 
 /* ── UNIVERSAL SEARCH STATUS PILLS ────────────── */
 .search-status-pill{
@@ -5862,13 +5872,22 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
 <!-- WATCHLIST PAGE -->
 <div class="page" id="page-watchlist">
   <div class="sticky-header" style="z-index:91">
-    <div class="header" style="padding-top:14px;padding-bottom:12px;position:relative">
+    <div class="header" style="padding-top:14px;padding-bottom:6px;position:relative">
       <div>
         <div class="logo-wrap">
           <span class="page-header-title">Watchlist</span>
         </div>
         <div class="header-sub">Things to check out</div>
       </div>
+    </div>
+    <div class="toolbar" style="position:relative;border-bottom:1px solid var(--border)">
+      <div class="seg" role="group" aria-label="Filter watchlist media type">
+        <button class="seg-btn on" data-wlf="all">All</button>
+        <button class="seg-btn" data-wlf="movie">Film</button>
+        <button class="seg-btn" data-wlf="series">Series</button>
+        <button class="seg-btn" data-wlf="game">Game</button>
+      </div>
+      <span class="wl-count-label" id="wlCountLabel"></span>
     </div>
   </div>
   <!-- UPCOMING GRID -->
@@ -7077,7 +7096,11 @@ onAuthStateChanged(auth, async user=>{
     setReadOnly(false);
     DATA = [];
     renderLog();
-    showTutorial();
+    if(new URLSearchParams(window.location.search).get('guest') === '1' || new URLSearchParams(window.location.search).get('dev') === '1'){
+      hideTutorial();
+    } else {
+      showTutorial();
+    }
   }
 });
 
@@ -7733,21 +7756,61 @@ function renderWatchlistCardHtml(item, targetIdx, relIdx = 0){
   </div>`;
 }
 
-function renderWL(){
-  const wl=getWL();
-  const el=document.getElementById('wl-list');
-  const today=new Date(); today.setHours(0,0,0,0);
-  // Hide items that are still unreleased — they show in upcoming grid instead
-  const released=wl.filter(x=>{
-    if(!x.releaseDate) return true;
-    const rel=new Date(x.releaseDate); rel.setHours(0,0,0,0);
-    return rel<=today;
-  });
-  if(!released.length){
-    el.innerHTML='<div class="empty"><div class="empty-ico-svg"><svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></div><div class="empty-title">Your watchlist is empty</div><div class="empty-sub">Search above and add something</div></div>';return;
+let wlFilter = 'all';
+
+function isWlTypeMatch(itemType, filter){
+  if(!filter || filter === 'all') return true;
+  if(filter === 'movie') return itemType === 'movie' || itemType === 'collection';
+  return itemType === filter;
+}
+
+function updateWlCounter(totalCount, filter){
+  const lbl = document.getElementById('wlCountLabel');
+  if(!lbl) return;
+  if(totalCount === 0){
+    lbl.textContent = filter === 'all' ? '0 titles' : filter === 'movie' ? '0 films' : filter === 'series' ? '0 series' : '0 games';
+  } else if(totalCount === 1){
+    lbl.textContent = filter === 'all' ? '1 title' : filter === 'movie' ? '1 film' : filter === 'series' ? '1 series' : '1 game';
+  } else {
+    lbl.textContent = filter === 'all' ? `${totalCount} titles` : filter === 'movie' ? `${totalCount} films` : filter === 'series' ? `${totalCount} series` : `${totalCount} games`;
   }
-  el.innerHTML=released.map((item, relIdx)=>{
-    const i=wl.findIndex(x=>(x.id && item.id && x.id===item.id) || (x.title===item.title && x.type===item.type));
+}
+
+function renderWL(){
+  const wl = getWL();
+  const el = document.getElementById('wl-list');
+  if(!el) return;
+  const today = new Date(); today.setHours(0,0,0,0);
+
+  // Match items for current filter (both released and upcoming for counter)
+  const matchingAll = wl.filter(x => isWlTypeMatch(x.type, wlFilter));
+  updateWlCounter(matchingAll.length, wlFilter);
+
+  // Released items matching current filter
+  const released = matchingAll.filter(x => {
+    if(!x.releaseDate) return true;
+    const rel = new Date(x.releaseDate); rel.setHours(0,0,0,0);
+    return rel <= today;
+  });
+
+  if(!released.length){
+    if(!wl.length){
+      el.innerHTML = '<div class="empty"><div class="empty-ico-svg"><svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></div><div class="empty-title">Your watchlist is empty</div><div class="empty-sub">Search above and add something</div></div>';
+    } else {
+      const typeLabel = wlFilter === 'movie' ? 'films' : wlFilter === 'series' ? 'series' : 'games';
+      const typeIco = wlFilter === 'movie'
+        ? `<svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line><line x1="17" y1="2" x2="17" y2="22"></line></svg>`
+        : wlFilter === 'series'
+        ? `<svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect><polyline points="17 2 12 7 7 2"></polyline></svg>`
+        : `<svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="6"></rect><line x1="6" y1="12" x2="10" y2="12"></line><line x1="8" y1="10" x2="8" y2="14"></line><line x1="15" y1="13" x2="15.01" y2="13"></line><line x1="18" y1="11" x2="18.01" y2="11"></line></svg>`;
+
+      el.innerHTML = `<div class="empty"><div class="empty-ico-svg">${typeIco}</div><div class="empty-title">No ${typeLabel} in watchlist</div><div class="empty-sub">Search and add ${typeLabel} to track them here</div></div>`;
+    }
+    return;
+  }
+
+  el.innerHTML = released.map((item, relIdx) => {
+    const i = wl.findIndex(x => (x.id && item.id && x.id === item.id) || (x.title === item.title && x.type === item.type));
     const targetIdx = i >= 0 ? i : relIdx;
     return renderWatchlistCardHtml(item, targetIdx, relIdx);
   }).join('');
@@ -7949,7 +8012,11 @@ function checkEmptyWl(){
   if(!container) return;
   const cards = container.querySelectorAll('.wl-card');
   if(cards.length === 0){
-    container.innerHTML = '<div class="empty"><div class="empty-ico-svg"><svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg></div><div class="empty-title">Your watchlist is empty</div><div class="empty-sub">Search above and add something</div></div>';
+    renderWL();
+  } else {
+    const wl = getWL();
+    const matchingAll = wl.filter(x => isWlTypeMatch(x.type, wlFilter));
+    updateWlCounter(matchingAll.length, wlFilter);
   }
 }
 
@@ -8116,7 +8183,7 @@ let _wlSwipeStartY = 0;
 let _wlSwipeCurrentX = 0;
 let _wlSwipeCurrentY = 0;
 let _wlSwipeLockedDirection = null; // null | 'horizontal' | 'vertical'
-let _wlSwipeThreshold = 75; // px to trigger
+let _wlSwipeThreshold = 62; // px to trigger
 let _wlDidSwipe = false;
 let _wlSwipeActionLeftPill = null;
 let _wlSwipeActionRightPill = null;
@@ -8564,14 +8631,26 @@ window.addEventListener('load', () => {
 });
 
 // ── FILTER/SORT ─────────────────────────────────────────
-document.querySelectorAll('.seg-btn').forEach(btn=>{
+document.querySelectorAll('#page-log .seg-btn').forEach(btn=>{
   btn.addEventListener('click',()=>{
     if(navigator.vibrate){ try { navigator.vibrate(6); } catch(err){} }
-    document.querySelectorAll('.seg-btn').forEach(b=>b.classList.remove('on'));
+    document.querySelectorAll('#page-log .seg-btn').forEach(b=>b.classList.remove('on'));
     btn.classList.add('on');filter=btn.dataset.f;_initialRenderDone=false;renderLog();
   });
 });
 document.getElementById('sortSel').addEventListener('change',e=>{sortBy=e.target.value;_initialRenderDone=false;renderLog();});
+
+// Wire watchlist filter tabs
+document.querySelectorAll('[data-wlf]').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    if(navigator.vibrate){ try { navigator.vibrate(6); } catch(err){} }
+    document.querySelectorAll('[data-wlf]').forEach(b=>b.classList.remove('on'));
+    btn.classList.add('on');
+    wlFilter = btn.dataset.wlf || 'all';
+    renderWL();
+    renderUpcoming();
+  });
+});
 
 // Dynamic Glassmorphism Blur on Scroll for Sticky Headers
 window.addEventListener('scroll', () => {
@@ -8619,6 +8698,39 @@ document.querySelectorAll('.nav-btn').forEach(btn=>{
     }
   });
 });
+
+// Deep-link navigation and test mock support
+(function initPageAndFilters(){
+  const urlParams = new URLSearchParams(window.location.search);
+  if(urlParams.get('test') === '1'){
+    const style = document.createElement('style');
+    style.textContent = '.page.on, .wl-card, .upcoming-card, .empty { animation: none !important; opacity: 1 !important; }';
+    document.head.appendChild(style);
+    if(!localStorage.getItem('logger-wl') || localStorage.getItem('logger-wl') === '[]'){
+      const testWL = [
+        { id: 't1', title: 'Dune: Part Two', type: 'movie', year: '2024', genre: 'Sci-Fi · Adventure', poster: 'https://image.tmdb.org/t/p/w200/8b8R8l88Qje9dn9OE8PY05Nxl1X.jpg', releaseDate: '2024-03-01' },
+        { id: 't2', title: 'Severance', type: 'series', year: '2022', genre: 'Sci-Fi · Thriller', poster: 'https://image.tmdb.org/t/p/w200/fBhztvX0b7yv0Xq2d9jR4rB0p2b.jpg', releaseDate: '2022-02-18' },
+        { id: 't3', title: 'Hades II', type: 'game', year: '2024', genre: 'Roguelike · Action', poster: 'https://images.igdb.com/igdb/image/upload/t_cover_big/co7la0.jpg', releaseDate: '2024-05-06' },
+        { id: 't4', title: 'Oppenheimer', type: 'movie', year: '2023', genre: 'Drama · History', poster: 'https://image.tmdb.org/t/p/w200/8Gxv8gSFCU0XGDykEGv7zR1n2ua.jpg', releaseDate: '2023-07-21' },
+        { id: 't5', title: 'Silksong', type: 'game', year: '2026', genre: 'Metroidvania', poster: 'https://images.igdb.com/igdb/image/upload/t_cover_big/co1r7h.jpg', releaseDate: '2026-12-31' }
+      ];
+      localStorage.setItem('logger-wl', JSON.stringify(testWL));
+    }
+  }
+
+  const initialPage = urlParams.get('p') || window.location.hash.replace(/^#/, '');
+  if(initialPage && ['watchlist', 'calendar', 'profile', 'favs'].includes(initialPage)){
+    const navBtn = document.querySelector(`.nav-btn[data-page="${initialPage}"]`);
+    if(navBtn) navBtn.click();
+    const wf = urlParams.get('wf');
+    if(wf && initialPage === 'watchlist'){
+      document.querySelectorAll('[data-wlf]').forEach(b => b.classList.toggle('on', b.dataset.wlf === wf));
+      wlFilter = wf;
+      renderWL();
+      renderUpcoming();
+    }
+  }
+})();
 
 
 
@@ -10236,14 +10348,19 @@ document.getElementById('pfpInput').addEventListener('change', e=>{
 function renderUpcoming(){
   const wl = getWL();
   const today = new Date(); today.setHours(0,0,0,0);
-  const upcoming = wl.filter(x=>{
+  let upcoming = wl.filter(x=>{
     if(!x.releaseDate) return false;
     const rel = new Date(x.releaseDate); rel.setHours(0,0,0,0);
     return rel > today;
   }).sort((a,b)=>new Date(a.releaseDate)-new Date(b.releaseDate));
 
+  if(wlFilter !== 'all'){
+    upcoming = upcoming.filter(x => isWlTypeMatch(x.type, wlFilter));
+  }
+
   const section = document.getElementById('upcomingSection');
   const grid    = document.getElementById('upcomingGrid');
+  if(!section || !grid) return;
   if(!upcoming.length){ section.style.display='none'; return; }
   section.style.display='block';
 
@@ -14927,4 +15044,4 @@ window.renderMovieWall = renderMovieWall;
 window.shareMovieWall = shareMovieWall;
 </script>
 </body>
-</html>
+</html>
