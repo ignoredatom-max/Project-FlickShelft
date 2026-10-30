@@ -40,7 +40,7 @@ Create a permanent, interconnected, highly accurate Obsidian vault inside `LOGGE
 - [x] Initialized `LOGGER-VAULT/` folder structure and orientation documentation.
 - [x] Configured project-level instructions directing AI agents to `LOGGER-VAULT/AI-START-HERE.md`.
 - [x] Implemented **Watchlist Media Type Filter** (`All`, `Film`, `Series`, `Game`) in the sticky header with synchronized upcoming carousel and live counters.
-- [x] Redesigned Watchlist into an **Ultra-Compact Ergonomic Layout** (56px card height, 32×46px posters, 32×32px drag handle, 62px calibrated swipe threshold) reducing row pitch by 37% and fitting 8–10 cards on screen without scrolling.
+- [x] Refined Watchlist layout: restored full **15px bold typography parity** with the main Diary log page, preserved compact 72px row pitch, and restored the original upcoming releases carousel with its 130px size, 16px corner radius, and 22px numerals.
 
 ## 7. Remaining Work
 - [ ] Maintain vault documentation as future feature updates occur.
