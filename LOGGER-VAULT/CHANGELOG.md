@@ -10,6 +10,7 @@ This document records the chronological development history of **Logger** (Proje
 ## 🏷️ Release History
 
 ### October 2026 — Performance Overhaul, Movie Wall & Second Brain
+- **Watchlist Media Filter & Typography Parity Layout**: Introduced segmented filter pill bar (`All`, `Film`, `Series`, `Game`) in the sticky header with synchronized upcoming carousel and live counters. Refined card spacing to a compact 72px row pitch while strictly preserving full **15px bold typography parity** with the main Diary log page, and maintained the original spacious 130px upcoming carousel layout.
 - **Movie Wall Feature**: Replaced the canvas-based Universe Graph View with a 100% native DOM [[Movie Wall]]. Displays all logged media posters edge-to-edge with no labels, responsive 4-column mobile grid, and zero scroll lag.
 - **Collection Snapshot Generator**: Added high-resolution (1080px) collection picture exporter with Logger branding, user profile title, total count badge, and native mobile share integration via `navigator.share`.
 - **Faint Month Counter**: Added subtle `.month-count` badge to the right side of `.month-header` separators showing total logged titles per month.

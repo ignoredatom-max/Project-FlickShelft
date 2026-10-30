@@ -66,7 +66,9 @@ This document captures the **verified real-world state** of the Logger project. 
    - *Fix*: Simplified `pageFadeIn` to pure opacity fade and made header height calculation robust. (Commit `047adc0`).
 2. **Faint Month Counter Addition**:
    - *Feature*: Added `.month-count` on the right side of `.month-header` to subtly show total titles in each month. (Commit `5e5b9e1`).
-3. **Movie Wall Implementation**:
+3. **Watchlist Segmented Filtering & Typography Parity**:
+   - *Feature*: Added segmented media filter (`All`, `Film`, `Series`, `Game`) in the Watchlist sticky header with synchronized upcoming carousel and live counters. Refined card spacing to a compact 72px row pitch while strictly preserving full **15px bold typography parity** with the main Diary log page, and maintained the original spacious 130px upcoming carousel layout with 16px rounded corners. (Commit `ebed5a9`).
+4. **Movie Wall Implementation**:
    - *Feature*: Cleaned out ~1,900 lines of canvas physics and added the high-performance Movie Wall and 1080px collection picture export. (Commit `5e5b9e1`).
 
 ---
