@@ -5,7 +5,9 @@ A personal media diary PWA to track movies, series and games you've watched or p
 ## Features
 - Log films, series and games with ratings, status and notes
 - Diary view grouped by month
-- 5-stage rating system — Skip / Mediocre / Decent / Excellent / Peak
+- 4-tier rating system — Skip / Decent / Excellent / Peak with color-coded segmented slider
+- Dynamic context-aware page titles & rich OpenGraph social sharing previews
+- Instant return-to-home navigation via clickable header logo
 - Watchlist to queue things up
 - Favourites page
 - Google account sync via Firebase — data safe forever

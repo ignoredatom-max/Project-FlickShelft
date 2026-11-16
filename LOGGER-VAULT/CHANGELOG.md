@@ -9,6 +9,15 @@ This document records the chronological development history of **Logger** (Proje
 
 ## 🏷️ Release History
 
+### November 2026 — Web Checklist Audit, Dynamic Titles, Clickable Logo & Custom 404
+- **Dynamic Document Page Titles**: Added context-aware page titles across the app. Switching tabs updates the title to `Logger · Diary`, `Logger · Watchlist`, `Logger · Calendar`, etc.; opening a media detail sheet dynamically updates to `${title} (${year}) · Logger`; viewing public profiles sets `${Name}'s Diary · Logger`.
+- **Clickable Header Logo**: Added `.logo-clickable` styling (`cursor: pointer`, tactile scaling on tap) to the main and scrolled mini header logos. Tapping smoothly navigates back to Diary (`#page-log`), updates the dock indicator, and scrolls to top.
+- **Dedicated Public Profile 404 State**: Introduced `#pubNotFound` card displaying a clean error state (*"Diary Not Found — This media diary does not exist, has been removed, or the link is incorrect"*) with a "Return to Logger" button when visiting invalid or private `?u=...` URLs.
+- **Social Sharing & SEO Metadata**: Added `<meta name="description">`, OpenGraph tags (`og:title`, `og:description`, `og:image`, `og:type`), and Twitter Card metadata for rich link previews across messaging and social platforms.
+- **Desktop Favicon Link**: Declared standard `<link rel="shortcut icon" type="image/png" href="icon-192.png">` and `sizes="32x32"` for universal browser tab support.
+- **Dynamic Copyright Year**: Integrated dynamic JavaScript year synchronization (`© <year> ATOMYN · All rights reserved`) in the About modal and public footer.
+- **Design & Contrast Polish**: Preserved intentional touch carousels (Upcoming shelf, Top Picks, Cast & Crew, Calendar Heatmap) and glassmorphic blurs while eliminating artificial design tropes.
+
 ### November 2026 — High-Contrast Spring Navigation, 4-Tier Rating Scale & Seamless Data Migration
 - **Bottom Navigation Dock Visual Redesign**: Upgraded active indicator to a solid pure white (`#ffffff`) pill with bold solid black (`#000000`, 700) active tab text and icons for maximum contrast. Added physics-based playful spring animation (`cubic-bezier(0.34, 1.56, 0.64, 1)`).
 - **Top Segment Filter Bars**: Applied the identical solid pure white sliding pill, bold black active text, and playful spring interaction to the top filter bars (`All`, `Film`, `Series`, `Game`) across Diary, Watchlist, and Favourites.

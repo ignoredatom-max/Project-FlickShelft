@@ -16,3 +16,8 @@ An iOS-inspired floating navigation dock at the bottom of the screen with a slid
   - `.nav-add-btn`: Detached center floating circle button with `+` icon triggering the [[Add and Edit Entry Modal]].
 - **Playful Spring Animation**: Position and width transitions use a spring cubic-bezier curve (`cubic-bezier(0.34, 1.56, 0.64, 1)`).
 - **Haptic Integration**: Tapping any navigation button dispatches `navigator.vibrate(6)` on supported devices.
+
+## Clickable Logo & Return Home
+- Tapping the app logo in `.logo-wrap` or `.sc-logo-wrap` triggers `navigateToHome()`.
+- Automatically switches to the Diary tab (`#page-log`), updates the dock indicator with spring animation, and smoothly scrolls the window and page container to top (`window.scrollTo({ top: 0, behavior: 'smooth' })`).
+- Styled with `.logo-clickable` featuring `cursor: pointer` and subtle touch compression (`transform: scale(0.97)`).

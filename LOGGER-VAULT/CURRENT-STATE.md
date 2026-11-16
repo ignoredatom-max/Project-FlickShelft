@@ -20,6 +20,9 @@ This document captures the **verified real-world state** of the Logger project. 
 | **Calendar View** | Monthly calendar grid with media poster thumbnails, multi-entry overflow indicators (`+N`), and date detail cards | `index.html` `renderCalendar()` |
 | **User Profiles & Picks** | Custom display name editing, Top Picks (4 slots), segmented stats, animated count-up ticker, activity bar chart | `index.html` `renderProfile()` |
 | **Public Profiles (`?u=UID`)**| Read-only view for visitors via URL query string, personalizing subtitle and banners without edit controls | `index.html` `renderPublicProfile()` |
+| **Public 404 Error State** | Dedicated "Diary Not Found" card with "Return to Logger" button for invalid or private UIDs | `index.html` `#pubNotFound` |
+| **Dynamic Page Titles** | Dynamic browser tab titles for tabs (`Logger · Diary`), media sheets (`${title} (${year}) · Logger`), and public profiles | `index.html` `updateDocTitle()` |
+| **Clickable Logo Navigation** | Tapping header or scrolled mini-header logo returns to Diary and scrolls smoothly to top | `index.html` `navigateToHome()` |
 | **Movie Wall** | Single-page, one-look edge-to-edge poster collection showcase with dynamic zero-scroll geometric packing, desktop hover tooltips, and mobile touch optimization | `index.html` `renderMovieWall()` |
 | **Collection Snapshots** | Single-page zero-scroll mosaic snapshot with Logger watermark, user name, and poster mosaic for native sharing / download | `index.html` `shareMovieWall()` |
 | **Deep Media Info Card** | Encyclopedia overlay fetching live TMDB/IGDB metadata, cast, director, release certification, and watch providers | `index.html` `openDeepCard()` |

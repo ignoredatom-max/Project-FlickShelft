@@ -7,12 +7,26 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Logger</title>
-<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+<meta name="description" content="Logger — A minimal, personal media tracker for movies, TV series, anime, and games.">
+<!-- OpenGraph / Social Sharing -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Logger — Personal Media Diary">
+<meta property="og:description" content="Track what you watch, what you play, and what you want to experience next.">
+<meta property="og:image" content="icon-512.png">
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Logger — Personal Media Diary">
+<meta name="twitter:description" content="Track what you watch, what you play, and what you want to experience next.">
+<meta name="twitter:image" content="icon-512.png">
+<!-- Desktop Favicon & PWA Icons -->
+<link rel="shortcut icon" type="image/png" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icon-192.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
 <link rel="apple-touch-icon" href="icon-512.png">
 <link rel="manifest" href="manifest.json">
 <link href="https://fonts.cdnfonts.com/css/sf-pro-display" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,400;1,700&display=swap" rel="stylesheet">
+<!-- Native system typography stack (Zero external font latency, zero cookie-cutter fonts) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script>
 (function(){
@@ -38,15 +52,15 @@ html.is-public-profile #page-public-profile.on {
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
   --bg:#0d0d0f;
-  --bg2:#151518;
-  --bg3:#1e1e23;
-  --bg4:#282830;
-  --border:rgba(255,255,255,0.07);
-  --border2:rgba(255,255,255,0.12);
+  --bg2:#16161a;
+  --bg3:#1f1f25;
+  --bg4:#2b2b35;
+  --border:rgba(255,255,255,0.08);
+  --border2:rgba(255,255,255,0.14);
   --text:#f5f5f7;
-  --text2:#a1a1aa;
-  --text3:#71717a;
-  --text4:#52525b;
+  --text2:#d4d4d8;
+  --text3:#a1a1aa;
+  --text4:#71717a;
   --green:#00c566;
   --teal:#00b4d8;
   --orange:#ff9f0a;
@@ -66,7 +80,7 @@ html.is-public-profile #page-public-profile.on {
   --radius-pill:999px;
   --sticky-top:96px;
   --sticky-header-height:96px;
-  --font-sans:-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "SF Pro", "Inter", -apple-system-body, system-ui, sans-serif;
+  --font-sans:system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif;
 }
 html{background:var(--bg)}
 body{background:var(--bg);color:var(--text);font-family:var(--font-sans);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
@@ -661,6 +675,8 @@ body::before{
 
 /* ── LOGO ────────────────────────────────────── */
 .logo-wrap{display:flex;align-items:center;gap:10px;line-height:1}
+.logo-clickable{cursor:pointer;user-select:none;-webkit-user-select:none}
+.logo-clickable:active{opacity:0.75;transform:scale(0.97);transition:transform 0.1s ease,opacity 0.1s ease}
 .logo-img{height:38px;object-fit:contain;display:block;}
 .page-header-title{
   font-family:var(--font-sans);
@@ -690,13 +706,13 @@ body::before{
   align-self:center;
 }
 .logo-l{
-  font-family:'Playfair Display',serif;font-style:italic;font-weight:700;
-  font-size:38px;color:var(--text);letter-spacing:-2px;line-height:1;
+  font-family:var(--font-sans);font-weight:900;
+  font-size:32px;color:var(--text);letter-spacing:-1.2px;line-height:1;
 }
 .logo-ogger{
-  font-family:var(--font-sans);font-weight:200;font-size:16px;
-  letter-spacing:7px;text-transform:uppercase;color:var(--text3);
-  margin-left:3px;align-self:center;margin-top:6px;
+  font-family:var(--font-sans);font-weight:600;font-size:14px;
+  letter-spacing:4px;text-transform:uppercase;color:var(--text2);
+  margin-left:3px;align-self:center;margin-top:2px;
 }
 .logo-dot{width:5px;height:5px;background:var(--blue);border-radius:50%;margin-left:3px;margin-bottom:8px;flex-shrink:0;align-self:flex-end;}
 /* ── HEADER ──────────────────────────────────── */
@@ -1174,9 +1190,9 @@ body::before{
 }
 .btn-delete-entry{
   width:100%;
-  background:rgba(255,69,58,0.08);
+  background:rgba(255,69,58,0.06);
   color:var(--red);
-  border:1px solid rgba(255,69,58,0.22);
+  border:1px solid var(--border);
   padding:11px 16px;
   border-radius:12px;
   font-family:var(--font-sans);
@@ -1848,9 +1864,9 @@ textarea.inp.review-inp:focus{
 .r-ticks{ display:none!important; }
 
 .dup-banner{
-  background:rgba(255,159,10,0.1);border:1px solid rgba(255,159,10,0.2);
+  background:rgba(255,159,10,0.08);border:1px solid var(--border2);
   border-radius:10px;padding:10px 14px;margin-bottom:14px;
-  font-size:12px;color:var(--orange);font-weight:500;display:none;
+  font-size:12px;color:var(--orange);font-weight:600;display:none;
   animation:fadeUp 0.2s ease;
 }
 .dup-banner.show{display:block}
@@ -1866,12 +1882,12 @@ textarea.inp.review-inp:focus{
 .btn-save:hover{background:#2fe34d;}
 .btn-save:active{transform:scale(0.97);box-shadow:0 2px 6px rgba(0,0,0,0.3)}
 .btn-modal-wl{
-  flex:1;background:rgba(45,127,249,0.12);color:var(--blue);border:1px solid rgba(45,127,249,0.32);
+  flex:1;background:var(--bg3);color:var(--text);border:1px solid var(--border2);
   padding:14px 14px;border-radius:14px;font-family:var(--font-sans);font-size:14px;font-weight:700;
   cursor:pointer;transition:transform 0.15s,background 0.15s,border-color 0.15s;
   display:flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap;
 }
-.btn-modal-wl:hover{background:rgba(45,127,249,0.22);border-color:rgba(45,127,249,0.55);}
+.btn-modal-wl:hover{background:var(--bg4);border-color:var(--text2);}
 .btn-modal-wl:active{transform:scale(0.97);}
 .btn-cancel{
   padding:15px 20px;background:var(--bg3);border:1px solid var(--border);color:var(--text2);
@@ -2144,9 +2160,9 @@ body.wl-dragging-active{
   letter-spacing:0.3px;
 }
 .sc-note{
-  font-size:12px;color:rgba(255,255,255,0.6);line-height:1.6;
-  border-left:2px solid rgba(255,255,255,0.15);padding-left:10px;
-  margin-bottom:0;font-style:italic;
+  font-size:12px;color:var(--text2);line-height:1.6;
+  border-left:2px solid var(--border2);padding-left:10px;
+  margin-bottom:0;font-weight:500;
   display:none;
 }
 .sc-note.show{display:block;}
@@ -2497,13 +2513,13 @@ body.readonly .row{cursor:default}
 .timeline-line{
   width:2px;
   flex:1;
-  background:linear-gradient(to bottom, var(--teal), var(--purple));
+  background:var(--border2);
   margin:2px 0;
   border-radius:2px;
   opacity:0.6;
 }
 .timeline-step.ongoing-step .timeline-line{
-  background:linear-gradient(to bottom, var(--teal), var(--green));
+  background:var(--teal);
 }
 .timeline-content{
   padding-bottom:12px;
@@ -4891,10 +4907,10 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   border:none;
   cursor:pointer;
   padding:4px 6px;
-  transition:opacity 0.15s;
+  transition:color 0.15s ease;
 }
 .pub-sec-more:hover{
-  opacity:0.8;
+  color:var(--text);
 }
 
 /* ── Section Structure & Typography ── */
@@ -5811,7 +5827,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
   <div id="logStickyHeader" class="sticky-header" style="position:sticky;top:0;z-index:860">
     <div class="header" style="position:relative">
       <div>
-        <div class="logo-wrap">
+        <div class="logo-wrap logo-clickable" onclick="navigateToHome()" title="Return to Diary" role="button" tabindex="0">
           <img src="logo.png" class="logo-img" alt="Logger">
         </div>
         <div class="header-sub" id="headerSub">personal media diary</div>
@@ -5930,7 +5946,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
         <div class="logo-wrap">
           <span class="page-header-title">Favourites</span>
         </div>
-        <div class="header-sub" id="favsSub">Stuff you loved ❤️</div>
+        <div class="header-sub" id="favsSub">Top rated titles</div>
       </div>
       <button class="favs-back-btn" onclick="document.getElementById('profileNavBtn').click()" aria-label="Back to Profile" title="Back to Profile">
         <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
@@ -6099,8 +6115,18 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
     </header>
 
     <div class="pub-banner" id="pubPreviewBanner" style="display:none">
-      <span>👁️ <strong>Public Profile Preview Mode</strong> — This is how visitors see your profile.</span>
+      <span>👁️ <strong>Public Profile Preview Mode</strong> · This is how visitors see your profile.</span>
       <button class="pub-banner-close" onclick="exitPublicPreview()">Back to App ✕</button>
+    </div>
+
+    <!-- 404 NOT FOUND STATE FOR INVALID PUBLIC PROFILES -->
+    <div id="pubNotFound" style="display:none;padding:70px 20px 80px;text-align:center">
+      <div style="font-size:48px;margin-bottom:16px;line-height:1">🔍</div>
+      <div style="font-size:20px;font-weight:700;color:var(--text);margin-bottom:8px;letter-spacing:-0.02em">Diary Not Found</div>
+      <div style="font-size:13.5px;color:var(--text3);max-width:320px;margin:0 auto 24px;line-height:1.55">
+        This media diary does not exist, has been removed, or the link is incorrect.
+      </div>
+      <button class="pub-cta-btn" onclick="window.location.href=window.location.pathname" style="margin:0 auto;display:inline-block">Return to Logger</button>
     </div>
 
     <section class="pub-hero" id="pubHero">
@@ -6148,8 +6174,8 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
     <footer class="pub-footer">
       <img src="logo.png" alt="Logger" style="height:30px;object-fit:contain;margin:0 auto 12px;display:block">
       <div class="pub-footer-tagline">Track what you watch, what you play, and what you want to experience next.</div>
-      <button class="pub-footer-btn" onclick="openPublicGetStarted()">Start Your Own loGGer — It's Free</button>
-      <div class="atomyn-signature" style="margin-top:24px;opacity:0.5">ATOMYN</div>
+      <button class="pub-footer-btn" onclick="openPublicGetStarted()">Start Your Own Logger · Free</button>
+      <div class="atomyn-signature" style="margin-top:24px;opacity:0.5">&copy; <span class="current-year"></span> ATOMYN</div>
     </footer>
   </div>
 </div>
@@ -6555,7 +6581,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
 
 <!-- READ-ONLY BANNER (shown to visitors not signed in) -->
 <div class="readonly-banner" id="readonlyBanner" style="display:none">
-  <span id="readonlyBannerText">👀 Viewing this diary — read only</span>
+  <span id="readonlyBannerText">Viewing this diary · read-only</span>
   <button onclick="document.getElementById('authBtn').click();closeSheet&&closeSheet()">Sign in to use yours</button>
 </div>
 
@@ -6657,7 +6683,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
       <div class="sheet-ico">🎬</div>
       <div class="sheet-info">
         <div class="sheet-label">Movie &amp; Series data by TMDB</div>
-        <div class="sheet-sub">themoviedb.org — tap to visit</div>
+        <div class="sheet-sub">themoviedb.org · tap to visit</div>
       </div>
     </div>
   </a>
@@ -6666,7 +6692,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
       <div class="sheet-ico">🎮</div>
       <div class="sheet-info">
         <div class="sheet-label">Game data by IGDB</div>
-        <div class="sheet-sub">igdb.com — tap to visit</div>
+        <div class="sheet-sub">igdb.com · tap to visit</div>
       </div>
     </div>
   </a>
@@ -6753,7 +6779,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
         </div>
         <div class="tmdb-attr" id="tmdbAttr">Movie &amp; series data from <a href="https://www.themoviedb.org" target="_blank" style="color:var(--teal);text-decoration:none">TMDB</a></div>
       </div>
-      <div class="dup-banner" id="dupBanner">⚠️ Already in your log — saving will tag this as Rewatched.</div>
+      <div class="dup-banner" id="dupBanner">Already in your log · saving will tag as Rewatched.</div>
       <div class="sel-preview" id="selPreview">
         <img class="sel-img" id="selImg" src="" alt="">
         <div class="sel-info"><div class="sel-title" id="selName"></div><div class="sel-sub" id="selSub"></div></div>
@@ -6887,6 +6913,9 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
       </div>
     </div>
     <button onclick="closeAbout()" style="width:100%;padding:13px;background:var(--bg3);border:1px solid var(--border2);border-radius:14px;color:var(--text2);font-size:14px;font-weight:600;cursor:pointer;font-family:var(--font-sans)">Close</button>
+    <div style="text-align:center;margin-top:16px;font-size:11px;color:var(--text4);letter-spacing:0.3px">
+      &copy; <span class="current-year"></span> ATOMYN &middot; All rights reserved
+    </div>
   </div>
 </div>
 
@@ -6914,7 +6943,7 @@ body:not(.readonly) .profile-name:after{content:' ✏️';font-size:12px;opacity
             <div class="sc-name" id="scName">Aditya</div>
             <div class="sc-brand">logged on Logger •</div>
           </div>
-          <div class="sc-logo-wrap">
+          <div class="sc-logo-wrap logo-clickable" onclick="navigateToHome()" title="Return to Diary" role="button" tabindex="0">
             <img src="logo.png" class="sc-logo-img" alt="Logger">
           </div>
         </div>
@@ -7065,7 +7094,7 @@ function updateAuthUI(){
   if(currentUser){
     ico.textContent='✅';
     lbl.textContent=currentUser.displayName||'Signed in';
-    sub.textContent=currentUser.email+' — tap to sign out';
+    sub.textContent=currentUser.email+' · tap to sign out';
     arr.textContent='';
   } else {
     ico.textContent='🔑';
@@ -7217,6 +7246,14 @@ async function fsLoadPublic(uid){
     PUBLIC_WL = getPubWatchlist(uid);
     window.PUBLIC_WL = PUBLIC_WL;
   }
+
+  // 404 check: If no profile exists, no entries, no watchlist, and no local cache for this uid
+  const hasLocalName = !!localStorage.getItem(`lgr_${uid}_name`);
+  const hasLocalWL = !!(PUBLIC_WL && PUBLIC_WL.length > 0);
+  const hasLocalEntries = !!(DATA && DATA.length > 0);
+  const isOwnerViewing = !!(currentUser && currentUser.uid === uid);
+  window._pubProfileNotFound = !hasLocalName && !hasLocalWL && !hasLocalEntries && !isOwnerViewing;
+
   renderPublicProfile(uid);
   showPublicProfilePage();
 }
@@ -7750,7 +7787,7 @@ function renderFavs(){
       ${thumb}
       <div class="fav-info">
         <div class="fav-title">${e.title}</div>
-        <div class="fav-sub">${[e.year,e.genre].filter(Boolean).join(' · ')||'—'}</div>
+        <div class="fav-sub">${[e.year,e.genre].filter(Boolean).join(' · ')||'-'}</div>
         <div style="margin-top:5px"><span class="rating-badge ${RATING_CLASS[rKey]}">${RATING_LABELS[rKey]}</span></div>
       </div>
       <button class="row-fav on" onclick="toggleFav(${e.id},event)" style="font-size:20px">❤️</button>
@@ -8752,6 +8789,8 @@ window.addEventListener('resize', () => {
 
 if(document.readyState === 'loading'){
   document.addEventListener('DOMContentLoaded', () => {
+    updateDocTitle();
+    document.querySelectorAll('.current-year').forEach(el => { el.textContent = new Date().getFullYear(); });
     updateNavIndicator(null, true);
     updateAllSegIndicators(true);
     initRatingBar();
@@ -8811,6 +8850,40 @@ window.addEventListener('scroll', () => {
 }, { passive: true });
 
 // ── NAV ─────────────────────────────────────────────────
+
+// ── DYNAMIC PAGE TITLE & HOME NAVIGATION HELPERS ──────────
+function updateDocTitle(viewTitle){
+  if(viewTitle){
+    document.title = `${viewTitle} · Logger`;
+    return;
+  }
+  const activeNav = document.querySelector('.nav-btn.on');
+  const p = activeNav ? activeNav.dataset.page : 'log';
+  const tabTitles = {
+    log: 'Diary',
+    watchlist: 'Watchlist',
+    calendar: 'Calendar',
+    favs: 'Favourites',
+    profile: 'Profile'
+  };
+  const titleName = tabTitles[p] || 'Diary';
+  document.title = `Logger · ${titleName}`;
+}
+
+function navigateToHome(){
+  if(typeof _pubPreviewActive !== 'undefined' && _pubPreviewActive){
+    exitPublicPreview();
+    return;
+  }
+  const logBtn = document.querySelector('.nav-btn[data-page="log"]');
+  if(logBtn && !logBtn.classList.contains('on')){
+    logBtn.click();
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  const logPage = document.getElementById('page-log');
+  if(logPage) logPage.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 document.querySelectorAll('.nav-btn').forEach(btn=>{
   btn.addEventListener('click',()=>{
     if(navigator.vibrate){ try { navigator.vibrate(8); } catch(err){} }
@@ -8818,6 +8891,7 @@ document.querySelectorAll('.nav-btn').forEach(btn=>{
     btn.classList.add('on');
     updateNavIndicator(btn);
     const p=btn.dataset.page;
+    updateDocTitle();
     document.querySelectorAll('.page').forEach(pg=>pg.classList.remove('on'));
     const page = document.getElementById('page-'+p);
     if(!page) return;
@@ -9191,11 +9265,11 @@ async function runSearch(q){
     dropdown.innerHTML=!dropData.length?'<div class="dr-empty">No results found</div>'
       :dropData.map((r,i)=>{
         const th=renderPosterHtml(r.poster, r.title, mType, 'dr-thumb', 'dr-ph');
-        return `<div class="dr-item" data-i="${i}">${th}<div><div class="dr-name">${r.title}</div><div class="dr-meta">${[r.year,r.genre].filter(Boolean).join(' · ')||'—'}</div></div></div>`;
+        return `<div class="dr-item" data-i="${i}">${th}<div><div class="dr-name">${r.title}</div><div class="dr-meta">${[r.year,r.genre].filter(Boolean).join(' · ')||'-'}</div></div></div>`;
       }).join('');
     dropdown.querySelectorAll('.dr-item').forEach(el=>el.addEventListener('click',()=>pickResult(dropData[+el.dataset.i])));
     dropdown.classList.add('show');
-  }catch{spin.classList.remove('show');dropdown.innerHTML='<div class="dr-empty">Search failed — check internet</div>';dropdown.classList.add('show');}
+  }catch{spin.classList.remove('show');dropdown.innerHTML='<div class="dr-empty">Search failed · check internet</div>';dropdown.classList.add('show');}
 }
 
 function pickResult(r){
@@ -10695,6 +10769,10 @@ function findMatchingLoggedEntry(item, deepData){
 }
 
 function showInfoCard(entry, context){
+  if(entry && entry.title){
+    const yr = entry.year ? ` (${entry.year})` : '';
+    updateDocTitle(`${entry.title}${yr}`);
+  }
   const sheet = document.getElementById('infoSheet');
   const overlay = document.getElementById('infoOverlay');
 
@@ -11105,12 +11183,12 @@ async function fetchExtraInfo(entry){
           overview: data.overview,
           score: data.vote_average ? `⭐ ${data.vote_average.toFixed(1)}` : null,
           details: [
-            {l:'Release',v: data.release_date||'—'},
+            {l:'Release',v: data.release_date||'-'},
             {l:'Runtime', v: data.runtime?`${data.runtime} min`:'—'},
             {l:'Language',v: (data.original_language||'').toUpperCase()},
-            {l:'Country', v: data.production_countries?.[0]?.iso_3166_1||'—'},
-            {l:'Director',v: data.credits?.crew?.find(x=>x.job==='Director')?.name||'—'},
-            {l:'Cast', v: data.credits?.cast?.slice(0,3).map(x=>x.name).join(', ')||'—'},
+            {l:'Country', v: data.production_countries?.[0]?.iso_3166_1||'-'},
+            {l:'Director',v: data.credits?.crew?.find(x=>x.job==='Director')?.name||'-'},
+            {l:'Cast', v: data.credits?.cast?.slice(0,3).map(x=>x.name).join(', ')||'-'},
           ]
         });
       }
@@ -11130,12 +11208,12 @@ async function fetchExtraInfo(entry){
           overview: data.overview,
           score: data.vote_average ? `⭐ ${data.vote_average.toFixed(1)}` : null,
           details: [
-            {l:'First Air', v: data.first_air_date||'—'},
-            {l:'Seasons',   v: data.number_of_seasons||'—'},
-            {l:'Episodes',  v: data.number_of_episodes||'—'},
-            {l:'Status',    v: data.status||'—'},
+            {l:'First Air', v: data.first_air_date||'-'},
+            {l:'Seasons',   v: data.number_of_seasons||'-'},
+            {l:'Episodes',  v: data.number_of_episodes||'-'},
+            {l:'Status',    v: data.status||'-'},
             {l:'Language',  v: (data.original_language||'').toUpperCase()},
-            {l:'Cast',      v: data.credits?.cast?.slice(0,3).map(x=>x.name).join(', ')||'—'},
+            {l:'Cast',      v: data.credits?.cast?.slice(0,3).map(x=>x.name).join(', ')||'-'},
           ]
         });
       }
@@ -11157,12 +11235,12 @@ async function fetchExtraInfo(entry){
           overview: (data.summary || data.description_raw || '').slice(0,300)+((data.summary||data.description_raw||'').length>300?'…':''),
           score: (data.total_rating || data.rating) ? `⭐ ${((data.total_rating||data.rating)>10 ? (data.total_rating||data.rating)/10 : (data.total_rating||data.rating)).toFixed(1)}` : null,
           details: [
-            {l:'Released',  v: data.first_release_date||data.released||'—'},
+            {l:'Released',  v: data.first_release_date||data.released||'-'},
             {l:'Playtime',  v: data.playtime?`~${data.playtime}h`:'—'},
-            {l:'Platforms', v: data.platforms?.slice(0,2).map(x=>x.name||x.platform?.name).join(', ')||'—'},
-            {l:'Developer', v: data.developers?.[0]?.name||'—'},
-            {l:'Publisher', v: data.publishers?.[0]?.name||'—'},
-            {l:'Rating',    v: data.age_ratings_detailed?.[0]?.rating_label||data.esrb_rating?.name||'—'},
+            {l:'Platforms', v: data.platforms?.slice(0,2).map(x=>x.name||x.platform?.name).join(', ')||'-'},
+            {l:'Developer', v: data.developers?.[0]?.name||'-'},
+            {l:'Publisher', v: data.publishers?.[0]?.name||'-'},
+            {l:'Rating',    v: data.age_ratings_detailed?.[0]?.rating_label||data.esrb_rating?.name||'-'},
           ]
         });
       }
@@ -11185,7 +11263,7 @@ function updateInfoCard(info){
   }
   if(info.details){
     document.getElementById('infoDetails').innerHTML = info.details
-      .filter(d=>d.v&&d.v!=='—')
+      .filter(d=>d.v&&d.v!=='-')
       .map(d=>`<div class="info-detail-item"><div class="info-detail-lbl">${d.l}</div><div class="info-detail-val">${d.v}</div></div>`)
       .join('');
   }
@@ -11194,6 +11272,7 @@ function updateInfoCard(info){
 function closeInfoCard(){
   document.getElementById('infoOverlay').classList.remove('show');
   _infoEntry = null;
+  updateDocTitle();
 }
 
 document.getElementById('infoClose').addEventListener('click', closeInfoCard);
@@ -11249,7 +11328,7 @@ document.getElementById('guestContinueAnyway').addEventListener('click',()=>{
   const banner = document.createElement('div');
   banner.id = 'guestBanner';
   banner.style.cssText = 'position:fixed;bottom:80px;left:12px;right:12px;z-index:400;background:var(--bg3);border:1px solid var(--border2);border-radius:12px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12px;color:var(--text2);';
-  banner.innerHTML = '⚠️ Guest mode — data won\'t be saved'
+  banner.innerHTML = 'Guest mode · data will not be saved'
     + '<button onclick="document.getElementById(\'tutorialOverlay\').style.display=\'flex\';document.getElementById(\'guestBanner\').remove()" style="background:var(--blue);color:#fff;border:none;padding:5px 12px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--font-sans);white-space:nowrap">Sign in</button>';
   document.body.appendChild(banner);
 });
@@ -11694,7 +11773,25 @@ function renderPublicProfile(explicitUid){
   const uid = explicitUid || _pubActiveUid || PUBLIC_UID || (currentUser ? currentUser.uid : OWNER_UID);
   _pubActiveUid = uid;
 
+  const notFoundEl = document.getElementById('pubNotFound');
+  const heroEl = document.getElementById('pubHero');
+  const tabsEl = document.getElementById('pubTabsBar');
+
+  if(window._pubProfileNotFound){
+    if(notFoundEl) notFoundEl.style.display = 'block';
+    if(heroEl) heroEl.style.display = 'none';
+    if(tabsEl) tabsEl.style.display = 'none';
+    document.querySelectorAll('.pub-tab-content').forEach(c => c.style.display = 'none');
+    document.title = 'Diary Not Found · Logger';
+    return;
+  } else {
+    if(notFoundEl) notFoundEl.style.display = 'none';
+    if(heroEl) heroEl.style.display = '';
+    if(tabsEl) tabsEl.style.display = '';
+  }
+
   const name = getPubDisplayName(uid);
+  document.title = (name && name !== 'Member') ? `${name}'s Diary · Logger` : 'Public Profile · Logger';
   const pfp = getPubPfp(uid);
   const picks = getPubPicks(uid);
   const entries = (typeof DATA !== 'undefined' && Array.isArray(DATA)) ? DATA : [];
@@ -11736,7 +11833,7 @@ function renderPublicProfile(explicitUid){
     // Only show bio text if there's meaningful content; keep it short and clean
     const hasPeaks = peaks > 0;
     bioEl.textContent = hasPeaks
-      ? `${name}'s media diary — ${peaks} peak ${peaks === 1 ? 'pick' : 'picks'}.`
+      ? `${name}'s media diary · ${peaks} peak ${peaks === 1 ? 'pick' : 'picks'}.`
       : `${name}'s personal media diary on loGGer.`;
   }
 
@@ -11939,7 +12036,7 @@ function renderPublicOverview(favs, entries, picks, _legacyPicks){
     <section class="pub-sec" id="pubSecFavs">
       <div class="pub-sec-header">
         <div class="pub-sec-title-group">
-          <div class="pub-sec-title">❤️ Favourites</div>
+          <div class="pub-sec-title">Favourites</div>
           ${favs.length ? `<span class="pub-sec-subtitle">${favs.length} total</span>` : ''}
         </div>
         <button class="pub-sec-more" onclick="switchPublicTab('favs')">See all (${favs.length}) ›</button>
@@ -11959,7 +12056,7 @@ function renderPublicOverview(favs, entries, picks, _legacyPicks){
     <section class="pub-sec">
       <div class="pub-sec-header">
         <div class="pub-sec-title-group">
-          <div class="pub-sec-title">📋 Recent Activity</div>
+          <div class="pub-sec-title">Recent Activity</div>
           ${entries.length ? `<span class="pub-sec-subtitle">${entries.length} total logged</span>` : ''}
         </div>
         <button class="pub-sec-more" onclick="switchPublicTab('diary')">View diary ›</button>
@@ -12059,7 +12156,7 @@ function renderPublicStats(entries){
 
   container.innerHTML = `
     <div class="pub-stats-container">
-      <div class="pub-sec-title" style="margin-bottom:14px">📊 Media Breakdown</div>
+      <div class="pub-sec-title" style="margin-bottom:14px">Media Breakdown</div>
       <div class="pub-stats-grid">
         <div class="pub-stat-box">
           <div class="pub-stat-box-num">${total}</div>
@@ -12087,7 +12184,7 @@ function renderPublicStats(entries){
         </div>
       </div>
 
-      <div class="pub-sec-title" style="margin-top:24px;margin-bottom:14px">⭐ Rating Distribution</div>
+      <div class="pub-sec-title" style="margin-top:24px;margin-bottom:14px">Rating Distribution</div>
       <div class="pub-rating-dist">
         ${['peak', 'excellent', 'decent', 'skip'].map(r => {
           const count = rCounts[r] || 0;
@@ -12602,7 +12699,7 @@ function renderUniversalSearchResults(query){
       // 1. Featured Top Franchise Collection (if high-confidence match)
       if(topCollection && (isBroadFranchiseIntent || topCollectionScore >= 700)){
         html += `
-          <div class="diary-search-sec-title"><span>🌟 Franchise Collection</span></div>
+          <div class="diary-search-sec-title"><span>Franchise Collection</span></div>
           ${renderSearchCollectionCard(topCollection)}
         `;
       }
@@ -12615,7 +12712,7 @@ function renderUniversalSearchResults(query){
       // 3. Secondary related collection at bottom if not already shown at top
       if(!isBroadFranchiseIntent && topCollection && topCollectionScore >= 300 && topCollectionScore < 700){
         html += `
-          <div class="diary-search-sec-title"><span>🎬 Related Collection</span></div>
+          <div class="diary-search-sec-title"><span>Related Collection</span></div>
           ${renderSearchCollectionCard(topCollection)}
         `;
       }
@@ -12814,10 +12911,15 @@ function closeDeepCard(){
     }, 280);
   }
   _activeDeepItem = null;
+  updateDocTitle();
 }
 
 async function openDeepCard(mediaItem){
   if(!mediaItem) return;
+  if(mediaItem.title){
+    const yr = mediaItem.year ? ` (${mediaItem.year})` : '';
+    updateDocTitle(`${mediaItem.title}${yr}`);
+  }
   const initialPoster = mediaItem.poster || mediaItem.background_image || mediaItem.cover || mediaItem.image || '';
   mediaItem.poster = initialPoster;
   _activeDeepItem = mediaItem;
@@ -12865,7 +12967,7 @@ async function openDeepCard(mediaItem){
   typeChip.className = `deep-chip chip-type-${mediaType}`;
 
   const yearChip = document.getElementById('deepYearChip');
-  yearChip.textContent = mediaItem.year || '—';
+  yearChip.textContent = mediaItem.year || '-';
   yearChip.style.display = mediaItem.year ? 'inline-flex' : 'none';
 
   document.getElementById('deepAgeChip').style.display = 'none';
@@ -14369,17 +14471,17 @@ const COUNTRY_NAMES = {
 };
 
 const TV_CERT_DESCS = {
-  'TV-Y': 'All Children — Appropriate for all ages',
-  'TV-Y7': 'Children 7+ — Designed for children age 7 and older',
+  'TV-Y': 'All Children: Appropriate for all ages',
+  'TV-Y7': 'Children 7+: Designed for children age 7 and older',
   'TV-Y7-FV': 'Children 7+ with Fantasy Violence',
-  'TV-G': 'General Audience — Suitable for all ages',
-  'TV-PG': 'Parental Guidance Suggested — Unsuitable for younger children',
-  'TV-14': 'Parents Strongly Cautioned — Unsuitable for children under 14',
-  'TV-MA': 'Mature Audience Only — Unsuitable for viewers under 17',
+  'TV-G': 'General Audience: Suitable for all ages',
+  'TV-PG': 'Parental Guidance Suggested: Unsuitable for younger children',
+  'TV-14': 'Parents Strongly Cautioned: Unsuitable for children under 14',
+  'TV-MA': 'Mature Audience Only: Unsuitable for viewers under 17',
   'PG12': 'Parental Guidance for children under 12',
   'R15+': 'Restricted to viewers 15 and older',
   'R18+': 'Adults Only (18+)',
-  'U': 'Universal — Suitable for all audiences',
+  'U': 'Universal: Suitable for all audiences',
   'U/A': 'Parental Guidance for children below 12',
   'U/A 7+': 'Suitable for 7+ with parental guidance',
   'U/A 13+': 'Suitable for 13+ with parental guidance',
@@ -14395,12 +14497,12 @@ const TV_CERT_DESCS = {
 };
 
 const MOVIE_CERT_DESCS = {
-  'G': 'General Audiences — All ages admitted',
-  'PG': 'Parental Guidance Suggested — Some material may not be suitable for children',
-  'PG-13': 'Parents Strongly Cautioned — Inappropriate for children under 13',
-  'R': 'Restricted — Under 17 requires accompanying parent or adult guardian',
-  'NC-17': 'Adults Only — No one 17 and under admitted',
-  'U': 'Universal — Unrestricted public exhibition',
+  'G': 'General Audiences: All ages admitted',
+  'PG': 'Parental Guidance Suggested: Some material may not be suitable for children',
+  'PG-13': 'Parents Strongly Cautioned: Inappropriate for children under 13',
+  'R': 'Restricted: Under 17 requires accompanying parent or adult guardian',
+  'NC-17': 'Adults Only: No one 17 and under admitted',
+  'U': 'Universal: Unrestricted public exhibition',
   'U/A': 'Parental Guidance for children below 12',
   'U/A 7+': 'Suitable for 7 years and above with guidance',
   'U/A 13+': 'Suitable for 13 years and above with guidance',
@@ -14453,7 +14555,7 @@ function extractAllAgeRatings(data, type){
 
     // Preferred countries first
     for(const c of preferredCountries){
-      const entry = (rawList || []).find(r => (r.iso_3166_1 === c || r.country === c) && r.rating && r.rating.trim() && r.rating !== '—' && r.rating !== '-');
+      const entry = (rawList || []).find(r => (r.iso_3166_1 === c || r.country === c) && r.rating && r.rating.trim() && r.rating !== '-' && r.rating !== '-');
       if(entry && !seen.has(entry.rating.trim())){
         const cert = entry.rating.trim();
         seen.add(cert);
@@ -14474,7 +14576,7 @@ function extractAllAgeRatings(data, type){
     for(const entry of (rawList || [])){
       if(items.length >= 4) break;
       const cert = entry.rating ? entry.rating.trim() : '';
-      if(cert && cert !== '—' && cert !== '-' && !seen.has(cert)){
+      if(cert && cert !== '-' && cert !== '-' && !seen.has(cert)){
         seen.add(cert);
         const countryCode = entry.iso_3166_1 || 'INTL';
         const flag = COUNTRY_FLAGS[countryCode] || '🌐';
@@ -14503,7 +14605,7 @@ function extractAllAgeRatings(data, type){
       const entry = (rawList || []).find(r => (r.iso_3166_1 === c || r.country === c));
       if(entry){
         const list = entry.release_dates || [entry];
-        const certObj = list.find(d => (d.certification || d.certification_code || d.rating) && (d.certification || d.certification_code || d.rating).trim() && (d.certification || d.certification_code || d.rating) !== '—' && (d.certification || d.certification_code || d.rating) !== '-');
+        const certObj = list.find(d => (d.certification || d.certification_code || d.rating) && (d.certification || d.certification_code || d.rating).trim() && (d.certification || d.certification_code || d.rating) !== '-' && (d.certification || d.certification_code || d.rating) !== '-');
         if(certObj){
           const cert = (certObj.certification || certObj.certification_code || certObj.rating).trim();
           if(!seen.has(cert)){
@@ -14526,7 +14628,7 @@ function extractAllAgeRatings(data, type){
       if(items.length >= 4) break;
       const c = entry.iso_3166_1 || entry.country || 'INTL';
       const list = entry.release_dates || [entry];
-      const certObj = list.find(d => (d.certification || d.certification_code || d.rating) && (d.certification || d.certification_code || d.rating).trim() && (d.certification || d.certification_code || d.rating) !== '—' && (d.certification || d.certification_code || d.rating) !== '-');
+      const certObj = list.find(d => (d.certification || d.certification_code || d.rating) && (d.certification || d.certification_code || d.rating).trim() && (d.certification || d.certification_code || d.rating) !== '-' && (d.certification || d.certification_code || d.rating) !== '-');
       if(certObj){
         const cert = (certObj.certification || certObj.certification_code || certObj.rating).trim();
         if(!seen.has(cert)){
@@ -14546,7 +14648,7 @@ function extractAllAgeRatings(data, type){
   } else if(type === 'game'){
     if(data.age_ratings_detailed && data.age_ratings_detailed.length){
       for(const r of data.age_ratings_detailed){
-        if(r.label && r.label !== '—' && r.label !== '-'){
+        if(r.label && r.label !== '-' && r.label !== '-'){
           const org = r.organization || 'ESRB';
           const flag = org.includes('ESRB') ? '🇺🇸' : (org.includes('PEGI') ? '🇪🇺' : (org.includes('CERO') ? '🇯🇵' : (org.includes('USK') ? '🇩🇪' : (org.includes('ACB') ? '🇦🇺' : '🎮'))));
           items.push({
@@ -14559,7 +14661,7 @@ function extractAllAgeRatings(data, type){
         }
       }
     }
-    if(!items.length && data.esrb_rating && data.esrb_rating.name && data.esrb_rating.name !== '—' && data.esrb_rating.name !== '-'){
+    if(!items.length && data.esrb_rating && data.esrb_rating.name && data.esrb_rating.name !== '-' && data.esrb_rating.name !== '-'){
       items.push({
         badge: data.esrb_rating.name,
         countryCode: 'ESRB',
