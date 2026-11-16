@@ -109,13 +109,12 @@ graph TD
 - **`series`**: Television shows, anime, miniseries with season tracking (sourced from TMDB).
 - **`game`**: Video games across PC, consoles, and handhelds (sourced from IGDB).
 
-### 5-Tier Rating System
-Logger rejects traditional 10-star systems in favor of five emotive, color-coded tiers:
+### 4-Tier Rating System
+Logger rejects traditional 10-star systems in favor of four emotive, color-coded tiers:
 1. `skip` (Red `#ff453a`) — Unenjoyable or not recommended.
-2. `mediocre` (Orange `#ff9f0a`) — Average, forgettable, or flawed.
-3. `decent` (Teal `#00b4d8`) — Solid, entertaining, worth watching/playing.
-4. `excellent` (Green `#00c566`) — High quality, highly recommended.
-5. `peak` (Purple `#bf5af2`) — Masterpiece, personal all-time favorite.
+2. `decent` (Teal `#00b4d8`) — Solid, entertaining, worth watching/playing. (Legacy `mediocre` automatically migrated here).
+3. `excellent` (Green `#00c566`) — High quality, highly recommended.
+4. `peak` (Purple `#bf5af2`) — Masterpiece, personal all-time favorite.
 
 See [[Ratings and Reviews]] for implementation details.
 

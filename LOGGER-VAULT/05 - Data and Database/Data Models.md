@@ -11,7 +11,7 @@ interface DiaryEntry {
   title: string;
   year?: string | number;
   poster?: string;         // Full image URL
-  rating: 'skip' | 'mediocre' | 'decent' | 'excellent' | 'peak';
+  rating: 'skip' | 'decent' | 'excellent' | 'peak'; // Legacy 'mediocre' auto-migrates to 'decent'
   status: 'done' | 'watching' | 'dropped' | 'started' | 'ongoing';
   date: string;            // ISO Date or locale string
   notes?: string;          // User personal notes or review

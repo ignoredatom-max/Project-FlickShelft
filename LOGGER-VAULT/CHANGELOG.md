@@ -9,6 +9,14 @@ This document records the chronological development history of **Logger** (Proje
 
 ## 🏷️ Release History
 
+### November 2026 — High-Contrast Spring Navigation, 4-Tier Rating Scale & Seamless Data Migration
+- **Bottom Navigation Dock Visual Redesign**: Upgraded active indicator to a solid pure white (`#ffffff`) pill with bold solid black (`#000000`, 700) active tab text and icons for maximum contrast. Added physics-based playful spring animation (`cubic-bezier(0.34, 1.56, 0.64, 1)`).
+- **Top Segment Filter Bars**: Applied the identical solid pure white sliding pill, bold black active text, and playful spring interaction to the top filter bars (`All`, `Film`, `Series`, `Game`) across Diary, Watchlist, and Favourites.
+- **Redesigned Rating Control**: Replaced legacy HTML5 range slider with a modern segmented pill bar (`.rating-bar`) spanning the full dialog width. Adjusted height to `46px` for comfortable touch targets.
+- **Removed Mediocre Tier (4-Tier Scale)**: Streamlined rating system to 4 tiers: `Skip` (Red), `Decent` (Teal), `Excellent` (Green), and `Peak` (Purple).
+- **Automated Zero-Loss Migration**: Built an automated startup migration (`migrateRatings`, `migrateAllLocalCaches`) that shifts all legacy `mediocre` entries to `decent` across local caches and Firebase Firestore, protected by a persistent one-time flag (`lgr_migrated_v4_ratings`) ensuring zero ongoing CPU or network overhead.
+- **Analytics & Profile Charts**: Updated Diary stats and Public Profile distribution charts to reflect the clean 4-tier rating model.
+
 ### October 2026 — Performance Overhaul, Movie Wall & Second Brain
 - **Watchlist Media Filter & Typography Parity Layout**: Introduced segmented filter pill bar (`All`, `Film`, `Series`, `Game`) in the sticky header with synchronized upcoming carousel and live counters. Refined card spacing to a compact 72px row pitch while strictly preserving full **15px bold typography parity** with the main Diary log page, and maintained the original spacious 130px upcoming carousel layout.
 - **Movie Wall Feature**: Replaced the canvas-based Universe Graph View with a 100% native DOM [[Movie Wall]]. Displays all logged media posters edge-to-edge with no labels, responsive 4-column mobile grid, and zero scroll lag.
