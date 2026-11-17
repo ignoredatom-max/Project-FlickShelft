@@ -9,6 +9,18 @@ This document records the chronological development history of **Logger** (Proje
 
 ## 🏷️ Release History
 
+### November 2026 — Comprehensive SVG Icon System & Zero-Emoji Overhaul
+- **Full Emoji Elimination**: Replaced all user-facing emojis throughout the app with bespoke, modern, inline SVG icons and clean typography.
+- **SVG Heart Favourites System**: Replaced legacy emoji hearts (`❤️`/`🤍`) in log rows, favourites view, and detail sheets with crisp, hardware-accelerated vector SVGs (`renderFavHeartSvg`) featuring smooth scaling transitions on tap.
+- **Modern Action & Status Icons**:
+  - Replaced modal share & delete emojis with clean SVG Share and Trash vectors.
+  - Replaced status dropdown emojis (`⚡`, `♾️`, `🏆`, `❌`, `🎬`, `📺`) with clean typography (`Started`, `Ongoing`, `Completed`, `Dropped`, `Watched`, `Watching`, `Finished`).
+  - Upgraded timeline journey badges with dedicated inline SVGs (Zap, Check, Clock, TV).
+- **Settings & About Modals**: Replaced legacy emoji icons (`🔑`, `🔄`, `🎬`, `🎮`, `🙋`, `📧`, `📸`, `✈️`) with crisp SVGs for Google Auth, sync, data providers, and social platforms (Instagram, Discord, Telegram).
+- **Placeholders & Empty States**: Replaced all fallback poster and avatar emojis with vector placeholders (`getMediaSvgIcon(type)`, SVG User avatar, SVG TV).
+- **Precision Close Buttons**: Upgraded all modal, sheet, and search close buttons (`✕`) to sharp high-DPI SVG cross vectors.
+- **Consistent Certification Tags**: Replaced OS-inconsistent flag emojis with standardized ISO country code pills (e.g., `US`, `GB`, `JP`, `INTL`).
+
 ### November 2026 — Web Checklist Audit, Dynamic Titles, Clickable Logo & Custom 404
 - **Dynamic Document Page Titles**: Added context-aware page titles across the app. Switching tabs updates the title to `Logger · Diary`, `Logger · Watchlist`, `Logger · Calendar`, etc.; opening a media detail sheet dynamically updates to `${title} (${year}) · Logger`; viewing public profiles sets `${Name}'s Diary · Logger`.
 - **Clickable Header Logo**: Added `.logo-clickable` styling (`cursor: pointer`, tactile scaling on tap) to the main and scrolled mini header logos. Tapping smoothly navigates back to Diary (`#page-log`), updates the dock indicator, and scrolls to top.

@@ -7,26 +7,24 @@
 ---
 
 ## 1. Active Task
-**Web Dev Checklist Audit, Dynamic Document Titles, Clickable Logo & Custom 404 Error State**
+**Comprehensive SVG Icon System & Complete Zero-Emoji Overhaul**
 
 ## 2. Objective
-- Execute high-value items from the 20-item web development audit without disrupting intentional features.
-- Provide dynamic document titles across tabs, media detail sheets, and public shared diaries.
-- Make header logo clickable to smoothly return to Diary and scroll to top.
-- Implement a graceful "Diary Not Found" 404 state for invalid public URLs (`?u=...`).
-- Add rich social sharing metadata (OpenGraph & Twitter Card) and standard desktop favicon tags.
-- Provide dynamic copyright year synchronization in the About modal and public footer.
-- Preserve intentional touch carousels and glassmorphic blur treatments.
+- Eliminate all emojis throughout the application and replace them with modern, sharp vector SVGs and clean typography.
+- Re-architect favourite hearts with scalable, animated SVG vectors (`renderFavHeartSvg`).
+- Replace action and status icons (Share, Delete, Add/Edit status dropdowns, Timeline badges, Search empty states) with crisp SVGs.
+- Standardize platform and social icons (Settings sheet, About modal) with dedicated SVGs.
+- Replace close buttons with high-DPI vector cross elements.
+- Ensure 100% consistency across Android, iOS, Windows, and Linux.
 
 ## 3. Relevant Source Files
-- `index.html` — Dynamic title helpers, logo navigation, 404 state markup, OpenGraph tags, and copyright sync.
-- `LOGGER-VAULT/` — Interconnected technical documentation and changelogs.
+- `index.html` — `renderFavHeartSvg`, `SVG_ICONS`, modal templates, status dropdowns, timeline badges, external links.
+- `LOGGER-VAULT/` — Updated changelog and task tracking.
 
 ## 4. Work Completed
-1. **Dynamic Page Titles**: Implemented `updateDocTitle(viewTitle)` hooked into navigation tab switching, `showInfoCard`, `closeInfoCard`, `openDeepCard`, `closeDeepCard`, and `renderPublicProfile`.
-2. **Clickable Header Logo**: Added `.logo-clickable` styling and `navigateToHome()` on `.logo-wrap` and `.sc-logo-wrap`.
-3. **Public 404 Card**: Created `#pubNotFound` state inside `page-public-profile` triggered when UID has no Firestore records or local cache.
-4. **Social Sharing Metadata**: Added `<meta name="description">`, OpenGraph, and Twitter cards in `<head>`.
-5. **Universal Desktop Favicon**: Standardized desktop shortcut icon and `32x32` link declarations.
-6. **Dynamic Copyright**: Replaced static signature with dynamic `© <year> ATOMYN · All rights reserved`.
-7. **Intentional Feature Preservation**: Kept upcoming shelf carousel, cast rows, calendar heatmap, and glassmorphic blur styles fully intact.
+1. **Vector Heart System**: Introduced `renderFavHeartSvg` across Diary rows and Favourites views, replacing `❤️`/`🤍`.
+2. **Clean Typography Statuses**: Removed all status dropdown emojis (`⚡`, `♾️`, `🏆`, `❌`, `🎬`, `📺`), switching to clean labels.
+3. **SVG Action Icons**: Added SVG Share, Trash, Search, Bookmark, Calendar, and Repeat icons.
+4. **Settings & About Overhaul**: Replaced all emojis in Settings and About with sharp SVG vectors (Google Auth, Cloud sync, TMDB, IGDB, Mail, Instagram, Discord, Telegram).
+5. **Close Buttons**: Converted all modal and sheet close buttons to crisp vector crosses.
+6. **Platform Certification Badges**: Standardized age rating country indicators to clean ISO badges (`US`, `GB`, `JP`, `INTL`).
