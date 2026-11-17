@@ -1,3 +1,4 @@
+const os = require('os');
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
@@ -369,10 +370,26 @@ const server = http.createServer(async (req, res) => {
   });
 });
 
+function getLanIps() {
+  const ips = [];
+  const ifaces = os.networkInterfaces();
+  for (const name of Object.keys(ifaces)) {
+    for (const iface of ifaces[name]) {
+      if (iface.family === 'IPv4' && !iface.internal) {
+        ips.push(iface.address);
+      }
+    }
+  }
+  return ips;
+}
+
 server.listen(PORT, '0.0.0.0', () => {
+  const lanIps = getLanIps();
   console.log('=================================================');
   console.log(` Logger Node Server (Static + Rich API Proxy)`);
   console.log(` Local URL:   http://localhost:${PORT}`);
-  console.log(` LAN URL:     http://192.168.0.103:${PORT}`);
+  lanIps.forEach(ip => {
+    console.log(` LAN URL:     http://${ip}:${PORT}`);
+  });
   console.log('=================================================');
 });
