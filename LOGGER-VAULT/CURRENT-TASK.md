@@ -22,6 +22,7 @@
 - `LOGGER-VAULT/` — Updated changelog and task tracking.
 
 ## 4. Work Completed
+1. **Row Favourite Spacing & Scale Fix**: Render heart only when `e.fav` is true, eliminating empty gap before review note icon (`ᯓ`); reduced heart size to `11px`.
 1. **Vector Heart System**: Introduced `renderFavHeartSvg` across Diary rows and Favourites views, replacing `❤️`/`🤍`.
 2. **Clean Typography Statuses**: Removed all status dropdown emojis (`⚡`, `♾️`, `🏆`, `❌`, `🎬`, `📺`), switching to clean labels.
 3. **SVG Action Icons**: Added SVG Share, Trash, Search, Bookmark, Calendar, and Repeat icons.

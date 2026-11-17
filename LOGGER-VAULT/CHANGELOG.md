@@ -11,6 +11,7 @@ This document records the chronological development history of **Logger** (Proje
 
 ### November 2026 — Comprehensive SVG Icon System & Zero-Emoji Overhaul
 - **Full Emoji Elimination**: Replaced all user-facing emojis throughout the app with bespoke, modern, inline SVG icons and clean typography.
+- **List Row Favourite Spacing & Size Polish**: Conditionally rendered `.row-fav-inline` only on favourited entries (`e.fav ? ... : ''`), eliminating the phantom gap before the review note indicator (`ᯓ`) on non-favourited items. Reduced heart size to a compact, proportionate `11px` with zero padding.
 - **SVG Heart Favourites System**: Replaced legacy emoji hearts (`❤️`/`🤍`) in log rows, favourites view, and detail sheets with crisp, hardware-accelerated vector SVGs (`renderFavHeartSvg`) featuring smooth scaling transitions on tap.
 - **Modern Action & Status Icons**:
   - Replaced modal share & delete emojis with clean SVG Share and Trash vectors.

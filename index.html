@@ -1170,13 +1170,12 @@ body::before{
 /* Heart lives inline with the tags in row-meta */
 .row-fav-inline{
   font-size:11px;background:none;border:none;cursor:pointer;
-  padding:1px 3px;line-height:1;opacity:0.22;
-  transition:opacity 0.15s,transform 0.15s;
+  padding:0;line-height:1;
+  transition:transform 0.15s;
   flex-shrink:0;display:inline-flex;align-items:center;
-  vertical-align:middle;margin-left:1px;
+  vertical-align:middle;
 }
-.row-fav-inline.on{opacity:1}
-.row-fav-inline:active{transform:scale(1.5)}
+.row-fav-inline:active{transform:scale(1.35)}
 /* Keep .row-fav for favs page cards */
 .row-fav{font-size:14px;opacity:0.2;cursor:pointer;transition:opacity 0.15s,transform 0.15s;padding:4px 2px;flex-shrink:0;border:none;background:none}
 .row-fav.on{opacity:1}
@@ -7710,7 +7709,7 @@ function renderRow(e,i){
   const sPill=`<span class="pill ${pillCls[sKey]||'pill-done'}">${getPillLabel(sKey,e.type,e)}</span>`;
   const typeIco=`<span class="row-type-ico">${icon}</span>`;
   const noteIco=e.notes?`<span class="note-icon">ᯓ</span>`:'';
-  const fav=`<button class="row-fav-inline ${e.fav?'on':''}" onclick="toggleFav(${e.id},event)" aria-label="Toggle Favourite">${renderFavHeartSvg(e.fav)}</button>`;
+  const fav=e.fav?`<button class="row-fav-inline on" onclick="toggleFav(${e.id},event)" aria-label="Toggle Favourite">${renderFavHeartSvg(true, 11)}</button>`:'';
   return `<div class="row ${e.type}" style="animation-delay:${Math.min(i*0.03,0.4)}s" onclick="event.stopPropagation();openDeepCard(DATA.find(x=>x.id===${e.id})||{id:${e.id},title:'${e.title.replace(/'/g,String.fromCharCode(92,39))}',type:'${e.type}',year:'${e.year||''}',poster:'${(e.poster||'').replace(/'/g,String.fromCharCode(92,39))}',tmdbId:${e.tmdbId||'null'},igdbId:${e.igdbId||'null'}})">
     <div class="row-day">${day}</div>
     ${thumb}
